@@ -49,7 +49,7 @@ Wij geloven in een tool die met je meegroeit, zowel in functionaliteit als in pr
 **Doordat onze vaste kosten laag zijn (DynamoDB-opslag: €10 voor ~42GB) en we geen personeelskosten hebben, kunnen we 
 het risico zelf dragen in plaats van dit bij de klant neer te leggen, zoals vaak gebeurt bij flat-rate of seat-based 
 pricing. De basisprijs dekt onze vaste kosten (database storage), terwijl de MAU’s zorgen voor de variabele kosten (zoals compute- en 
-read/write-eenheden) en de rest is winst.**
+read/write-eenheden) en de rest is return on investment voor de research & development van de tool.**
 
 [Light on the Hill](./README.md)
 [Fat marker sketch](./fat-marker.md)
