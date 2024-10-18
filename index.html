@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lighthouse</title>
+
+    <!-- AlpineJS & Vimesh -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/@vimesh/ui"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <script src="/js/setup.js"></script>
+
+    <!-- local database -->
+    <script src="/js/database.js"></script>
+
+    <!-- Search engine -->
+    <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
+
+    <!-- DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- customs -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/example-module.js"></script>
+
+</head>
+<body x-data="navigation">
+    <div x-import="menu-bar">
+        <ui-menu-bar></ui-menu-bar>
+    </div>
+
+    <div class="grid grid-cols-12 gap-3  mt-5">
+        <div class="col-span-2">
+            <div x-import="navigation">
+                <ui-navigation></ui-navigation>
+            </div>
+        </div>
+        <div class="col-span-9">
+            <div x-import="pages/page1">
+                <ui-first></ui-first>
+            </div>
+            <div x-import="pages/page2">
+                <ui-second></ui-second>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

@@ -5,7 +5,7 @@ Deze visualisatie geeft een overzicht van hoe **Lighthouse** werkt, en laat zien
 ondersteunen in hun werk. De visualisatie is opgedeeld in drie hoofdsecties: **Project management**, **Navigatie &
 Context**, en **Architectuur**.
 
-![image](./Lighthouse.png)
+![image](Lighthouse.png)
 
 ## 1. Project Management
 
@@ -135,5 +135,5 @@ werk te beheren, maar ook een diepere context om te begrijpen hoe elke actie en 
 de **C4 links** te gebruiken in zowel de **shaping**- als de **implementatiefase**, krijgen teams een volledig beeld van
 hun systeem en hoe hun werk dit beïnvloedt.
 
-[Pricing Strategy](./pricing.md)
-[Light on the Hill](./README.md)
+[Pricing Strategy](pricing.md)
+[Light on the Hill](../README.md)

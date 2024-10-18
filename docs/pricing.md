@@ -51,5 +51,5 @@ het risico zelf dragen in plaats van dit bij de klant neer te leggen, zoals vaak
 pricing. De basisprijs dekt onze vaste kosten (database storage), terwijl de MAU’s zorgen voor de variabele kosten (zoals compute- en 
 read/write-eenheden) en de rest is winst.**
 
-[Light on the Hill](./README.md)
-[Fat marker sketch](./fat-marker.md)
+[Light on the Hill](../README.md)
+[Fat marker sketch](fat-marker.md)

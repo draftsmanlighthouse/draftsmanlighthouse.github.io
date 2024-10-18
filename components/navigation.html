@@ -1,0 +1,24 @@
+<template x-component="navigation">
+    <div>
+        <ul class="menu bg-base-200 rounded-box w-56">
+            <li>
+                <a :class="navigationElementActive"
+                   navigation="my-first-page"
+                   @click="navigate">
+                    <i class="fa-solid fa-kiwi-bird"></i>
+                    First Page
+                </a>
+            </li>
+            <li>
+                <a :class="navigationElementActive"
+                   navigation="my-second-page"
+                   @click="navigate">
+                    <i class="fa-solid fa-hippo"></i>
+                    Second Page
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+</template>

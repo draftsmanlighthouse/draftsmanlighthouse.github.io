@@ -1,0 +1,37 @@
+<template x-component="first">
+    <div navigation="my-first-page"
+         x-data="taskModule"
+         x-show="navigationElementActive" x-cloak x-transition>
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Tasklist:</h1>
+
+        <label class="input input-bordered flex items-center gap-2">
+            New task
+            <input type="text" class="grow" placeholder="My Task" @keyup.enter="add_task" x-model="taskTitle" />
+        </label>
+        <br>
+        <table class="table">
+            <template x-for="task in openTasks" :key="task.id">
+                <tr>
+                    <th scope="row" x-text="task.title"></th>
+                    <td>
+                        <div class="form-control">
+                            <input type="checkbox" x-model="task.completed" @change="complete_task" class="checkbox checkbox-primary" />
+                        </div>
+                    </td>
+                </tr>
+            </template>
+            <template x-for="task in completedTasks" :key="task.id">
+                <tr>
+                    <th scope="row" x-text="task.title"></th>
+                    <td>
+                        <div class="form-control">
+                            <input type="checkbox" x-model="task.completed" @change="reactivate_task" class="checkbox checkbox-primary" />
+                        </div>
+                    </td>
+                </tr>
+            </template>
+        </table>
+        <pre x-text="JSON.stringify(openTasks,null,2)"></pre>
+        <pre x-text="JSON.stringify(completedTasks,null,2)"></pre>
+    </div>
+</template>
