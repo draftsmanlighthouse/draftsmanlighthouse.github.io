@@ -8,14 +8,11 @@
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/@vimesh/ui"></script>
     <script src="https://unpkg.com/alpinejs" defer></script>
-    <script src="/js/setup.js"></script>
+    <script src="/js/config/setup.js"></script>
 
-    <!-- local database -->
-    <script src="/js/database.js"></script>
-    <script src="/js/searchindex.js"></script>
-
-    <!-- Search engine -->
-    <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
+    <!-- utils -->
+    <script src="/js/utils/database.js"></script>
+    <script src="/js/utils/searchindex.js"></script>
 
     <!-- DaisyUI -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
@@ -23,9 +20,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- customs -->
-    <script src="/js/navigation.js"></script>
-    <script src="/js/example-module.js"></script>
-    <script src="/js/example-2-module.js"></script>
+    <script src="/js/modules/navigation.js"></script>
+    <script src="/js/modules/example-module.js"></script>
+    <script src="/js/modules/example-2-module.js"></script>
 
 </head>
 <body x-data="navigation">

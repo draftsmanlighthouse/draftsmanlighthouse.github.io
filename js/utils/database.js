@@ -3,7 +3,7 @@ class Database {
 
   static async open(collectionName) {
     if (!Database.worker) {
-      Database.worker = new Worker('/js/dbWorker.js');
+      Database.worker = new Worker('/js/webworkers/dbWorker.js');
       Database.dbReady = new Promise((resolve, reject) => {
         Database.worker.onmessage = (event) => {
           if (event.data.type === 'dbReady') {

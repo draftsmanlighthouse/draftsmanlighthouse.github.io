@@ -3,7 +3,7 @@ class SearchIndex {
 
   static async open(indexName, options) {
     if (!SearchIndex.worker){
-        SearchIndex.worker = new Worker('/js/miniSearchWorker.js');
+        SearchIndex.worker = new Worker('/js/webworkers/miniSearchWorker.js');
     }
     let index = new SearchIndex(indexName,SearchIndex.worker);
     await index._sendMessage({
