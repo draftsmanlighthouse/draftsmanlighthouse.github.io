@@ -74,11 +74,9 @@ self.onmessage = async function (event) {
     case 'initialize':
       try {
         const loadedIndex = await loadIndex(indexName);
-        console.log(loadedIndex);
         indexes[indexName] = MiniSearch.loadJSON(JSON.stringify(loadedIndex), options); // Laad de bestaande index
         postMessage({ result: `Index ${indexName} loaded from IndexedDB` });
       } catch (error) {
-        console.error(error);
         indexes[indexName] = new MiniSearch(options); // Maak een nieuwe index als er geen bestaat
         postMessage({ result: `New MiniSearch index ${indexName} initialized` });
       }
@@ -94,9 +92,23 @@ self.onmessage = async function (event) {
       }
       break;
 
+    case 'removeDocuments':
+        if (indexes[indexName]) {
+            if (Array.isArray(documents)) {
+                indexes[indexName].removeAll(documents);
+            } else {
+                indexes[indexName].remove(documents);
+            }
+            await saveIndex(indexName, indexes[indexName].toJSON()); // Sla de index op na het toevoegen van documenten
+            postMessage({ result: `Documents removed and index ${indexName} saved` });
+          } else {
+            postMessage({ error: `Index ${indexName} is not initialized` });
+          }
+        break;
+
     case 'search':
       if (indexes[indexName]) {
-        const results = indexes[indexName].search(query);
+        const results = indexes[indexName].search(query,{prefix: true});
         postMessage({ result: results });
       } else {
         postMessage({ error: `Index ${indexName} is not initialized` });

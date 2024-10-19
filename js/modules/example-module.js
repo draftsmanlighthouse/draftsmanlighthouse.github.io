@@ -30,7 +30,6 @@ document.addEventListener('alpine:init', () => {
                 await this.fetch_data();
             },
             async delete_task(){
-                console.log(this.completedTasks.filter(x => x.deleted));
                 await Promise.all(this.completedTasks.filter(x => x.deleted).map(x => this.collection.remove(key=x.id)));
                 await this.fetch_data();
             },

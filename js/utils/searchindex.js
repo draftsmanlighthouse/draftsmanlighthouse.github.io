@@ -1,10 +1,14 @@
 class SearchIndex {
   static worker = null;
 
-  static async open(indexName, options) {
+  static async open(indexName, fields) {
     if (!SearchIndex.worker){
         SearchIndex.worker = new Worker('/js/webworkers/miniSearchWorker.js');
     }
+    let options = {
+      fields: fields,
+      storeFields: fields
+    };
     let index = new SearchIndex(indexName,SearchIndex.worker);
     await index._sendMessage({
       action: 'initialize',
@@ -27,6 +31,14 @@ class SearchIndex {
     });
   }
 
+  async removeDocuments(documents) {
+    return this._sendMessage({
+        action: 'removeDocuments',
+        indexName: this.indexName,
+        documents
+    });
+  }
+
   async search(query) {
     return this._sendMessage({
       action: 'search',
@@ -36,7 +48,6 @@ class SearchIndex {
   }
 
   _sendMessage(message) {
-    console.log(message);
     return new Promise((resolve, reject) => {
       this.worker.onmessage = (event) => {
         if (event.data && event.data.result) {
