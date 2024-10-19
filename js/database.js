@@ -53,8 +53,8 @@ class Collection {
     return this._sendMessage({ action: 'update', collectionName: this.collectionName, key, updatedRecord });
   }
 
-  remove(keyOrCriteria) {
-    return this._sendMessage({ action: 'remove', collectionName: this.collectionName, keyOrCriteria });
+  remove(key=null,criteria=null) {
+    return this._sendMessage({ action: 'remove', collectionName: this.collectionName, key, criteria});
   }
 
   _sendMessage(message) {

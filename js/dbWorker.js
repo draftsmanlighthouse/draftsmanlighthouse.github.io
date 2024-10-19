@@ -47,7 +47,7 @@ self.onmessage = async function (event) {
 
 // Initialiseer of upgrade de database
 async function initializeDB(collectionName) {
-  const request = indexedDB.open('MyDatabase', 1);
+  const request = indexedDB.open('DocumentDatabase', 1);
 
   return new Promise((resolve, reject) => {
     request.onupgradeneeded = function (event) {
@@ -75,7 +75,7 @@ async function createCollection(collectionName) {
   const version = db.version + 1;
   db.close();
 
-  const request = indexedDB.open('MyDatabase', version);
+  const request = indexedDB.open('DocumentDatabase', version);
 
   return new Promise((resolve, reject) => {
     request.onupgradeneeded = function (event) {
