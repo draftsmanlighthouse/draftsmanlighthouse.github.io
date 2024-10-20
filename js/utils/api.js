@@ -107,6 +107,15 @@ class API {
             callback(event["data"]["payload"]);
         }
     }
+    return subscriptionId;
+  }
+
+  async unsubscribe(subscriptionId) {
+    API.worker.postMessage({
+      action: 'unsubscribe',
+      subscriptionId: subscriptionId
+    });
+    delete API.callbacks[subscriptionId];
   }
 
   /**
@@ -137,8 +146,10 @@ class API {
       API.callbacks[message.subscriptionId] = function(event){
         if (event.data && event.data.result) {
           resolve(event.data.result);
+          delete API.callbacks[message.subscriptionId];
         } else if (event.data.error) {
           reject(new Error(event.data.error));
+          delete API.callbacks[message.subscriptionId];
         }
       }
       API.worker.postMessage(message);

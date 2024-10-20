@@ -20,7 +20,7 @@ document.addEventListener('alpine:init', () => {
                 let api = await API.initialize();
                 let correlationId = await api.mutation("/prepared-statements/insert-feedback.txt",this.feedBackCommand);
                 this.showModal = false;
-                await api.subscription("/prepared-statements/subscribe-track-and-trace.txt",{correlationId},this._track.bind(this));
+                this.subscriptionId = await api.subscription("/prepared-statements/subscribe-track-and-trace.txt",{correlationId},this._track.bind(this));
             },
             _prepare_data(data){
                 this.feedbackItems = data["data"]["Feedback"]["filter"]["resultset"];
@@ -28,7 +28,7 @@ document.addEventListener('alpine:init', () => {
             _remove_first_trace(){
                 this.traces.shift();
             },
-            _track(data){
+            async _track(data){
                 data = data["data"]["onTrace"];
                 if (data.status != "success" && data.status != "error"){
                     return;
@@ -39,6 +39,8 @@ document.addEventListener('alpine:init', () => {
                     message: data.message
                 });
                 setTimeout(this._remove_first_trace.bind(this),3000);
+                let api = await API.initialize();
+                await api.unsubscribe(this.subscriptionId);
             }
         }
     });

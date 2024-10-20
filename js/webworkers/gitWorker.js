@@ -4,7 +4,6 @@ importScripts('https://unpkg.com/isomorphic-git/http/web/index.umd.js');
 
 const isogit = self.git;
 const http = self.GitHttp || self.http;
-console.log(self)
 
 var fs = null;
 var pfs = null;
@@ -82,7 +81,6 @@ async function initializeRepo(repoUrl, pullInterval,author="j.doe"){
   }
   const dirExists = await pfs.readdir(dir).catch(() => false);
 
-  console.log(1,dirExists)
   if (dirExists.length == 0) {
     // Als de repo nog niet bestaat, kloon deze
     await isogit.clone({

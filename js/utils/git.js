@@ -75,7 +75,6 @@ class GitRepository {
 
   // Algemene methode om berichten naar de worker te sturen en resultaten te verwerken
   _sendMessage(message) {
-    console.log(message);
     return new Promise((resolve, reject) => {
       GitRepository.worker.onmessage = (event) => {
         if (event.data && event.data.result) {

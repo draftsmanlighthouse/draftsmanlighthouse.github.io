@@ -1,10 +1,24 @@
 <template x-component="git-example">
     <div navigation="git-example-page"
-         x-data="apiModule"
+         x-data="gitModule"
          x-show="navigationElementActive" x-cloak x-transition>
 
         <h1 class="text-3xl font-bold text-gray-900 mb-6">GIT:</h1>
 
+        <div class="join join-vertical w-full">
+            <template x-for="file in documentation" :key="file">
+                <div class="collapse collapse-arrow join-item border-base-300 border">
+                    <input type="radio" name="my-accordion-4" :checked="selected == file" x-model="selected" :value="file"/>
+                    <div class="collapse-title text-xl font-medium" x-text="file"></div>
+                    <div class="collapse-content">
+                        <textarea class="textarea textarea-primary w-[100%]"
+                                  :file="file" x-init="load_content" rows="8"
+                                  placeholder="File content"></textarea>
+                    </div>
+                </div>
+            </template>
+        </div>
 
+        </pre>
     </div>
 </template>
