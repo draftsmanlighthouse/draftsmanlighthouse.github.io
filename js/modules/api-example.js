@@ -3,11 +3,19 @@ document.addEventListener('alpine:init', () => {
         return {
             feedbackItems: [],
             feedBackCommand: this.$persist({}),
+            traces: [],
             _prepare_data(data){
                 this.feedbackItems = data["data"]["Feedback"]["filter"]["resultset"];
             },
             _track(data){
-                alert(JSON.stringify(data));
+                data = data["data"]["onTrace"]
+                this.traces.push({
+                    name: data.command ? data.command : data.event,
+                    status: data.status,
+                    message: data.message
+                });
+                console.log(this.traces);
+                setTimeout(this.traces.unshift,5000);
             },
             async init(){
                 let api = await API.initialize();

@@ -1,6 +1,9 @@
 const CACHE_DB_NAME = 'graphql-cache';
 const CACHE_STORE_NAME = 'graphql-queries';
 let cacheDB = null;
+let activeSocket = null;  // Houd de actieve WebSocket bij
+let subscriptionMap = {}; // Houdt subscripties bij met hun ID's
+let reconnectTimeout = null;  // Voor reconnecting met backoff
 
 // Open IndexedDB voor caching
 async function openCache() {
@@ -102,7 +105,7 @@ async function loadGraphQLFile(filePath) {
 }
 
 self.onmessage = async function (event) {
-  const { action, queryFilePath, variables, endpoint, api_key, cache_ttl, ignore_cache, authenticated, websocket, token } = event.data;
+  const { action, queryFilePath, variables, endpoint, api_key, cache_ttl, ignore_cache, authenticated, websocket, token, subscriptionId } = event.data;
 
   try {
     let queryString = "";
@@ -131,54 +134,20 @@ self.onmessage = async function (event) {
         });
         const result = await response.json();
 
-        if (!ignore_cache && cache_ttl) {
+        if (cache_ttl) {
           await cacheResponse(cacheKey, result, cache_ttl);
         }
 
         postMessage({ result });
         break;
 
-      case 'subscription':
+      case 'subscribe':
         queryString = await loadGraphQLFile(queryFilePath);
-        var header = {
-            "host": websocket.replace("wss://","").replace("-realtime-","-").replace("/graphql",""),
-            "x-api-key": api_key
-        }
-        console.log(header);
-        let ws = `${websocket}?header=${btoa(JSON.stringify(header))}&payload=e30=`;
-        let socket = new WebSocket(ws,"graphql-ws");
-        socket.onopen = function(e) {
-          socket.send(JSON.stringify({
-            "id":uuidv4(),
-            "payload":{
-                "data": JSON.stringify({query:queryString,variables:variables}),
-                "extensions":{
-                    "authorization": header
-                }
-            },
-            "type":"start"
-          }));
-        };
-        socket.onmessage = function(event) {
-            let data = JSON.parse(event.data).payload
-            if (data){
-                postMessage({ result: JSON.stringify(data) });
-            }
-        };
-        socket.onclose = function(event) {
-          if (event.wasClean) {
-            console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-          } else {
-//            subscription_reconnect_backoff += 1000;
-//            console.log(`[close] Connection died, attempt to reconnect in ${subscription_reconnect_backoff/1000} seconds`);
-//            setTimeout(function(){
-//                Draftsman.subscribe(query,callback,variables);
-//            },subscription_reconnect_backoff);
-          }
-        };
-        socket.onerror = function(error) {
-          console.log(`[error] ${error.message}`);
-        };
+        subscribeToWebSocket(queryString, variables, websocket, api_key, subscriptionId);
+        break;
+
+      case 'unsubscribe':
+        unsubscribeFromWebSocket(subscriptionId);
         break;
 
       case 'clearCache':
@@ -201,8 +170,119 @@ self.onmessage = async function (event) {
   }
 };
 
+// Functie om te subscriben op een WebSocket en te reconnecten bij onverwacht sluiten
+function subscribeToWebSocket(queryString, variables, websocket, api_key, subscriptionId) {
+  if (!activeSocket) {
+    const header = {
+      "host": websocket.replace("wss://", "").replace("-realtime-", "-").replace("/graphql", ""),
+      "x-api-key": api_key
+    };
+
+    console.log(header);
+    let ws = `${websocket}?header=${btoa(JSON.stringify(header))}&payload=e30=`;
+    activeSocket = new WebSocket(ws, "graphql-ws");
+
+    activeSocket.onopen = function () {
+      console.log("[WebSocket] Connection established");
+      sendSubscribeMessage(subscriptionId,queryString, variables, websocket, api_key);
+    };
+
+    activeSocket.onmessage = function (event) {
+      let data = JSON.parse(event.data);
+      const subscriptionId = data.id;
+      const payload = data.payload;
+
+      // Check if we have a subscription with this ID
+      if (subscriptionMap[subscriptionId]) {
+        // Stuur een bericht terug naar de hoofdthread met het subscriptionId en de payload
+        postMessage({
+          subscriptionId: subscriptionId,
+          payload: payload
+        });
+      }
+    };
+
+    activeSocket.onclose = function (event) {
+      if (event.wasClean) {
+        console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+      } else {
+        // On unexpected close, attempt to reconnect
+        console.log(`[close] Unexpected connection close, attempting to reconnect...`);
+        reconnectSubscriptions(websocket, api_key);
+      }
+    };
+
+    activeSocket.onerror = function (error) {
+      console.log(`[error] WebSocket error: ${error.message}`);
+    };
+  } else {
+    sendSubscribeMessage(subscriptionId,queryString, variables, websocket, api_key)
+  }
+}
+
+function sendSubscribeMessage(subscriptionId,queryString, variables, websocket, api_key){
+  // Start de subscriptie
+  const message = {
+    "id": subscriptionId,
+    "payload": {
+      "data": JSON.stringify({ query: queryString, variables: variables }),
+      "extensions": {
+        "authorization": {
+          "host": websocket.replace("wss://", "").replace("-realtime-", "-").replace("/graphql", ""),
+          "x-api-key": api_key
+        }
+      }
+    },
+    "type": "start"
+  };
+
+  activeSocket.send(JSON.stringify(message));
+  console.log(`[WebSocket] Subscribed with ID: ${subscriptionId}`);
+
+  // Bewaar de subscriptie-ID en callback
+  subscriptionMap[subscriptionId] = { queryString, variables, websocket, api_key };
+}
+
+// Functie om een subscriptie te beëindigen
+function unsubscribeFromWebSocket(subscriptionId) {
+  if (activeSocket && subscriptionMap[subscriptionId]) {
+    // Stuur een stop-bericht voor de subscriptie naar de server
+    const message = {
+      "id": subscriptionId,
+      "type": "stop"
+    };
+    activeSocket.send(JSON.stringify(message));
+    console.log(`[WebSocket] Unsubscribed with ID: ${subscriptionId}`);
+
+    // Verwijder de subscriptie uit de map
+    delete subscriptionMap[subscriptionId];
+
+    // Controleer of er nog actieve subscripties zijn
+    if (Object.keys(subscriptionMap).length === 0) {
+      // Geen actieve subscripties meer, sluit de WebSocket-verbinding
+      activeSocket.close();
+      activeSocket = null;
+      console.log("[WebSocket] No more active subscriptions, socket closed.");
+    }
+  }
+}
+
+// Herconnectie voor alle actieve subscripties bij onverwachte sluiting
+function reconnectSubscriptions(websocket, api_key) {
+  setTimeout(function () {
+    console.log("[WebSocket] Attempting to reconnect...");
+
+    // Heropen de WebSocket-verbinding en herstart alle actieve subscripties
+    for (const subscriptionId in subscriptionMap) {
+      const sub = subscriptionMap[subscriptionId];
+      subscribeToWebSocket(sub.queryString, sub.variables, websocket, api_key, subscriptionId);
+    }
+  }, 5000); // Reconnect after 5 seconds
+}
+
+// Functie voor het genereren van UUIDs
 function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
