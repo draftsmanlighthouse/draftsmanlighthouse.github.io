@@ -7,9 +7,16 @@
             Mockup
         </div>
         <div class="navbar-end">
-            <button @click="location.reload()" class="btn btn-circle btn-outline btn-secondary">
-                <i class="fa-solid fa-arrows-rotate"></i>
-            </button>
+            <div class="tooltip tooltip-bottom" data-tip="Clear API Cache">
+                <button @click="clear_cache" class="btn btn-circle btn-outline btn-secondary">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+            </div>
+            <div class="tooltip tooltip-bottom" data-tip="Clear Local Storage">
+                <button @click="clear_storage" class="btn btn-circle btn-outline btn-error ml-2">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            </div>
         </div>
     </div>
 </template>

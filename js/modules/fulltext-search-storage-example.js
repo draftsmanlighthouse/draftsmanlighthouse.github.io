@@ -10,10 +10,8 @@ document.addEventListener('alpine:init', () => {
                 this.noteIndex = await SearchIndex.open('notes', ['note','getAllHack']);
                 this.search_notes();
 
-//                let repo = await GitRepository.open("https://github.com/isomorphic-git/isomorphic-git");
-//                console.log(await repo.list());
-            let api = await API.initialize(true);
-            //console.log(await api.query(""));
+//            let repo = await GitRepository.open("https://github.com/bohanssen/assistdummyrepo-model");
+//            console.log(await repo.list());
             },
             async save_note(){
                 let note = {note: this.noteText,id: this.sequence, getAllHack: this.getAllHack};

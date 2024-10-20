@@ -88,14 +88,30 @@ async function clearCache() {
   });
 }
 
+// Laad de .gql-bestandsinhoud als een string
+async function loadGraphQLFile(filePath) {
+  return new Promise((resolve, reject) => {
+    fetch(filePath)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Failed to load GraphQL file: ${response.statusText}`);
+        return response.text();
+      })
+      .then((text) => resolve(text))
+      .catch((error) => reject(error));
+  });
+}
+
 self.onmessage = async function (event) {
-  const { action, queryString, variables, endpoint, api_key, cache_ttl, ignore_cache, authenticated, websocket } = event.data;
+  const { action, queryFilePath, variables, endpoint, api_key, cache_ttl, ignore_cache, authenticated, websocket, token } = event.data;
 
   try {
+    let queryString = "";
     switch (action) {
       case 'query':
       case 'mutation':
-        const cacheKey = JSON.stringify({ queryString, variables });
+        // Haal het .gql-bestand op en gebruik de inhoud als query
+        queryString = await loadGraphQLFile(queryFilePath);
+        const cacheKey = JSON.stringify({ queryFilePath, variables });
         if (!ignore_cache) {
           const cachedResponse = await getCachedResponse(cacheKey);
           if (cachedResponse) {
@@ -105,7 +121,7 @@ self.onmessage = async function (event) {
         }
 
         const headers = authenticated
-          ? { 'Authorization': `Bearer ${sessionStorage.token}` }
+          ? { 'Authorization': `Bearer ${token}` }
           : { 'x-api-key': api_key };
 
         const response = await fetch(endpoint, {
@@ -123,12 +139,45 @@ self.onmessage = async function (event) {
         break;
 
       case 'subscription':
-        const ws = new WebSocket(websocket);
-        ws.onopen = () => {
-          ws.send(JSON.stringify({ query: queryString, variables }));
+        queryString = await loadGraphQLFile(queryFilePath);
+        var header = {
+            "host": websocket.replace("wss://","").replace("-realtime-","-").replace("/graphql",""),
+            "x-api-key": api_key
+        }
+        console.log(header);
+        let ws = `${websocket}?header=${btoa(JSON.stringify(header))}&payload=e30=`;
+        let socket = new WebSocket(ws,"graphql-ws");
+        socket.onopen = function(e) {
+          socket.send(JSON.stringify({
+            "id":uuidv4(),
+            "payload":{
+                "data": JSON.stringify({query:queryString,variables:variables}),
+                "extensions":{
+                    "authorization": header
+                }
+            },
+            "type":"start"
+          }));
         };
-        ws.onmessage = (message) => {
-          postMessage({ result: JSON.parse(message.data) });
+        socket.onmessage = function(event) {
+            let data = JSON.parse(event.data).payload
+            if (data){
+                postMessage({ result: JSON.stringify(data) });
+            }
+        };
+        socket.onclose = function(event) {
+          if (event.wasClean) {
+            console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+          } else {
+//            subscription_reconnect_backoff += 1000;
+//            console.log(`[close] Connection died, attempt to reconnect in ${subscription_reconnect_backoff/1000} seconds`);
+//            setTimeout(function(){
+//                Draftsman.subscribe(query,callback,variables);
+//            },subscription_reconnect_backoff);
+          }
+        };
+        socket.onerror = function(error) {
+          console.log(`[error] ${error.message}`);
         };
         break;
 
@@ -138,7 +187,7 @@ self.onmessage = async function (event) {
         break;
 
       case 'invalidateCache':
-        const invalidateKey = JSON.stringify({ queryString, variables });
+        const invalidateKey = JSON.stringify({ queryFilePath, variables });
         await invalidateCache(invalidateKey);
         postMessage({ result: 'Cache entry invalidated' });
         break;
@@ -147,6 +196,14 @@ self.onmessage = async function (event) {
         postMessage({ error: 'Unknown action' });
     }
   } catch (error) {
+    console.log(error);
     postMessage({ error: error.message });
   }
 };
+
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}

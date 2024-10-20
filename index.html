@@ -26,8 +26,9 @@
 
     <!-- customs -->
     <script src="/js/modules/navigation.js"></script>
-    <script src="/js/modules/example-module.js"></script>
-    <script src="/js/modules/example-2-module.js"></script>
+    <script src="/js/modules/documentdb-example.js"></script>
+    <script src="/js/modules/fulltext-search-storage-example.js"></script>
+    <script src="/js/modules/api-example.js"></script>
 
 </head>
 <body x-data="navigation">
@@ -42,11 +43,14 @@
             </div>
         </div>
         <div class="col-span-9">
-            <div x-import="pages/page1">
-                <ui-first></ui-first>
+            <div x-import="pages/documentdb-example">
+                <ui-db-example></ui-db-example>
             </div>
-            <div x-import="pages/page2">
-                <ui-second></ui-second>
+            <div x-import="pages/fulltext-search-example">
+                <ui-fts-example></ui-fts-example>
+            </div>
+            <div x-import="pages/api-example">
+                <ui-api-example></ui-api-example>
             </div>
         </div>
     </div>

@@ -6,19 +6,20 @@ class API {
     if (!API.worker) {
       API.worker = new Worker('/js/webworkers/apiWorker.js'); // Path to your worker script
     }
-    let api = new API(api_url, api_ws, api_key, API.cache_enabled, cache_ttl);
+    let api = new API(api_url, api_ws, api_key, API.cache_enabled, cache_ttl,authenticated);
     if (authenticated){
         api.checkAuthentication();
     }
     return api;
   }
 
-  constructor(endpoint, websocket, api_key, cache_enabled, cache_ttl) {
+  constructor(endpoint, websocket, api_key, cache_enabled, cache_ttl,authenticated) {
     this.endpoint = endpoint;
     this.websocket = websocket;
     this.api_key = api_key;
     this.cache_enabled = cache_enabled;
     this.cache_ttl = this.convertTTLtoSeconds(cache_ttl);
+    this.authenticated = authenticated;
   }
 
   /**
@@ -46,53 +47,57 @@ class API {
   /**
    * Perform a GraphQL query.
    */
-  async query(queryString, variables = {}, authenticated = false, callback = console.log, ignore_cache = false) {
-    if (authenticated && !this.checkAuthentication()) return;
-
-    this._sendMessage({
+  async query(queryFilePath, variables = {}, ignore_cache = false, authenticated = false) {
+    if ((this.authenticated || authenticated) && !this.checkAuthentication()) return;
+    variables = JSON.parse(JSON.stringify(variables));
+    return await this._sendMessage({
       action: 'query',
-      queryString,
+      queryFilePath,
       variables,
       endpoint: this.endpoint,
       api_key: this.api_key,
       cache_ttl: this.cache_enabled ? this.cache_ttl : 0,
       ignore_cache,
-      authenticated,
-    }, callback);
+      authenticated: this.authenticated || authenticated,
+    });
   }
 
   /**
    * Perform a GraphQL mutation.
    */
-  async mutation(queryString, variables = {}, authenticated = false, callback = console.log, ignore_cache = false) {
-    if (authenticated && !this.checkAuthentication()) return;
-
-    this._sendMessage({
+  async mutation(queryFilePath, variables = {}, ignore_cache = true, authenticated=false) {
+    if ((this.authenticated || authenticated) && !this.checkAuthentication()) return;
+    variables = JSON.parse(JSON.stringify(variables));
+    let data = await this._sendMessage({
       action: 'mutation',
-      queryString,
+      queryFilePath,
       variables,
       endpoint: this.endpoint,
       api_key: this.api_key,
       cache_ttl: this.cache_enabled ? this.cache_ttl : 0,
       ignore_cache,
-      authenticated,
-    }, callback);
+      authenticated: this.authenticated || authenticated,
+    });
+    return findCorrelationId(data);
   }
 
   /**
    * Perform a GraphQL subscription using WebSockets.
    */
-  async subscription(queryString, variables = {}, authenticated = false, callback = console.log) {
-    if (authenticated && !this.checkAuthentication()) return;
-
+  async subscription(queryFilePath, variables = {},callback=console.trace,authenticated = false) {
+    if ((this.authenticated || authenticated) && !this.checkAuthentication()) return;
+    variables = JSON.parse(JSON.stringify(variables));
     this._sendMessage({
       action: 'subscription',
-      queryString,
+      queryFilePath,
       variables,
       websocket: this.websocket,
       api_key: this.api_key,
-      authenticated,
-    }, callback);
+      authenticated: this.authenticated || authenticated,
+    });
+    API.worker.onmessage = (event) => {
+        callback(JSON.parse(event["data"]["result"]));
+    }
   }
 
   /**
@@ -116,11 +121,11 @@ class API {
   /**
    * Send a message to the worker and handle the response.
    */
-  _sendMessage(message, callback) {
+  _sendMessage(message) {
+    message.token = sessionStorage.token;
     return new Promise((resolve, reject) => {
       API.worker.onmessage = (event) => {
         if (event.data && event.data.result) {
-          callback(event.data.result);
           resolve(event.data.result);
         } else if (event.data.error) {
           reject(new Error(event.data.error));
@@ -129,4 +134,30 @@ class API {
       API.worker.postMessage(message);
     });
   }
+}
+
+function findCorrelationId(obj) {
+  // Check if the object is indeed an object or an array
+  if (typeof obj !== 'object' || obj === null) {
+    return null;
+  }
+
+  // Loop over the object keys
+  for (const key in obj) {
+    // Check if the current key is 'correlationId', return its value if found
+    if (key === 'correlationId') {
+      return obj[key];
+    }
+
+    // If the current value is another object, call the function recursively
+    if (typeof obj[key] === 'object') {
+      const correlationId = findCorrelationId(obj[key]);
+      if (correlationId !== null) {
+        return correlationId; // Return the correlationId once it's found
+      }
+    }
+  }
+
+  // If no 'correlationId' was found, return null
+  return null;
 }
