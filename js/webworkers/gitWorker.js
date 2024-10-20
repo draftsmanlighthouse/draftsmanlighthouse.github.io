@@ -1,9 +1,13 @@
 importScripts('https://unpkg.com/isomorphic-git');
 importScripts('https://cdn.jsdelivr.net/npm/@isomorphic-git/lightning-fs@4.6.0/dist/lightning-fs.min.js');
+importScripts('https://unpkg.com/isomorphic-git/http/web/index.umd.js');
 
 const isogit = self.git;
-const fs = new LightningFS('fs');
-const pfs = fs.promises;
+const http = self.GitHttp || self.http;
+console.log(self)
+
+var fs = null;
+var pfs = null;
 
 let dir = '/';
 let proxy = null;
@@ -68,21 +72,43 @@ self.onmessage = async (event) => {
 };
 
 // Initialiseer de repository
-async function initializeRepo(repoUrl, pullInterval) {
+async function initializeRepo(repoUrl, pullInterval,author="j.doe"){
   proxy = 'https://cors.isomorphic-git.org'; // Proxy voor CORS-ondersteuning
+  if (!fs){
+    fs = new LightningFS(repoUrl.replace("https://github.com/",""));
+    pfs = fs.promises;
+  } else {
+    throw new Error("Git worker already attached to a repository!");
+  }
   const dirExists = await pfs.readdir(dir).catch(() => false);
 
-  if (!dirExists) {
+  console.log(1,dirExists)
+  if (dirExists.length == 0) {
     // Als de repo nog niet bestaat, kloon deze
-    await isogit.clone({ fs, dir, url: repoUrl, corsProxy: proxy });
+    await isogit.clone({
+      fs,
+      http,
+      dir,
+      url: repoUrl,
+      corsProxy: proxy,
+      singleBranch: true,  // Zorg ervoor dat alleen de specifieke branch wordt gedownload
+      depth: 1,            // Shallow clone, alleen de laatste commit
+      ref: 'main'          // De branch die je wilt klonen, bijvoorbeeld 'main'
+    });
+    await isogit.setConfig({
+            fs,
+            dir: dir,
+            path: 'user.name',
+            value: author
+      });
   } else {
     // Anders, pull de laatste wijzigingen
-    await isogit.pull({ fs, dir, url: repoUrl, corsProxy: proxy, ref: 'main' });
+    await isogit.pull({ fs,http, dir, url: repoUrl, corsProxy: proxy, ref: 'main' });
   }
 
   // Zet een interval voor het pullen van wijzigingen
   setInterval(async () => {
-    await isogit.pull({ fs, dir, url: repoUrl, corsProxy: proxy, ref: 'main' });
+    await isogit.pull({ fs, http, dir, url: repoUrl, corsProxy: proxy, ref: 'main' });
   }, pullInterval);
 }
 
@@ -143,5 +169,5 @@ async function commitChanges(message) {
 
 // Push de wijzigingen naar de remote repository
 async function pushChanges() {
-  await isogit.push({ fs, dir, corsProxy: proxy });
+  await isogit.push({ fs, http, dir, corsProxy: proxy });
 }
