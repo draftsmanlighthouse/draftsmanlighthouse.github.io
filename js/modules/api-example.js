@@ -2,31 +2,43 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('apiModule', function(){
         return {
             feedbackItems: [],
-            feedBackCommand: this.$persist({}),
+            showModal: false,
+            feedBackCommand: this.$persist({userId: 'T123', screenName: 'j.doe', score: 5, comment: 'Hello World!', oneWord: 'Awesome'}),
             traces: [],
-            _prepare_data(data){
-                this.feedbackItems = data["data"]["Feedback"]["filter"]["resultset"];
-            },
-            _track(data){
-                data = data["data"]["onTrace"]
-                this.traces.push({
-                    name: data.command ? data.command : data.event,
-                    status: data.status,
-                    message: data.message
-                });
-                console.log(this.traces);
-                setTimeout(this.traces.unshift,5000);
-            },
             async init(){
                 let api = await API.initialize();
                 let data = await api.query("/prepared-statements/fetch-feedback.txt");
+                this._prepare_data(data);
+                await api.subscription("/prepared-statements/subscribe-notification.txt",{},this.refresh_data.bind(this));
+            },
+            async refresh_data(event){
+                let api = await API.initialize();
+                let data = await api.query("/prepared-statements/fetch-feedback.txt",{},true);
                 this._prepare_data(data);
             },
             async save_item(){
                 let api = await API.initialize();
                 let correlationId = await api.mutation("/prepared-statements/insert-feedback.txt",this.feedBackCommand);
-                console.log(correlationId);
+                this.showModal = false;
                 await api.subscription("/prepared-statements/subscribe-track-and-trace.txt",{correlationId},this._track.bind(this));
+            },
+            _prepare_data(data){
+                this.feedbackItems = data["data"]["Feedback"]["filter"]["resultset"];
+            },
+            _remove_first_trace(){
+                this.traces.shift();
+            },
+            _track(data){
+                data = data["data"]["onTrace"];
+                if (data.status != "success" && data.status != "error"){
+                    return;
+                }
+                this.traces.push({
+                    name: data.command ? data.command : data.event,
+                    status: data.status,
+                    message: data.message
+                });
+                setTimeout(this._remove_first_trace.bind(this),3000);
             }
         }
     });

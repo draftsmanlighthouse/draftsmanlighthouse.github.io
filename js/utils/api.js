@@ -1,10 +1,14 @@
 class API {
   static worker = null;
   static cache_enabled = true;
+  static callbacks = {};
 
   static async initialize(authenticated=false,cache_ttl = "60M") {
     if (!API.worker) {
-      API.worker = new Worker('/js/webworkers/apiWorker.js'); // Path to your worker script
+      API.worker = new Worker('/js/webworkers/apiWorker.js');
+      API.worker.onmessage = (event) => {
+        API.callbacks[event["data"]["subscriptionId"]](event);
+      }
     }
     let api = new API(api_url, api_ws, api_key, API.cache_enabled, cache_ttl,authenticated);
     if (authenticated){
@@ -88,16 +92,17 @@ class API {
     if ((this.authenticated || authenticated) && !this.checkAuthentication()) return;
     let subscriptionId = uuidv4();
     variables = JSON.parse(JSON.stringify(variables));
-    this._sendMessage({
-      action: 'subscribe',
-      queryFilePath,
-      variables,
-      websocket: this.websocket,
-      api_key: this.api_key,
-      authenticated: this.authenticated || authenticated,
-      subscriptionId: subscriptionId
-    });
-    API.worker.onmessage = (event) => {
+    API.worker.postMessage({
+                                 action: 'subscribe',
+                                 token: sessionStorage.token,
+                                 queryFilePath,
+                                 variables,
+                                 websocket: this.websocket,
+                                 api_key: this.api_key,
+                                 authenticated: this.authenticated || authenticated,
+                                 subscriptionId: subscriptionId
+                               });
+    API.callbacks[subscriptionId] = function(event){
         if (event["data"]["subscriptionId"] == subscriptionId && event["data"]["payload"]){
             callback(event["data"]["payload"]);
         }
@@ -126,15 +131,16 @@ class API {
    * Send a message to the worker and handle the response.
    */
   _sendMessage(message) {
+    message.subscriptionId = uuidv4();
     message.token = sessionStorage.token;
     return new Promise((resolve, reject) => {
-      API.worker.onmessage = (event) => {
+      API.callbacks[message.subscriptionId] = function(event){
         if (event.data && event.data.result) {
           resolve(event.data.result);
         } else if (event.data.error) {
           reject(new Error(event.data.error));
         }
-      };
+      }
       API.worker.postMessage(message);
     });
   }

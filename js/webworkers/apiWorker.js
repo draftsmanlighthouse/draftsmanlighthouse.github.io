@@ -1,3 +1,4 @@
+console.trace = function(){}
 const CACHE_DB_NAME = 'graphql-cache';
 const CACHE_STORE_NAME = 'graphql-queries';
 let cacheDB = null;
@@ -118,7 +119,7 @@ self.onmessage = async function (event) {
         if (!ignore_cache) {
           const cachedResponse = await getCachedResponse(cacheKey);
           if (cachedResponse) {
-            postMessage({ result: cachedResponse });
+            postMessage({ result: cachedResponse, subscriptionId });
             return;
           }
         }
@@ -138,7 +139,7 @@ self.onmessage = async function (event) {
           await cacheResponse(cacheKey, result, cache_ttl);
         }
 
-        postMessage({ result });
+        postMessage({ result, subscriptionId });
         break;
 
       case 'subscribe':
@@ -152,21 +153,21 @@ self.onmessage = async function (event) {
 
       case 'clearCache':
         await clearCache();
-        postMessage({ result: 'Cache cleared' });
+        postMessage({ result: 'Cache cleared', subscriptionId });
         break;
 
       case 'invalidateCache':
         const invalidateKey = JSON.stringify({ queryFilePath, variables });
         await invalidateCache(invalidateKey);
-        postMessage({ result: 'Cache entry invalidated' });
+        postMessage({ result: 'Cache entry invalidated', subscriptionId });
         break;
 
       default:
-        postMessage({ error: 'Unknown action' });
+        postMessage({ error: 'Unknown action', subscriptionId });
     }
   } catch (error) {
-    console.log(error);
-    postMessage({ error: error.message });
+    console.trace(error);
+    postMessage({ error: error.message, subscriptionId });
   }
 };
 
@@ -178,12 +179,11 @@ function subscribeToWebSocket(queryString, variables, websocket, api_key, subscr
       "x-api-key": api_key
     };
 
-    console.log(header);
     let ws = `${websocket}?header=${btoa(JSON.stringify(header))}&payload=e30=`;
     activeSocket = new WebSocket(ws, "graphql-ws");
 
     activeSocket.onopen = function () {
-      console.log("[WebSocket] Connection established");
+      console.trace("[WebSocket] Connection established");
       sendSubscribeMessage(subscriptionId,queryString, variables, websocket, api_key);
     };
 
@@ -204,16 +204,16 @@ function subscribeToWebSocket(queryString, variables, websocket, api_key, subscr
 
     activeSocket.onclose = function (event) {
       if (event.wasClean) {
-        console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+        console.trace(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
       } else {
         // On unexpected close, attempt to reconnect
-        console.log(`[close] Unexpected connection close, attempting to reconnect...`);
+        console.trace(`[close] Unexpected connection close, attempting to reconnect...`);
         reconnectSubscriptions(websocket, api_key);
       }
     };
 
     activeSocket.onerror = function (error) {
-      console.log(`[error] WebSocket error: ${error.message}`);
+      console.trace(`[error] WebSocket error: ${error.message}`);
     };
   } else {
     sendSubscribeMessage(subscriptionId,queryString, variables, websocket, api_key)
@@ -237,7 +237,7 @@ function sendSubscribeMessage(subscriptionId,queryString, variables, websocket, 
   };
 
   activeSocket.send(JSON.stringify(message));
-  console.log(`[WebSocket] Subscribed with ID: ${subscriptionId}`);
+  console.trace(`[WebSocket] Subscribed with ID: ${subscriptionId}`);
 
   // Bewaar de subscriptie-ID en callback
   subscriptionMap[subscriptionId] = { queryString, variables, websocket, api_key };
@@ -252,7 +252,7 @@ function unsubscribeFromWebSocket(subscriptionId) {
       "type": "stop"
     };
     activeSocket.send(JSON.stringify(message));
-    console.log(`[WebSocket] Unsubscribed with ID: ${subscriptionId}`);
+    console.trace(`[WebSocket] Unsubscribed with ID: ${subscriptionId}`);
 
     // Verwijder de subscriptie uit de map
     delete subscriptionMap[subscriptionId];
@@ -262,7 +262,7 @@ function unsubscribeFromWebSocket(subscriptionId) {
       // Geen actieve subscripties meer, sluit de WebSocket-verbinding
       activeSocket.close();
       activeSocket = null;
-      console.log("[WebSocket] No more active subscriptions, socket closed.");
+      console.trace("[WebSocket] No more active subscriptions, socket closed.");
     }
   }
 }
@@ -270,7 +270,7 @@ function unsubscribeFromWebSocket(subscriptionId) {
 // Herconnectie voor alle actieve subscripties bij onverwachte sluiting
 function reconnectSubscriptions(websocket, api_key) {
   setTimeout(function () {
-    console.log("[WebSocket] Attempting to reconnect...");
+    console.trace("[WebSocket] Attempting to reconnect...");
 
     // Heropen de WebSocket-verbinding en herstart alle actieve subscripties
     for (const subscriptionId in subscriptionMap) {
