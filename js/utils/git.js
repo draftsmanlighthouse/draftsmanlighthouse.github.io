@@ -1,10 +1,15 @@
 class GitRepository {
   static worker = null;
+  static callbacks = {};
 
   // Open de repository en initialiseer de worker
   static async open(repoUrl) {
     if (!GitRepository.worker) {
       GitRepository.worker = new Worker('/js/webworkers/gitWorker.js');
+      GitRepository.worker.onmessage = (event) => {
+        GitRepository.callbacks[event.data.request_id](event);
+        delete GitRepository.callbacks[event.data.request_id];
+      };
     }
 
     let repo = new GitRepository(repoUrl);
@@ -75,8 +80,9 @@ class GitRepository {
 
   // Algemene methode om berichten naar de worker te sturen en resultaten te verwerken
   _sendMessage(message) {
+    message.request_id = uuidv4();
     return new Promise((resolve, reject) => {
-      GitRepository.worker.onmessage = (event) => {
+      GitRepository.callbacks[message.request_id] = function(event){
         if (event.data && event.data.result) {
           resolve(event.data.result);
         } else if (event.data.error) {

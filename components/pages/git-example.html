@@ -5,6 +5,22 @@
 
         <h1 class="text-3xl font-bold text-gray-900 mb-6">GIT:</h1>
 
+        <table class="table">
+            <template x-for="change in changes" :key="change.filePath">
+                <tr>
+                    <th scope="row" x-text="change.status"></th>
+                    <td x-text="change.filePath"></td>
+                    <td>
+                        <button :file="change.filePath"
+                                @click="revert_file"
+                                class="btn btn-sm btn-outline btn-accent">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </button>
+                    </td>
+                </tr>
+            </template>
+        </table>
+
         <div class="join join-vertical w-full">
             <template x-for="file in documentation" :key="file">
                 <div class="collapse collapse-arrow join-item border-base-300 border">
@@ -13,6 +29,7 @@
                     <div class="collapse-content">
                         <textarea class="textarea textarea-primary w-[100%]"
                                   :file="file" x-init="load_content" rows="8"
+                                  @focusout.debounce="save_content"
                                   placeholder="File content"></textarea>
                     </div>
                 </div>
