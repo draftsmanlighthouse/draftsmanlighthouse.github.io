@@ -34,6 +34,11 @@ document.addEventListener('alpine:init', () => {
                 this.newFile.path = "example.md";
                 this.newFile.content = "# Hello World!\n\nContent here..."
             },
+            async delete_file(){
+                let file = this.$el.getAttribute("file");
+                console.log(await this.repo.delete(file));
+                await this._reload_gui();
+            },
             async revert_file(){
                 let file = this.$el.getAttribute("file");
                 console.log(await this.repo.revert(file));

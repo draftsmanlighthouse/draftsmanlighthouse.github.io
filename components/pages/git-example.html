@@ -27,10 +27,25 @@
                     <input type="radio" name="my-accordion-4" :checked="selected == file" x-model="selected" :value="file"/>
                     <div class="collapse-title text-xl font-medium" x-text="file"></div>
                     <div class="collapse-content">
-                        <textarea class="textarea textarea-primary w-[100%]"
-                                  :file="file" x-init="load_content" rows="8"
-                                  @focusout.debounce="save_content"
-                                  placeholder="File content"></textarea>
+                        <div class="grid grid-cols-12 gap-3  mt-5">
+                            <div class="col-span-11">
+                                <textarea class="textarea textarea-primary w-[100%]"
+                                          :file="file" x-init="load_content" rows="8"
+                                          @focusout.debounce="save_content"
+                                          placeholder="File content"></textarea>
+                            </div>
+                            <div class="col-span-1">
+                                <div class="flex items-center space-x-2">
+                                    <label class="btn btn-outline btn-error btn-xs cursor-pointer">
+                                        <input type="checkbox"
+                                               :file="file"
+                                               @change="delete_file"
+                                               class="hidden">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </template>
