@@ -5,20 +5,23 @@ importScripts('https://unpkg.com/isomorphic-git/http/web/index.umd.js');
 const isogit = self.git;
 const root_http = self.GitHttp || self.http;
 const http = deepCloneWithMethods(root_http);
+var token = "";
 
 // Pas custom headers toe
 http["request"] = async function(options) {
+  options.headers["x-proxy-token"] = token;
+  console.log(options);
   return root_http.request(options);
 };
 
 var fs = null;
 var pfs = null;
 let dir = '/';
-let proxy = 'https://cors.isomorphic-git.org';
+let proxy = 'https://git.draftsman.io';
 
 self.onmessage = async (event) => {
-  const { action, repoUrl, filePath, content, message, request_id, pullInterval = 60000 } = event.data;
-
+  const { action, repoUrl, filePath, content, message, request_id, token, pullInterval = 60000, diff = false } = event.data;
+  this.token = token;
   try {
     switch (action) {
       case 'initialize':
@@ -47,7 +50,7 @@ self.onmessage = async (event) => {
         break;
 
       case 'status':
-        const statusList = await status();
+        const statusList = await status(diff);
         postMessage({ result: statusList, request_id });
         break;
 
@@ -59,6 +62,11 @@ self.onmessage = async (event) => {
       case 'commit':
         await commitChanges(message);
         postMessage({ result: `Changes committed: ${message}`, request_id });
+        break;
+
+      case 'checkUnpushedChanges':
+        const unpushed = await hasUnpushedChanges(repoUrl);
+        postMessage({ result: unpushed, request_id });
         break;
 
       case 'push':
@@ -145,8 +153,8 @@ async function mergeRemoteChanges() {
     theirs: 'origin/main',
     fastForwardOnly: false
   });
-
-  if (!mergeResult.fastForward && !mergeResult.clean) {
+  console.log(mergeResult);
+  if (!mergeResult.alreadyMerged && !mergeResult.fastForward && !mergeResult.clean) {
     console.log('Merge conflicts detected. Local changes preserved.');
   } else {
     console.log('Merge successful.');
@@ -184,48 +192,123 @@ async function deleteFile(filePath) {
 
 // https://isomorphic-git.org/docs/en/statusMatrix
 
-async function status() {
+var remoteStatuses = {};
+async function status(diff=false) {
   const statuses = await isogit.statusMatrix({ fs, dir });
+  this.remoteStatuses  = diff ? await getRemoteStatuses() : this.remoteStatuses;
 
   return statuses.map(([filepath, headStatus, workdirStatus, stageStatus]) => {
     let status = 'unmodified';
+    let hasConflict = false;
 
     // Nieuw bestand, niet gestaged (untracked)
     if (headStatus === 0 && workdirStatus === 2 && stageStatus === 0) {
       status = 'untracked';
     }
-
     // Nieuw bestand, volledig gestaged (added)
     else if (headStatus === 0 && stageStatus === 2) {
       status = 'added';
     }
-
     // Bestand bestaat in HEAD, gewijzigd in werkdirectory en niet gestaged (modified, unstaged)
     else if (headStatus === 1 && workdirStatus === 2 && stageStatus === 1) {
       status = 'modified (unstaged)';
     }
-
     // Bestand bestaat in HEAD, volledig gestaged en werkdirectory komt overeen met staging (modified, staged)
     else if (headStatus === 1 && workdirStatus === 2 && stageStatus === 2) {
       status = 'modified (staged)';
     }
-
     // Bestand is verwijderd (deleted), maar nog niet gestaged
     else if (headStatus === 1 && workdirStatus === 0 && stageStatus === 1) {
       status = 'deleted (unstaged)';
     }
-
     // Bestand is verwijderd (deleted) en gestaged voor commit
     else if (headStatus === 1 && workdirStatus === 0 && stageStatus === 0) {
       status = 'deleted (staged)';
     }
 
+    // Check voor conflicts: als het bestand zowel lokaal als remote is gewijzigd
+    const remoteStatus = this.remoteStatuses[filepath];
+    if (remoteStatus && (workdirStatus === 2 || stageStatus === 2)) {
+      hasConflict = true;
+      status += ' (conflict)';
+    }
+
     return {
       filePath: filepath,
       status: status,
+      hasConflict: hasConflict,  // Voeg een veld toe om aan te geven of er een conflict is
     };
   });
 }
+
+// Helperfunctie om remote status op te halen
+async function getRemoteStatuses() {
+  // Fetch remote changes
+  await isogit.fetch({
+    fs,
+    http,
+    dir,
+    corsProxy: proxy,
+    ref: 'main',
+    singleBranch: true
+  });
+
+  const statuses = await isogit.statusMatrix({
+    fs,
+    dir,
+    ref: 'origin/main'  // Vergelijk met remote branch
+  });
+
+  const remoteStatuses = {};
+  statuses.forEach(([filepath, headStatus, workdirStatus, stageStatus]) => {
+    remoteStatuses[filepath] = { headStatus, workdirStatus, stageStatus };
+  });
+
+  return remoteStatuses;
+}
+
+//async function status() {
+//  const statuses = await isogit.statusMatrix({ fs, dir });
+//
+//  return statuses.map(([filepath, headStatus, workdirStatus, stageStatus]) => {
+//    let status = 'unmodified';
+//
+//    // Nieuw bestand, niet gestaged (untracked)
+//    if (headStatus === 0 && workdirStatus === 2 && stageStatus === 0) {
+//      status = 'untracked';
+//    }
+//
+//    // Nieuw bestand, volledig gestaged (added)
+//    else if (headStatus === 0 && stageStatus === 2) {
+//      status = 'added';
+//    }
+//
+//    // Bestand bestaat in HEAD, gewijzigd in werkdirectory en niet gestaged (modified, unstaged)
+//    else if (headStatus === 1 && workdirStatus === 2 && stageStatus === 1) {
+//      status = 'modified (unstaged)';
+//    }
+//
+//    // Bestand bestaat in HEAD, volledig gestaged en werkdirectory komt overeen met staging (modified, staged)
+//    else if (headStatus === 1 && workdirStatus === 2 && stageStatus === 2) {
+//      status = 'modified (staged)';
+//    }
+//
+//    // Bestand is verwijderd (deleted), maar nog niet gestaged
+//    else if (headStatus === 1 && workdirStatus === 0 && stageStatus === 1) {
+//      status = 'deleted (unstaged)';
+//    }
+//
+//    // Bestand is verwijderd (deleted) en gestaged voor commit
+//    else if (headStatus === 1 && workdirStatus === 0 && stageStatus === 0) {
+//      status = 'deleted (staged)';
+//    }
+//
+//    return {
+//      filePath: filepath,
+//      status: status,
+//    };
+//  });
+//}
 
 async function revertFile(filePath) {
 
@@ -253,6 +336,32 @@ async function commitChanges(message) {
     author: { name: 'User', email: 'user@example.com' },
     message
   });
+}
+
+async function hasUnpushedChanges(repoUrl) {
+  // Fetch remote changes first
+  await isogit.fetch({
+    fs,
+    http,
+    dir,
+    corsProxy: proxy,
+    url: repoUrl,
+    ref: 'main',
+    singleBranch: true
+  });
+
+  // Get local commits log
+  const localCommits = await isogit.log({ fs, dir, ref: 'main' });
+
+  // Get remote commits log
+  const remoteCommits = await isogit.log({ fs, dir, ref: 'origin/main' });
+
+  // Compare local and remote commits to detect unpushed changes
+  const unpushedCommits = localCommits.filter(
+    localCommit => !remoteCommits.some(remoteCommit => remoteCommit.oid === localCommit.oid)
+  );
+
+  return unpushedCommits.length;
 }
 
 async function pushChanges() {

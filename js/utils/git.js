@@ -64,8 +64,8 @@ class GitRepository {
   }
 
   // Geef de status van gestagede wijzigingen
-  async status() {
-    return this._sendMessage({ action: 'status' });
+  async status(diff=false) {
+    return this._sendMessage({ action: 'status', diff });
   }
 
   // Revert de wijzigingen van een bestand
@@ -84,6 +84,10 @@ class GitRepository {
     });
   }
 
+  async hasUnpushedChanges() {
+    return this._sendMessage({ action: 'checkUnpushedChanges' });
+  }
+
   // Push de wijzigingen naar de remote repository
   async push() {
     return this._sendMessage({ action: 'push' });
@@ -92,6 +96,7 @@ class GitRepository {
   // Algemene methode om berichten naar de worker te sturen en resultaten te verwerken
   _sendMessage(message) {
     message.request_id = Draftsman.uuidv4();
+    message.token = sessionStorage.proxyToken;
     return new Promise((resolve, reject) => {
       GitRepository.callbacks[message.request_id] = function(event){
         if (event.data && event.data.result) {
