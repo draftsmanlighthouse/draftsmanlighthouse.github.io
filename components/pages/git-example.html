@@ -36,6 +36,27 @@
             </template>
         </div>
 
-        </pre>
+        <button class="btn mt-5" @click="showModal = true">Add new File</button>
+        <dialog id="my_modal_2" class="modal" x-show="showModal" x-bind:open="showModal">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold">New file:</h3>
+                <p class="py-4">
+
+                    <label class="input input-bordered flex items-center gap-2 mt-2">
+                        File path
+                        <input type="text" class="grow" x-model="newFile.path" />
+                    </label>
+
+                    <textarea class="textarea textarea-bordered w-[100%] mt-2"
+                              rows="8"
+                              x-model="newFile.content" placeholder="Content"></textarea>
+
+                    <button @click="save_new_item" class="btn btn-block mt-2">Save</button>
+                </p>
+            </div>
+            <form method="dialog" class="modal-backdrop" @click="showModal = false">
+                <button type="button">close</button>
+            </form>
+        </dialog>
     </div>
 </template>
