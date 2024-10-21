@@ -1,5 +1,6 @@
 class GitRepository {
   static worker = null;
+  static url = null;
   static callbacks = {};
 
   // Open de repository en initialiseer de worker
@@ -11,16 +12,26 @@ class GitRepository {
         delete GitRepository.callbacks[event.data.request_id];
       };
     }
-
     let repo = new GitRepository(repoUrl);
-    await repo._sendMessage({
-      action: 'initialize',
-      repoUrl,
-      pullInterval: 60000, // Standaard pull-interval
-    });
+    if (!GitRepository.url){
+        await repo._sendMessage({
+          action: 'initialize',
+          repoUrl,
+          pullInterval: 60000, // Standaard pull-interval
+        });
+        GitRepository.url = repoUrl;
+    } else if (GitRepository.url != repoUrl){
+        throw new Error(`The GIT worker is already initialized on repo [${GitRepository.url}] if you want to connect to [${repoUrl}] you have to execute the reset function first!`);
+    }
     return repo;
   }
 
+  static reset(){
+    GitRepository.worker.terminate();
+    GitRepository.worker = null;
+    GitRepository.url = null;
+    GitRepository.callbacks = {};
+  }
   constructor(repoUrl) {
     this.repoUrl = repoUrl;
   }
@@ -80,7 +91,7 @@ class GitRepository {
 
   // Algemene methode om berichten naar de worker te sturen en resultaten te verwerken
   _sendMessage(message) {
-    message.request_id = uuidv4();
+    message.request_id = Draftsman.uuidv4();
     return new Promise((resolve, reject) => {
       GitRepository.callbacks[message.request_id] = function(event){
         if (event.data && event.data.result) {

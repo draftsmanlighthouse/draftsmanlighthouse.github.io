@@ -4,6 +4,8 @@ document.addEventListener('alpine:init', () => {
             documentation: [],
             changes: [],
             showModal: false,
+            commitModal: false,
+            commitMessage: this.$persist(""),
             selected: this.$persist("README.md"),
             newFile: this.$persist({path: "example.md", content: "#Hello World!\n\nContent here..."}),
             repo: null,
@@ -11,7 +13,7 @@ document.addEventListener('alpine:init', () => {
                 let repo = await GitRepository.open("https://github.com/bohanssen/assistdummyrepo-model");
                 this.repo = repo;
                 await this._reload_gui();
-                setInterval(this._list_changes.bind(this),1000);
+                Draftsman.registerTask(this._list_changes.bind(this),0.2);
             },
             async load_content(){
                 let file = this.$el.getAttribute("file");
@@ -36,17 +38,21 @@ document.addEventListener('alpine:init', () => {
             },
             async delete_file(){
                 let file = this.$el.getAttribute("file");
-                console.log(await this.repo.delete(file));
+                await this.repo.delete(file);
                 await this._reload_gui();
             },
             async revert_file(){
                 let file = this.$el.getAttribute("file");
-                console.log(await this.repo.revert(file));
+                await this.repo.revert(file);
                 await this._reload_gui();
+            },
+            async commit_changes(){
+                this.commitModal = false;
+                this.repo.commit(this.commitMessage);
             },
             async _list_changes(){
                 let changes = await this.repo.status();
-                this.changes = changes.filter(x => x.status != "unaltered");
+                this.changes = changes.filter(x => x.status != "unmodified");
             },
             async _reload_gui(){
                 this.documentation = [];

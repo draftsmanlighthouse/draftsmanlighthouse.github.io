@@ -182,19 +182,52 @@ async function deleteFile(filePath) {
   await isogit.remove({ fs, dir, filepath: filePath });
 }
 
+// https://isomorphic-git.org/docs/en/statusMatrix
+
 async function status() {
   const statuses = await isogit.statusMatrix({ fs, dir });
-  return statuses.map(([filepath, , workdirStatus, stageStatus]) => ({
-    filePath: filepath,
-    status:
-      stageStatus === 1 && workdirStatus === 0 ? 'added' :
-      stageStatus === 2 && workdirStatus === 2 ? 'changed' :
-      stageStatus === 0 && workdirStatus === 0 ? 'removed' : 'unaltered'
-  }));
+
+  return statuses.map(([filepath, headStatus, workdirStatus, stageStatus]) => {
+    let status = 'unmodified';
+
+    // Nieuw bestand, niet gestaged (untracked)
+    if (headStatus === 0 && workdirStatus === 2 && stageStatus === 0) {
+      status = 'untracked';
+    }
+
+    // Nieuw bestand, volledig gestaged (added)
+    else if (headStatus === 0 && stageStatus === 2) {
+      status = 'added';
+    }
+
+    // Bestand bestaat in HEAD, gewijzigd in werkdirectory en niet gestaged (modified, unstaged)
+    else if (headStatus === 1 && workdirStatus === 2 && stageStatus === 1) {
+      status = 'modified (unstaged)';
+    }
+
+    // Bestand bestaat in HEAD, volledig gestaged en werkdirectory komt overeen met staging (modified, staged)
+    else if (headStatus === 1 && workdirStatus === 2 && stageStatus === 2) {
+      status = 'modified (staged)';
+    }
+
+    // Bestand is verwijderd (deleted), maar nog niet gestaged
+    else if (headStatus === 1 && workdirStatus === 0 && stageStatus === 1) {
+      status = 'deleted (unstaged)';
+    }
+
+    // Bestand is verwijderd (deleted) en gestaged voor commit
+    else if (headStatus === 1 && workdirStatus === 0 && stageStatus === 0) {
+      status = 'deleted (staged)';
+    }
+
+    return {
+      filePath: filepath,
+      status: status,
+    };
+  });
 }
 
 async function revertFile(filePath) {
-  console.log("Execute revert: ", filePath);
 
   // Reset het bestand alleen in de staging area
   await isogit.resetIndex({ fs, dir, filepath: filePath });
@@ -211,7 +244,6 @@ async function revertFile(filePath) {
     force: true // Forceer geen overschrijven van lokale wijzigingen
   });
 
-  console.log(`File ${filePath} reverted from staging area.`);
 }
 
 async function commitChanges(message) {

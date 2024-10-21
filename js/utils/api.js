@@ -90,7 +90,7 @@ class API {
    */
   async subscription(queryFilePath, variables = {},callback=console.trace,authenticated = false) {
     if ((this.authenticated || authenticated) && !this.checkAuthentication()) return;
-    let subscriptionId = uuidv4();
+    let subscriptionId = Draftsman.uuidv4();
     variables = JSON.parse(JSON.stringify(variables));
     API.worker.postMessage({
                                  action: 'subscribe',
@@ -140,7 +140,7 @@ class API {
    * Send a message to the worker and handle the response.
    */
   _sendMessage(message) {
-    message.subscriptionId = uuidv4();
+    message.subscriptionId = Draftsman.uuidv4();
     message.token = sessionStorage.token;
     return new Promise((resolve, reject) => {
       API.callbacks[message.subscriptionId] = function(event){
