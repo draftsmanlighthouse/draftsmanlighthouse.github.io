@@ -2,6 +2,8 @@ class GitRepository {
   static worker = null;
   static url = null;
   static callbacks = {};
+  static last_pull = 0;
+  static commit_diff = {};
 
   // Open de repository en initialiseer de worker
   static async open(repoUrl) {
@@ -14,12 +16,11 @@ class GitRepository {
     }
     let repo = new GitRepository(repoUrl);
     if (!GitRepository.url){
+        GitRepository.url = repoUrl;
         await repo._sendMessage({
           action: 'initialize',
-          repoUrl,
           pullInterval: 60000, // Standaard pull-interval
         });
-        GitRepository.url = repoUrl;
     } else if (GitRepository.url != repoUrl){
         throw new Error(`The GIT worker is already initialized on repo [${GitRepository.url}] if you want to connect to [${repoUrl}] you have to execute the reset function first!`);
     }
@@ -76,6 +77,13 @@ class GitRepository {
     });
   }
 
+  async fetchRemoteFile(filePath){
+    return this._sendMessage({
+      action: 'fetchRemoteFile',
+      filePath,
+    });
+  }
+
   // Commit gestagede wijzigingen
   async commit(message) {
     return this._sendMessage({
@@ -97,10 +105,13 @@ class GitRepository {
   _sendMessage(message) {
     message.request_id = Draftsman.uuidv4();
     message.token = sessionStorage.proxyToken;
+    message.repoUrl = GitRepository.url;
     return new Promise((resolve, reject) => {
       GitRepository.callbacks[message.request_id] = function(event){
         if (event.data && event.data.result) {
           resolve(event.data.result);
+          GitRepository.last_pull = event.data.last_pull;
+          GitRepository.commit_diff = event.data.commit_diff;
         } else if (event.data.error) {
           reject(new Error(event.data.error));
         }

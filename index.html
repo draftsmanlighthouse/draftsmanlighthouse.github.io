@@ -2,36 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lighthouse</title>
+    <title>GUI Assist 2</title>
 
     <!-- AlpineJS & Vimesh -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://unpkg.com/@vimesh/ui"></script>
-    <script src="https://unpkg.com/alpinejs" defer></script>
+    <script defer src="/js/tp/alpine-persist.js"></script>
+    <script src="/js/tp/vimeshui.js"></script>
+    <script src="/js/tp/alpine.js" defer></script>
 
     <!-- cofig -->
     <script src="/js/config/setup.js"></script>
     <script src="/js/config/configuration.js"></script>
 
-    <!-- utils -->
-    <script src="/js/utils/helper.js"></script>
-    <script src="/js/utils/api.js"></script>
-    <script src="/js/utils/database.js"></script>
-    <script src="/js/utils/searchindex.js"></script>
-    <script src="/js/utils/git.js"></script>
-
     <!-- DaisyUI -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/tp/tailwind.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- customs -->
-    <script src="/js/modules/navigation.js"></script>
-    <script src="/js/modules/documentdb-example.js"></script>
-    <script src="/js/modules/fulltext-search-storage-example.js"></script>
-    <script src="/js/modules/api-example.js"></script>
-    <script src="/js/modules/git-example.js"></script>
-
 </head>
 <body x-data="navigation">
     <div x-import="menu-bar">
@@ -61,5 +46,22 @@
     </div>
 
 
+    <!-- tp -->
+    <script src="/js/tp/luxon.js"></script>
+    <script src="/js/tp/diff.js"></script>
+
+    <!-- utils -->
+    <script src="/js/utils/helper.js"></script>
+    <script src="/js/utils/api.js"></script>
+    <script src="/js/utils/database.js"></script>
+    <script src="/js/utils/searchindex.js"></script>
+    <script src="/js/utils/git.js"></script>
+
+    <!-- customs -->
+    <script src="/js/modules/navigation.js"></script>
+    <script src="/js/modules/documentdb-example.js"></script>
+    <script src="/js/modules/fulltext-search-storage-example.js"></script>
+    <script src="/js/modules/api-example.js"></script>
+    <script src="/js/modules/git-example.js"></script>
 </body>
 </html>

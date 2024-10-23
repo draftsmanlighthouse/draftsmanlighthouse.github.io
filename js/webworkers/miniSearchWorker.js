@@ -1,4 +1,4 @@
-importScripts('https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js');
+importScripts('/js/tp/minisearch.js');
 
 let indexes = {}; // Beheer meerdere indexen
 let db = null;
