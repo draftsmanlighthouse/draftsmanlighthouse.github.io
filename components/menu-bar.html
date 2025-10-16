@@ -1,18 +1,22 @@
 <template x-component="menu-bar">
     <div class="navbar bg-neutral text-neutral-content">
         <div class="navbar-start">
-
+            Workbench
         </div>
         <div class="navbar-center">
-            Mockup
+            <div class="tooltip tooltip-bottom" data-tip="Create pitch">
+                <button @click="create_pitch" class="btn btn-circle btn-outline btn-accent">
+                    <i class="fa-regular fa-lightbulb"></i>
+                </button>
+            </div>
         </div>
         <div class="navbar-end">
-            <div class="tooltip tooltip-bottom" data-tip="Clear API Cache">
-                <button @click="clear_cache" class="btn btn-circle btn-outline btn-secondary">
+            <div class="tooltip tooltip-bottom" data-tip="Reload test data">
+                <button @click="load_data" class="btn btn-circle btn-outline btn-secondary">
                     <i class="fa-solid fa-arrows-rotate"></i>
                 </button>
             </div>
-            <div class="tooltip tooltip-bottom" data-tip="Clear Local Storage">
+            <div class="tooltip tooltip-bottom" data-tip="Clear data">
                 <button @click="clear_storage" class="btn btn-circle btn-outline btn-error ml-2">
                     <i class="fa-regular fa-trash-can"></i>
                 </button>

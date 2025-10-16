@@ -1,7 +1,0 @@
-subscription MySubscription {
-  onNotification {
-    identifier
-    message
-    type
-  }
-}

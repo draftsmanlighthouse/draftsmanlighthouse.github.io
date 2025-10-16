@@ -1,0 +1,12 @@
+<template x-component="markdown">
+    <div x-data="markdown">
+      <div x-show="isEditing" style="height: calc(60vh)">
+          <div @click.outside="if(isEditing){toggleMode()}" x-ref="editor" class="h-full"></div>
+      </div>
+      <div
+        @click="toggleMode"
+        x-show="!isEditing"
+        class="markdown-body prose max-w-none"
+        x-html="renderedMarkdown"></div>
+    </div>
+</template>

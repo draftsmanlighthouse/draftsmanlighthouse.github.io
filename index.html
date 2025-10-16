@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GUI Assist 2</title>
+    <title>Workbench</title>
 
     <!-- AlpineJS & Vimesh -->
     <script defer src="/js/tp/alpine-persist.js"></script>
@@ -11,57 +11,53 @@
 
     <!-- cofig -->
     <script src="/js/config/setup.js"></script>
-    <script src="/js/config/configuration.js"></script>
 
     <!-- DaisyUI -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="/js/tp/tailwind.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- markdown -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+
 </head>
-<body x-data="navigation">
+<body x-data="main">
     <div x-import="menu-bar">
         <ui-menu-bar></ui-menu-bar>
     </div>
 
     <div class="grid grid-cols-12 gap-3  mt-5">
         <div class="col-span-2">
-            <div x-import="navigation">
-                <ui-navigation></ui-navigation>
-            </div>
+            <ul class="menu bg-base-200 rounded-box w-56 ml-2">
+              <li>
+                <h2 class="menu-title">Pitch Drafts</h2>
+                <ul>
+                  <template x-for="document in documents">
+                      <template x-if="document.type == 'pitch' && document.status == 'draft'">
+                          <li><a @click="open_document(document.id)">
+                              <i class="fa-regular fa-lightbulb"></i>&nbsp;
+                              <span x-text="document.title"></span>
+                          </a></li>
+                      </template>
+                  </template>
+                </ul>
+              </li>
+            </ul>
         </div>
-        <div class="col-span-9">
-            <div x-import="pages/documentdb-example">
-                <ui-db-example></ui-db-example>
+        <div class="col-span-9" >
+            <div x-import="pitch">
+                <ui-pitch></ui-pitch>
             </div>
-            <div x-import="pages/fulltext-search-example">
-                <ui-fts-example></ui-fts-example>
-            </div>
-            <div x-import="pages/api-example">
-                <ui-api-example></ui-api-example>
-            </div>
-            <div x-import="pages/git-example">
-                <ui-git-example></ui-git-example>
-            </div>
+
+            <pre x-text="JSON.stringify(current,null,2)"></pre>
         </div>
     </div>
 
-
-    <!-- tp -->
-    <script src="/js/tp/luxon.js"></script>
-    <script src="/js/tp/diff.js"></script>
-
-    <!-- utils -->
-    <script src="/js/utils/helper.js"></script>
-    <script src="/js/utils/api.js"></script>
-    <script src="/js/utils/database.js"></script>
-    <script src="/js/utils/searchindex.js"></script>
-    <script src="/js/utils/git.js"></script>
-
-    <!-- customs -->
-    <script src="/js/modules/navigation.js"></script>
-    <script src="/js/modules/documentdb-example.js"></script>
-    <script src="/js/modules/fulltext-search-storage-example.js"></script>
-    <script src="/js/modules/api-example.js"></script>
-    <script src="/js/modules/git-example.js"></script>
+    <!-- Custom modules -->
+    <script src="/js/modules/DocumentEngine.js"></script>
+    <script src="/js/modules/MarkdownEditor.js"></script>
 </body>
 </html>

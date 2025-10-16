@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart & Table Viewer/Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .viewer-container, .editor-container {
+            border: 1px solid #ccc;
+            min-height: 400px;
+            padding: 20px;
+            background: white;
+            border-radius: 4px;
+        }
+        .editor-container {
+            display: none;
+        }
+        .editor-container.active {
+            display: block;
+        }
+        .viewer-container.hidden {
+            display: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.secondary {
+            background-color: #008CBA;
+        }
+        button.secondary:hover {
+            background-color: #007399;
+        }
+        select {
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .chart-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .error {
+            color: #d32f2f;
+            padding: 10px;
+            background: #ffebee;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        .tabs {
+            display: flex;
+            gap: 5px;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab.active {
+            background: white;
+            border-bottom: 2px solid white;
+            margin-bottom: -2px;
+        }
+        .help {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .help code {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<h1>Chart & Table Viewer/Editor</h1>
+<div class="container">
+    <div class="controls" id="view-controls">
+        <button onclick="app.startEditing()">Edit Data</button>
+        <select id="chart-type" onchange="app.changeChartType(this.value)">
+            <option value="bar">Bar Chart</option>
+            <option value="line">Line Chart</option>
+            <option value="pie">Pie Chart</option>
+            <option value="doughnut">Doughnut Chart</option>
+            <option value="radar">Radar Chart</option>
+        </select>
+        <select id="view-mode" onchange="app.changeViewMode(this.value)">
+            <option value="chart">Chart View</option>
+            <option value="table">Table View</option>
+            <option value="both">Both</option>
+        </select>
+    </div>
+
+    <div class="viewer-container" id="viewer">
+        <div id="chart-view">
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <div id="table-view" style="display:none;">
+            <div id="table-display"></div>
+        </div>
+    </div>
+
+    <div class="editor-container" id="editor">
+        <div class="tabs">
+            <div class="tab active" onclick="app.switchTab('json')">JSON Editor</div>
+            <div class="tab" onclick="app.switchTab('csv')">CSV Editor</div>
+        </div>
+
+        <div id="json-editor">
+            <h3>Edit Data (JSON Format)</h3>
+            <textarea id="json-data" placeholder="Enter your data in JSON format..."></textarea>
+            <div class="help">
+                <strong>JSON Format:</strong> <code>{ "labels": [...], "datasets": [{ "label": "...", "data": [...] }] }</code>
+            </div>
+        </div>
+
+        <div id="csv-editor" style="display:none;">
+            <h3>Edit Data (CSV Format)</h3>
+            <textarea id="csv-data" placeholder="Enter your data in CSV format..."></textarea>
+            <div class="help">
+                <strong>CSV Format:</strong> First row = labels, subsequent rows = datasets. First column = dataset name.
+            </div>
+        </div>
+
+        <div class="button-group" style="margin-top: 15px;">
+            <button onclick="app.saveAndExit()">Save & Exit</button>
+            <button class="secondary" onclick="app.cancelEdit()">Cancel</button>
+        </div>
+        <div id="error-message"></div>
+    </div>
+</div>
+
+<script>
+const app = {
+    chart: null,
+    currentData: null,
+    currentChartType: 'bar',
+    currentViewMode: 'chart',
+    currentEditorMode: 'json',
+
+    init() {
+        const saved = this.loadFromStorage();
+        this.currentData = saved || {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+            datasets: [{
+                label: 'Sales 2024',
+                data: [65, 59, 80, 81, 56, 55],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        this.displayChart();
+        this.displayTable();
+    },
+
+    loadFromStorage() {
+        try {
+            const data = JSON.parse(atob(location.hash.substring(1)));
+            if (data.chartType) this.currentChartType = data.chartType;
+            return data.chartData;
+        } catch (e) {
+            return null;
+        }
+    },
+
+    saveToStorage() {
+        const data = {
+            chartData: this.currentData,
+            chartType: this.currentChartType
+        };
+        location.hash = btoa(JSON.stringify(data));
+    },
+
+    displayChart() {
+        const ctx = document.getElementById('myChart');
+
+        if (this.chart) {
+            this.chart.destroy();
+        }
+
+        const colors = [
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ];
+
+        const borderColors = colors.map(c => c.replace('0.2', '1'));
+
+        const datasets = this.currentData.datasets.map((ds, i) => ({
+            ...ds,
+            backgroundColor: ds.backgroundColor || (this.currentChartType === 'pie' || this.currentChartType === 'doughnut'
+                ? colors
+                : colors[i % colors.length]),
+            borderColor: ds.borderColor || (this.currentChartType === 'pie' || this.currentChartType === 'doughnut'
+                ? borderColors
+                : borderColors[i % borderColors.length]),
+            borderWidth: ds.borderWidth || 1
+        }));
+
+        this.chart = new Chart(ctx, {
+            type: this.currentChartType,
+            data: {
+                labels: this.currentData.labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: this.currentChartType === 'pie' || this.currentChartType === 'doughnut' || this.currentChartType === 'radar' ? {} : {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    },
+
+    displayTable() {
+        const container = document.getElementById('table-display');
+        let html = '<table><thead><tr><th>Label</th>';
+
+        this.currentData.datasets.forEach(ds => {
+            html += `<th>${ds.label}</th>`;
+        });
+        html += '</tr></thead><tbody>';
+
+        this.currentData.labels.forEach((label, i) => {
+            html += `<tr><td><strong>${label}</strong></td>`;
+            this.currentData.datasets.forEach(ds => {
+                html += `<td>${ds.data[i] || 0}</td>`;
+            });
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    },
+
+    changeChartType(type) {
+        this.currentChartType = type;
+        this.displayChart();
+        this.saveToStorage();
+    },
+
+    changeViewMode(mode) {
+        this.currentViewMode = mode;
+        const chartView = document.getElementById('chart-view');
+        const tableView = document.getElementById('table-view');
+
+        if (mode === 'chart') {
+            chartView.style.display = 'block';
+            tableView.style.display = 'none';
+        } else if (mode === 'table') {
+            chartView.style.display = 'none';
+            tableView.style.display = 'block';
+        } else {
+            chartView.style.display = 'block';
+            tableView.style.display = 'block';
+        }
+    },
+
+    startEditing() {
+        document.getElementById('viewer').classList.add('hidden');
+        document.getElementById('editor').classList.add('active');
+        document.getElementById('view-controls').style.display = 'none';
+
+        document.getElementById('json-data').value = JSON.stringify(this.currentData, null, 2);
+        document.getElementById('csv-data').value = this.dataToCSV();
+    },
+
+    switchTab(mode) {
+        this.currentEditorMode = mode;
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+
+        if (mode === 'json') {
+            document.getElementById('json-editor').style.display = 'block';
+            document.getElementById('csv-editor').style.display = 'none';
+        } else {
+            document.getElementById('json-editor').style.display = 'none';
+            document.getElementById('csv-editor').style.display = 'block';
+        }
+    },
+
+    dataToCSV() {
+        let csv = 'Label,' + this.currentData.datasets.map(ds => ds.label).join(',') + '\n';
+        this.currentData.labels.forEach((label, i) => {
+            csv += label + ',' + this.currentData.datasets.map(ds => ds.data[i] || 0).join(',') + '\n';
+        });
+        return csv;
+    },
+
+    csvToData(csv) {
+        const lines = csv.trim().split('\n');
+        const headers = lines[0].split(',');
+
+        const labels = [];
+        const datasets = headers.slice(1).map(h => ({
+            label: h.trim(),
+            data: []
+        }));
+
+        for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(',');
+            labels.push(values[0].trim());
+
+            for (let j = 1; j < values.length; j++) {
+                datasets[j - 1].data.push(parseFloat(values[j]) || 0);
+            }
+        }
+
+        return { labels, datasets };
+    },
+
+    saveAndExit() {
+        const errorArea = document.getElementById('error-message');
+        errorArea.innerHTML = '';
+
+        try {
+            if (this.currentEditorMode === 'json') {
+                const jsonText = document.getElementById('json-data').value;
+                this.currentData = JSON.parse(jsonText);
+            } else {
+                const csvText = document.getElementById('csv-data').value;
+                this.currentData = this.csvToData(csvText);
+            }
+
+            this.saveToStorage();
+            this.exitEditor();
+        } catch (error) {
+            errorArea.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+        }
+    },
+
+    cancelEdit() {
+        this.exitEditor();
+    },
+
+    exitEditor() {
+        document.getElementById('viewer').classList.remove('hidden');
+        document.getElementById('editor').classList.remove('active');
+        document.getElementById('view-controls').style.display = 'flex';
+        document.getElementById('error-message').innerHTML = '';
+        this.displayChart();
+        this.displayTable();
+    }
+};
+
+window.addEventListener('load', () => app.init());
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "13cf56dd-ef8e-4c0a-b51c-2e0b307de3b3": {
+    "id": "13cf56dd-ef8e-4c0a-b51c-2e0b307de3b3",
+    "type": "pitch",
+    "status": "draft",
+    "authors": [
+      "Bo"
+    ],
+    "title": "Test",
+    "problem": "Hello world",
+    "appetite": 6,
+    "solution": [],
+    "risks": [],
+    "nogo": []
+  },
+  "cd7be8b5-6665-43d2-b791-4f9325c5b321": {
+    "id": "cd7be8b5-6665-43d2-b791-4f9325c5b321",
+    "type": "pitch",
+    "status": "draft",
+    "authors": [
+      "Bo"
+    ],
+    "title": "Test 2",
+    "problem": "",
+    "appetite": 6,
+    "solution": [],
+    "risks": [],
+    "nogo": []
+  }
+}

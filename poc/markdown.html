@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <title>Markdown Editor</title>
+
+  <!-- DaisyUI + Tailwind -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/daisyui/4.7.2/full.min.css" rel="stylesheet" />
+
+  <!-- Toast UI Editor -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+  <!-- Marked.js viewer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Alpine -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .editor-container {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+    }
+    .toastui-editor-defaultUI {
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .markdown-body {
+      padding: 1rem;
+      overflow-y: auto;
+      height: 100%;
+    }
+  </style>
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+</head>
+<body
+  x-data="markdownEditor('example-doc')"
+  x-init="init()"
+  class="bg-base-100 text-base-content"
+>
+  <div class="p-2 flex justify-between items-center border-b">
+    <h1 class="font-bold text-lg">Markdown Editor</h1>
+    <div class="flex gap-2">
+      <button class="btn btn-sm" @click="toggleMode">
+        <template x-if="isEditing">
+          <span>Preview</span>
+        </template>
+        <template x-if="!isEditing">
+          <span>Edit</span>
+        </template>
+      </button>
+    </div>
+  </div>
+
+  <div class="editor-container">
+    <!-- Editor -->
+    <div x-show="isEditing" x-ref="editor" class="h-full w-full"></div>
+
+    <!-- Viewer -->
+    <div
+      x-show="!isEditing"
+      class="markdown-body prose max-w-none"
+      x-html="renderedMarkdown"
+    ></div>
+  </div>
+
+<script>
+function markdownEditor(storageKey) {
+  return {
+    editor: null,
+    isEditing: true,
+    content: '',
+    renderedMarkdown: '',
+
+    init() {
+      // Herstel vorige content uit localStorage
+      const saved = localStorage.getItem(`markdown-${storageKey}`);
+      this.content = saved || '# Welcome to Markdown Editor\n\nType something...';
+      this.renderedMarkdown = marked.parse(this.content);
+
+      // Init Toast UI Editor
+      this.editor = new toastui.Editor({
+        el: this.$refs.editor,
+        height: '100%',
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        initialValue: this.content,
+        usageStatistics: false
+      });
+
+      // Realtime update
+      this.editor.on('change', () => {
+        this.content = this.editor.getMarkdown();
+        localStorage.setItem(`markdown-${storageKey}`, this.content);
+      });
+    },
+
+    toggleMode() {
+      this.isEditing = !this.isEditing;
+      if (!this.isEditing) {
+        this.content = this.editor.getMarkdown();
+        this.renderedMarkdown = marked.parse(this.content);
+      }
+    }
+  };
+}
+</script>
+</body>
+</html>

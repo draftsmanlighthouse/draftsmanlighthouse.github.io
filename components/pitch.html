@@ -1,0 +1,16 @@
+<template x-component="pitch">
+    <template x-if="current.type == 'pitch'">
+        <div class="m-5">
+            <input class="text-6xl" type="text" x-model="current.title" placeholder="Pitch Title"/>
+
+            <div
+                 x-data="{content: ''}"
+                 x-init="content = current.problem"
+                 x-effect="current.problem = content"
+                 x-import="markdown">
+                <ui-markdown></ui-markdown>
+            </div>
+
+        </div>
+    </template>
+</template>

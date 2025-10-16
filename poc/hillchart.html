@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hill Chart Viewer/Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .viewer-container, .editor-container {
+            border: 1px solid #ccc;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .editor-container {
+            display: none;
+        }
+        .editor-container.active {
+            display: block;
+        }
+        .viewer-container.hidden {
+            display: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.secondary {
+            background-color: #008CBA;
+        }
+        button.secondary:hover {
+            background-color: #007399;
+        }
+        button.danger {
+            background-color: #f44336;
+        }
+        button.danger:hover {
+            background-color: #da190b;
+        }
+        .hill-canvas-container {
+            position: relative;
+            margin: 20px 0;
+        }
+        #hillCanvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: crosshair;
+            background: white;
+        }
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .legend-item:hover {
+            background: #e3f2fd;
+        }
+        .legend-item.selected {
+            background: #bbdefb;
+            border: 2px solid #2196F3;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #333;
+        }
+        .legend-text {
+            flex: 1;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 4px solid #2196F3;
+        }
+        .phase-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        .milestone-list {
+            margin-top: 20px;
+        }
+        .milestone-item {
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<h1>Hill Chart - Project Progress Tracker</h1>
+<div class="container">
+    <div class="controls" id="view-controls">
+        <button onclick="app.startEditing()">Add/Edit Milestones</button>
+        <button onclick="app.clearAll()" class="danger">Clear All</button>
+    </div>
+
+    <div class="viewer-container" id="viewer">
+        <div class="info-box">
+            <strong>How to use:</strong> Click on milestones in the legend below to select them, then click on the hill to move them.
+            Left side = figuring things out (uphill), Right side = execution (downhill).
+        </div>
+
+        <div class="hill-canvas-container">
+            <canvas id="hillCanvas" width="800" height="400"></canvas>
+        </div>
+
+        <div class="phase-labels">
+            <div><strong>⛰️ Uphill:</strong> Figuring things out</div>
+            <div><strong>⛷️ Downhill:</strong> Getting it done</div>
+        </div>
+
+        <div class="legend" id="legend">
+            <h3>Milestones</h3>
+            <div id="legend-items"></div>
+        </div>
+    </div>
+
+    <div class="editor-container" id="editor">
+        <h3>Add New Milestone</h3>
+
+        <div class="form-group">
+            <label>Milestone Name</label>
+            <input type="text" id="milestone-name" placeholder="e.g., Database Schema">
+        </div>
+
+        <div class="form-group">
+            <label>Color</label>
+            <select id="milestone-color">
+                <option value="#FF6B6B">Red</option>
+                <option value="#4ECDC4">Teal</option>
+                <option value="#45B7D1">Blue</option>
+                <option value="#FFA07A">Orange</option>
+                <option value="#98D8C8">Green</option>
+                <option value="#F7DC6F">Yellow</option>
+                <option value="#BB8FCE">Purple</option>
+                <option value="#85C1E2">Sky Blue</option>
+            </select>
+        </div>
+
+        <div class="button-group">
+            <button onclick="app.addMilestone()">Add Milestone</button>
+            <button class="secondary" onclick="app.exitEditor()">Done</button>
+        </div>
+
+        <div class="milestone-list" id="milestone-list">
+            <h3>Current Milestones</h3>
+            <div id="milestone-items"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const app = {
+    canvas: null,
+    ctx: null,
+    milestones: [],
+    selectedMilestone: null,
+    isDragging: false,
+
+    init() {
+        this.canvas = document.getElementById('hillCanvas');
+        this.ctx = this.canvas.getContext('2d');
+
+        this.loadFromStorage();
+
+        this.canvas.addEventListener('click', (e) => this.handleCanvasClick(e));
+        this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+
+        this.drawHill();
+        this.updateLegend();
+    },
+
+    loadFromStorage() {
+        try {
+            const data = JSON.parse(atob(location.hash.substring(1)));
+            this.milestones = data.milestones || [];
+        } catch (e) {
+            this.milestones = [
+                { name: 'Research & Planning', x: 20, color: '#FF6B6B' },
+                { name: 'API Design', x: 40, color: '#4ECDC4' },
+                { name: 'Frontend Build', x: 60, color: '#45B7D1' },
+                { name: 'Testing', x: 85, color: '#FFA07A' }
+            ];
+        }
+    },
+
+    saveToStorage() {
+        const data = { milestones: this.milestones };
+        location.hash = btoa(JSON.stringify(data));
+    },
+
+    getHillY(x) {
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        const centerX = width / 2;
+        const maxHeight = height * 0.3;
+
+        const normalized = (x - centerX) / (width / 2);
+        const y = height * 0.7 - maxHeight * Math.cos(normalized * Math.PI / 2) ** 2;
+
+        return y;
+    },
+
+    drawHill() {
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+
+        this.ctx.clearRect(0, 0, width, height);
+
+        // Draw grid lines
+        this.ctx.strokeStyle = '#f0f0f0';
+        this.ctx.lineWidth = 1;
+        for (let i = 0; i <= 10; i++) {
+            const x = (width / 10) * i;
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, 0);
+            this.ctx.lineTo(x, height);
+            this.ctx.stroke();
+        }
+
+        // Draw hill curve
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = '#333';
+        this.ctx.lineWidth = 3;
+
+        for (let x = 0; x <= width; x++) {
+            const y = this.getHillY(x);
+            if (x === 0) {
+                this.ctx.moveTo(x, y);
+            } else {
+                this.ctx.lineTo(x, y);
+            }
+        }
+        this.ctx.stroke();
+
+        // Draw center line
+        this.ctx.strokeStyle = '#999';
+        this.ctx.lineWidth = 2;
+        this.ctx.setLineDash([5, 5]);
+        this.ctx.beginPath();
+        this.ctx.moveTo(width / 2, 0);
+        this.ctx.lineTo(width / 2, height);
+        this.ctx.stroke();
+        this.ctx.setLineDash([]);
+
+        // Draw milestones
+        this.milestones.forEach((milestone, index) => {
+            const x = (milestone.x / 100) * width;
+            const y = this.getHillY(x);
+
+            this.ctx.fillStyle = milestone.color;
+            this.ctx.strokeStyle = '#333';
+            this.ctx.lineWidth = 2;
+
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, 10, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.stroke();
+
+            if (this.selectedMilestone === index) {
+                this.ctx.strokeStyle = '#000';
+                this.ctx.lineWidth = 3;
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, 15, 0, Math.PI * 2);
+                this.ctx.stroke();
+            }
+        });
+    },
+
+    handleCanvasClick(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+
+        if (this.selectedMilestone !== null) {
+            const percentX = (clickX / this.canvas.width) * 100;
+            this.milestones[this.selectedMilestone].x = Math.max(0, Math.min(100, percentX));
+            this.saveToStorage();
+            this.drawHill();
+        }
+    },
+
+    handleMouseMove(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        let hovering = false;
+        this.milestones.forEach((milestone) => {
+            const x = (milestone.x / 100) * this.canvas.width;
+            const y = this.getHillY(x);
+            const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+            if (dist < 15) {
+                hovering = true;
+            }
+        });
+
+        this.canvas.style.cursor = hovering ? 'pointer' : 'crosshair';
+    },
+
+    selectMilestone(index) {
+        this.selectedMilestone = index;
+        this.updateLegend();
+        this.drawHill();
+    },
+
+    updateLegend() {
+        const container = document.getElementById('legend-items');
+        container.innerHTML = '';
+
+        if (this.milestones.length === 0) {
+            container.innerHTML = '<p style="color: #666;">No milestones yet. Click "Add/Edit Milestones" to get started.</p>';
+            return;
+        }
+
+        this.milestones.forEach((milestone, index) => {
+            const item = document.createElement('div');
+            item.className = 'legend-item' + (this.selectedMilestone === index ? ' selected' : '');
+            item.onclick = () => this.selectMilestone(index);
+
+            const phase = milestone.x < 50 ? '⛰️ Uphill' : '⛷️ Downhill';
+            const progress = Math.round(milestone.x) + '%';
+
+            item.innerHTML = `
+                <div class="legend-color" style="background-color: ${milestone.color}"></div>
+                <div class="legend-text">
+                    <strong>${milestone.name}</strong><br>
+                    <small>${phase} - ${progress}</small>
+                </div>
+            `;
+
+            container.appendChild(item);
+        });
+    },
+
+    startEditing() {
+        document.getElementById('viewer').classList.add('hidden');
+        document.getElementById('editor').classList.add('active');
+        document.getElementById('view-controls').style.display = 'none';
+        this.updateMilestoneList();
+    },
+
+    exitEditor() {
+        document.getElementById('viewer').classList.remove('hidden');
+        document.getElementById('editor').classList.remove('active');
+        document.getElementById('view-controls').style.display = 'flex';
+        this.drawHill();
+        this.updateLegend();
+    },
+
+    addMilestone() {
+        const name = document.getElementById('milestone-name').value.trim();
+        const color = document.getElementById('milestone-color').value;
+
+        if (!name) {
+            alert('Please enter a milestone name');
+            return;
+        }
+
+        this.milestones.push({
+            name: name,
+            x: 10,
+            color: color
+        });
+
+        document.getElementById('milestone-name').value = '';
+        this.saveToStorage();
+        this.updateMilestoneList();
+    },
+
+    updateMilestoneList() {
+        const container = document.getElementById('milestone-items');
+        container.innerHTML = '';
+
+        this.milestones.forEach((milestone, index) => {
+            const item = document.createElement('div');
+            item.className = 'milestone-item';
+            item.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: ${milestone.color}; border-radius: 50%;"></div>
+                    <span>${milestone.name}</span>
+                </div>
+                <button onclick="app.deleteMilestone(${index})" class="danger" style="padding: 5px 10px; font-size: 14px;">Delete</button>
+            `;
+            container.appendChild(item);
+        });
+    },
+
+    deleteMilestone(index) {
+        if (confirm('Delete this milestone?')) {
+            this.milestones.splice(index, 1);
+            if (this.selectedMilestone === index) {
+                this.selectedMilestone = null;
+            }
+            this.saveToStorage();
+            this.updateMilestoneList();
+        }
+    },
+
+    clearAll() {
+        if (confirm('Clear all milestones?')) {
+            this.milestones = [];
+            this.selectedMilestone = null;
+            this.saveToStorage();
+            this.drawHill();
+            this.updateLegend();
+        }
+    }
+};
+
+window.addEventListener('load', () => app.init());
+</script>
+</body>
+</html>
