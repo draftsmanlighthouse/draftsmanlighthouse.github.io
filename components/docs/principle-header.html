@@ -1,0 +1,36 @@
+<template x-component="principle-header">
+    <template x-if="'type' in current && current.type == 'principle'">
+        <div>
+            <input class="text-5xl w-full" type="text" x-model="current.title" placeholder="Pitch Title"/>
+            <table class="table">
+                <tr>
+                    <th>Status</th>
+                    <td
+                            x-data="{status: {'draft':'select-primary', 'review': 'select-warning', 'decided': 'select-success', 'rejected': 'select-error'}}">
+                        <select x-model="current.status"
+                                :class="status[current.status]"
+                                class="select select-xs">
+                            <option>draft</option>
+                            <option>review</option>
+                            <option>published</option>
+                            <option>deleted</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Summary</th>
+                    <td>
+                        <div
+                                x-data="{content: ''}"
+                                x-init="content = current.principle ? current.principle : PRINCIPLE"
+                                x-effect="current.principle = content"
+                                x-import="doc-sections/markdown">
+                            <ui-markdown></ui-markdown>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <hr class="mb-10">
+        </div>
+    </template>
+</template>

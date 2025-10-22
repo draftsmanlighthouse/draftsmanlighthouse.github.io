@@ -11,21 +11,6 @@ const SVG_TEMPLATES = {
   message_channel: 'message-channel.svg'
 };
 
-// --- Sanitize draw.io SVG’s (houd tekst / foreignObject intact) ---
-function sanitizeSvg(svgString) {
-  return svgString
-    .replace(/<\?xml[^>]*>/gi, '')
-    .replace(/<!DOCTYPE[^>]*>/gi, '')
-    .replace(/content="[^"]*"/gi, '')
-    .replace(/<image[^>]+xlink:href="data:image\/[^"]+"[^>]*>/gi, '')
-    .replace(/light-dark\([^)]*\)/g, '#ffffff')
-    .replace(/var\(--ge-dark-color,[^)]+\)/g, '#ffffff')
-    .replace(/@import[^;]+;/g, '')
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/data-cell-id="[^"]*"/g, '')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
-}
 
 // --- Helper: laad SVG-bestand, vervang placeholders, sanitize ---
 async function loadAndPrepareSvg(name, replacements = {}) {
@@ -36,7 +21,6 @@ async function loadAndPrepareSvg(name, replacements = {}) {
   if (!response.ok) throw new Error(`Kon SVG niet laden: ${fileName}`);
 
   let svg = await response.text();
-  //svg = sanitizeSvg(svg);
 
   for (const [key, value] of Object.entries(replacements)) {
     svg = svg.replace(new RegExp(`%${key}%`, 'g'), value || '');

@@ -31,6 +31,11 @@
 
     <!-- D3 -->
     <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+
+    <!-- cytoscape -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.24.0/cytoscape.min.js"></script>
+    <script src="/js/c4-diagram.js"></script>
+
     <style>[x-cloak] { display: none !important; }</style>
 </head>
 <body x-data="main">
@@ -45,12 +50,14 @@
     </div>
 
     <!-- Custom modules -->
+    <script src="/js/config/templates.js"></script>
     <script src="/js/modules/DocumentEngine.js"></script>
     <script src="/js/modules/MarkdownEditor.js"></script>
     <script src="/js/modules/DrawioEditor.js"></script>
     <script src="/js/modules/MermaidEditor.js"></script>
     <script src="/js/modules/ChartEditor.js"></script>
     <script src="/js/modules/HillChart.js"></script>
+    <script src="/js/modules/ArchitectureDiagram.js"></script>
     <span x-init="sessionStorage.architecture = sessionStorage.architecture ? sessionStorage.architecture : 'principles'"></span>
 </body>
 </html>

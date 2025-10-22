@@ -1,7 +1,7 @@
 <template x-component="design-decision-header">
     <template x-if="'type' in current && current.type == 'DD'">
         <div>
-            <input class="text-6xl" type="text" x-model="current.title" placeholder="Pitch Title"/>
+            <input class="text-6xl" type="text" x-model="current.title" placeholder="Decision Title"/>
             <table class="table">
                 <tr>
                     <th>Status</th>
@@ -29,7 +29,129 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <th>Precedent</th>
+                    <td>
+                        <span x-show="!('precedent' in current) || !current.precedent">n.a.</span>
+                        <template x-if="'precedent' in current && current.precedent">
+                            <a class="link" :href="'#' + current.precedent"
+                               x-text="documents[current.precedent].title"></a>
+                        </template>
+                        <button class="btn btn-ghost btn-xs" onclick="precedent_modal.showModal()">
+                            <i class="fa-solid fa-gear"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Effect</th>
+                    <td x-effect="if (!('effect' in current)){current.effect = {}}">
+                        <table class="table table-xs">
+                            <tr>
+                                <th>Action</th>
+                                <td>
+                                    <select x-model="current.effect.action" class="select select-primary select-xs w-[50%]">
+                                        <option disabled></option>
+                                        <option>introduces new</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr x-show="current.effect.action == 'introduces new'" x-cloak x-transition>
+                                <th>Level</th>
+                                <td>
+                                    <select x-model="current.effect.level" class="select select-primary select-xs w-[50%]">
+                                        <option disabled></option>
+                                        <option>system</option>
+                                        <option>component</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr x-show="current.effect.level == 'system'" x-cloak x-transition>
+                                <th>Scope</th>
+                                <td>
+                                    <select x-model="current.effect.scope" class="select select-primary select-xs w-[50%]">
+                                        <option disabled></option>
+                                        <option>internal</option>
+                                        <option>external</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr x-show="current.effect.action == 'introduces new'" x-cloak x-transition>
+                                <th>System Name</th>
+                                <td>
+                                    <input x-model="current.effect.system_name" type="text" placeholder="Primary"
+                                           class="input input-primary input-xs w-[50%]" />
+                                </td>
+                            </tr>
+                            <tr x-show="current.effect.action == 'introduces new' && current.effect.scope == 'internal'" x-cloak x-transition>
+                                <th>Technology</th>
+                                <td>
+                                    <input x-model="current.effect.technology" type="text" placeholder="Primary"
+                                           class="input input-primary input-xs w-[50%]" />
+                                </td>
+                            </tr>
+                            <tr x-show="current.effect.action == 'introduces new'" x-cloak x-transition>
+                                <th>Short description</th>
+                                <td>
+                                    <input x-model="current.effect.description" type="text" placeholder="Primary"
+                                           class="input input-primary input-xs w-[50%]" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
             </table>
+
+            <dialog id="precedent_modal" class="modal">
+                <div class="modal-box max-w-3xl max-h-[90vh] overflow-y-auto" x-data="{search: ''}">
+
+                    <label class="input text-xs m-5">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" placeholder="Search" x-model="search"/>
+                    </label>
+
+                    <template x-if="'precedent' in current && current.precedent">
+                        <p class="m-5">
+                            Current link: <span x-text="documents[current.precedent].title"></span>
+                            <button @click="current.precedent = ''" class="btn btn-ghost btn-xs">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </p>
+                    </template>
+
+
+                    <template x-for="item in get_referable_decisions(documents)" :key="item.id">
+                        <div x-show="search == '' || `${item.title} ${item.principle}`.toLowerCase().includes(search.toLowerCase())"
+                             x-cloak x-transition
+                             class="card w-[90%] bg-base-100 border card-sm m-5">
+                            <div class="card-body">
+                                <h2 class="card-title">
+                                    <span x-text="item.title"></span>
+                                </h2>
+                                <p>
+                                    <template x-if="item.type == 'principle'">
+                                        <div
+                                                x-data="{content: '', readonly: true}"
+                                                x-init="content = item.principle"
+                                                x-import="doc-sections/markdown">
+                                            <ui-markdown></ui-markdown>
+                                        </div>
+                                    </template>
+                                </p>
+                                <div class="justify-end card-actions">
+                                    <button @click="current.precedent = item.id;precedent_modal.close();"
+                                            class="btn btn-primary btn-outline btn-sm">Link
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+
             <hr class="mb-10">
         </div>
     </template>

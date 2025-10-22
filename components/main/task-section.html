@@ -18,6 +18,15 @@
                                     <div x-show="sub.type == 'DD'" x-cloak x-transition
                                          class="badge badge-outline badge-info">Design Decision
                                     </div>
+                                    <div x-show="sub.type == 'principle' && sub.scope == 'enterprise'" x-cloak x-transition
+                                         class="badge badge-outline badge-primary whitespace-nowrap">Enterprise Principle
+                                    </div>
+                                    <div x-show="sub.type == 'principle' && sub.scope == 'system'" x-cloak x-transition
+                                         class="badge badge-outline badge-secondary whitespace-nowrap">System Principle
+                                    </div>
+                                    <div x-show="sub.type == 'principle' && sub.scope == 'component'" x-cloak x-transition
+                                         class="badge badge-outline badge-primary whitespace-nowrap">Component Principle
+                                    </div>
                                 </td>
                                 <td x-init="sub.prio = sub.prio ? sub.prio : 0"
                                     x-data="{prio: {0: 'select-primary', 1: 'select-accent', 2: 'select-info', 3: 'select-ghost'}}">
@@ -31,15 +40,37 @@
                                     </select>
                                 </td>
                                 <td
-                                    x-data="{status: {'draft':'select-primary', 'review': 'select-warning', 'decided': 'select-success', 'rejected': 'select-error'}}">
-                                    <select x-model="sub.status"
-                                            :class="status[sub.status]"
-                                            class="select select-xs">
-                                        <option x-show="['DD','ADR'].includes(sub.type)'">draft</option>
-                                        <option x-show="['DD','ADR'].includes(sub.type)'">review</option>
-                                        <option x-show="['DD','ADR'].includes(sub.type)'">decided</option>
-                                        <option x-show="['DD','ADR'].includes(sub.type)'">rejected</option>
-                                    </select>
+                                    x-data="{status: {
+                                        'draft':'select-primary',
+                                        'review': 'select-warning',
+                                        'decided': 'select-success',
+                                        'rejected': 'select-error',
+                                        'published': 'select-success',
+                                        'deleted': 'select-error'
+                                    }}">
+
+                                    <template x-if="['DD','ADR'].includes(sub.type)">
+                                         <select x-model="sub.status"
+                                                :class="status[sub.status]"
+                                                class="select select-xs w-full">
+                                            <option>draft</option>
+                                            <option>review</option>
+                                            <option>decided</option>
+                                            <option>rejected</option>
+                                        </select>
+                                    </template>
+
+                                    <template x-if="['principle'].includes(sub.type)">
+                                         <select x-model="sub.status"
+                                                :class="status[sub.status]"
+                                                class="select select-xs w-full">
+                                            <option>draft</option>
+                                            <option>review</option>
+                                            <option>published</option>
+                                            <option>deleted</option>
+                                        </select>
+                                    </template>
+
                                 </td>
                                 <td>
                                     <a class="btn btn-ghost btn-xs"
@@ -56,7 +87,7 @@
             <div class="col-span-2">
                 <ul class="menu bg-neutral-content rounded-box w-56">
                     <li><a @click="create_decision(current.id)">New decision</a></li>
-                    <li><a>Item 2</a></li>
+                    <li><a @click="create_principle(current.id)">New architecture principle</a></li>
                     <li><a>Item 3</a></li>
                 </ul>
             </div>

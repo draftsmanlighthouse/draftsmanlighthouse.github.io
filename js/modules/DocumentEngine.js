@@ -8,6 +8,7 @@ document.addEventListener('alpine:init', () => {
         current: this.$persist({}).using(sessionStorage),
         navigation: this.$persist("").using(sessionStorage),
         dashboard_data: {},
+        c4_data: {},
 
         openPath(name) {
           // zoek het element met data-name
@@ -185,8 +186,25 @@ document.addEventListener('alpine:init', () => {
             };
             location.reload();
         },
+        create_principle(parent){
+            const id = crypto.randomUUID();
+            this.documents[id] = {
+                id: id,
+                sequence_number: this.organisation.decision_index,
+                createdAt: new Date(),
+                parent: parent,
+                type: "principle",
+                scope: "enterprise",
+                status: "draft",
+                authors: [this.author],
+                title: "EAP 1: summary",
+                principle: PRINCIPLE,
+                sections: []
+            };
+            location.reload();
+        },
         get_work_items(documents) {
-            const complete_state = ["decided","rejected"];
+            const complete_state = ["decided","rejected","published","deleted"];
 
             return Object.values(documents)
                 .filter(x => x.parent === this.current.id)
@@ -201,6 +219,11 @@ document.addEventListener('alpine:init', () => {
                     // 2️⃣ Binnen elke groep sorteren op prio (0 bovenaan)
                     return (a.prio ?? 99) - (b.prio ?? 99);
                 });
+        },
+        get_referable_decisions(documents){
+            let types = ["ADR","principle"];
+            let status = ["decided","published"];
+            return Object.values(documents).filter(x => types.includes(x.type)).filter(x => status.includes(x.status));
         },
 
         start_cycle(){
@@ -266,6 +289,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         index_project(documents){
+            // Dashboard Hillchart
             let data = {};
             Object.values(documents).filter(doc => doc.type == 'scope').forEach(doc => {
                 let project = documents[doc.parent].title;
@@ -279,6 +303,24 @@ document.addEventListener('alpine:init', () => {
                 x.progress = x.progress.length ? x.progress.reduce((a, b) => a + b, 0) / x.progress.length : 0;
             });
             this.dashboard_data["hillchart"] = data;
+
+            // C4 components
+            let arch = {};
+            Object.values(documents).filter(doc => doc.type == 'DD' || doc.type == "ADR").filter(doc => doc.effect).forEach(doc => {
+                let effect = doc.effect;
+                if (effect.action == "introduces new"){
+                    if (effect.level == "system"){
+                        arch[effect.system_name] = {
+                            scope: effect.scope,
+                            description: effect.description,
+                            technology: effect.technology
+                        }
+                    }
+                }
+            });
+            if (JSON.stringify(arch) != JSON.stringify(this.c4_data)){
+                this.c4_data = arch;
+            }
         },
 
         load_data(){

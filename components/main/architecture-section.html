@@ -1,6 +1,43 @@
 <template x-component="architecture-section">
     <div class="m-5"
+         x-data="{level: $persist('enterprise')}"
          x-show="navigation == 'architecture'" x-cloak x-transition>
+
+        <div x-show="active_tab == 'C4'" x-cloak x-transition
+             x-data="C4Diagram"
+             class="mt-5">
+            <template x-if="active_tab == 'C4'">
+                <div x-init="draw(level,c4_data)">
+                    <div id="c4" class="w-full h-[90vh]"></div>
+                </div>
+            </template>
+        </div>
+
+        <div x-show="active_tab == 'principles'" x-cloak x-transition class="mt-5">
+
+            <template x-if="level == 'enterprise'">
+                <template x-for="principle in Object.values(documents).filter(x => x.type == 'principle' && x.scope == 'enterprise')"
+                          :key="principle.id">
+                    <div class="collapse collapse-arrow bg-base-100 border border-base-300 mb-2">
+                      <input type="radio" name="principles" />
+                      <div class="collapse-title font-semibold" x-text="principle.title"></div>
+                      <div class="collapse-content text-sm">
+                        <div
+                                x-data="{content: '', readonly: true}"
+                                x-init="content = principle.principle ? principle.principle : PRINCIPLE"
+                                x-import="doc-sections/markdown">
+                            <ui-markdown></ui-markdown>
+                        </div>
+                        <a class="btn btn-outline btn-primary btn-sm mt-5"
+                                :href="'#' + principle.id">
+                            Open
+                        </a>
+                      </div>
+                    </div>
+                </template>
+            </template>
+
+        </div>
 
         <div x-show="active_tab == 'decisions'" x-cloak x-transition
              class="grid grid-cols-12 mt-5 gap-5">
@@ -42,11 +79,11 @@
                             </td>
                             <td>
                                 <div
-                                x-data="{content: '', readonly: true}"
-                                x-init="content = decision.decision ? decision.decision : 'short summary of **problem** and **decision**'"
-                                x-import="doc-sections/markdown">
-                            <ui-markdown></ui-markdown>
-                        </div>
+                                        x-data="{content: '', readonly: true}"
+                                        x-init="content = decision.decision ? decision.decision : 'short summary of **problem** and **decision**'"
+                                        x-import="doc-sections/markdown">
+                                    <ui-markdown></ui-markdown>
+                                </div>
                             </td>
                             <td>
                                     <a class="btn btn-ghost btn-xs"
