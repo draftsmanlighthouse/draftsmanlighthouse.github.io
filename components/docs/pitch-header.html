@@ -1,0 +1,85 @@
+<template x-component="pitch-header">
+    <template x-if="'type' in current && current.type == 'pitch'">
+        <div>
+            <input class="text-6xl" type="text" x-model="current.title" placeholder="Pitch Title"/>
+            <table class="table">
+                <tr>
+                    <th>Status</th>
+                    <td x-text="current.status"></td>
+                    <td>
+                        <button x-show="current.status == 'draft'" x-cloak x-transition
+                                @click="current.status = 'proposed'"
+                                class="btn btn-outline btn-primary btn-sm">
+                            Submit pitch
+                        </button>
+                        <button x-show="current.status == 'proposed'" x-cloak x-transition
+                                @click="current.status = 'queued'"
+                                class="btn btn-outline btn-success btn-sm">
+                            Accept pitch
+                        </button>
+                        <button x-show="current.status == 'proposed'" x-cloak x-transition
+                                @click="current.status = 'rejected'"
+                                class="btn btn-outline btn-error btn-sm">
+                            Reject pitch
+                        </button>
+                        <button x-show="current.status == 'queued'" x-cloak x-transition
+                                @click="current.status = 'proposed'"
+                                class="btn btn-outline btn-error btn-sm">
+                            Unselect pitch
+                        </button>
+                        <button x-show="current.status == 'rejected'" x-cloak x-transition
+                                @click="current.status = 'draft'"
+                                class="btn btn-outline btn-primary btn-sm">
+                            Revive pitch
+                        </button>
+                        <button x-show="['draft','rejected'].includes(current.status)" x-cloak x-transition
+                                @click="current.status = 'deleted'"
+                                class="btn btn-outline btn-error btn-sm">
+                            Delete pitch
+                        </button>
+                        <button x-show="current.status == 'accepted'" x-cloak x-transition
+                                @click="start_project"
+                                class="btn btn-outline btn-success btn-sm">
+                            Start project
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Appetite</th>
+                    <td colspan="2">
+                        <select x-show="current.status == 'draft'" x-cloak x-transition
+                                x-model="current.attributes.appetite" class="select select-sm">
+                            <option disabled selected>Set appetite</option>
+                            <option value="2">2 weeks</option>
+                            <option value="3">3 weeks</option>
+                            <option value="4">4 weeks</option>
+                            <option value="6">6 weeks</option>
+                        </select>
+                        <span x-show="current.status != 'draft'" x-cloak x-transition>
+                                    <span x-text="current.attributes.appetite"></span> weeks
+                                </span>
+                    </td>
+                </tr>
+                <tr x-show="current.attributes.deadline" x-cloak x-transition>
+                    <th>End date</th>
+                    <td x-text="current.attributes.deadline"></td>
+                    <td>
+                        <span x-text="workdaysUntil(current.attributes.deadline)"></span> workdays
+                    </td>
+                </tr>
+            </table>
+            <div x-show="current.status == 'inprogress'" x-cloak x-transition
+                 x-effect="hill_data = Object.values(documents).filter(x => x.type == 'scope').filter(x => x.parent == current.id).map(x => { return {
+                            id: x.id,
+                            name: x.title,
+                            progress: x.attributes.progress
+                         }})"
+                 x-data="{hill_data: []}">
+                <div
+                        x-data="hillChart(hill_data, { readonly: true })"
+                        @hillclick.window="open_document($event.detail.id)"></div>
+            </div>
+            <hr class="mb-10">
+        </div>
+    </template>
+</template>

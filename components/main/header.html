@@ -1,0 +1,30 @@
+<template x-component="header">
+    <div class="h-[5vh] w-full bg-neutral-content">
+        <div x-show="navigation in documents && documents[navigation].type == 'scope'" x-cloak x-transition>
+            <button @click="active_tab = 'document';sessionStorage.setItem(navigation,active_tab)"
+                    :class="active_tab == 'document' ? 'btn-neutral' : 'btn-neutral btn-outline'"
+                    class="btn btn-sm m-2">Scope overview
+            </button>
+            <button @click="active_tab = 'tasks';sessionStorage.setItem(navigation,active_tab)"
+                    :class="active_tab == 'tasks' ? 'btn-neutral' : 'btn-neutral btn-outline'"
+                    class="btn btn-sm ml-0 m-2">Items
+            </button>
+        </div>
+
+        <div x-show="navigation == 'architecture'" x-cloak x-transition
+             x-effect="if(navigation == 'architecture' && )">
+            <button @click="active_tab = 'C4';sessionStorage.setItem(navigation,active_tab)"
+                    :class="active_tab == 'C4' ? 'btn-neutral' : 'btn-neutral btn-outline'"
+                    class="btn btn-sm m-2">Diagram
+            </button>
+            <button @click="active_tab = 'principles';sessionStorage.setItem(navigation,active_tab)"
+                    :class="active_tab == 'principles' ? 'btn-neutral' : 'btn-neutral btn-outline'"
+                    class="btn btn-sm ml-0 m-2">Principles
+            </button>
+            <button @click="active_tab = 'decisions';sessionStorage.setItem(navigation,active_tab)"
+                    :class="active_tab == 'decisions' ? 'btn-neutral' : 'btn-neutral btn-outline'"
+                    class="btn btn-sm ml-0 m-2">Decision log
+            </button>
+        </div>
+    </div>
+</template>

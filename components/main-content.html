@@ -1,0 +1,9 @@
+<template x-component="main-content">
+    <div x-data="{active_tab: 'document'}"
+         x-init="active_tab = sessionStorage.getItem(navigation) ? sessionStorage.getItem(navigation) : 'document'"
+         x-effect="active_tab = sessionStorage.getItem(navigation) ? sessionStorage.getItem(navigation) : 'document'"
+         x-import="main/header;main/body">
+        <ui-header></ui-header>
+        <ui-body></ui-body>
+    </div>
+</template>

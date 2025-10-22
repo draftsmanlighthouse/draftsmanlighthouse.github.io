@@ -1,0 +1,13 @@
+<template x-component="org-selector">
+    <div>
+        <i class="fa-solid fa-building text-xl ml-5 text-white"></i>
+        <select @change="open_organisation($el.value)"
+                class="select select-ghost text-white text-xl m-5 w-auto">
+            <option disabled selected>Select organisation</option>
+            <template x-for="org in organisations" :key="org.name">
+                <option :value="org.name" :selected="org.name == organisation.name" x-text="org.name"></option>
+            </template>
+            <option>new</option>
+        </select>
+    </div>
+</template>

@@ -1,0 +1,8 @@
+<template x-component="parent-link">
+    <div x-show="current.parent" x-cloak x-transition>
+        <a :href="'#' + current.parent" class="btn btn-sm btn-ghost">
+            <i class="fa-solid fa-sitemap"></i> Part of <span
+                x-text="current.parent ? documents[current.parent].title : ''"></span>
+        </a>
+    </div>
+</template>

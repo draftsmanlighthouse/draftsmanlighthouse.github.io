@@ -29,18 +29,37 @@
     <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 
-    <!-- D3 -->
-    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
     <style>[x-cloak] { display: none !important; }</style>
 </head>
 <body x-data="main">
+    <div x-import="menu-bar">
+        <ui-menu-bar></ui-menu-bar>
+    </div>
 
-    <div class="grid grid-cols-12">
-        <div class="col-span-3 h-screen bg-neutral" x-import="side-menu">
-            <ui-side-menu></ui-side-menu>
+    <div class="grid grid-cols-12 gap-3  mt-5">
+        <div class="col-span-2">
+            <ul class="menu bg-base-200 rounded-box w-56 ml-2">
+              <li>
+                <h2 class="menu-title">Pitch Drafts</h2>
+                <ul>
+                  <template x-for="document in documents">
+                      <template x-if="document.type == 'pitch' && document.status == 'draft'">
+                          <li><a @click="open_document(document.id)">
+                              <i class="fa-regular fa-lightbulb"></i>&nbsp;
+                              <span x-text="document.title"></span>
+                          </a></li>
+                      </template>
+                  </template>
+                </ul>
+              </li>
+            </ul>
         </div>
-        <div class="col-span-9" x-import="main-content">
-            <ui-main-content></ui-main-content>
+        <div class="col-span-9" >
+            <div x-import="micro-doc">
+                <ui-micro-doc></ui-micro-doc>
+            </div>
+
+            <pre x-text="JSON.stringify(current, (key, value) => key === 'sections' ? undefined : value, 2)"></pre>
         </div>
     </div>
 
@@ -50,7 +69,6 @@
     <script src="/js/modules/DrawioEditor.js"></script>
     <script src="/js/modules/MermaidEditor.js"></script>
     <script src="/js/modules/ChartEditor.js"></script>
-    <script src="/js/modules/HillChart.js"></script>
-    <span x-init="sessionStorage.architecture = sessionStorage.architecture ? sessionStorage.architecture : 'principles'"></span>
+
 </body>
 </html>

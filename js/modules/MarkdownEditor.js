@@ -10,6 +10,7 @@ document.addEventListener('alpine:init', () => {
             }
             this.renderedMarkdown = marked.parse(this.content);
             // Init Toast UI Editor
+            if (this.readonly){return}
             this.editor = new toastui.Editor({
                 el: this.$refs.editor,
                 height: '100%',
@@ -25,6 +26,7 @@ document.addEventListener('alpine:init', () => {
             });
         },
         toggleMode() {
+          if (this.readonly){return}
           this.isEditing = !this.isEditing;
           if (!this.isEditing) {
             this.content = this.editor.getMarkdown();

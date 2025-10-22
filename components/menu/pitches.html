@@ -1,0 +1,136 @@
+<template x-component="pitches">
+    <ul x-show="'name' in organisation" x-cloak x-transition
+        class="menu bg-neutral-content m-5 rounded-box w-auto max-h-[80vh] overflow-y-auto">
+
+        <li>
+            <details>
+                <summary>Shaping</summary>
+                <ul>
+
+                    <!-- picthes -->
+                    <li>
+                        <details>
+                            <summary>Pitches</summary>
+                            <ul>
+                                <template x-for="document in documents">
+                                    <template
+                                            x-if="document.type == 'pitch' && ['draft','rejected'].includes(document.status)">
+                                        <li><a :class="document.id == navigation ? 'bg-neutral text-white' : ''"
+                                               @click="open_document(document.id)" :data-name="document.id">
+                                            <i class="fa-regular fa-lightbulb"></i> <span
+                                                x-text="document.title"></span>
+                                        </a></li>
+                                    </template>
+                                </template>
+                                <li>
+                                    <a @click="create_pitch"><i class="fa-solid fa-play"></i>
+                                        Start new pitch</a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
+
+                    <!-- betting table -->
+                    <li x-show="Object.values(documents).filter(x => x.type == 'pitch' && ['proposed', 'queued'].includes(x.status)).length > 0"
+                        x-cloak x-transition>
+                        <details>
+                            <summary>Betting table</summary>
+                            <ul>
+                                <template x-for="document in documents">
+                                    <template
+                                            x-if="document.type == 'pitch' && ['proposed','queued'].includes(document.status)">
+                                        <li><a :class="document.id == navigation ? 'bg-neutral text-white' : ''"
+                                               @click="open_document(document.id)" :data-name="document.id">
+                                            <i class="fa-regular fa-lightbulb"></i>&nbsp;
+                                            <span x-text="document.title"></span>
+                                            <div x-show="document.status == 'proposed'" x-cloak x-transition
+                                                 class="badge badge-outline badge-info" x-text="document.status"></div>
+                                            <div x-show="document.status == 'queued'" x-cloak x-transition
+                                                 class="badge badge-outline badge-success"
+                                                 x-text="document.status"></div>
+                                        </a></li>
+                                    </template>
+                                </template>
+                                <li x-show="Object.values(documents).filter(x => x.type == 'pitch' && x.status == 'queued').length > 0">
+                                    <a @click="start_cycle"><i class="fa-solid fa-play"></i>
+                                        Start cycle</a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
+
+                </ul>
+            </details>
+        </li>
+
+        <li>
+            <details>
+                <summary>Current Projects</summary>
+                <ul>
+                    <template x-for="document in documents">
+                        <template x-if="document.type == 'pitch' && ['accepted'].includes(document.status)">
+                            <li><a :class="document.id == navigation ? 'bg-neutral text-white' : ''"
+                                   @click="open_document(document.id)" :data-name="document.id">
+                                <i class="fa-regular fa-lightbulb"></i>&nbsp;
+                                <span x-text="document.title"></span>
+                                <div x-show="document.status == 'accepted'" x-cloak x-transition
+                                     class="badge badge-outline badge-info" x-text="document.status"></div>
+                            </a></li>
+                        </template>
+                    </template>
+                    <template x-for="document in documents">
+                        <template x-if="document.type == 'pitch' && ['inprogress'].includes(document.status)">
+
+                            <li>
+                                <details>
+                                    <summary x-text="document.title"></summary>
+                                    <ul>
+                                        <li><a :class="document.id == navigation ? 'bg-neutral text-white' : ''"
+                                               @click="open_document(document.id)" :data-name="document.id">
+                                            <i class="fa-regular fa-lightbulb"></i>&nbsp;
+                                            Pitch
+                                        </a></li>
+                                        <li>
+                                            <details>
+                                                <summary>Scopes</summary>
+                                                <ul>
+                                                    <template x-for="sub in documents">
+                                                        <template
+                                                                x-if="sub.parent == document.id && sub.type == 'scope'">
+                                                            <li>
+                                                                <a :class="sub.id == navigation ? 'bg-neutral text-white' : ''"
+                                                                   @click="open_document(sub.id)" :data-name="sub.id">
+                                                                    <i class="fa-solid fa-list-check"></i>
+                                                                    <span x-text="sub.title"></span>
+                                                                </a></li>
+                                                        </template>
+                                                    </template>
+                                                    <li>
+                                                        <a @click="create_scope(document.id)"><i
+                                                                class="fa-solid fa-play"></i>
+                                                            Add scope</a>
+                                                    </li>
+                                                </ul>
+                                            </details>
+                                        </li>
+                                    </ul>
+                                </details>
+                            </li>
+
+                        </template>
+                    </template>
+                </ul>
+            </details>
+        </li>
+
+        <li>
+            <details>
+                <summary>History</summary>
+                <ul>
+                    <li><a>placeholder</a></li>
+                </ul>
+            </details>
+        </li>
+    <span x-init="openPath(navigation)"></span>
+    </ul>
+</template>

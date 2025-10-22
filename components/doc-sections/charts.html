@@ -1,0 +1,82 @@
+<template x-component="charts">
+    <main x-data="chartEditor" class="max-w-6xl mx-auto space-y-6">
+
+    <!-- Viewer -->
+    <div x-show="!isEditing" x-cloak class="bg-base-100 p-6 space-y-6">
+      <div x-ref="chart-view" x-show="['chart','both'].includes(currentViewMode)" class="flex justify-center">
+        <div class="w-full max-w-3xl">
+          <canvas x-ref="chartCanvas"></canvas>
+        </div>
+      </div>
+
+      <div x-ref="table-view" x-show="['table','both'].includes(currentViewMode)" class="overflow-x-auto">
+        <div x-ref="tableDisplay"></div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div x-show="!isEditing" class="flex flex-wrap items-center gap-3">
+      <button @click="startEditing" class="btn btn-primary btn-sm">Edit Data</button>
+
+      <select @change="changeChartType($event.target.value)" class="select select-bordered select-sm">
+        <option value="bar" :selected="currentChartType == 'bar'">Bar Chart</option>
+        <option value="line" :selected="currentChartType == 'line'">Line Chart</option>
+        <option value="pie" :selected="currentChartType == 'pie'">Pie Chart</option>
+        <option value="doughnut" :selected="currentChartType == 'doughnut'">Doughnut Chart</option>
+        <option value="radar" :selected="currentChartType == 'radar'">Radar Chart</option>
+      </select>
+
+      <select @change="changeViewMode($event.target.value)" class="select select-bordered select-sm">
+        <option value="chart" :selected="currentViewMode == 'chart'">Chart View</option>
+        <option value="table" :selected="currentViewMode == 'table'">Table View</option>
+        <option value="both" :selected="currentViewMode == 'both'">Both</option>
+      </select>
+    </div>
+
+    <!-- Editor -->
+    <div x-show="isEditing" x-cloak class="card bg-base-100 p-6">
+      <!-- Tabs -->
+      <div role="tablist" class="tabs tabs-boxed mb-4">
+        <a role="tab" :class="{'tab-active': currentEditorMode==='json'}" @click="switchTab('json', $event)" class="tab">JSON Editor</a>
+        <a role="tab" :class="{'tab-active': currentEditorMode==='csv'}" @click="switchTab('csv', $event)" class="tab">CSV Editor</a>
+      </div>
+
+      <!-- JSON Editor -->
+      <div x-show="currentEditorMode==='json'">
+        <h3 class="text-lg font-semibold mb-2">Edit Data (JSON Format)</h3>
+        <textarea x-ref="jsonData" class="textarea textarea-bordered w-full h-80 font-mono text-sm" placeholder='{"labels": [...], "datasets": [...]}'></textarea>
+        <div class="alert alert-info mt-3">
+          <span>
+            <strong>JSON Format:</strong>
+            <code>{ "labels": [...], "datasets": [{ "label": "...", "data": [...] }] }</code>
+          </span>
+        </div>
+      </div>
+
+      <!-- CSV Editor -->
+      <div x-show="currentEditorMode==='csv'" x-cloak>
+        <h3 class="text-lg font-semibold mb-2">Edit Data (CSV Format)</h3>
+        <textarea x-ref="csvData" class="textarea textarea-bordered w-full h-80 font-mono text-sm" placeholder="Label,Dataset1,Dataset2"></textarea>
+        <div class="alert alert-info mt-3">
+          <span>
+            <strong>CSV Format:</strong>
+            First row = labels, subsequent rows = datasets. First column = dataset name.
+          </span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-3 mt-6">
+        <button @click="saveAndExit" class="btn btn-success btn-sm">Save & Exit</button>
+        <button @click="cancelEdit" class="btn btn-outline btn-sm">Cancel</button>
+      </div>
+
+      <!-- Error -->
+      <div class="mt-4" x-show="error">
+        <div class="alert alert-error">
+          <span x-text="error"></span>
+        </div>
+      </div>
+    </div>
+  </main>
+</template>

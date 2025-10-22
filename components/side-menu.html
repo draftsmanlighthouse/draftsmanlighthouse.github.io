@@ -1,0 +1,23 @@
+<template x-component="side-menu">
+    <div>
+        <!-- Org selector -->
+        <div x-import="menu/org-selector">
+            <ui-org-selector></ui-org-selector>
+        </div>
+
+        <!-- Overview -->
+        <div x-import="menu/overview">
+            <ui-overview></ui-overview>
+        </div>
+
+        <!-- Pitches & Projects -->
+        <div x-import="menu/pitches">
+            <ui-pitches></ui-pitches>
+        </div>
+
+        <!-- Dev utils -->
+        <div x-import="menu/dev-utils">
+            <ui-dev-utils></ui-dev-utils>
+        </div>
+    </div>
+</template>

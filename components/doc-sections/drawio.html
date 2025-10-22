@@ -1,0 +1,30 @@
+<template x-component="drawio">
+    <div x-data="drawioEditor">
+        <div>
+          <!-- Diagram -->
+          <div
+            x-ref="diagram_container"
+            x-show="!isEditing"
+            x-cloak
+            x-transition
+            class="iframe-container border"></div>
+
+          <!-- Button onderaan rechts -->
+          <div class="flex justify-end mt-1">
+            <button
+              x-show="!isEditing"
+              x-cloak
+              x-transition
+              @click="startEditing"
+              class="btn btn-sm">
+              Edit diagram
+            </button>
+          </div>
+        </div>
+
+        <div
+            x-ref="editor_container"
+            x-show="isEditing" x-cloak x-transition
+            class="iframe-container"></div>
+    </div>
+</template>

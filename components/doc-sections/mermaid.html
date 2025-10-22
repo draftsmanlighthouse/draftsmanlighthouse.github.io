@@ -1,0 +1,30 @@
+<template x-component="mermaid">
+    <div x-data="mermaidEditor">
+        <div class="border" @click="displayDiagram">
+            <div class="flex justify-center" x-ref="diagram_viewer"></div>
+            <textarea x-show="isEditing" x-cloak x-transition
+                      x-model="currentDiagram"
+                      @keyup.debounce.2000ms="displayDiagram"
+                      class="textarea w-[95%] m-5 h-[20vh]"></textarea>
+        </div>
+        <!-- Button onderaan rechts -->
+        <div class="flex justify-end mt-1">
+            <button
+                    x-show="!isEditing"
+                    x-cloak
+                    x-transition
+                    @click="isEditing = true"
+                    class="btn btn-sm">
+                Edit diagram
+            </button>
+            <button
+                    x-show="isEditing"
+                    x-cloak
+                    x-transition
+                    @click="isEditing = false"
+                    class="btn btn-sm">
+                Close editor
+            </button>
+        </div>
+    </div>
+</template>

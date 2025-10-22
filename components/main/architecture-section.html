@@ -1,0 +1,64 @@
+<template x-component="architecture-section">
+    <div class="m-5"
+         x-show="navigation == 'architecture'" x-cloak x-transition>
+
+        <div x-show="active_tab == 'decisions'" x-cloak x-transition
+             class="grid grid-cols-12 mt-5 gap-5">
+            <div class="col-span-11">
+                <table class="table table-pin-rows">
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Summary</th>
+                    </tr>
+                    <template
+                            x-for="decision in Object.values(documents).filter(x => x.type == 'DD' || x.type == 'ADR')" :key="decision.id">
+                        <tr>
+                            <th x-text="decision.sequence_number"></th>
+                            <td x-text="decision.title"></td>
+                            <td>
+                                <div x-show="decision.type == 'DD'" x-cloak x-transition
+                                     class="badge badge-outline badge-info">Design Decision
+                                </div>
+                                <div x-show="decision.type == 'ADR'" x-cloak x-transition
+                                     class="badge badge-outline badge-primary">Architecture Decision Record
+                                </div>
+                            </td>
+                            <td>
+                                <div x-show="decision.status == 'decided'" x-cloak x-transition
+                                     class="badge badge-success">decided
+                                </div>
+                                <div x-show="decision.status == 'rejected'" x-cloak x-transition
+                                     class="badge badge-error">rejected
+                                </div>
+                                <div x-show="decision.status == 'draft'" x-cloak x-transition
+                                     class="badge badge-neutral">draft
+                                </div>
+                                <div x-show="decision.status == 'review'" x-cloak x-transition
+                                     class="badge badge-warning">decided
+                                </div>
+                            </td>
+                            <td>
+                                <div
+                                x-data="{content: '', readonly: true}"
+                                x-init="content = decision.decision ? decision.decision : 'short summary of **problem** and **decision**'"
+                                x-import="doc-sections/markdown">
+                            <ui-markdown></ui-markdown>
+                        </div>
+                            </td>
+                            <td>
+                                    <a class="btn btn-ghost btn-xs"
+                                            :href="'#' + decision.id">
+                                        go to
+                                    </a>
+                                </td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</template>

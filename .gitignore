@@ -1,3 +1,5 @@
 
 /.idea
 /js/tp/venv
+.DS_Store
+/node_modules

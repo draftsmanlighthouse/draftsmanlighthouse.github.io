@@ -1,0 +1,36 @@
+<template x-component="design-decision-header">
+    <template x-if="'type' in current && current.type == 'DD'">
+        <div>
+            <input class="text-6xl" type="text" x-model="current.title" placeholder="Pitch Title"/>
+            <table class="table">
+                <tr>
+                    <th>Status</th>
+                    <td
+                            x-data="{status: {'draft':'select-primary', 'review': 'select-warning', 'decided': 'select-success', 'rejected': 'select-error'}}">
+                        <select x-model="current.status"
+                                :class="status[current.status]"
+                                class="select select-xs">
+                            <option>draft</option>
+                            <option>review</option>
+                            <option>decided</option>
+                            <option>rejected</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Summary</th>
+                    <td>
+                        <div
+                                x-data="{content: ''}"
+                                x-init="content = current.decision ? current.decision : 'short summary of **problem** and **decision**'"
+                                x-effect="current.decision = content"
+                                x-import="doc-sections/markdown">
+                            <ui-markdown></ui-markdown>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <hr class="mb-10">
+        </div>
+    </template>
+</template>
