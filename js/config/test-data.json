@@ -1,78 +1,211 @@
 {
-  "2a33d267-d8b3-491b-8cb8-068a64f78f09": {
-    "id": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
-    "type": "pitch",
-    "status": "draft",
-    "authors": [
-      "",
-      "Bo"
-    ],
-    "title": "Test",
-    "sections": [
-      {
-        "type": "markdown",
-        "body": "# Welcome to Markdown Editor\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      },
-      {
-        "id": "0e27c584-345d-4624-bc68-ee41465f30db",
-        "type": "mermaid",
-        "body": "graph TD\n    A[Start] --> B{Is it working?}\n    B -->|Yes| C[Great!]\n    B -->|No| D[Debug] \n    D --> B\n    C --> E[End]\n    E --> F[Message] "
-      },
-      {
-        "id": "01c8fc1f-68de-4974-a0af-fbb899fbc8b6",
-        "type": "drawio",
-        "body": "<mxfile host=\"embed.diagrams.net\" agent=\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36\" version=\"28.2.7\">\n  <diagram id=\"aNnxvBOAiLU_tzA9UP85\" name=\"Page-1\">\n    <mxGraphModel dx=\"493\" dy=\"466\" grid=\"1\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"827\" pageHeight=\"1169\" math=\"0\" shadow=\"0\">\n      <root>\n        <mxCell id=\"0\" />\n        <mxCell id=\"1\" parent=\"0\" />\n        <mxCell id=\"2\" value=\"\" style=\"shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;sketch=1;curveFitting=1;jiggle=2;\" vertex=\"1\" parent=\"1\">\n          <mxGeometry x=\"230\" y=\"210\" width=\"60\" height=\"80\" as=\"geometry\" />\n        </mxCell>\n      </root>\n    </mxGraphModel>\n  </diagram>\n</mxfile>\n"
-      },
-      {
-        "id": "ca7e3a6e-ed1a-4f08-a7c5-42ec0f4cc85d",
-        "type": "chart",
-        "body": {
-          "labels": [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June"
-          ],
-          "datasets": [
-            {
-              "label": "Sales 2024",
-              "data": [
-                10,
-                59,
-                80,
-                81,
-                56,
-                55
-              ]
+    "Draftsman": {
+        "name": "Draftsman",
+        "documents": {
+            "about": {
+                "id": "about",
+                "createdAt": "2025-10-21T20:25:01.093Z",
+                "type": "organisation",
+                "authors": [
+                    "Bo"
+                ],
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Draftsman\n\n About this organisation..."
+                    }
+                ]
+            },
+            "2a33d267-d8b3-491b-8cb8-068a64f78f09": {
+                "id": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
+                "type": "pitch",
+                "status": "inprogress",
+                "authors": [
+                    "",
+                    "Bo"
+                ],
+                "title": "Test",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    },
+                    {
+                        "id": "0e27c584-345d-4624-bc68-ee41465f30db",
+                        "type": "mermaid",
+                        "body": "graph TD\n    A[Start] --> B{Is it working?}\n    B -->|Yes| C[Great!]\n    B -->|No| D[Debug] \n    D --> B\n    C --> E[End]\n    E --> F[Message] "
+                    },
+                    {
+                        "id": "01c8fc1f-68de-4974-a0af-fbb899fbc8b6",
+                        "type": "drawio",
+                        "body": "<mxfile host=\"embed.diagrams.net\" agent=\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36\" version=\"28.2.7\">\n  <diagram id=\"aNnxvBOAiLU_tzA9UP85\" name=\"Page-1\">\n    <mxGraphModel dx=\"493\" dy=\"466\" grid=\"1\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"827\" pageHeight=\"1169\" math=\"0\" shadow=\"0\">\n      <root>\n        <mxCell id=\"0\" />\n        <mxCell id=\"1\" parent=\"0\" />\n        <mxCell id=\"2\" value=\"\" style=\"shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;sketch=1;curveFitting=1;jiggle=2;\" vertex=\"1\" parent=\"1\">\n          <mxGeometry x=\"230\" y=\"210\" width=\"60\" height=\"80\" as=\"geometry\" />\n        </mxCell>\n      </root>\n    </mxGraphModel>\n  </diagram>\n</mxfile>\n"
+                    },
+                    {
+                        "id": "ca7e3a6e-ed1a-4f08-a7c5-42ec0f4cc85d",
+                        "type": "chart",
+                        "body": {
+                            "labels": [
+                                "January",
+                                "February",
+                                "March",
+                                "April",
+                                "May",
+                                "June"
+                            ],
+                            "datasets": [
+                                {
+                                    "label": "Sales 2024",
+                                    "data": [
+                                        10,
+                                        59,
+                                        80,
+                                        81,
+                                        56,
+                                        55
+                                    ]
+                                }
+                            ]
+                        },
+                        "chart_type": "line",
+                        "view_mode": "table"
+                    }
+                ],
+                "attributes": {
+                    "appetite": 6,
+                    "deadline": "2025-12-02"
+                },
+                "updatedAt": "2025-10-21T21:59:35.285Z"
+            },
+            "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
+                "id": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
+                "type": "pitch",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Dummy",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "attributes": {
+                    "appetite": "6"
+                },
+                "updatedAt": "2025-10-21T20:54:43.504Z"
+            },
+            "bf54bfca-3bd8-4b41-9e84-4dd0671bf986": {
+                "id": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "createdAt": "2025-10-21T20:26:13.288Z",
+                "parent": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
+                "type": "scope",
+                "status": "active",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "My scope",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "attributes": {
+                    "progress": 0
+                },
+                "updatedAt": "2025-10-22T07:30:20.715Z",
+                "prio": 0
+            },
+            "f7031fcf-142e-4ed2-bf1a-92a192da5f93": {
+                "id": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
+                "sequence_number": 1,
+                "createdAt": "2025-10-21T20:26:24.078Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 1",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "prio": "2",
+                "updatedAt": "2025-10-21T22:53:10.633Z",
+                "decision": "short summary of **problem** and **decision**"
+            },
+            "828abd1a-5c71-471d-805c-eb546af627e4": {
+                "id": "828abd1a-5c71-471d-805c-eb546af627e4",
+                "sequence_number": 2,
+                "createdAt": "2025-10-21T21:00:37.700Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 2",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "prio": 0,
+                "updatedAt": "2025-10-21T22:11:00.395Z",
+                "decision": "short summary of **problem** and **decision**"
+            },
+            "ce23a798-b45c-4688-890f-6fa61f13392b": {
+                "id": "ce23a798-b45c-4688-890f-6fa61f13392b",
+                "sequence_number": 3,
+                "createdAt": "2025-10-21T21:14:36.678Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 3",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": ""
+                    }
+                ],
+                "prio": "0"
+            },
+            "f59e114f-80bc-4e56-9586-b97153370d08": {
+                "id": "f59e114f-80bc-4e56-9586-b97153370d08",
+                "sequence_number": 4,
+                "createdAt": "2025-10-21T22:16:14.325Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 4",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "c9774961-6c40-45c4-b6f3-a9cb5e81e205",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "64b2c86b-0037-4701-9676-32c83ce4ac8e",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "updatedAt": "2025-10-22T07:30:18.659Z"
             }
-          ]
         },
-        "chart_type": "line",
-        "view_mode": "table"
-      }
-    ],
-    "attributes": {
-      "appetite": 6
+        "decision_index": 4
     }
-  },
-  "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
-    "id": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
-    "type": "pitch",
-    "status": "draft",
-    "authors": [
-      "Bo"
-    ],
-    "title": "Dummy",
-    "sections": [
-      {
-        "type": "markdown",
-        "body": "# Welcome to Markdown Editor\n\nType something..."
-      }
-    ],
-    "attributes": {
-      "appetite": "6"
-    }
-  }
 }

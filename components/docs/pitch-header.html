@@ -77,7 +77,7 @@
                  x-data="{hill_data: []}">
                 <div
                         x-data="hillChart(hill_data, { readonly: true })"
-                        @hillclick.window="open_document($event.detail.id)"></div>
+                        @hillclick.window="location = '#' + $event.detail.id"></div>
             </div>
             <hr class="mb-10">
         </div>

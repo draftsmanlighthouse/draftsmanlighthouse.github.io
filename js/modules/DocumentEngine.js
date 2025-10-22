@@ -291,11 +291,13 @@ document.addEventListener('alpine:init', () => {
               })
               .then(newData => {
                 // ✅ bestaande data behouden, nieuwe toevoegen of overschrijven
-                this.documents = {
-                  ...this.documents,
+                this.organisations = {
+                  ...this.organisations,
                   ...newData
                 };
-                console.log("✅ Documents updated:", this.documents);
+                console.log("✅ Data updated:", this.organisations);
+                let org = Object.keys(this.organisations)[0];
+                this.open_organisation(org);
               })
               .catch(err => {
                 console.error("❌ Failed to load test data:", err);

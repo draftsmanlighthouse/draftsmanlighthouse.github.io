@@ -16,7 +16,7 @@
                                     <template
                                             x-if="document.type == 'pitch' && ['draft','rejected'].includes(document.status)">
                                         <li><a :class="document.id == navigation ? 'bg-neutral text-white' : ''"
-                                               @click="open_document(document.id)" :data-name="document.id">
+                                               @click="location = '#' + document.id" :data-name="document.id">
                                             <i class="fa-regular fa-lightbulb"></i> <span
                                                 x-text="document.title"></span>
                                         </a></li>
@@ -40,7 +40,7 @@
                                     <template
                                             x-if="document.type == 'pitch' && ['proposed','queued'].includes(document.status)">
                                         <li><a :class="document.id == navigation ? 'bg-neutral text-white' : ''"
-                                               @click="open_document(document.id)" :data-name="document.id">
+                                               @click="location = '#' + document.id" :data-name="document.id">
                                             <i class="fa-regular fa-lightbulb"></i>&nbsp;
                                             <span x-text="document.title"></span>
                                             <div x-show="document.status == 'proposed'" x-cloak x-transition
@@ -70,7 +70,7 @@
                     <template x-for="document in documents">
                         <template x-if="document.type == 'pitch' && ['accepted'].includes(document.status)">
                             <li><a :class="document.id == navigation ? 'bg-neutral text-white' : ''"
-                                   @click="open_document(document.id)" :data-name="document.id">
+                                   @click="location = '#' + document.id" :data-name="document.id">
                                 <i class="fa-regular fa-lightbulb"></i>&nbsp;
                                 <span x-text="document.title"></span>
                                 <div x-show="document.status == 'accepted'" x-cloak x-transition
@@ -86,7 +86,7 @@
                                     <summary x-text="document.title"></summary>
                                     <ul>
                                         <li><a :class="document.id == navigation ? 'bg-neutral text-white' : ''"
-                                               @click="open_document(document.id)" :data-name="document.id">
+                                               @click="location = '#' + document.id" :data-name="document.id">
                                             <i class="fa-regular fa-lightbulb"></i>&nbsp;
                                             Pitch
                                         </a></li>
@@ -99,7 +99,7 @@
                                                                 x-if="sub.parent == document.id && sub.type == 'scope'">
                                                             <li>
                                                                 <a :class="sub.id == navigation ? 'bg-neutral text-white' : ''"
-                                                                   @click="open_document(sub.id)" :data-name="sub.id">
+                                                                   @click="location = '#' + sub.id" :data-name="sub.id">
                                                                     <i class="fa-solid fa-list-check"></i>
                                                                     <span x-text="sub.title"></span>
                                                                 </a></li>
