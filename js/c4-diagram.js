@@ -104,11 +104,71 @@ class C4Diagram {
             'text-background-opacity': 0.8,
             'text-background-padding': '3px'
           }
+        },
+        {
+          selector: 'node.highlighted',
+          style: {
+            'border-width': 4,
+            'border-color': '#3b82f6', // Tailwind blue-500
+            'border-opacity': 1,
+            'shadow-blur': 20,
+            'shadow-color': '#3b82f6',
+            'shadow-opacity': 0.5
+          }
+        },
+        {
+          selector: '$node > node',
+          style: {
+            'shape': 'roundrectangle',
+            'background-color': 'transparent',
+            'background-opacity': 0,
+            'background-image': null,
+            'border-width': 2,
+            'border-opacity': 1,
+            'padding': '25px',
+            'label': 'data(label)',
+            'font-size': 16,
+            'font-weight': 'bold',
+            'color': '#4A90E2',
+            'text-valign': 'bottom',       // label onderin
+            'text-halign': 'center',         // label links
+            'text-margin-y': '-18px',      // negatief = label omhoog in container
+            'min-width': 150,
+            'min-height': 100,
+            'compound-sizing-wrt-labels': 'include',
+            'z-compound-depth': 'bottom'
+          }
+        },
+        {
+          selector: 'node[?parent]', // child nodes
+          style: {
+            'compound-sizing-wrt-labels': 'exclude',
+          }
         }
       ],
       layout: { name: 'cose', padding: 60 }
     });
+    this.cy.on('tap', 'node', (evt) => {
+      const node = evt.target;
 
+      if (node.hasClass('highlighted')) {
+        // tweede klik op dezelfde node → deselect
+        node.removeClass('highlighted');
+      } else {
+        // andere klik → deselecteer alles en selecteer nieuwe
+        this.cy.nodes().removeClass('highlighted');
+        node.addClass('highlighted');
+      }
+
+      // Event uitsturen voor Alpine of andere listeners
+      const detail = {
+        id: node.id(),
+        label: node.data('label'),
+        type: node.data('type'),
+        selected: node.hasClass('highlighted') // handig om mee te geven
+      };
+      window.dispatchEvent(new CustomEvent('c4-node-clicked', { detail }));
+    });
     return this.cy;
   }
 }

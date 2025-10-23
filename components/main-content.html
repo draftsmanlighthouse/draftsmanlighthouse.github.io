@@ -1,5 +1,5 @@
 <template x-component="main-content">
-    <div x-data="{active_tab: 'document'}"
+    <div x-data="{active_tab: 'document', level: $persist('enterprise'), selected: null}"
          x-init="active_tab = sessionStorage.getItem(navigation) ? sessionStorage.getItem(navigation) : 'document'"
          x-effect="active_tab = sessionStorage.getItem(navigation) ? sessionStorage.getItem(navigation) : 'document'"
          x-import="main/header;main/body">

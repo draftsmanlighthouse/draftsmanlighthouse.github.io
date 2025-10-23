@@ -1,14 +1,15 @@
 <template x-component="architecture-section">
     <div class="m-5"
-         x-data="{level: $persist('enterprise')}"
          x-show="navigation == 'architecture'" x-cloak x-transition>
 
         <div x-show="active_tab == 'C4'" x-cloak x-transition
              x-data="C4Diagram"
              class="mt-5">
             <template x-if="active_tab == 'C4'">
-                <div x-init="draw(level,c4_data)">
+                <div x-init="draw(level,c4_data)" @redraw.window="draw(level,c4_data)">
                     <div id="c4" class="w-full h-[90vh]"></div>
+                    <div @c4-node-clicked.window="selected = $event.detail">
+                    </div>
                 </div>
             </template>
         </div>
@@ -16,23 +17,24 @@
         <div x-show="active_tab == 'principles'" x-cloak x-transition class="mt-5">
 
             <template x-if="level == 'enterprise'">
-                <template x-for="principle in Object.values(documents).filter(x => x.type == 'principle' && x.scope == 'enterprise')"
-                          :key="principle.id">
+                <template
+                        x-for="principle in Object.values(documents).filter(x => x.type == 'principle' && x.scope == 'enterprise')"
+                        :key="principle.id">
                     <div class="collapse collapse-arrow bg-base-100 border border-base-300 mb-2">
-                      <input type="radio" name="principles" />
-                      <div class="collapse-title font-semibold" x-text="principle.title"></div>
-                      <div class="collapse-content text-sm">
-                        <div
-                                x-data="{content: '', readonly: true}"
-                                x-init="content = principle.principle ? principle.principle : PRINCIPLE"
-                                x-import="doc-sections/markdown">
-                            <ui-markdown></ui-markdown>
+                        <input type="radio" name="principles"/>
+                        <div class="collapse-title font-semibold" x-text="principle.title"></div>
+                        <div class="collapse-content text-sm">
+                            <div
+                                    x-data="{content: '', readonly: true}"
+                                    x-init="content = principle.principle ? principle.principle : PRINCIPLE"
+                                    x-import="doc-sections/markdown">
+                                <ui-markdown></ui-markdown>
+                            </div>
+                            <a class="btn btn-outline btn-primary btn-sm mt-5"
+                               :href="'#' + principle.id">
+                                Open
+                            </a>
                         </div>
-                        <a class="btn btn-outline btn-primary btn-sm mt-5"
-                                :href="'#' + principle.id">
-                            Open
-                        </a>
-                      </div>
                     </div>
                 </template>
             </template>
@@ -51,16 +53,18 @@
                         <th>Summary</th>
                     </tr>
                     <template
-                            x-for="decision in Object.values(documents).filter(x => x.type == 'DD' || x.type == 'ADR')" :key="decision.id">
+                            x-for="decision in Object.values(documents).filter(x => x.type == 'DD' || x.type == 'ADR')"
+                            :key="decision.id">
                         <tr>
                             <th x-text="decision.sequence_number"></th>
                             <td x-text="decision.title"></td>
                             <td>
                                 <div x-show="decision.type == 'DD'" x-cloak x-transition
-                                     class="badge badge-outline badge-info">Design Decision
+                                     class="badge badge-outline badge-info whitespace-nowrap">Design Decision
                                 </div>
                                 <div x-show="decision.type == 'ADR'" x-cloak x-transition
-                                     class="badge badge-outline badge-primary">Architecture Decision Record
+                                     class="badge badge-outline badge-primary whitespace-nowrap">Architecture Decision
+                                    Record
                                 </div>
                             </td>
                             <td>
@@ -86,11 +90,11 @@
                                 </div>
                             </td>
                             <td>
-                                    <a class="btn btn-ghost btn-xs"
-                                            :href="'#' + decision.id">
-                                        go to
-                                    </a>
-                                </td>
+                                <a class="btn btn-ghost btn-xs"
+                                   :href="'#' + decision.id">
+                                    go to
+                                </a>
+                            </td>
                         </tr>
                     </template>
                 </table>

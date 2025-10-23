@@ -190,14 +190,13 @@ document.addEventListener('alpine:init', () => {
             const id = crypto.randomUUID();
             this.documents[id] = {
                 id: id,
-                sequence_number: this.organisation.decision_index,
                 createdAt: new Date(),
                 parent: parent,
                 type: "principle",
                 scope: "enterprise",
                 status: "draft",
                 authors: [this.author],
-                title: "EAP 1: summary",
+                title: "EAP #: summary",
                 principle: PRINCIPLE,
                 sections: []
             };
@@ -305,17 +304,30 @@ document.addEventListener('alpine:init', () => {
             this.dashboard_data["hillchart"] = data;
 
             // C4 components
-            let arch = {};
+            let arch = {
+                components: {},
+                edges: [],
+            };
             Object.values(documents).filter(doc => doc.type == 'DD' || doc.type == "ADR").filter(doc => doc.effect).forEach(doc => {
                 let effect = doc.effect;
                 if (effect.action == "introduces new"){
                     if (effect.level == "system"){
-                        arch[effect.system_name] = {
+                        arch.components[effect.system_name] = {
                             scope: effect.scope,
                             description: effect.description,
                             technology: effect.technology
                         }
                     }
+                    if (effect.level == "component"){
+                        arch.components[effect.scope + ":" + effect.system_name] = {
+                            name: effect.system_name,
+                            type: effect.type,
+                            description: effect.description,
+                            technology: effect.technology
+                        }
+                    }
+                } else if (effect.action == "link two components"){
+                    arch.edges.push(effect);
                 }
             });
             if (JSON.stringify(arch) != JSON.stringify(this.c4_data)){

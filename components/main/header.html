@@ -13,6 +13,20 @@
 
         <div x-show="navigation == 'architecture'" x-cloak x-transition
              x-effect="if(navigation == 'architecture' && active_tab == 'document'){active_tab = 'decisions'}">
+            <div x-show="active_tab == 'C4'" class="tooltip tooltip-bottom" data-tip="Fit to screen">
+                <button @click="$dispatch('redraw')" class="btn btn-circle btn-outline btn-neutral btn-sm ml-5">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+            </div>
+
+            <button @click="level = level.split(':').slice(0,-1).join(':');location.reload()"
+                    x-show="level.includes(':')" x-cloak x-transition
+                    class="btn btn-sm m-2 btn-primary btn-outline"><span x-text="level.split(':').slice(0,-1).join(':')"></span> <i class="fa-solid fa-angles-up"></i>
+            </button>
+            <button @click="level += ':' + selected.label;location.reload()"
+                    x-show="selected && selected.selected" x-cloak x-transition
+                    class="btn btn-sm m-2 btn-primary"><span x-text="selected.label"></span> <i class="fa-solid fa-angles-down"></i>
+            </button>
             <button @click="active_tab = 'C4';sessionStorage.setItem(navigation,active_tab)"
                     :class="active_tab == 'C4' ? 'btn-neutral' : 'btn-neutral btn-outline'"
                     class="btn btn-sm m-2">Diagram
