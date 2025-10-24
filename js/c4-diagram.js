@@ -71,6 +71,10 @@ class C4Diagram {
     }
 
   async render() {
+    if (this.elements.length == 0){
+        document.getElementById(this.containerId).innerHTML = `<img class="max-h-[80vh]" src="/assets/no-data.png" />`;
+        return;
+    }
     this.cy = cytoscape({
       container: document.getElementById(this.containerId),
       elements: this.elements,
@@ -129,6 +133,7 @@ class C4Diagram {
             'label': 'data(label)',
             'font-size': 16,
             'font-weight': 'bold',
+            'border-color': '#4A90E2',
             'color': '#4A90E2',
             'text-valign': 'bottom',       // label onderin
             'text-halign': 'center',         // label links

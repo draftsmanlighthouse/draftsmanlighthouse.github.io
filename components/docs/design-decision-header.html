@@ -104,6 +104,7 @@
                                     <select x-model="current.effect.level" class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
                                         <option>system</option>
+                                        <option>container</option>
                                         <option>component</option>
                                     </select>
                                 </td>
@@ -118,18 +119,29 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr x-show="current.effect.level == 'component'" x-cloak x-transition>
+                            <tr x-show="current.effect.level == 'container'" x-cloak x-transition>
                                 <th>Scope</th>
                                 <td>
                                     <select x-model="current.effect.scope" class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
-                                        <template x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length < 2)" :key="parent">
+                                        <template x-for="parent in Object.entries(c4_data.components).filter(([key, value]) => key.split(':').length == 1 && value.scope === 'internal' ).map(([key]) => key)" :key="parent">
                                             <option x-text="parent" :value="parent" :selected="parent == current.effect.scope"></option>
                                         </template>
                                     </select>
                                 </td>
                             </tr>
                             <tr x-show="current.effect.level == 'component'" x-cloak x-transition>
+                                <th>Scope</th>
+                                <td>
+                                    <select x-model="current.effect.scope" class="select select-primary select-xs w-[50%]">
+                                        <option disabled></option>
+                                        <template x-for="parent in Object.entries(c4_data.components).filter(([key, value]) => key.split(':').length == 2 ).map(([key]) => key)" :key="parent">
+                                            <option x-text="parent" :value="parent" :selected="parent == current.effect.scope"></option>
+                                        </template>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr x-show="current.effect.level == 'container'" x-cloak x-transition>
                                 <th>Type</th>
                                 <td>
                                     <select x-model="current.effect.type" class="select select-primary select-xs w-[50%]">
@@ -143,14 +155,28 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr x-show="current.effect.action == 'introduces new'" x-cloak x-transition>
+                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'system'" x-cloak x-transition>
                                 <th>System Name</th>
                                 <td>
                                     <input x-model="current.effect.system_name" type="text" placeholder="Primary"
                                            class="input input-primary input-xs w-[50%]" />
                                 </td>
                             </tr>
-                            <tr x-show="current.effect.action == 'introduces new' && (current.effect.scope == 'internal' || current.effect.level == 'component')" x-cloak x-transition>
+                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'container'" x-cloak x-transition>
+                                <th>Container Name</th>
+                                <td>
+                                    <input x-model="current.effect.system_name" type="text" placeholder="Primary"
+                                           class="input input-primary input-xs w-[50%]" />
+                                </td>
+                            </tr>
+                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'component'" x-cloak x-transition>
+                                <th>Component Name</th>
+                                <td>
+                                    <input x-model="current.effect.system_name" type="text" placeholder="Primary"
+                                           class="input input-primary input-xs w-[50%]" />
+                                </td>
+                            </tr>
+                            <tr x-show="current.effect.action == 'introduces new' && (current.effect.scope == 'internal' || current.effect.level == 'container' || current.effect.level == 'component')" x-cloak x-transition>
                                 <th>Technology</th>
                                 <td>
                                     <input x-model="current.effect.technology" type="text" placeholder="Primary"

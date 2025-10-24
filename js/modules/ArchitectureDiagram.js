@@ -12,7 +12,9 @@ document.addEventListener('alpine:init', () => {
                   // en met async funcs om te gaan?
                   // TODO: Er voor zorgen dat systeem/component namen geen : bevatten. Want dat heeft betekenis in ons model.
                   let stash = {};
+                  let history = {};
                   for (const [key, value] of Object.entries(data.components)) {
+                    history[key] = value;
                     if (level == "enterprise" && !key.includes(":") && value.scope == "internal"){
                         let component = await diagram.add_element('internal_component', key, value.description, value.technology);
                         components[key] = component;
@@ -29,32 +31,84 @@ document.addEventListener('alpine:init', () => {
                         if (!key.startsWith(parent_name + ":")){
                             continue;
                         }
+                        if (key.split(":").length == 3){
+                            continue;
+                        }
                         if (!Object.hasOwn(parents, parent_name)) {
                           parents[parent_name] = await diagram.add_element('internal_component', parent_name);
                         }
                         let child = await parents[parent_name].add_child(value.type, value.name, value.description, value.technology)
                         components[parent_name + ":" + value.name] = child;
                     }
-                  }
-                  for (const edge of data.edges) {
-                    if (edge.source in components && (edge.target in components || edge.target in stash)){
-                        if (!(edge.target in components)){
-                            let component = await diagram.add_element('external_service', edge.target, stash[edge.target].description, stash[edge.target].technology);
-                            components[edge.target] = component;
+                    if (level.split(':').length === 3) {
+                        let grandparent_name = level.split(':').at(1);
+                        let parent_name = level.split(':').slice(1).join(":");
+                        if (!key.startsWith(parent_name + ":")){
+                            continue;
                         }
+                        if (!Object.hasOwn(parents, grandparent_name)) {
+                          parents[grandparent_name] = await diagram.add_element('internal_component', grandparent_name);
+                        }
+                        if (!Object.hasOwn(parents, parent_name)) {
+                            parents[parent_name] = await parents[grandparent_name].add_child('internal_component', parent_name.split(":")[1]);
+                        }
+                        let child = await parents[parent_name].add_child('internal_component', value.name, value.description, value.technology)
+                        components[parent_name + ":" + value.name] = child;
+                    }
+                  }
+                  let edges = data.edges.filter(x => x.source in components || x.target in components);
+                  for (const edge of edges) {
+                    if (edge.source in components && edge.target in components){
                         diagram.add_relation(components[edge.source], components[edge.target], edge.label, "LR");
                     } else if (level == "enterprise" && edge.source.split(":").at(0) in components && edge.target.split(":").at(0) in components){
                         diagram.add_relation(components[edge.source.split(":").at(0)], components[edge.target.split(":").at(0)], edge.label, "LR");
+                    } else {
+                        if (!(edge.target in components)){
+                            let grandparent = edge.target.split(":")[0]
+                            let parent = edge.target.split(":").slice(0,2).join(":");
+                            if (parent in components){
+                                diagram.add_relation(components[edge.source], components[parent], edge.label, "LR");
+                            } else if (grandparent in components || grandparent in parents){
+                                let target = grandparent in components ? components[grandparent] : parents[grandparent]
+                                let el_type = 'type' in history[parent] ? history[parent].type : history[parent].scope == 'external' ? 'external_service' : 'internal_component';
+                                components[parent] = await target.add_child(el_type,history[parent].name,history[parent].description,history[parent].technology);
+                                diagram.add_relation(components[edge.source], components[parent], edge.label, "LR");
+                            } else {
+                                let el_type = 'type' in history[parent] ? history[parent].type : history[parent].scope == 'external' ? 'external_service' : 'internal_component';
+                                components[grandparent] = await diagram.add_element(el_type,grandparent,history[grandparent].description,history[grandparent].technology);
+                                diagram.add_relation(components[edge.source], components[grandparent], edge.label, "LR");
+                            }
+                        } else {
+                            let grandparent = edge.source.split(":")[0]
+                            let parent = edge.source.split(":").slice(0,2).join(":");
+                            if (parent in components){
+                                diagram.add_relation(components[edge.source], components[parent], edge.label, "LR");
+                            } else if (grandparent in components || grandparent in parents){
+                                let target = grandparent in components ? components[grandparent] : parents[grandparent]
+                                let el_type = 'type' in history[parent] ? history[parent].type : history[parent].scope == 'external' ? 'external_service' : 'internal_component';
+                                components[parent] = await target.add_child(el_type,history[parent].name,history[parent].description,history[parent].technology);
+                                diagram.add_relation(components[parent], components[edge.target], edge.label, "LR");
+                            } else {
+                                let el_type = 'type' in history[parent] ? history[parent].type : history[parent].scope == 'external' ? 'external_service' : 'internal_component';
+                                components[grandparent] = await diagram.add_element(el_type,grandparent,history[grandparent].description,history[grandparent].technology);
+                                diagram.add_relation(components[grandparent], components[edge.target], edge.label, "LR");
+                            }
+                        }
                     }
+
+
+//                    if (edge.source in components && (edge.target in components || edge.target in stash)){
+//                        if (!(edge.target in components)){
+//                            let component = await diagram.add_element('external_service', edge.target, stash[edge.target].description, stash[edge.target].technology);
+//                            components[edge.target] = component;
+//                        }
+//                        diagram.add_relation(components[edge.source], components[edge.target], edge.label, "LR");
+//                    } else if (level == "enterprise" && edge.source.split(":").at(0) in components && edge.target.split(":").at(0) in components){
+//                        diagram.add_relation(components[edge.source.split(":").at(0)], components[edge.target.split(":").at(0)], edge.label, "LR");
+//                    } else {
+//                        console.log(edge);
+//                    }
                   }
-//                  const person = await diagram.add_element('person_internal', 'User', 'Internal user');
-//                  const frontend = await diagram.add_element('web_container', 'Frontend', 'React UI', 'Next.js');
-//                  const backend = await diagram.add_element('internal_component', 'API Server', 'Node.js');
-//                  const db = await diagram.add_element('database', 'Orders DB', 'PostgreSQL');
-//
-//                  diagram.add_relation(person, frontend, 'uses', "LR");
-//                  diagram.add_relation(frontend, backend, 'calls',"LR");
-//                  diagram.add_relation(backend, db, 'reads/writes', "TB");
                   console.log(diagram)
                   await diagram.render();
                 })();

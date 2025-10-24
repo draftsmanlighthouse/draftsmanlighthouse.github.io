@@ -318,10 +318,17 @@ document.addEventListener('alpine:init', () => {
                             technology: effect.technology
                         }
                     }
-                    if (effect.level == "component"){
+                    if (effect.level == "container"){
                         arch.components[effect.scope + ":" + effect.system_name] = {
                             name: effect.system_name,
                             type: effect.type,
+                            description: effect.description,
+                            technology: effect.technology
+                        }
+                    }
+                    if (effect.level == "component"){
+                        arch.components[effect.scope + ":" + effect.system_name] = {
+                            name: effect.system_name,
                             description: effect.description,
                             technology: effect.technology
                         }

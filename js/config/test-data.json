@@ -1,184 +1,564 @@
 {
-  "Draftsman": {
-    "name": "Draftsman",
-    "documents": {
-      "about": {
-        "id": "about",
-        "createdAt": "2025-10-21T20:25:01.093Z",
-        "type": "organisation",
-        "authors": [
-          "Bo"
-        ],
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Draftsman\n\n About this organisation..."
-          }
-        ]
-      },
-      "2a33d267-d8b3-491b-8cb8-068a64f78f09": {
-        "id": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
-        "type": "pitch",
-        "status": "inprogress",
-        "authors": [
-          "Bo"
-        ],
-        "title": "R&D",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Welcome to Markdown Editor\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-          },
-          {
-            "id": "0e27c584-345d-4624-bc68-ee41465f30db",
-            "type": "mermaid",
-            "body": "graph TD\n    A[Start] --> B{Is it working?}\n    B -->|Yes| C[Great!]\n    B -->|No| D[Debug] \n    D --> B\n    C --> E[End]\n    E --> F[Message] "
-          },
-          {
-            "id": "01c8fc1f-68de-4974-a0af-fbb899fbc8b6",
-            "type": "drawio",
-            "body": "<mxfile host=\"embed.diagrams.net\" agent=\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36\" version=\"28.2.7\">\n  <diagram id=\"aNnxvBOAiLU_tzA9UP85\" name=\"Page-1\">\n    <mxGraphModel dx=\"493\" dy=\"466\" grid=\"1\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"827\" pageHeight=\"1169\" math=\"0\" shadow=\"0\">\n      <root>\n        <mxCell id=\"0\" />\n        <mxCell id=\"1\" parent=\"0\" />\n        <mxCell id=\"2\" value=\"\" style=\"shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;sketch=1;curveFitting=1;jiggle=2;\" vertex=\"1\" parent=\"1\">\n          <mxGeometry x=\"230\" y=\"210\" width=\"60\" height=\"80\" as=\"geometry\" />\n        </mxCell>\n      </root>\n    </mxGraphModel>\n  </diagram>\n</mxfile>\n"
-          },
-          {
-            "id": "ca7e3a6e-ed1a-4f08-a7c5-42ec0f4cc85d",
-            "type": "chart",
-            "body": {
-              "labels": [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June"
-              ],
-              "datasets": [
-                {
-                  "label": "Sales 2024",
-                  "data": [
-                    10,
-                    59,
-                    80,
-                    81,
-                    56,
-                    55
-                  ]
-                }
-              ]
+    "Draftsman": {
+        "name": "Draftsman",
+        "documents": {
+            "about": {
+                "id": "about",
+                "createdAt": "2025-10-21T20:25:01.093Z",
+                "type": "organisation",
+                "authors": [
+                    "Bo"
+                ],
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Draftsman\n\n About this organisation..."
+                    }
+                ],
+                "prio": 0
             },
-            "chart_type": "line",
-            "view_mode": "table"
-          }
-        ],
-        "attributes": {
-          "appetite": 6,
-          "deadline": "2025-12-02"
+            "2a33d267-d8b3-491b-8cb8-068a64f78f09": {
+                "id": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
+                "type": "pitch",
+                "status": "inprogress",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "R&D",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    },
+                    {
+                        "id": "0e27c584-345d-4624-bc68-ee41465f30db",
+                        "type": "mermaid",
+                        "body": "graph TD\n    A[Start] --> B{Is it working?}\n    B -->|Yes| C[Great!]\n    B -->|No| D[Debug] \n    D --> B\n    C --> E[End]\n    E --> F[Message] "
+                    },
+                    {
+                        "id": "01c8fc1f-68de-4974-a0af-fbb899fbc8b6",
+                        "type": "drawio",
+                        "body": "<mxfile host=\"embed.diagrams.net\" agent=\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36\" version=\"28.2.7\">\n  <diagram id=\"aNnxvBOAiLU_tzA9UP85\" name=\"Page-1\">\n    <mxGraphModel dx=\"493\" dy=\"466\" grid=\"1\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"827\" pageHeight=\"1169\" math=\"0\" shadow=\"0\">\n      <root>\n        <mxCell id=\"0\" />\n        <mxCell id=\"1\" parent=\"0\" />\n        <mxCell id=\"2\" value=\"\" style=\"shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;sketch=1;curveFitting=1;jiggle=2;\" vertex=\"1\" parent=\"1\">\n          <mxGeometry x=\"230\" y=\"210\" width=\"60\" height=\"80\" as=\"geometry\" />\n        </mxCell>\n      </root>\n    </mxGraphModel>\n  </diagram>\n</mxfile>\n"
+                    },
+                    {
+                        "id": "ca7e3a6e-ed1a-4f08-a7c5-42ec0f4cc85d",
+                        "type": "chart",
+                        "body": {
+                            "labels": [
+                                "January",
+                                "February",
+                                "March",
+                                "April",
+                                "May",
+                                "June"
+                            ],
+                            "datasets": [
+                                {
+                                    "label": "Sales 2024",
+                                    "data": [
+                                        10,
+                                        59,
+                                        80,
+                                        81,
+                                        56,
+                                        55
+                                    ]
+                                }
+                            ]
+                        },
+                        "chart_type": "line",
+                        "view_mode": "table"
+                    }
+                ],
+                "attributes": {
+                    "appetite": 6,
+                    "deadline": "2025-12-02"
+                },
+                "updatedAt": "2025-10-21T21:59:35.285Z",
+                "prio": 0
+            },
+            "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
+                "id": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
+                "type": "pitch",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Todo",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "attributes": {
+                    "appetite": "6"
+                },
+                "updatedAt": "2025-10-21T20:54:43.504Z",
+                "prio": 0
+            },
+            "bf54bfca-3bd8-4b41-9e84-4dd0671bf986": {
+                "id": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "createdAt": "2025-10-21T20:26:13.288Z",
+                "parent": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
+                "type": "scope",
+                "status": "active",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "System setup",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "attributes": {
+                    "progress": 0
+                },
+                "updatedAt": "2025-10-22T23:07:19.843Z",
+                "prio": 0
+            },
+            "89ebb234-da99-4e5b-ae43-e2739b386925": {
+                "id": "89ebb234-da99-4e5b-ae43-e2739b386925",
+                "createdAt": "2025-10-22T18:46:38.233Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "enterprise",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "EAP 1: Functional Boundaries and Organisational Flexibility",
+                "principle": "### Statement\nTo achieve clear functional boundaries, **Draftsman products are designed as separate systems**.\n\n### Rationale\nThis separation provides **organisational flexibility**, allowing each product to evolve independently — both technically and legally.\nFor example, we can use separate legal entities (\"rechtsvormen\") for different products, enabling isolation where needed.\n\n### Implication / Acceptance\nWe accept that this design prevents us from **bundling our software** (e.g. *“pay once and access both Tracepaper and Workbench”*).\nEach product must therefore justify its own value proposition and pricing model.",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-10-22T18:47:28.356Z"
+            },
+            "a201f648-b359-4621-b45c-8ea40b4d76e3": {
+                "id": "a201f648-b359-4621-b45c-8ea40b4d76e3",
+                "createdAt": "2025-10-22T19:18:23.823Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "enterprise",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "EAP 2: We prefere serverless technologies",
+                "principle": "### Statement\nTo ensure scalability and reduce operational overhead, **we prefer serverless technologies** over self-managed infrastructure.  \nThis principle guides our architectural choices toward services that automatically scale and minimize maintenance effort.\n\n### Rationale\nServerless platforms allow teams to focus on business logic instead of infrastructure management.  \nThey support **cost efficiency**, **automatic scaling**, and **fine-grained billing**, aligning with our goal of lean, adaptive systems.  \nWhile serverless imposes vendor constraints, its benefits in speed and autonomy outweigh those trade-offs for most workloads.\n\n### Implication / Acceptance\nWe accept that this preference limits our ability to deploy in certain on-premise or multi-cloud environments.  \nTeams choosing non-serverless options must explicitly justify their decision and document how operational risks are mitigated.",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-10-22T19:21:10.023Z"
+            },
+            "f7031fcf-142e-4ed2-bf1a-92a192da5f93": {
+                "id": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
+                "sequence_number": 1,
+                "createdAt": "2025-10-21T20:26:24.078Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 1: Introduce Tracepaper",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "prio": "0",
+                "updatedAt": "2025-10-22T21:44:17.862Z",
+                "decision": "Introduce a new system in our landscape to encapsulate our vision on low-code",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "system",
+                    "scope": "internal",
+                    "system_name": "Tracepaper",
+                    "technology": "software system",
+                    "description": "Our take on low-code"
+                },
+                "precedent": "89ebb234-da99-4e5b-ae43-e2739b386925"
+            },
+            "67c1784d-7665-4d37-b010-790068e582a9": {
+                "id": "67c1784d-7665-4d37-b010-790068e582a9",
+                "sequence_number": 2,
+                "createdAt": "2025-10-22T21:03:07.473Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 2: Build a code generator",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "A code generator is the cleanest split between a conceptual model and a highly distributed runtime a.k.a. serverless, that requires a lot of IaC",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "system_name": "Build Agent",
+                    "scope": "Tracepaper",
+                    "type": "internal_component",
+                    "technology": "SAM / Python",
+                    "description": "zip file API"
+                },
+                "precedent": "a201f648-b359-4621-b45c-8ea40b4d76e3",
+                "updatedAt": "2025-10-22T22:13:36.657Z"
+            },
+            "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a": {
+                "id": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                "sequence_number": 3,
+                "createdAt": "2025-10-22T21:45:39.243Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 3: Desktop Modeler",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "1f1f6fc1-13b9-4283-8267-75b8f41ab82c",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "89776171-58da-429f-8300-86f37d378ff4",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "We build a desktop modeler, to provide the best UX",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "web_container",
+                    "system_name": "Desktop Modeler",
+                    "technology": "pywebview / alpinejs",
+                    "description": "Developer experience optimized"
+                },
+                "updatedAt": "2025-10-22T22:14:52.458Z"
+            },
+            "1c9f5c4d-e848-4191-87a2-d40bae96b150": {
+                "id": "1c9f5c4d-e848-4191-87a2-d40bae96b150",
+                "sequence_number": 4,
+                "createdAt": "2025-10-22T22:15:30.217Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 4: link modeler to agent",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "bdc4cb89-56c4-4f89-8659-b6e4ffe5aadf",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "3cd3361a-3bc8-498a-b515-bf166cebc692",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "link two components",
+                    "source": "Tracepaper:Desktop Modeler",
+                    "target": "Tracepaper:Build Agent",
+                    "label": "Sends build request"
+                },
+                "updatedAt": "2025-10-22T23:07:24.890Z"
+            },
+            "b3923e5a-a3c5-4167-831e-004915ac011f": {
+                "id": "b3923e5a-a3c5-4167-831e-004915ac011f",
+                "sequence_number": 5,
+                "createdAt": "2025-10-22T22:35:30.956Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 5: add bucket for artifact storage",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "15b82a35-eeff-4bdf-8f50-1be909d427ca",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "ed062e7c-045c-4e73-ab43-40c93b7c3989",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "Build outputs can become quit large, to big for the lambda http response. Using blob storage as dropzone bypasses this limitation.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "bucket",
+                    "system_name": "Outbox",
+                    "technology": "S3",
+                    "description": "artifact repository"
+                },
+                "updatedAt": "2025-10-22T22:39:12.159Z"
+            },
+            "4ecc5f72-b895-4048-9172-bf823f0b1b7a": {
+                "id": "4ecc5f72-b895-4048-9172-bf823f0b1b7a",
+                "sequence_number": 6,
+                "createdAt": "2025-10-22T22:42:50.477Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 6: Link build agent to outbox",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "ddd1d05b-3683-4390-bb86-f8628538434c",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "562c1e77-0fe1-4ebb-88bb-f8b48b815ea5",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "link two components",
+                    "source": "Tracepaper:Build Agent",
+                    "target": "Tracepaper:Outbox",
+                    "label": "Upload artifact"
+                },
+                "updatedAt": "2025-10-22T23:07:18.215Z"
+            },
+            "849de746-95e0-4fee-9c4a-6bd625987833": {
+                "id": "849de746-95e0-4fee-9c4a-6bd625987833",
+                "sequence_number": 7,
+                "createdAt": "2025-10-22T22:43:17.360Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 7: Link modeler to outbox",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "1f9ee6f6-9f05-4590-b0b2-9b910c95a4b7",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "98027852-e7a0-429b-bf81-4c28d1c13784",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "link two components",
+                    "source": "Tracepaper:Desktop Modeler",
+                    "target": "Tracepaper:Outbox",
+                    "label": "Download artifact"
+                },
+                "updatedAt": "2025-10-22T22:43:34.220Z"
+            },
+            "9286b792-bbd2-445a-b609-22a5758624c5": {
+                "id": "9286b792-bbd2-445a-b609-22a5758624c5",
+                "sequence_number": 8,
+                "createdAt": "2025-10-22T22:46:12.707Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 8: Add backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "3ada62b5-a5e8-468a-a5c2-5ad4efefa81d",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "34818fc1-52cd-4ac6-b015-312e2e1fba24",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "internal_component",
+                    "system_name": "License Management",
+                    "technology": "Tracepaper App",
+                    "description": "Backend"
+                },
+                "updatedAt": "2025-10-22T22:48:09.516Z"
+            },
+            "e78a618d-9cbd-4262-a3dd-177fc80a722f": {
+                "id": "e78a618d-9cbd-4262-a3dd-177fc80a722f",
+                "sequence_number": 9,
+                "createdAt": "2025-10-22T22:48:17.891Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 9: Link modeler to backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "9f06e3bb-2e47-4a04-838e-a8b4d1839567",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "72eb28f3-75c8-4245-931c-633e15f3a4b0",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "link two components",
+                    "source": "Tracepaper:Desktop Modeler",
+                    "target": "Tracepaper:License Management",
+                    "label": "Uses API"
+                },
+                "updatedAt": "2025-10-22T22:48:44.730Z"
+            },
+            "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c": {
+                "id": "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c",
+                "sequence_number": 10,
+                "createdAt": "2025-10-22T22:49:20.643Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 10: Link build agent to backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "007ff59c-6dd4-47bb-b294-4acf17d25c05",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "b3a4dfed-b27c-42cf-a97c-efc55fdf0044",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "link two components",
+                    "source": "Tracepaper:Build Agent",
+                    "target": "Tracepaper:License Management",
+                    "label": "Put build metrics"
+                },
+                "updatedAt": "2025-10-22T22:49:47.093Z"
+            },
+            "faf777f8-112d-4c6a-9e74-d95b323f68b3": {
+                "id": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
+                "sequence_number": 11,
+                "createdAt": "2025-10-22T22:50:14.324Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 11: Select Strip as payment processor",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "a0842b3f-ae8f-4a43-b6c8-f55a7fd81552",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "fe5ff8cb-160a-4f3d-80ae-6916eb3b2989",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "system",
+                    "scope": "external",
+                    "system_name": "Stripe",
+                    "description": "payment processing"
+                },
+                "updatedAt": "2025-10-22T23:00:15.049Z"
+            },
+            "4adeb822-c309-49f6-847c-6ed1d111e91d": {
+                "id": "4adeb822-c309-49f6-847c-6ed1d111e91d",
+                "sequence_number": 12,
+                "createdAt": "2025-10-22T23:00:21.306Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 12: Link backend to stripe",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "12f63087-c82b-491c-a16c-f3137fe8a2c7",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "29fb4b0a-c240-4723-b6c3-699ed25368d6",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "link two components",
+                    "source": "Tracepaper:License Management",
+                    "target": "Stripe",
+                    "label": "Register usage"
+                },
+                "updatedAt": "2025-10-22T23:06:01.318Z"
+            }
         },
-        "updatedAt": "2025-10-21T21:59:35.285Z"
-      },
-      "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
-        "id": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
-        "type": "pitch",
-        "status": "draft",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Todo",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Welcome to Markdown Editor\n\nType something..."
-          }
-        ],
-        "attributes": {
-          "appetite": "6"
-        },
-        "updatedAt": "2025-10-21T20:54:43.504Z"
-      },
-      "bf54bfca-3bd8-4b41-9e84-4dd0671bf986": {
-        "id": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "createdAt": "2025-10-21T20:26:13.288Z",
-        "parent": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
-        "type": "scope",
-        "status": "active",
-        "authors": [
-          "Bo"
-        ],
-        "title": "System setup",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Welcome to Markdown Editor\n\nType something..."
-          }
-        ],
-        "attributes": {
-          "progress": 0
-        },
-        "updatedAt": "2025-10-22T19:18:23.989Z",
-        "prio": 0
-      },
-      "89ebb234-da99-4e5b-ae43-e2739b386925": {
-        "id": "89ebb234-da99-4e5b-ae43-e2739b386925",
-        "createdAt": "2025-10-22T18:46:38.233Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "enterprise",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "EAP 1: Functional Boundaries and Organisational Flexibility",
-        "principle": "### Statement\nTo achieve clear functional boundaries, **Draftsman products are designed as separate systems**.\n\n### Rationale\nThis separation provides **organisational flexibility**, allowing each product to evolve independently — both technically and legally.\nFor example, we can use separate legal entities (\"rechtsvormen\") for different products, enabling isolation where needed.\n\n### Implication / Acceptance\nWe accept that this design prevents us from **bundling our software** (e.g. *“pay once and access both Tracepaper and Workbench”*).\nEach product must therefore justify its own value proposition and pricing model.",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-22T18:47:28.356Z"
-      },
-      "a201f648-b359-4621-b45c-8ea40b4d76e3": {
-        "id": "a201f648-b359-4621-b45c-8ea40b4d76e3",
-        "createdAt": "2025-10-22T19:18:23.823Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "enterprise",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "EAP 2: We prefere serverless technologies",
-        "principle": "### Statement\nTo ensure scalability and reduce operational overhead, **we prefer serverless technologies** over self-managed infrastructure.  \nThis principle guides our architectural choices toward services that automatically scale and minimize maintenance effort.\n\n### Rationale\nServerless platforms allow teams to focus on business logic instead of infrastructure management.  \nThey support **cost efficiency**, **automatic scaling**, and **fine-grained billing**, aligning with our goal of lean, adaptive systems.  \nWhile serverless imposes vendor constraints, its benefits in speed and autonomy outweigh those trade-offs for most workloads.\n\n### Implication / Acceptance\nWe accept that this preference limits our ability to deploy in certain on-premise or multi-cloud environments.  \nTeams choosing non-serverless options must explicitly justify their decision and document how operational risks are mitigated.",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-22T19:21:10.023Z"
-      },
-      "f7031fcf-142e-4ed2-bf1a-92a192da5f93": {
-        "id": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
-        "sequence_number": 1,
-        "createdAt": "2025-10-21T20:26:24.078Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 1: Introduce Tracepaper",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Welcome to Markdown Editor\n\nType something..."
-          }
-        ],
-        "prio": "2",
-        "updatedAt": "2025-10-22T19:10:31.185Z",
-        "decision": "Introduce a new system in our landscape to encapsulate our vision on low-code",
-        "effect": {
-          "action": "introduces new",
-          "level": "system",
-          "scope": "internal",
-          "system_name": "Tracepaper",
-          "technology": "software system",
-          "description": "Our take on low-code"
-        },
-        "precedent": "89ebb234-da99-4e5b-ae43-e2739b386925"
-      }
-    },
-    "decision_index": 1
-  }
+        "decision_index": 12
+    }
 }
