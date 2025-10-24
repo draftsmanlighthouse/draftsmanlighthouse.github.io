@@ -26,6 +26,7 @@ document.addEventListener("alpine:init", () => {
 
       container.innerHTML = "";
 
+      // SVG basis
       const svg = d3
         .select(container)
         .append("svg")
@@ -36,7 +37,24 @@ document.addEventListener("alpine:init", () => {
 
       this.svg = svg;
 
-      // hill path
+      // Tooltip
+      const tooltip = d3
+        .select(container)
+        .append("div")
+        .attr("class", "z-50")
+        .style("position", "absolute")
+        .style("pointer-events", "none")
+        .style("opacity", 0)
+        .style("transition", "opacity 0.15s ease-in-out")
+        .style("background", "var(--b1)")
+        .style("color", "var(--bc)")
+        .style("border", "1px solid var(--b2)")
+        .style("border-radius", "0.5rem")
+        .style("padding", "0.4rem 0.6rem")
+        .style("font-size", "0.75rem")
+        .style("box-shadow", "0 4px 10px rgba(0,0,0,0.1)");
+
+      // Hill pad
       const hillPts = d3.range(xMin, xMax).map((x) => ({ x, y: hillY(x) }));
       svg
         .append("path")
@@ -53,7 +71,7 @@ document.addEventListener("alpine:init", () => {
             .y((d) => d.y)
         );
 
-      // labels
+      // Labels
       const labels = [
         { x: xMid - xMid / 2, text: "Explore" },
         { x: xMid, text: "Decide" },
@@ -71,7 +89,7 @@ document.addEventListener("alpine:init", () => {
           .text(text);
       });
 
-      // points
+      // Punten
       const palette = ["#3b82f6", "#ef4444", "#10b981", "#a855f7", "#f59e0b"];
       const clampX = (x) => Math.max(xMin, Math.min(xMax, x));
       const toX = (progress) => xMin + (xMax - xMin) * (progress / 100);
@@ -102,9 +120,32 @@ document.addEventListener("alpine:init", () => {
         .attr("fill", "#111827")
         .text((d) => d.name);
 
-      // interactiviteit
+      // Tooltip events
+      groups
+        .on("mouseover", function (event, d) {
+          tooltip
+            .html(
+              `<div class="font-semibold">${d.name}</div>
+               <div class="text-xs">Progress: ${Math.round(
+                 d.progress
+               )}%</div>
+               <div x-show="'${d.name}' != ''" class="text-xs">click to open</div>`
+            )
+            .style("opacity", 1);
+        })
+        .on("mousemove", function (event) {
+          console.log(event);
+          tooltip
+            .style("left", event.clientX + 12 + "px")
+            .style("top", event.clientY + 30 + "px");
+        })
+        .on("mouseout", function () {
+          tooltip.style("opacity", 0);
+        });
+
+      // Interactiviteit
       if (this.readonly) {
-        // alleen klik-event in readonly modus
+        // Alleen klik-event
         groups.on("click", (event, d) => {
           window.dispatchEvent(
             new CustomEvent("hillclick", {
@@ -113,7 +154,7 @@ document.addEventListener("alpine:init", () => {
           );
         });
       } else {
-        // drag gedrag in edit mode
+        // Drag gedrag in edit mode
         let offsetX = 0;
 
         groups.call(

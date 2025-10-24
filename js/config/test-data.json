@@ -74,7 +74,7 @@
                     "appetite": 6,
                     "deadline": "2025-12-02"
                 },
-                "updatedAt": "2025-10-21T21:59:35.285Z",
+                "updatedAt": "2025-10-24T17:34:21.321Z",
                 "prio": 0
             },
             "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
@@ -114,9 +114,9 @@
                     }
                 ],
                 "attributes": {
-                    "progress": 0
+                    "progress": 78.75
                 },
-                "updatedAt": "2025-10-22T23:07:19.843Z",
+                "updatedAt": "2025-10-24T17:34:26.299Z",
                 "prio": 0
             },
             "89ebb234-da99-4e5b-ae43-e2739b386925": {
@@ -252,7 +252,7 @@
                     "technology": "pywebview / alpinejs",
                     "description": "Developer experience optimized"
                 },
-                "updatedAt": "2025-10-22T22:14:52.458Z"
+                "updatedAt": "2025-10-23T20:43:28.660Z"
             },
             "1c9f5c4d-e848-4191-87a2-d40bae96b150": {
                 "id": "1c9f5c4d-e848-4191-87a2-d40bae96b150",
@@ -260,7 +260,7 @@
                 "createdAt": "2025-10-22T22:15:30.217Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -282,10 +282,10 @@
                 "effect": {
                     "action": "link two components",
                     "source": "Tracepaper:Desktop Modeler",
-                    "target": "Tracepaper:Build Agent",
+                    "target": "Tracepaper:Build Agent:API",
                     "label": "Sends build request"
                 },
-                "updatedAt": "2025-10-22T23:07:24.890Z"
+                "updatedAt": "2025-10-23T21:13:58.167Z"
             },
             "b3923e5a-a3c5-4167-831e-004915ac011f": {
                 "id": "b3923e5a-a3c5-4167-831e-004915ac011f",
@@ -293,7 +293,7 @@
                 "createdAt": "2025-10-22T22:35:30.956Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -329,7 +329,7 @@
                 "createdAt": "2025-10-22T22:42:50.477Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -362,7 +362,7 @@
                 "createdAt": "2025-10-22T22:43:17.360Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -395,7 +395,7 @@
                 "createdAt": "2025-10-22T22:46:12.707Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -431,7 +431,7 @@
                 "createdAt": "2025-10-22T22:48:17.891Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -464,7 +464,7 @@
                 "createdAt": "2025-10-22T22:49:20.643Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -497,7 +497,7 @@
                 "createdAt": "2025-10-22T22:50:14.324Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -531,7 +531,7 @@
                 "createdAt": "2025-10-22T23:00:21.306Z",
                 "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
                 "type": "DD",
-                "status": "draft",
+                "status": "decided",
                 "authors": [
                     "Bo"
                 ],
@@ -556,9 +556,44 @@
                     "target": "Stripe",
                     "label": "Register usage"
                 },
-                "updatedAt": "2025-10-22T23:06:01.318Z"
+                "updatedAt": "2025-10-23T20:53:06.945Z"
+            },
+            "df4dba93-2e4c-4b69-bb84-1d4579493641": {
+                "id": "df4dba93-2e4c-4b69-bb84-1d4579493641",
+                "sequence_number": 13,
+                "createdAt": "2025-10-23T20:53:16.033Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 13: Add a zip based API to the build agent.",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "de39f1db-2fb5-4d71-a564-d7bdd74624a4",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "17738ad1-54e8-43ed-b560-79de87f3b8a0",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "component",
+                    "scope": "Tracepaper:Build Agent",
+                    "system_name": "API",
+                    "technology": "aws lambda",
+                    "description": "The entrypoint for the build agent"
+                },
+                "updatedAt": "2025-10-24T20:01:18.158Z"
             }
         },
-        "decision_index": 12
+        "decision_index": 13
     }
 }
