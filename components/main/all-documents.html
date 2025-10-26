@@ -1,0 +1,43 @@
+<template x-component="all-documents">
+    <div class="m-5" x-data="SearchEngine"
+         x-show="navigation == 'all'" x-cloak x-transition>
+
+        <input type="search" x-model="search" class="input input-primary mb-5" required placeholder="Search..." />
+
+        <div x-effect="prepare(tags)" class="grid grid-cols-6 gap-x-6 text-sm leading-relaxed">
+          <template x-for="[letter, tags] of Object.entries(groupedTags)" :key="letter">
+            <div>
+              <h3 class="font-semibold text-neutral-content underline underline-offset-2 mb-1" x-text="letter"></h3>
+              <ul class="space-y-0.5">
+                <template x-for="tag in tags" :key="tag">
+                  <li>
+                    <label class="cursor-pointer">
+                      <input type="checkbox" x-model="selectedTags" :value="tag" class="hidden" />
+                      <span
+                        class="transition-colors border-b border-transparent hover:border-primary/60"
+                        :class="selectedTags.includes(tag)
+                            ? 'text-primary underline underline-offset-2'
+                            : 'text-base-content/70 hover:text-primary'"
+                        x-text="tag"
+                      ></span>
+                    </label>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </template>
+        </div>
+
+        <table class="table">
+            <template x-for="doc in filter(documents,selectedTags,prefilter)" :key="doc.id">
+                <tr>
+                    <th x-text="doc.type"></th>
+                    <td x-text="doc.title"></td>
+                    <td>
+                        <a class="btn btn-ghost btn-sm" :href="'#' + doc.id">open</a>
+                    </td>
+                </tr>
+            </template>
+        </table>
+    </div>
+</template>

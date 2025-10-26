@@ -37,7 +37,8 @@ document.addEventListener('alpine:init', () => {
                         if (!Object.hasOwn(parents, parent_name)) {
                           parents[parent_name] = await diagram.add_element('internal_component', parent_name);
                         }
-                        let child = await parents[parent_name].add_child(value.type, value.name, value.description, value.technology)
+                        let el_type = value.type == 'internal_component' ? 'container' : value.type;
+                        let child = await parents[parent_name].add_child(el_type, value.name, value.description, value.technology)
                         components[parent_name + ":" + value.name] = child;
                     }
                     if (level.split(':').length === 3) {
@@ -52,7 +53,7 @@ document.addEventListener('alpine:init', () => {
                         if (!Object.hasOwn(parents, parent_name)) {
                             parents[parent_name] = await parents[grandparent_name].add_child('internal_component', parent_name.split(":")[1]);
                         }
-                        let child = await parents[parent_name].add_child('internal_component', value.name, value.description, value.technology)
+                        let child = await parents[parent_name].add_child('component', value.name, value.description, value.technology)
                         components[parent_name + ":" + value.name] = child;
                     }
                   }

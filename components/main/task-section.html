@@ -16,16 +16,21 @@
                                 <td x-text="sub.title"></td>
                                 <td>
                                     <div x-show="sub.type == 'DD'" x-cloak x-transition
-                                         class="badge badge-outline badge-info">Design Decision
+                                         class="badge badge-outline badge-info">DD
                                     </div>
-                                    <div x-show="sub.type == 'principle' && sub.scope == 'enterprise'" x-cloak x-transition
-                                         class="badge badge-outline badge-primary whitespace-nowrap">Enterprise Principle
+                                    <div x-show="sub.type == 'ADR'" x-cloak x-transition
+                                         class="badge badge-outline badge-warning">ADR
                                     </div>
-                                    <div x-show="sub.type == 'principle' && sub.scope == 'system'" x-cloak x-transition
-                                         class="badge badge-outline badge-secondary whitespace-nowrap">System Principle
+                                    <div x-show="sub.type == 'principle' && sub.scope == 'enterprise'" x-cloak
+                                         x-transition
+                                         class="badge badge-outline badge-primary whitespace-nowrap">EAP
                                     </div>
-                                    <div x-show="sub.type == 'principle' && sub.scope == 'component'" x-cloak x-transition
-                                         class="badge badge-outline badge-primary whitespace-nowrap">Component Principle
+                                    <div x-show="sub.type == 'principle' && sub.scope != 'enterprise' && sub.scope.split(':').length == 1" x-cloak x-transition
+                                         class="badge badge-outline badge-secondary whitespace-nowrap">SAP
+                                    </div>
+                                    <div x-show="sub.type == 'principle' && sub.scope != 'enterprise' && sub.scope.split(':').length == 2" x-cloak
+                                         x-transition
+                                         class="badge badge-outline badge-accent whitespace-nowrap">CAP
                                     </div>
                                 </td>
                                 <td x-init="sub.prio = sub.prio ? sub.prio : 0"
@@ -40,7 +45,7 @@
                                     </select>
                                 </td>
                                 <td
-                                    x-data="{status: {
+                                        x-data="{status: {
                                         'draft':'select-primary',
                                         'review': 'select-warning',
                                         'decided': 'select-success',
@@ -50,7 +55,7 @@
                                     }}">
 
                                     <template x-if="['DD','ADR'].includes(sub.type)">
-                                         <select x-model="sub.status"
+                                        <select x-model="sub.status"
                                                 :class="status[sub.status]"
                                                 class="select select-xs w-full">
                                             <option>draft</option>
@@ -61,7 +66,7 @@
                                     </template>
 
                                     <template x-if="['principle'].includes(sub.type)">
-                                         <select x-model="sub.status"
+                                        <select x-model="sub.status"
                                                 :class="status[sub.status]"
                                                 class="select select-xs w-full">
                                             <option>draft</option>
@@ -74,7 +79,7 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-ghost btn-xs"
-                                            :href="'#' + sub.id">
+                                       :href="'#' + sub.id">
                                         edit
                                     </a>
                                 </td>

@@ -1,8 +1,28 @@
 <template x-component="design-decision-header">
-    <template x-if="'type' in current && current.type == 'DD'">
+    <template x-if="'type' in current && ['DD','ADR'].includes(current.type)">
         <div>
-            <input class="text-6xl w-full" type="text" x-model="current.title" placeholder="Decision Title"/>
+            <textarea
+                    x-model="current.title"
+                    placeholder="Decision Title"
+                    class="text-6xl w-full auto-resize leading-tight"
+                    style="white-space: pre-wrap; overflow-wrap: break-word;"
+            ></textarea>
             <table class="table">
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        <div x-show="current.type == 'DD'" x-cloak x-transition
+                             class="badge badge-outline badge-info">Design Decision
+                        </div>
+                        <div x-show="current.type == 'ADR'" x-cloak x-transition
+                             class="badge badge-outline badge-warning">Architecture Decision Record
+                        </div>
+                        <button @click="toggle_decision" class="ml-5 btn btn-neutral btn-outline btn-xs">
+                            change to <span
+                                x-text="current.type == 'DD' ? 'Architecture Decision Record' : 'Design Decision'"></span>
+                        </button>
+                    </td>
+                </tr>
                 <tr>
                     <th>Status</th>
                     <td
@@ -17,18 +37,112 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
-                    <th>Summary</th>
-                    <td>
-                        <div
-                                x-data="{content: ''}"
-                                x-init="content = current.decision ? current.decision : 'short summary of **problem** and **decision**'"
-                                x-effect="current.decision = content"
-                                x-import="doc-sections/markdown">
-                            <ui-markdown></ui-markdown>
-                        </div>
-                    </td>
-                </tr>
+                <template x-if="current.type == 'DD'">
+                    <tr>
+                        <th>Summary</th>
+                        <td>
+                            <div
+                                    x-data="{content: ''}"
+                                    x-init="content = current.decision ? current.decision : 'short summary of **problem** and **decision**'"
+                                    x-effect="current.decision = content"
+                                    x-import="doc-sections/markdown">
+                                <ui-markdown></ui-markdown>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+                <template x-if="current.type == 'ADR'">
+                    <tr>
+                        <th>Y-Statement</th>
+                        <td>
+                            <table class="table table-sm w-full">
+  <tbody>
+    <tr>
+      <th class="w-1/4 align-top pt-2 text-sm text-gray-500 italic">
+        In the context of
+      </th>
+      <td>
+        <textarea
+          x-model="current.ystatement.context"
+          x-init="$nextTick(() => { $el.style.height='auto'; $el.style.height=$el.scrollHeight+'px' })"
+          x-on:input="$el.style.height='auto'; $el.style.height=$el.scrollHeight+'px'"
+          class="textarea textarea-bordered textarea-xs w-full resize-none min-h-[1.5rem]"
+          rows="1"
+        ></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <th class="align-top pt-2 text-sm text-gray-500 italic">Facing</th>
+      <td>
+        <textarea
+          x-model="current.ystatement.concern"
+          x-init="$nextTick(() => { $el.style.height='auto'; $el.style.height=$el.scrollHeight+'px' })"
+          x-on:input="$el.style.height='auto'; $el.style.height=$el.scrollHeight+'px'"
+          class="textarea textarea-bordered textarea-xs w-full resize-none min-h-[1.5rem]"
+          rows="1"
+        ></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <th class="align-top pt-2 text-sm text-gray-500 italic">We decided for</th>
+      <td>
+        <textarea
+          x-model="current.ystatement.decision"
+          x-init="$nextTick(() => { $el.style.height='auto'; $el.style.height=$el.scrollHeight+'px' })"
+          x-on:input="$el.style.height='auto'; $el.style.height=$el.scrollHeight+'px'"
+          class="textarea textarea-bordered textarea-xs w-full resize-none min-h-[1.5rem]"
+          rows="1"
+        ></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <th class="align-top pt-2 text-sm text-gray-500 italic">And discarded</th>
+      <td>
+        <textarea
+          x-model="current.ystatement.alternatives"
+          x-init="$nextTick(() => { $el.style.height='auto'; $el.style.height=$el.scrollHeight+'px' })"
+          x-on:input="$el.style.height='auto'; $el.style.height=$el.scrollHeight+'px'"
+          class="textarea textarea-bordered textarea-xs w-full resize-none min-h-[1.5rem]"
+          rows="1"
+        ></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <th class="align-top pt-2 text-sm text-gray-500 italic">To achieve</th>
+      <td>
+        <textarea
+          x-model="current.ystatement.quality"
+          x-init="$nextTick(() => { $el.style.height='auto'; $el.style.height=$el.scrollHeight+'px' })"
+          x-on:input="$el.style.height='auto'; $el.style.height=$el.scrollHeight+'px'"
+          class="textarea textarea-bordered textarea-xs w-full resize-none min-h-[1.5rem]"
+          rows="1"
+        ></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <th class="align-top pt-2 text-sm text-gray-500 italic">
+        Accepting the consequence of
+      </th>
+      <td>
+        <textarea
+          x-model="current.ystatement.consequence"
+          x-init="$nextTick(() => { $el.style.height='auto'; $el.style.height=$el.scrollHeight+'px' })"
+          x-on:input="$el.style.height='auto'; $el.style.height=$el.scrollHeight+'px'"
+          class="textarea textarea-bordered textarea-xs w-full resize-none min-h-[1.5rem]"
+          rows="1"
+        ></textarea>
+      </td>
+    </tr>
+  </tbody>
+</table>
+                        </td>
+                    </tr>
+                </template>
                 <tr>
                     <th>Precedent</th>
                     <td>
@@ -49,7 +163,8 @@
                             <tr>
                                 <th>Action</th>
                                 <td>
-                                    <select x-model="current.effect.action" class="select select-primary select-xs w-[50%]">
+                                    <select x-model="current.effect.action"
+                                            class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
                                         <option>introduces new</option>
                                         <option>link two components</option>
@@ -61,10 +176,14 @@
                             <tr x-show="current.effect.action == 'link two components'" x-cloak x-transition>
                                 <th>Active component</th>
                                 <td>
-                                    <select x-model="current.effect.source" class="select select-primary select-xs w-[50%]">
+                                    <select x-model="current.effect.source"
+                                            class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
-                                        <template x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1)" :key="parent">
-                                            <option x-text="parent" :value="parent" :selected="parent == current.effect.source"></option>
+                                        <template
+                                                x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1)"
+                                                :key="parent">
+                                            <option x-text="parent" :value="parent"
+                                                    :selected="parent == current.effect.source"></option>
                                         </template>
                                     </select>
                                 </td>
@@ -72,10 +191,14 @@
                             <tr x-show="current.effect.action == 'link two components'" x-cloak x-transition>
                                 <th>Passive component</th>
                                 <td>
-                                    <select x-model="current.effect.target" class="select select-primary select-xs w-[50%]">
+                                    <select x-model="current.effect.target"
+                                            class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
-                                        <template x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1)" :key="parent">
-                                            <option x-text="parent" :value="parent" :selected="parent == current.effect.target"></option>
+                                        <template
+                                                x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1)"
+                                                :key="parent">
+                                            <option x-text="parent" :value="parent"
+                                                    :selected="parent == current.effect.target"></option>
                                         </template>
                                         <template
                                                 x-for="([key, value]) in Object.entries(c4_data.components).filter(([_, v]) => v.scope === 'external')"
@@ -93,7 +216,7 @@
                                 <th>Label</th>
                                 <td>
                                     <input x-model="current.effect.label" type="text" placeholder="Label"
-                                           class="input input-primary input-xs w-[50%]" />
+                                           class="input input-primary input-xs w-[50%]"/>
                                 </td>
                             </tr>
 
@@ -101,7 +224,8 @@
                             <tr x-show="current.effect.action == 'introduces new'" x-cloak x-transition>
                                 <th>Level</th>
                                 <td>
-                                    <select x-model="current.effect.level" class="select select-primary select-xs w-[50%]">
+                                    <select x-model="current.effect.level"
+                                            class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
                                         <option>system</option>
                                         <option>container</option>
@@ -112,7 +236,8 @@
                             <tr x-show="current.effect.level == 'system'" x-cloak x-transition>
                                 <th>Scope</th>
                                 <td>
-                                    <select x-model="current.effect.scope" class="select select-primary select-xs w-[50%]">
+                                    <select x-model="current.effect.scope"
+                                            class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
                                         <option>internal</option>
                                         <option>external</option>
@@ -122,10 +247,14 @@
                             <tr x-show="current.effect.level == 'container'" x-cloak x-transition>
                                 <th>Scope</th>
                                 <td>
-                                    <select x-model="current.effect.scope" class="select select-primary select-xs w-[50%]">
+                                    <select x-model="current.effect.scope"
+                                            class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
-                                        <template x-for="parent in Object.entries(c4_data.components).filter(([key, value]) => key.split(':').length == 1 && value.scope === 'internal' ).map(([key]) => key)" :key="parent">
-                                            <option x-text="parent" :value="parent" :selected="parent == current.effect.scope"></option>
+                                        <template
+                                                x-for="parent in Object.entries(c4_data.components).filter(([key, value]) => key.split(':').length == 1 && value.scope === 'internal' ).map(([key]) => key)"
+                                                :key="parent">
+                                            <option x-text="parent" :value="parent"
+                                                    :selected="parent == current.effect.scope"></option>
                                         </template>
                                     </select>
                                 </td>
@@ -133,10 +262,14 @@
                             <tr x-show="current.effect.level == 'component'" x-cloak x-transition>
                                 <th>Scope</th>
                                 <td>
-                                    <select x-model="current.effect.scope" class="select select-primary select-xs w-[50%]">
+                                    <select x-model="current.effect.scope"
+                                            class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
-                                        <template x-for="parent in Object.entries(c4_data.components).filter(([key, value]) => key.split(':').length == 2 ).map(([key]) => key)" :key="parent">
-                                            <option x-text="parent" :value="parent" :selected="parent == current.effect.scope"></option>
+                                        <template
+                                                x-for="parent in Object.entries(c4_data.components).filter(([key, value]) => key.split(':').length == 2 ).map(([key]) => key)"
+                                                :key="parent">
+                                            <option x-text="parent" :value="parent"
+                                                    :selected="parent == current.effect.scope"></option>
                                         </template>
                                     </select>
                                 </td>
@@ -144,7 +277,8 @@
                             <tr x-show="current.effect.level == 'container'" x-cloak x-transition>
                                 <th>Type</th>
                                 <td>
-                                    <select x-model="current.effect.type" class="select select-primary select-xs w-[50%]">
+                                    <select x-model="current.effect.type"
+                                            class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
                                         <option>internal_component</option>
                                         <option>web_container</option>
@@ -155,42 +289,52 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'system'" x-cloak x-transition>
+                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'system'"
+                                x-cloak x-transition>
                                 <th>System Name</th>
                                 <td>
                                     <input x-model="current.effect.system_name" type="text" placeholder="Primary"
-                                           class="input input-primary input-xs w-[50%]" />
+                                           class="input input-primary input-xs w-[50%]"/>
                                 </td>
                             </tr>
-                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'container'" x-cloak x-transition>
+                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'container'"
+                                x-cloak x-transition>
                                 <th>Container Name</th>
                                 <td>
                                     <input x-model="current.effect.system_name" type="text" placeholder="Primary"
-                                           class="input input-primary input-xs w-[50%]" />
+                                           class="input input-primary input-xs w-[50%]"/>
                                 </td>
                             </tr>
-                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'component'" x-cloak x-transition>
+                            <tr x-show="current.effect.action == 'introduces new' && current.effect.level == 'component'"
+                                x-cloak x-transition>
                                 <th>Component Name</th>
                                 <td>
                                     <input x-model="current.effect.system_name" type="text" placeholder="Primary"
-                                           class="input input-primary input-xs w-[50%]" />
+                                           class="input input-primary input-xs w-[50%]"/>
                                 </td>
                             </tr>
-                            <tr x-show="current.effect.action == 'introduces new' && (current.effect.scope == 'internal' || current.effect.level == 'container' || current.effect.level == 'component')" x-cloak x-transition>
+                            <tr x-show="current.effect.action == 'introduces new' && (current.effect.scope == 'internal' || current.effect.level == 'container' || current.effect.level == 'component')"
+                                x-cloak x-transition>
                                 <th>Technology</th>
                                 <td>
                                     <input x-model="current.effect.technology" type="text" placeholder="Primary"
-                                           class="input input-primary input-xs w-[50%]" />
+                                           class="input input-primary input-xs w-[50%]"/>
                                 </td>
                             </tr>
                             <tr x-show="current.effect.action == 'introduces new'" x-cloak x-transition>
                                 <th>Short description</th>
                                 <td>
                                     <input x-model="current.effect.description" type="text" placeholder="Primary"
-                                           class="input input-primary input-xs w-[50%]" />
+                                           class="input input-primary input-xs w-[50%]"/>
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tags</th>
+                    <td x-import="doc-sections/tags">
+                        <ui-tags></ui-tags>
                     </td>
                 </tr>
             </table>

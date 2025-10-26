@@ -18,6 +18,20 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Scope</th>
+                    <td>
+                        <select x-model="current.scope"
+                                class="select select-xs">
+                            <option value="enterprise">enterprise</option>
+                            <template x-for="container in Object.keys(c4_data.components)">
+                                <template x-if="container.split(':').length != 3">
+                                    <option x-text="container"></option>
+                                </template>
+                            </template>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <th>Summary</th>
                     <td>
                         <div

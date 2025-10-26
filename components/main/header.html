@@ -24,7 +24,7 @@
                     class="btn btn-sm m-2 btn-primary btn-outline"><span x-text="level.split(':').slice(0,-1).join(':')"></span> <i class="fa-solid fa-angles-up"></i>
             </button>
             <button @click="level += ':' + selected.label;location.reload()"
-                    x-show="selected && selected.selected" x-cloak x-transition
+                    x-show="selected && selected.selected && level.split(':').length != 3" x-cloak x-transition
                     class="btn btn-sm m-2 btn-primary"><span x-text="selected.label"></span> <i class="fa-solid fa-angles-down"></i>
             </button>
             <button @click="active_tab = 'C4';sessionStorage.setItem(navigation,active_tab)"

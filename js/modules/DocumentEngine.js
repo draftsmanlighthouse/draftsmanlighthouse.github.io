@@ -9,6 +9,8 @@ document.addEventListener('alpine:init', () => {
         navigation: this.$persist("").using(sessionStorage),
         dashboard_data: {},
         c4_data: {},
+        tags: [],
+        miniSearch: null,
 
         openPath(name) {
           // zoek het element met data-name
@@ -48,8 +50,17 @@ document.addEventListener('alpine:init', () => {
                     location.reload();
                 }
             });
+            this.miniSearch = new MiniSearch({
+              fields: ['title', 'text'],
+              storeFields: ['title', 'type'],
+              searchOptions: {
+                prefix: true
+              }
+            });
             if (this.documents){
                 this.index_project(this.documents);
+                let index = Object.values(this.documents).map(doc => prepare_searchable(doc));
+                this.miniSearch.addAll(index);
             }
         },
 
@@ -100,7 +111,7 @@ document.addEventListener('alpine:init', () => {
                     this.navigation = id;
                     location.hash = "#" + id;
                 });
-            } else if (["dashboard",'architecture'].includes(id)){
+            } else if (["dashboard",'architecture','all'].includes(id)){
                 this.current = {id: "", sections: []};
                 this.navigation = id;
                 location.hash = "#" + id;
@@ -133,7 +144,8 @@ document.addEventListener('alpine:init', () => {
                 }],
                 attributes: {
                     appetite: 6
-                }
+                },
+                tags: ["pitch"]
             };
             this.open_document(id);
         },
@@ -155,7 +167,8 @@ document.addEventListener('alpine:init', () => {
                 }],
                 attributes: {
                     progress: 0
-                }
+                },
+                tags: ["scope"]
             };
             this.open_document(id);
         },
@@ -182,9 +195,29 @@ document.addEventListener('alpine:init', () => {
                     type: "markdown",
                     id: crypto.randomUUID(),
                     body: "# Decision\n\nDescribe the decision that is taken..."
-                }]
+                }],
+                tags: ["decision"]
             };
             location.reload();
+        },
+        toggle_decision(){
+            if (this.current.type == "DD"){
+                this.current.type = "ADR";
+                delete this.current.decision;
+                this.current.ystatement = {
+                  context: '',
+                  concern: '',
+                  decision: '',
+                  alternatives: '',
+                  quality: '',
+                  consequence: ''
+                }
+            } else {
+                this.current.type = "DD";
+                const y = this.current.ystatement || {};
+                this.current.decision = convert_y(y);
+                delete this.current.ystatement;
+            }
         },
         create_principle(parent){
             const id = crypto.randomUUID();
@@ -198,7 +231,8 @@ document.addEventListener('alpine:init', () => {
                 authors: [this.author],
                 title: "EAP #: summary",
                 principle: PRINCIPLE,
-                sections: []
+                sections: [],
+                tags: ["principle"]
             };
             location.reload();
         },
@@ -223,6 +257,26 @@ document.addEventListener('alpine:init', () => {
             let types = ["ADR","principle"];
             let status = ["decided","published"];
             return Object.values(documents).filter(x => types.includes(x.type)).filter(x => status.includes(x.status));
+        },
+        filter_decisions(documents,level){
+            let decisions = Object.values(documents).filter(x => x.type == 'DD' || x.type == 'ADR');
+            if (level == "enterprise"){
+                return decisions;
+            }
+            let retval = [];
+            let pre = level.replace("enterprise:","");
+            decisions.forEach(decision => {
+                if ("source" in decision.effect && decision.effect.source.startsWith(pre)){
+                    retval.push(decision);
+                } else if ("target" in decision.effect && decision.effect.target.startsWith(pre)){
+                    retval.push(decision);
+                } else if ("system_name" in decision.effect && level.endsWith(decision.effect.system_name)){
+                    retval.push(decision);
+                } else if ("system_name" in decision.effect && level.split(":").length == 2 && level.includes(decision.effect.scope)){
+                    retval.push(decision);
+                }
+            })
+            return retval;
         },
 
         start_cycle(){
@@ -290,6 +344,7 @@ document.addEventListener('alpine:init', () => {
         index_project(documents){
             // Dashboard Hillchart
             let data = {};
+            let tags = [];
             Object.values(documents).filter(doc => doc.type == 'scope').forEach(doc => {
                 let project = documents[doc.parent].title;
                 if (!(project in data)){
@@ -317,6 +372,7 @@ document.addEventListener('alpine:init', () => {
                             description: effect.description,
                             technology: effect.technology
                         }
+                        tags.push(effect.system_name);
                     }
                     if (effect.level == "container"){
                         arch.components[effect.scope + ":" + effect.system_name] = {
@@ -325,6 +381,7 @@ document.addEventListener('alpine:init', () => {
                             description: effect.description,
                             technology: effect.technology
                         }
+                        tags.push(effect.scope + ":" + effect.system_name);
                     }
                     if (effect.level == "component"){
                         arch.components[effect.scope + ":" + effect.system_name] = {
@@ -332,6 +389,7 @@ document.addEventListener('alpine:init', () => {
                             description: effect.description,
                             technology: effect.technology
                         }
+                        tags.push(effect.scope + ":" + effect.system_name);
                     }
                 } else if (effect.action == "link two components"){
                     arch.edges.push(effect);
@@ -340,6 +398,15 @@ document.addEventListener('alpine:init', () => {
             if (JSON.stringify(arch) != JSON.stringify(this.c4_data)){
                 this.c4_data = arch;
             }
+
+            Object.values(documents).filter(x => 'tags' in x && x.tags.length != 0).forEach(doc => {
+                doc.tags.forEach(t => {
+                    if (!tags.includes(t)){
+                        tags.push(t);
+                    }
+                });
+            });
+            this.tags = tags;
         },
 
         load_data(){
@@ -403,4 +470,33 @@ function workdaysUntil(targetDateStr) {
   }
 
   return count;
+}
+
+function prepare_searchable(doc){
+    let text = "";
+    if ("sections" in doc){
+        doc.sections.forEach(s => {
+            text += "\n\n" + s.body;
+        });
+    }
+    if ("principle" in doc){
+        text += "\n\n" + doc.principle;
+    }
+    if ("decision" in doc){
+        text += "\n\n" + doc.decision;
+    }
+    return {
+        id: doc.id,
+        title: doc.title,
+        text
+    }
+}
+
+function convert_y(y){
+    return `In the context of ${y.context || '…'}, ` +
+                  `facing ${y.concern || '…'}, ` +
+                  `we decided for ${y.decision || '…'} ` +
+                  `and discarded ${y.alternatives || '…'}, ` +
+                  `to achieve ${y.quality || '…'}, ` +
+                  `accepting the consequence of ${y.consequence || '…'}.`;
 }

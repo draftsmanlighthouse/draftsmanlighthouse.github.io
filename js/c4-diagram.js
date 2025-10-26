@@ -8,7 +8,9 @@ const SVG_TEMPLATES = {
   person_internal: 'person-internal.svg',
   person_external: 'person-external.svg',
   web_container: 'web-container.svg',
-  message_channel: 'message-channel.svg'
+  message_channel: 'message-channel.svg',
+  container: 'container.svg',
+  component: 'component.svg'
 };
 
 
