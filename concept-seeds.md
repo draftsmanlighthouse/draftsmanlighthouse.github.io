@@ -4,6 +4,7 @@
 - technical debt items (tactisch) + registry (vlaggetje op ADR, causes technical debt)
 - breadboards?
 - templates aanscherpen.
+- comments
 
 🧍 Persona’s — “who this part of the system serves”
 

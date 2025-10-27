@@ -5,8 +5,13 @@ document.addEventListener('alpine:init', () => {
         groupedTags: {},
         search: this.$persist("").as("fullTextSearch"),
         prefilter: this.$persist([]),
+        results: [],
         init(){
             this.$watch("search",this.execute_pre_filter.bind(this));
+        },
+        clear_filters(){
+            this.selectedTags = [];
+            this.search = "";
         },
         execute_pre_filter(){
             let results = this.miniSearch.search(this.search)
@@ -60,7 +65,7 @@ document.addEventListener('alpine:init', () => {
             });
           }
 
-          return filtered.sort(
+          this.results = filtered.sort(
             (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
           );
         }

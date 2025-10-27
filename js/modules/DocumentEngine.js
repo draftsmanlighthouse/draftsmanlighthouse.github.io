@@ -54,7 +54,9 @@ document.addEventListener('alpine:init', () => {
               fields: ['title', 'text'],
               storeFields: ['title', 'type'],
               searchOptions: {
-                prefix: true
+                prefix: true,
+                boost: { title: 2 },
+                fuzzy: 0.2
               }
             });
             if (this.documents){
