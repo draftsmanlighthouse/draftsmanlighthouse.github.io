@@ -182,8 +182,8 @@
                                         <template
                                                 x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1)"
                                                 :key="parent">
-                                            <option x-text="parent" :value="parent"
-                                                    :selected="parent == current.effect.source"></option>
+                                            <option x-text="parent" :value="component_index[parent]"
+                                                    :selected="component_index[parent] == current.effect.source"></option>
                                         </template>
                                     </select>
                                 </td>
@@ -197,16 +197,16 @@
                                         <template
                                                 x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1 && !x.startsWith('persona:'))"
                                                 :key="parent">
-                                            <option x-text="parent" :value="parent"
-                                                    :selected="parent == current.effect.target"></option>
+                                            <option x-text="parent" :value="component_index[parent]"
+                                                    :selected="component_index[parent] == current.effect.target"></option>
                                         </template>
                                         <template
                                                 x-for="([key, value]) in Object.entries(c4_data.components).filter(([_, v]) => v.scope === 'external')"
                                                 :key="key">
                                             <option
-                                                    :value="key"
+                                                    :value="value.id"
                                                     x-text="key"
-                                                    :selected="key == current.effect.target">
+                                                    :selected="value.id == current.effect.target">
                                             </option>
                                         </template>
                                     </select>

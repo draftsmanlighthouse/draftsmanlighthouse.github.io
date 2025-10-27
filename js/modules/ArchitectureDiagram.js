@@ -13,6 +13,7 @@ document.addEventListener('alpine:init', () => {
                   // TODO: Er voor zorgen dat systeem/component namen geen : bevatten. Want dat heeft betekenis in ons model.
                   let stash = {};
                   let history = {};
+                  console.log(data)
                   for (const [key, value] of Object.entries(data.components)) {
                     history[key] = value;
                     if (level == "enterprise" && !key.includes(":") && value.scope == "internal"){
@@ -57,7 +58,7 @@ document.addEventListener('alpine:init', () => {
                         components[parent_name + ":" + value.name] = child;
                     }
                   }
-                  let edges = data.edges.filter(x => !x.source.startsWith("persona:") && !x.target.startsWith("persona:")).filter(x => x.source in components || x.target in components);
+                  let edges = data.edges.filter(x => x?.source && x?.target && !x.source.startsWith("persona:") && !x.target.startsWith("persona:")).filter(x => x.source in components || x.target in components);
                   for (const edge of edges) {
                     if (edge.source in components && edge.target in components){
                         diagram.add_relation(components[edge.source], components[edge.target], edge.label, "LR");
@@ -99,7 +100,7 @@ document.addEventListener('alpine:init', () => {
 
                   }
 
-                  edges = data.edges.filter(x => x.source.startsWith("persona:"))
+                  edges = data.edges.filter(x => x?.source && x.source.startsWith("persona:"))
                   for (const edge of edges) {
                     let target = edge.target;
                     let grandparent = edge.target.split(":")[0]
@@ -114,6 +115,7 @@ document.addEventListener('alpine:init', () => {
                         continue;
                     }
                     let el = history[edge.source];
+                    console.log(edge.source,el,history)
                     let visual = el.external ? "person_external" : "person_internal";
                     components[edge.source] = await diagram.add_element(visual,el.name,el.description);
                     diagram.add_relation(components[edge.source], components[target], edge.label, "LR");

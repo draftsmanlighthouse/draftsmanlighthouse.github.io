@@ -9,6 +9,7 @@ document.addEventListener('alpine:init', () => {
         navigation: this.$persist("").using(sessionStorage),
         dashboard_data: {},
         c4_data: {},
+        component_index: {},
         tags: [],
         miniSearch: null,
 
@@ -397,41 +398,61 @@ document.addEventListener('alpine:init', () => {
                         arch.components[effect.system_name] = {
                             scope: effect.scope,
                             description: effect.description,
-                            technology: effect.technology
+                            technology: effect.technology,
+                            id: doc.id
                         }
                         tags.push(effect.system_name);
+                        this.component_index[effect.system_name] = doc.id;
                     }
                     if (effect.level == "container"){
                         arch.components[effect.scope + ":" + effect.system_name] = {
                             name: effect.system_name,
                             type: effect.type,
                             description: effect.description,
-                            technology: effect.technology
+                            technology: effect.technology,
+                            id: doc.id
                         }
                         tags.push(effect.scope + ":" + effect.system_name);
+                        this.component_index[effect.scope + ":" + effect.system_name] = doc.id;
                     }
                     if (effect.level == "component"){
                         arch.components[effect.scope + ":" + effect.system_name] = {
                             name: effect.system_name,
                             description: effect.description,
-                            technology: effect.technology
+                            technology: effect.technology,
+                            id: doc.id
                         }
                         tags.push(effect.scope + ":" + effect.system_name);
+                        this.component_index[effect.scope + ":" + effect.system_name] = doc.id;
                     }
                 } else if (effect.action == "link two components"){
-                    arch.edges.push(effect);
+                    let edge = {...effect};
+                    edge.source = Object.keys(this.component_index).find(k => this.component_index[k] === effect.source);
+                    edge.target = Object.keys(this.component_index).find(k => this.component_index[k] === effect.target);
+                    arch.edges.push(edge);
                 } else if (effect.action == "new persona"){
                     arch.components["persona:" + effect.name] = {
                         name: effect.name,
                         description: effect.description,
+                        external: effect.external,
+                        id: doc.id,
                         type: "persona"
                     };
+                    this.component_index["persona:" + effect.name] = doc.id;
                 }
             });
+
             if (JSON.stringify(arch) != JSON.stringify(this.c4_data)){
                 this.c4_data = arch;
             }
-
+            arch.edges.forEach(x => {
+                if (!(x.source in this.component_index)){
+                    x.source = Object.keys(this.component_index).find(k => this.component_index[k] === x.source);
+                }
+                if (!(x.target in this.component_index)){
+                    x.target = Object.keys(this.component_index).find(k => this.component_index[k] === x.target);
+                }
+            });
             Object.values(documents).filter(x => 'tags' in x && x.tags.length != 0).forEach(doc => {
                 doc.tags.forEach(t => {
                     if (!tags.includes(t)){
