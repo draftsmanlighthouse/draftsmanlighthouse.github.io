@@ -1,712 +1,818 @@
 {
-  "Draftsman": {
-    "name": "Draftsman",
-    "documents": {
-      "about": {
-        "id": "about",
-        "createdAt": "2025-10-21T20:25:01.093Z",
-        "type": "organisation",
-        "authors": [
-          "Bo"
-        ],
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Draftsman\n\n About this organisation..."
-          }
-        ],
-        "prio": 0,
-        "updatedAt": "2025-10-25T20:15:21.626Z"
-      },
-      "2a33d267-d8b3-491b-8cb8-068a64f78f09": {
-        "id": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
-        "type": "pitch",
-        "status": "inprogress",
-        "authors": [
-          "Bo"
-        ],
-        "title": "R&D",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Welcome to Markdown Editor\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-          },
-          {
-            "id": "0e27c584-345d-4624-bc68-ee41465f30db",
-            "type": "mermaid",
-            "body": "graph TD\n    A[Start] --> B{Is it working?}\n    B -->|Yes| C[Great!]\n    B -->|No| D[Debug] \n    D --> B\n    C --> E[End]\n    E --> F[Message] "
-          },
-          {
-            "id": "01c8fc1f-68de-4974-a0af-fbb899fbc8b6",
-            "type": "drawio",
-            "body": "<mxfile host=\"embed.diagrams.net\" agent=\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36\" version=\"28.2.7\">\n  <diagram id=\"aNnxvBOAiLU_tzA9UP85\" name=\"Page-1\">\n    <mxGraphModel dx=\"493\" dy=\"466\" grid=\"1\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"827\" pageHeight=\"1169\" math=\"0\" shadow=\"0\">\n      <root>\n        <mxCell id=\"0\" />\n        <mxCell id=\"1\" parent=\"0\" />\n        <mxCell id=\"2\" value=\"\" style=\"shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;sketch=1;curveFitting=1;jiggle=2;\" vertex=\"1\" parent=\"1\">\n          <mxGeometry x=\"230\" y=\"210\" width=\"60\" height=\"80\" as=\"geometry\" />\n        </mxCell>\n      </root>\n    </mxGraphModel>\n  </diagram>\n</mxfile>\n"
-          },
-          {
-            "id": "ca7e3a6e-ed1a-4f08-a7c5-42ec0f4cc85d",
-            "type": "chart",
-            "body": {
-              "labels": [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June"
-              ],
-              "datasets": [
-                {
-                  "label": "Sales 2024",
-                  "data": [
-                    10,
-                    59,
-                    80,
-                    81,
-                    56,
-                    55
-                  ]
-                }
-              ]
+    "Draftsman": {
+        "name": "Draftsman",
+        "documents": {
+            "about": {
+                "id": "about",
+                "createdAt": "2025-10-21T20:25:01.093Z",
+                "type": "organisation",
+                "authors": [
+                    "Bo"
+                ],
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Draftsman\n\n About this organisation..."
+                    }
+                ],
+                "prio": 0,
+                "updatedAt": "2025-10-25T20:15:21.626Z"
             },
-            "chart_type": "line",
-            "view_mode": "table"
-          }
-        ],
-        "attributes": {
-          "appetite": 6,
-          "deadline": "2025-12-02"
+            "2a33d267-d8b3-491b-8cb8-068a64f78f09": {
+                "id": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
+                "type": "pitch",
+                "status": "inprogress",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "R&D",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    },
+                    {
+                        "id": "0e27c584-345d-4624-bc68-ee41465f30db",
+                        "type": "mermaid",
+                        "body": "graph TD\n    A[Start] --> B{Is it working?}\n    B -->|Yes| C[Great!]\n    B -->|No| D[Debug] \n    D --> B\n    C --> E[End]\n    E --> F[Message] "
+                    },
+                    {
+                        "id": "01c8fc1f-68de-4974-a0af-fbb899fbc8b6",
+                        "type": "drawio",
+                        "body": "<mxfile host=\"embed.diagrams.net\" agent=\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36\" version=\"28.2.7\">\n  <diagram id=\"aNnxvBOAiLU_tzA9UP85\" name=\"Page-1\">\n    <mxGraphModel dx=\"493\" dy=\"466\" grid=\"1\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"827\" pageHeight=\"1169\" math=\"0\" shadow=\"0\">\n      <root>\n        <mxCell id=\"0\" />\n        <mxCell id=\"1\" parent=\"0\" />\n        <mxCell id=\"2\" value=\"\" style=\"shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;sketch=1;curveFitting=1;jiggle=2;\" vertex=\"1\" parent=\"1\">\n          <mxGeometry x=\"230\" y=\"210\" width=\"60\" height=\"80\" as=\"geometry\" />\n        </mxCell>\n      </root>\n    </mxGraphModel>\n  </diagram>\n</mxfile>\n"
+                    },
+                    {
+                        "id": "ca7e3a6e-ed1a-4f08-a7c5-42ec0f4cc85d",
+                        "type": "chart",
+                        "body": {
+                            "labels": [
+                                "January",
+                                "February",
+                                "March",
+                                "April",
+                                "May",
+                                "June"
+                            ],
+                            "datasets": [
+                                {
+                                    "label": "Sales 2024",
+                                    "data": [
+                                        10,
+                                        59,
+                                        80,
+                                        81,
+                                        56,
+                                        55
+                                    ]
+                                }
+                            ]
+                        },
+                        "chart_type": "line",
+                        "view_mode": "table"
+                    }
+                ],
+                "attributes": {
+                    "appetite": 6,
+                    "deadline": "2025-12-02"
+                },
+                "updatedAt": "2025-10-27T20:08:33.876Z",
+                "prio": 0,
+                "tags": [
+                    "pitch"
+                ]
+            },
+            "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
+                "id": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
+                "type": "pitch",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Todo",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "attributes": {
+                    "appetite": "6"
+                },
+                "updatedAt": "2025-10-21T20:54:43.504Z",
+                "prio": 0,
+                "tags": [
+                    "pitch"
+                ]
+            },
+            "bf54bfca-3bd8-4b41-9e84-4dd0671bf986": {
+                "id": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "createdAt": "2025-10-21T20:26:13.288Z",
+                "parent": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
+                "type": "scope",
+                "status": "active",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "System setup",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Welcome to Markdown Editor\n\nType something..."
+                    }
+                ],
+                "attributes": {
+                    "progress": 78.75
+                },
+                "updatedAt": "2025-10-27T22:41:15.723Z",
+                "prio": 0,
+                "tags": [
+                    "scope"
+                ]
+            },
+            "89ebb234-da99-4e5b-ae43-e2739b386925": {
+                "id": "89ebb234-da99-4e5b-ae43-e2739b386925",
+                "createdAt": "2025-10-22T18:46:38.233Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "enterprise",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "EAP 1: Functionele grenzen en organisatorische flexibiliteit",
+                "principle": "### Stelling\nOm duidelijke functionele grenzen te realiseren, worden **Draftsman-producten ontworpen als afzonderlijke systemen**.\n\n### Redenering\nDeze scheiding biedt **organisatorische flexibiliteit**, doordat elk product zich onafhankelijk kan ontwikkelen — zowel technisch als juridisch.\nZo kunnen we voor verschillende producten afzonderlijke rechtspersonen gebruiken, waardoor isolatie mogelijk is waar dat wenselijk is.\n\n### Gevolgen / Acceptatie\nWe accepteren dat dit ontwerp ons verhindert om **onze software te bundelen** (bijv. *“één keer betalen en zowel Tracepaper als Workbench gebruiken”*).\nElk product moet daarom zijn eigen waardepropositie en prijsmodel kunnen verantwoorden.",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-10-22T18:47:28.356Z",
+                "tags": [
+                    "principle"
+                ]
+            },
+            "a201f648-b359-4621-b45c-8ea40b4d76e3": {
+                "id": "a201f648-b359-4621-b45c-8ea40b4d76e3",
+                "createdAt": "2025-10-22T19:18:23.823Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "enterprise",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "EAP 2: We geven de voorkeur aan serverless technologieën",
+                "principle": "### Stelling\nOm schaalbaarheid te waarborgen en operationele lasten te verminderen, **geven we de voorkeur aan serverless technologieën** boven zelfbeheer van infrastructuur.\n\n### Redenering\nServerless-platformen stellen teams in staat zich te richten op businesslogica in plaats van infrastructuurbeheer.\nZe ondersteunen **kostenefficiëntie**, **automatische schaalbaarheid** en **nauwkeurige afrekening per gebruik**, wat aansluit bij ons streven naar slanke en adaptieve systemen.\nHoewel serverless afhankelijkheden creëert van specifieke aanbieders, wegen de voordelen in snelheid en autonomie zwaarder dan de nadelen voor de meeste workloads.\n\n### Gevolgen / Acceptatie\nWe accepteren dat deze voorkeur onze mogelijkheid beperkt om te deployen in bepaalde on-premise of multi-cloud omgevingen.\nTeams die bewust afwijken van serverless moeten hun keuze expliciet onderbouwen en aangeven hoe operationele risico’s worden beheerst.",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-10-24T22:12:11.748Z",
+                "tags": [
+                    "principle"
+                ]
+            },
+            "f7031fcf-142e-4ed2-bf1a-92a192da5f93": {
+                "id": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
+                "sequence_number": 1,
+                "createdAt": "2025-10-21T20:26:24.078Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 1: Introductie van Tracepaper",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
+                        "body": "# Probleemstelling\n\nBinnen Draftsman ontstond de behoefte om een eigen platform te ontwikkelen waarmee domeinmodellen niet alleen kunnen worden gedocumenteerd, maar ook direct kunnen worden vertaald naar productiecode.\n\nBestaande low-codeplatformen bieden vaak onvoldoende grip op de onderliggende architectuur en beperken de uitbreidbaarheid. Bovendien leggen ze hun eigen meningen op over hosting, runtime en integratie. Dit botst met onze wens om **software-architectuur expliciet en inzichtelijk** te modelleren — niet verborgen in black boxes.\n\nWe zochten dus naar een manier om onze **visie op model-gedreven ontwikkeling** (Model Driven Development) tastbaar te maken in een eigen product."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
+                        "body": "# Beslissing\n\nWe introduceren een nieuw softwaresysteem: **Tracepaper**. Dit systeem wordt ons primaire instrument om model-gedreven ontwikkeling te ondersteunen.\n\nTracepaper combineert:\n- Een visuele modelleertool waarmee domeinconcepten kunnen worden vastgelegd (commands, aggregates, views, projections en notifiers).\n- Een codegenerator die uit deze modellen direct productieklare AWS-serverless componenten genereert.\n\nMet deze keuze leggen we de basis voor een platform dat de kloof tussen **architectuur en uitvoering** verkleint.\n\n### Afweging\nAlternatieven zoals bestaande low-code tools (bijv. OutSystems, Mendix of Camunda) bieden snelheid, maar beperken de vrijheid en controle. Een volledig handmatige aanpak daarentegen maakt snelle iteratie onmogelijk. Tracepaper positioneert zich ertussenin: **volledige controle waar het telt, automatisering waar het kan.**\n\n### Verwachte impact\n- **Architecturaal:** Tracepaper wordt een nieuw kernsysteem binnen het Draftsman-landschap.\n- **Organisatorisch:** ondersteunt kennisdeling en herhaalbaarheid van architectuurbeslissingen.\n- **Technisch:** vormt de basis voor toekomstige producten die op dezelfde principes voortbouwen."
+                    }
+                ],
+                "prio": "0",
+                "updatedAt": "2025-10-25T12:42:53.172Z",
+                "decision": "We introduceren een nieuw systeem, Tracepaper, om onze visie op model-gedreven ontwikkeling te realiseren binnen het Draftsman-ecosysteem.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "system",
+                    "scope": "internal",
+                    "system_name": "Tracepaper",
+                    "technology": "software system",
+                    "description": "Our take on low-code"
+                },
+                "precedent": "89ebb234-da99-4e5b-ae43-e2739b386925",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "67c1784d-7665-4d37-b010-790068e582a9": {
+                "id": "67c1784d-7665-4d37-b010-790068e582a9",
+                "sequence_number": 2,
+                "createdAt": "2025-10-22T21:03:07.473Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "ADR",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 2: Build a Code Generator",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
+                        "body": "# Probleemstelling\n\nNadat Tracepaper als systeem is geïntroduceerd, hebben we een manier nodig om **de gemodelleerde domeinlogica automatisch om te zetten in uitvoerbare software**.\n\nHet doel van Tracepaper is om de kloof te verkleinen tussen een conceptueel model (commands, aggregates, views, projections, notifiers) en een gedistribueerde runtime. In de praktijk betekent dit dat de gegenereerde applicaties moeten kunnen draaien op **AWS Serverless**, met componenten zoals Lambda, DynamoDB, S3 en AppSync.\n\nHet handmatig schrijven van deze code is tijdrovend en foutgevoelig. Bovendien herhaalt veel infrastructuurcode zich per project (IaC, deploymentconfiguratie, boilerplate). We zoeken dus naar een manier om deze vertaalslag te **automatiseren**, zonder de transparantie van de gegenereerde code te verliezen."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
+                        "body": "# Beslissing\n\nWe bouwen een **codegenerator** die de DSL-modellen uit Tracepaper vertaalt naar productieklare code en infrastructuur (IaC) voor AWS Serverless.\n\nDeze generator vormt de schakel tussen het conceptuele model en de uitvoerbare realiteit. De build pipeline wordt uitgevoerd door een aparte component — de **Build Agent** — die verantwoordelijk is voor het ontvangen van ZIP-bestanden met modeldata, het genereren van code, en het publiceren van resultaten.\n\nDe generator wordt geïmplementeerd in **Python**, gebruikmakend van **AWS SAM** voor infrastructuurdefinitie en packaging.\n\n### Afweging\n- **Alternatief 1:** Handmatige codegeneratie via templates in de modeler zelf — te beperkt, te weinig controle over build lifecycle.\n- **Alternatief 2:** Een externe service (bijv. CloudBuild of CodePipeline) — verhoogt afhankelijkheden en beperkt de aanpasbaarheid.\n\nEen eigen generator biedt de beste balans tussen controle, snelheid en uitbreidbaarheid. Bovendien kunnen we hiermee in de toekomst **verschillende engines** ondersteunen, bijvoorbeeld voor containers of on-premises omgevingen.\n\n### Verwachte impact\n- **Architecturaal:** De Build Agent wordt een kerncomponent binnen Tracepaper.\n- **Technisch:** Codegeneratie en IaC worden gestandaardiseerd; build-uitvoer is reproduceerbaar.\n- **Strategisch:** Tracepaper onderscheidt zich van klassieke low-codeplatformen door **volledige transparantie in de gegenereerde code**."
+                    }
+                ],
+                "prio": 0,
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "system_name": "Build Agent",
+                    "scope": "Tracepaper",
+                    "type": "internal_component",
+                    "technology": "SAM / Python",
+                    "description": "code generator"
+                },
+                "precedent": "a201f648-b359-4621-b45c-8ea40b4d76e3",
+                "updatedAt": "2025-10-25T23:09:00.342Z",
+                "tags": [
+                    "adr",
+                    "tracepaper",
+                    "code-generation",
+                    "aws-serverless",
+                    "iac",
+                    "python",
+                    "automation",
+                    "architecture"
+                ],
+                "ystatement": {
+                    "context": "Within Tracepaper, which aims to transform domain models into executable software on AWS Serverless.",
+                    "concern": "Manual translation of DSL models into executable code is error-prone, inconsistent, and time-consuming.",
+                    "decision": "We build a code generator in Python that translates Tracepaper models into production-ready AWS Serverless code and IaC via AWS SAM.",
+                    "alternatives": "Manual generation through modeler templates, or relying on external build services such as CloudBuild or CodePipeline.",
+                    "quality": "Standardization, transparency, and higher development speed without losing control over generated code.",
+                    "consequence": "The Build Agent becomes a central component within Tracepaper, managing the entire build and generation pipeline."
+                }
+            },
+            "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a": {
+                "id": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                "sequence_number": 3,
+                "createdAt": "2025-10-22T21:45:39.243Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 3: Desktop Modeler",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "1f1f6fc1-13b9-4283-8267-75b8f41ab82c",
+                        "body": "# Probleemstelling\n\nDe eerste versies van Tracepaper (v0–v4) draaiden volledig in de browser. Hoewel dit een lage instapdrempel bood, leidde het tot beperkingen in **performance**, **bestandstoegang** en **gebruikservaring**.\n\nBrowsergebaseerde modellen vereisten complexe workarounds zoals IndexedDB, Web Workers en simulaties van een bestandsstructuur. Bovendien was offline werken lastig, en konden grotere projecten (met honderden XML- of JSON-modellen) de UI merkbaar vertragen.\n\nWe willen een omgeving creëren die aanvoelt als een **echte IDE** – snel, robuust, en geïntegreerd met lokale tools zoals Git, AWS CLI en editors. Dit vraagt om een verschuiving van een web-first benadering naar een **desktop-native ervaring**."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "89776171-58da-429f-8300-86f37d378ff4",
+                        "body": "# Beslissing\n\nWe ontwikkelen een **desktopversie van de Tracepaper Modeler**, gebouwd met **PyWebView** en **Alpine.js**.\n\nDeze keuze maakt het mogelijk om:\n- Lokale bestandsstructuren en repositories direct te gebruiken zonder sandboxbeperkingen.\n- Een vloeiende, native-achtige gebruikerservaring te bieden.\n- Modellen offline te bewerken, zonder afhankelijkheid van een server of browsercache.\n\nDe desktopversie behoudt de moderne webtechnologie voor de UI (HTML, Tailwind, Alpine.js), maar verpakt deze in een desktopcontainer die **lokaal runt met Python** als backend.\n\n### Afweging\n- **Alternatief 1:** De webversie verbeteren (Tracepaper 4) met PWA-technieken. → Bleef traag bij grote modellen, beperkte toegang tot lokale bestanden.\n- **Alternatief 2:** Volledig native GUI bouwen met frameworks als Qt of Electron. → Hogere ontwikkel- en onderhoudskosten, geen hergebruik van bestaande frontendcode.\n\nPyWebView biedt het beste van beide werelden: webtechnologie met native integratie, lichtgewicht en cross-platform.\n\n### Verwachte impact\n- **Gebruikerservaring:** snellere laadtijden, betere editorrespons en native look & feel.\n- **Architecturaal:** de modeler wordt een zelfstandige container binnen Tracepaper, gescheiden van de Build Agent en backend.\n- **Strategisch:** de desktopversie maakt Tracepaper aantrekkelijker voor professionele gebruikers die IDE-kwaliteit verwachten."
+                    }
+                ],
+                "prio": 0,
+                "decision": "We bouwen een desktopversie van de Tracepaper Modeler om de gebruikerservaring te optimaliseren en lokale workflows beter te ondersteunen.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "web_container",
+                    "system_name": "Desktop Modeler",
+                    "technology": "pywebview / alpinejs",
+                    "description": "Developer experience optimized"
+                },
+                "updatedAt": "2025-10-23T20:43:28.660Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "df4dba93-2e4c-4b69-bb84-1d4579493641": {
+                "id": "df4dba93-2e4c-4b69-bb84-1d4579493641",
+                "sequence_number": 4,
+                "createdAt": "2025-10-23T20:53:16.033Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 4: Voeg een ZIP-gebaseerde API toe aan de Build Agent",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "de39f1db-2fb5-4d71-a564-d7bdd74624a4",
+                        "body": "# Probleemstelling\n\nNu de **Build Agent** is ontworpen als een zelfstandige, serverless component die verantwoordelijk is voor codegeneratie, is een betrouwbare en efficiënte manier nodig om modelprojecten vanuit de **Desktop Modeler** aan te leveren.\n\nEen modelproject bestaat doorgaans uit tientallen tot honderden JSON- of XML-bestanden die samen de domeinbeschrijving vormen. Individuele API-calls per bestand zouden leiden tot veel netwerkverkeer, complex foutbeheer en hoge latency.\n\nWe willen daarom een **gestandaardiseerde, stateless interface** waarmee complete projecten in één keer kunnen worden overgedragen — zonder dat langdurige sessies of persistente opslag nodig zijn."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "17738ad1-54e8-43ed-b560-79de87f3b8a0",
+                        "body": "# Beslissing\n\nWe introduceren een **ZIP-gebaseerde API** als primair aanlevermechanisme voor de Build Agent.\n\nDe **Desktop Modeler** bundelt alle modelbestanden in een ZIP-archief en verstuurt dit via een **HTTP POST**-verzoek naar een **AWS Lambda**-functie die fungeert als entrypoint voor de Build Agent.\n\nDe Lambda:\n1. Pakt het ZIP-bestand uit in een tijdelijke directory;\n2. Start de codegeneratie met de bijgeleverde metadata;\n3. Plaatst het resultaat in een S3-bucket voor verdere verwerking.\n\nDeze aanpak zorgt ervoor dat de Build Agent:\n- **Stateless** opereert (geen sessiebehoud of lokale opslag);\n- **Schaalbaar** is dankzij parallelle Lambda-executies;\n- **Robuust** blijft bij grotere projecten met veel bestanden.\n\n### Afweging\n- **Alternatief 1:** Upload van losse bestanden naar S3 met event triggers. → Complexe orchestratie en foutgevoelig.\n- **Alternatief 2:** REST API met individuele requests per modelbestand. → Te traag en ongeschikt voor grotere projecten.\n\nEen ZIP-gebaseerde aanpak biedt eenvoud, herhaalbaarheid en goede performance met minimale operationele overhead.\n\n### Verwachte impact\n- **Architecturaal:** De Build Agent krijgt een duidelijk, eenduidig entrypoint voor buildverzoeken.\n- **Technisch:** Volledige projecten kunnen als één transactie worden verwerkt.\n- **Beveiliging:** Tijdelijke opslag voorkomt langdurige blootstelling van modeldata."
+                    }
+                ],
+                "prio": 0,
+                "decision": "We introduceren een ZIP-gebaseerde API waarmee complete modelprojecten efficiënt kunnen worden geüpload en verwerkt door de Build Agent.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "component",
+                    "scope": "Tracepaper:Build Agent",
+                    "system_name": "API",
+                    "technology": "aws lambda",
+                    "description": "The entrypoint for the build agent"
+                },
+                "updatedAt": "2025-10-24T20:01:18.158Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "1c9f5c4d-e848-4191-87a2-d40bae96b150": {
+                "id": "1c9f5c4d-e848-4191-87a2-d40bae96b150",
+                "sequence_number": 5,
+                "createdAt": "2025-10-22T22:15:30.217Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 5: Koppel de Modeler aan de Build Agent",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "bdc4cb89-56c4-4f89-8659-b6e4ffe5aadf",
+                        "body": "# Probleemstelling\n\nMet de introductie van de **ZIP-gebaseerde API** binnen de Build Agent is er nu een schaalbare en stateless manier om modelprojecten te verwerken. De volgende stap is om de **Desktop Modeler** direct te laten communiceren met deze API.\n\nDe Modeler fungeert als ontwikkelomgeving waarin gebruikers hun domeinmodellen samenstellen. Voor een naadloze workflow moet de Modeler een buildverzoek kunnen uitvoeren zonder handmatige export- of uploadstappen.\n\nEen directe koppeling tussen de Modeler en de Build Agent is essentieel om:\n- de feedbackloop te verkorten;\n- builds te starten met één handeling;\n- de consistentie tussen lokale modellen en de gegenereerde output te waarborgen."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "3cd3361a-3bc8-498a-b515-bf166cebc692",
+                        "body": "# Beslissing\n\nWe koppelen de **Desktop Modeler** rechtstreeks aan de **Build Agent** via de ZIP-gebaseerde API.\n\nBij het uitvoeren van een build in de Modeler:\n1. Worden alle modelbestanden automatisch gebundeld tot één ZIP-bestand;\n2. Vraagt de Modeler een **tijdelijk build-token** op via de licentie-backend;\n3. Stuurt het ZIP-bestand samen met metadata naar de Build Agent;\n4. Toont de Modeler de voortgang van de build (queued, running, done).\n\nDeze architectuur maakt de samenwerking tussen Modeler en Build Agent **transparant, efficiënt en volledig geautomatiseerd**.\n\n### Afweging\n- **Alternatief 1:** Externe CLI of uploader gebruiken. → Vereist technische kennis en veroorzaakt contextswitches.\n- **Alternatief 2:** Indirecte synchronisatie via S3. → Complexer rechtenbeheer en minder controle over feedback.\n\nEen directe API-koppeling biedt de kortste feedbackcyclus en de meest natuurlijke gebruikerservaring.\n\n### Verwachte impact\n- **Gebruikerservaring:** Eén klik om te builden, zonder handmatige acties.\n- **Architecturaal:** De Modeler wordt een formele client van de Build Agent.\n- **Beveiliging:** Elk buildverzoek is tijdelijk geautoriseerd via het licentiebeheer."
+                    }
+                ],
+                "prio": 0,
+                "decision": "De Desktop Modeler communiceert direct met de Build Agent via de ZIP-gebaseerde API om builds automatisch te starten en te volgen.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                    "target": "67c1784d-7665-4d37-b010-790068e582a9",
+                    "label": "Sends build request"
+                },
+                "updatedAt": "2025-10-27T22:12:35.967Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "b3923e5a-a3c5-4167-831e-004915ac011f": {
+                "id": "b3923e5a-a3c5-4167-831e-004915ac011f",
+                "sequence_number": 6,
+                "createdAt": "2025-10-22T22:35:30.956Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 6: Voeg een bucket toe voor artifactopslag",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "15b82a35-eeff-4bdf-8f50-1be909d427ca",
+                        "body": "# Probleemstelling\n\nNu de **Build Agent** builds kan uitvoeren en de resultaten genereert, ontstaat de behoefte aan een robuuste manier om deze uitvoerbestanden (artefacten) op te slaan en te ontsluiten.\n\nEen build kan meerdere bestanden opleveren — van gegenereerde code tot configuratie en metadata — die gezamenlijk te groot zijn om via directe HTTP-responses terug te sturen. Lambda’s maximale payloadlimiet (6 MB) maakt dit technisch onhoudbaar voor productiegebruik.\n\nEr is daarom een **asynchroon en schaalbaar opslagmechanisme** nodig waar buildresultaten tijdelijk kunnen worden bewaard, zodat de Modeler en backend deze later veilig kunnen ophalen."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "ed062e7c-045c-4e73-ab43-40c93b7c3989",
+                        "body": "# Beslissing\n\nWe introduceren een **S3-gebaseerde Outbox** voor de opslag van build-artefacten.\n\nDe **Build Agent** uploadt na afronding van een build de gegenereerde bestanden naar deze bucket. De backend of Modeler kan het resultaat vervolgens downloaden via een **presigned URL** met beperkte geldigheidsduur.\n\nDeze architectuur ontkoppelt het buildproces van het overdrachtsproces, waardoor het systeem beter schaalbaar, betrouwbaarder en eenvoudiger te beheren is.\n\n### Afweging\n- **Alternatief 1:** Buildresultaten terugsturen via de HTTP-response. → Onbetrouwbaar en beperkt door payloadlimieten.\n- **Alternatief 2:** Opslag via externe service (bijv. Cloudflare R2 of Dropbox). → Extra afhankelijkheden en latency.\n\nS3 biedt native integratie, lage kosten en hoge betrouwbaarheid. Door gebruik van presigned URLs blijft de toegang tot bestanden tijdelijk, veilig en auditabel.\n\n### Verwachte impact\n- **Technisch:** Grote bestanden worden efficiënt opgeslagen buiten de compute-laag.\n- **Architecturaal:** De Outbox vormt een gedeelde schakel tussen Build Agent, Modeler en backend.\n- **Beveiliging:** Toegang tot artefacten verloopt via tijdelijk ondertekende links die automatisch verlopen."
+                    }
+                ],
+                "prio": 0,
+                "decision": "We introduceren een S3-gebaseerde Outbox voor de opslag van build-artefacten, zodat resultaten asynchroon en veilig kunnen worden opgehaald.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "bucket",
+                    "system_name": "Outbox",
+                    "technology": "S3",
+                    "description": "artifact repository"
+                },
+                "updatedAt": "2025-10-22T22:39:12.159Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "4ecc5f72-b895-4048-9172-bf823f0b1b7a": {
+                "id": "4ecc5f72-b895-4048-9172-bf823f0b1b7a",
+                "sequence_number": 7,
+                "createdAt": "2025-10-22T22:42:50.477Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 7: Koppel de Build Agent aan de Outbox",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "ddd1d05b-3683-4390-bb86-f8628538434c",
+                        "body": "# Probleemstelling\n\nNa het introduceren van de **Outbox** als centrale opslaglocatie voor build-artefacten, is de volgende stap om de **Build Agent** hier direct mee te verbinden.\n\nDe Build Agent genereert na elke build één of meerdere uitvoerbestanden, maar zonder automatische publicatie zou de gebruiker nog steeds handmatig bestanden moeten ophalen. Dat leidt tot inconsistentie, wachttijd en mogelijke fouten.\n\nOm het buildproces volledig te automatiseren, moet de Build Agent zijn resultaten **direct kunnen uploaden** naar de Outbox zodra een build voltooid is."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "562c1e77-0fe1-4ebb-88bb-f8b48b815ea5",
+                        "body": "# Beslissing\n\nDe **Build Agent** wordt gekoppeld aan de **Outbox** zodat alle buildresultaten automatisch worden geüpload naar S3.\n\nHet proces verloopt als volgt:\n1. Na afronding van een build bundelt de Build Agent de output in een ZIP-bestand;\n2. Er wordt een **presigned upload-URL** aangemaakt via de backend of AWS SDK;\n3. Het ZIP-bestand wordt direct geüpload naar de Outbox;\n4. De link naar het geüploade bestand wordt opgeslagen in de buildmetadata.\n\nDeze koppeling maakt het systeem end-to-end autonoom en elimineert de noodzaak voor handmatige downloadstappen of extra API-lagen.\n\n### Afweging\n- **Alternatief 1:** Upload via de backend. → Introduceert onnodige latency en compute-kosten.\n- **Alternatief 2:** Opslag in DynamoDB of custom blob store. → Niet geschikt voor binaire bestanden.\n\nEen directe koppeling met de Outbox is het eenvoudigst, schaalbaarst en meest kostenefficiënt. De presigned upload-URL zorgt voor een veilige overdracht zonder permanente rechten.\n\n### Verwachte impact\n- **Proces:** Builds worden automatisch gepubliceerd in de Outbox.\n- **Architecturaal:** De Build Agent en Outbox vormen samen een volledig geautomatiseerde build pipeline.\n- **Beveiliging:** Uploads verlopen via tijdelijk geautoriseerde S3-links."
+                    }
+                ],
+                "prio": 0,
+                "decision": "De Build Agent uploadt na elke build automatisch de artefacten naar de Outbox via een presigned S3-upload.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "67c1784d-7665-4d37-b010-790068e582a9",
+                    "target": "b3923e5a-a3c5-4167-831e-004915ac011f",
+                    "label": "Upload artifact"
+                },
+                "updatedAt": "2025-10-27T22:13:07.016Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "849de746-95e0-4fee-9c4a-6bd625987833": {
+                "id": "849de746-95e0-4fee-9c4a-6bd625987833",
+                "sequence_number": 8,
+                "createdAt": "2025-10-22T22:43:17.360Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 8: Koppel de Modeler aan de Outbox",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "1f9ee6f6-9f05-4590-b0b2-9b910c95a4b7",
+                        "body": "# Probleemstelling\n\nMet de **Outbox** als centrale opslaglocatie en de koppeling tussen de **Build Agent** en deze bucket, worden build-artefacten nu automatisch gepubliceerd. Wat nog ontbreekt is een directe verbinding tussen de **Desktop Modeler** en de Outbox, zodat gebruikers de resultaten van hun builds eenvoudig kunnen ophalen.\n\nZonder deze koppeling moeten gebruikers handmatig presigned URLs openen of externe tooling gebruiken om hun bestanden te downloaden. Dat is omslachtig, foutgevoelig en beperkt de gebruikservaring.\n\nOm de feedbackloop te sluiten, moet de Modeler een **naadloze manier** bieden om gegenereerde artefacten rechtstreeks vanuit de applicatie te downloaden."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "98027852-e7a0-429b-bf81-4c28d1c13784",
+                        "body": "# Beslissing\n\nWe koppelen de **Desktop Modeler** rechtstreeks aan de **Outbox**, zodat gebruikers build-artefacten direct kunnen downloaden.\n\nNa afronding van een build:\n1. Registreert de Build Agent de locatie van het artefact in de backend;\n2. De backend levert een **presigned download-URL** aan de Modeler;\n3. De gebruiker kan met één klik het bestand downloaden of openen;\n4. De download verloopt rechtstreeks via S3, zonder tussenkomst van de backend.\n\nDeze architectuur sluit de build-cyclus volledig: van model naar artefact in één geïntegreerde flow.\n\n### Afweging\n- **Alternatief 1:** Bestanden laten streamen via de backend. → Trager en duurder in compute-kosten.\n- **Alternatief 2:** Handmatige download via browser of CLI. → Slechte UX en onbetrouwbaar bij verlopen URLs.\n\nEen rechtstreekse koppeling via presigned URLs biedt maximale snelheid, veiligheid en eenvoud.\n\n### Verwachte impact\n- **Gebruikerservaring:** De gebruiker kan direct vanuit de Modeler builds downloaden.\n- **Architecturaal:** De Modeler is nu formeel client van de Outbox.\n- **Beveiliging:** Toegang tot artefacten blijft tijdelijk en veilig dankzij presigned links."
+                    }
+                ],
+                "prio": 0,
+                "decision": "De Desktop Modeler is gekoppeld aan de Outbox en kan build-artefacten direct downloaden via presigned URLs.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                    "target": "b3923e5a-a3c5-4167-831e-004915ac011f",
+                    "label": "Download artifact"
+                },
+                "updatedAt": "2025-10-27T22:13:21.118Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "9286b792-bbd2-445a-b609-22a5758624c5": {
+                "id": "9286b792-bbd2-445a-b609-22a5758624c5",
+                "sequence_number": 9,
+                "createdAt": "2025-10-22T22:46:12.707Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 9: Voeg een backend toe voor licentie- en pipelinebeheer",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "3ada62b5-a5e8-468a-a5c2-5ad4efefa81d",
+                        "body": "# Probleemstelling\n\nNu de build-keten (**Modeler → Build Agent → Outbox**) volledig operationeel is, ontstaat de noodzaak voor een centrale service die **gebruik, licenties en operationele status** beheert.\n\nDe Modeler, Build Agent en Outbox functioneren samen als één geautomatiseerde flow, maar missen nog een **autoritatieve bron** die bepaalt wie mag bouwen, hoe gebruik wordt geregistreerd en hoe pipelines en deployments worden gevolgd.\n\nDaarnaast moeten we inzicht krijgen in de **AWS-resources** die Tracepaper genereert — zoals Lambda’s, DynamoDB-tabellen, AppSync-API’s, Cognito-pools en CodePipelines — zodat gebruikers vanuit de Modeler kunnen navigeren naar hun actieve omgeving.\n\nOm dit te realiseren is een dedicated **backendcomponent** nodig die licentiebeheer, usage-tracking en operationele registratie samenbrengt."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "34818fc1-52cd-4ac6-b015-312e2e1fba24",
+                        "body": "# Beslissing\n\nWe introduceren een nieuwe interne component binnen Tracepaper: **License Management**.\n\nDeze backend vervult vier kerntaken:\n\n1. **Licentie- en seatbeheer** – Controleert welke gebruikers en machines geautoriseerd zijn om builds uit te voeren.\n2. **Usage-registratie** – Logt het gebruik van Commands, Views en Notifiers als basis voor facturatie.\n3. **Pipeline- en deployment-administratie** – Wanneer een gebruiker in zijn eigen AWS-account een pipeline of deployment uitvoert, doet deze een **callback** naar de License Server. Daarmee ontstaat een actueel overzicht van alle actieve omgevingen per project.\n4. **Integratie met de Modeler** – Via deze backend kan de Modeler relevante links tonen naar AWS-resources, zoals pipelines, QA-rapporten, Lambda’s, databases, Cognito en AppSync.\n\nSamen vormt dit de **centrale administratieve laag** van Tracepaper: de plaats waar model, build en runtime samenkomen.\n\n### Afweging\n- **Alternatief 1:** Lokaal beheer in de Modeler. → Niet betrouwbaar en moeilijk te synchroniseren.\n- **Alternatief 2:** Externe third-party licentieservice. → Geen domeinlogica voor pipelines of buildmetrics.\n\nEen eigen backend biedt de juiste balans tussen **controle, inzicht en uitbreidbaarheid**.\n\n### Verwachte impact\n- **Architecturaal:** Nieuwe container “License Management” binnen Tracepaper.\n- **Operationeel:** Centrale validatie, registratie en koppeling met externe resources.\n- **Gebruikerservaring:** De Modeler toont directe links naar relevante AWS-componenten.\n- **Commercieel:** Maakt betrouwbare metering en licentiehandhaving mogelijk."
+                    }
+                ],
+                "prio": 0,
+                "decision": "We introduceren de License Management-backend als centrale service voor licentiecontrole, usage-tracking en het bijhouden van pipelines en deployments binnen Tracepaper.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "internal_component",
+                    "system_name": "License Management",
+                    "technology": "Tracepaper App",
+                    "description": "Backend"
+                },
+                "updatedAt": "2025-10-22T22:48:09.516Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "e78a618d-9cbd-4262-a3dd-177fc80a722f": {
+                "id": "e78a618d-9cbd-4262-a3dd-177fc80a722f",
+                "sequence_number": 10,
+                "createdAt": "2025-10-22T22:48:17.891Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 10: Koppel de Modeler aan de License Management-backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "9f06e3bb-2e47-4a04-838e-a8b4d1839567",
+                        "body": "# Probleemstelling\n\nMet de introductie van de **License Management-backend** is de infrastructuur aanwezig om licenties, usage en pipeline-informatie centraal te beheren. Om hiervan gebruik te maken moet de **Desktop Modeler** rechtstreeks kunnen communiceren met deze backend.\n\nDe Modeler is het primaire toegangspunt voor gebruikers — hier worden builds gestart, licenties geactiveerd en projecten beheerd. Zonder integratie met de backend kan de Modeler geen actuele licentiestatus tonen, geen build-tokens ophalen en geen koppeling maken met pipelines of deployments in AWS.\n\nOm een consistente en betrouwbare gebruikerservaring te bieden, is een directe koppeling tussen de Modeler en de License Management-API noodzakelijk."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "72eb28f3-75c8-4245-931c-633e15f3a4b0",
+                        "body": "# Beslissing\n\nDe **Desktop Modeler** wordt gekoppeld aan de **License Management-backend** via een REST API.\n\nBij het openen van een project:\n1. Controleert de Modeler de geldigheid van de lokale licentie en valideert deze via de backend.\n2. Haalt een tijdelijk **build-token** op dat wordt gebruikt bij communicatie met de Build Agent.\n3. Synchroniseert usage-data (zoals commands, read models, notifiers) om maandelijkse metering mogelijk te maken.\n4. Vraagt contextuele informatie op over gekoppelde pipelines en deployments, zodat relevante **AWS-links** direct in de UI beschikbaar zijn.\n\nDeze integratie maakt de Modeler niet alleen de plek waar wordt gemodelleerd, maar ook waar **status, licentie en operationele context samenkomen**.\n\n### Afweging\n- **Alternatief 1:** Licentievalidatie offline uitvoeren. → Niet betrouwbaar en fraudegevoelig.\n- **Alternatief 2:** Gebruiker zelf laten inloggen op een webportaal. → Fragmentatie van de workflow en slechtere UX.\n\nEen directe API-koppeling biedt de snelste en meest naadloze integratie tussen gebruiker, model en backend.\n\n### Verwachte impact\n- **Gebruikerservaring:** De Modeler toont actuele licentiestatus en directe links naar AWS-pipelines en deployments.\n- **Architecturaal:** De Modeler fungeert als eerste client van de License Management-backend.\n- **Beveiliging:** Alle communicatie verloopt via tijdelijke tokens en TLS.\n- **Operationeel:** Builds en usage-data worden automatisch gesynchroniseerd met de backend."
+                    }
+                ],
+                "prio": 0,
+                "decision": "De Desktop Modeler gebruikt de License Management-API voor licentievalidatie, usage-synchronisatie en het tonen van pipeline- en deploymentlinks.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                    "target": "9286b792-bbd2-445a-b609-22a5758624c5",
+                    "label": "Uses API"
+                },
+                "updatedAt": "2025-10-27T22:13:40.552Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c": {
+                "id": "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c",
+                "sequence_number": 11,
+                "createdAt": "2025-10-22T22:49:20.643Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 11: Koppel de Build Agent aan de License Management-backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "007ff59c-6dd4-47bb-b294-4acf17d25c05",
+                        "body": "# Probleemstelling\n\nNu de **License Management-backend** operationeel is en verantwoordelijk is voor licentiecontrole, usage-registratie en pipeline-administratie, moet de **Build Agent** zijn buildgegevens hieraan kunnen rapporteren.\n\nElke build bevat waardevolle metadata — zoals start- en eindtijd, gebruikte resources, buildstatus, project-ID en gebruikte features (commands, read models, notifiers). Zonder centrale registratie blijven deze gegevens verspreid en kunnen we geen betrouwbaar overzicht bieden van gebruik of licentie-compliance.\n\nDaarnaast is het essentieel dat de backend weet **welke builds actief zijn** en **hoe vaak** een gebruiker de Build Agent aanroept, zodat usage-based billing, debugging en kwaliteitsmonitoring mogelijk worden."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "b3a4dfed-b27c-42cf-a97c-efc55fdf0044",
+                        "body": "# Beslissing\n\nDe **Build Agent** wordt gekoppeld aan de **License Management-backend** en rapporteert na elke build de relevante **build metrics**.\n\nDe flow is als volgt:\n1. De Build Agent ontvangt van de Modeler een tijdelijk **build-token**.\n2. Na afronding van de build verstuurt de agent een **metrics payload** naar de backend via een beveiligde API-aanroep.\n3. De backend registreert deze data in de usage-administratie en koppelt de metrics aan de betreffende licentie en pipeline.\n4. Eventuele fouten of quota-overschrijdingen worden teruggekoppeld aan de Modeler.\n\nDe backend verwerkt deze informatie vervolgens voor facturatie, analyse en operationeel inzicht.\n\n### Afweging\n- **Alternatief 1:** Metrics opslaan in S3 of lokale logs. → Geen real-time inzicht en geen koppeling met licenties.\n- **Alternatief 2:** Periodieke synchronisatie door de Modeler. → Vertraging, inconsistente data en hogere complexiteit.\n\nEen directe koppeling tussen Build Agent en backend garandeert **real-time inzicht, eenvoudige billing en uniforme monitoring**.\n\n### Verwachte impact\n- **Architecturaal:** De Build Agent wordt een data-producer richting de License Management-API.\n- **Operationeel:** Metrics worden centraal opgeslagen en gebruikt voor licentie-validatie en billing.\n- **Gebruikerservaring:** Build-geschiedenis en gebruiksstatistieken zijn zichtbaar vanuit de Modeler.\n- **Beveiliging:** Communicatie verloopt via tijdelijke tokens en TLS-beveiligde endpoints."
+                    }
+                ],
+                "prio": 0,
+                "decision": "De Build Agent rapporteert na elke build real-time metrics aan de License Management-backend voor usage-tracking, licentievalidatie en operationeel inzicht.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "67c1784d-7665-4d37-b010-790068e582a9",
+                    "target": "9286b792-bbd2-445a-b609-22a5758624c5",
+                    "label": "Put build metrics"
+                },
+                "updatedAt": "2025-10-27T22:14:07.233Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "faf777f8-112d-4c6a-9e74-d95b323f68b3": {
+                "id": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
+                "sequence_number": 12,
+                "createdAt": "2025-10-22T22:50:14.324Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 12: Selecteer Stripe als betalingsverwerker voor Professional-licenties",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "a0842b3f-ae8f-4a43-b6c8-f55a7fd81552",
+                        "body": "# Probleemstelling\n\nDe **License Management-backend** beheert licenties en usage-gegevens voor alle Tracepaper-projecten. Binnen dit model bestaan drie licentietypen:\n- **Personal:** gratis, met beperkte quota;\n- **Non-profit:** gratis, met verhoogde quota en handmatige goedkeuring;\n- **Professional:** commercieel, met betaalde abonnementen en usage-gebaseerde kosten.\n\nOm Professional-licenties automatisch te kunnen factureren en betalingen veilig te verwerken, is een geïntegreerd betalingsplatform nodig. Dit platform moet periodieke abonnementskosten combineren met usage-afrekening (bijv. per command, view of notifier) en wereldwijd kunnen opereren.\n\nEen interne oplossing zou hoge kosten en compliance-last met zich meebrengen (PCI-DSS, fraudecontrole, valuta-ondersteuning). Daarom is aansluiting op een externe betalingsverwerker vereist."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "fe5ff8cb-160a-4f3d-80ae-6916eb3b2989",
+                        "body": "# Beslissing\n\nWe kiezen voor **Stripe** als externe betalingsverwerker voor **Professional-licenties**.\n\nAlleen projecten met een Professional-licentie worden in Stripe geregistreerd. Personal- en Non-profit-licenties blijven volledig kosteloos en worden niet gekoppeld aan Stripe.\n\nDe integratie verloopt als volgt:\n1. Bij activatie van een Professional-licentie maakt de backend een **Stripe Customer** aan, gekoppeld aan het project-ID en de Git-repository.\n2. Usage-gegevens (commands, read models, notifiers, builds) worden periodiek naar **Stripe Usage Records** gesynchroniseerd.\n3. Stripe genereert maandelijks een factuur met de vaste licentiekosten en de usage-afrekening.\n4. Betalings- en abonnementsstatussen worden via **webhooks** teruggekoppeld naar de backend.\n\n### Afweging\n- **Alternatief 1:** Eigen facturatie implementeren → complex en risicovol qua compliance.\n- **Alternatief 2:** Gebruik van eenvoudiger platformen zoals Paddle of Lemon Squeezy → onvoldoende ondersteuning voor usage-based billing en seat-beheer.\n\nStripe biedt de juiste balans tussen **flexibiliteit, betrouwbaarheid en wereldwijde dekking**, en maakt het mogelijk om betaalde en gratis licenties naadloos naast elkaar te beheren.\n\n### Verwachte impact\n- **Architecturaal:** Integratie van een extern betalingssysteem voor enkel de commerciële licenties.\n- **Operationeel:** Facturatie en incasso verlopen automatisch voor Professional-gebruikers.\n- **Commercieel:** Non-profit- en Personal-gebruikers blijven vrijgesteld van betalingsverplichtingen.\n- **Beveiliging:** Stripe voldoet aan PCI-DSS en minimaliseert onze interne compliance-verantwoordelijkheid."
+                    }
+                ],
+                "prio": 0,
+                "decision": "We gebruiken Stripe uitsluitend voor Professional-licenties, waarmee automatische facturatie, usage-billing en betalingen veilig worden afgehandeld.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "system",
+                    "scope": "external",
+                    "system_name": "Stripe",
+                    "description": "payment processing"
+                },
+                "updatedAt": "2025-10-27T22:37:46.827Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "4adeb822-c309-49f6-847c-6ed1d111e91d": {
+                "id": "4adeb822-c309-49f6-847c-6ed1d111e91d",
+                "sequence_number": 13,
+                "createdAt": "2025-10-22T23:00:21.306Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 13: Koppel de License Management-backend aan Stripe",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "12f63087-c82b-491c-a16c-f3137fe8a2c7",
+                        "body": "# Probleemstelling\n\nNa de keuze voor **Stripe** als betalingsverwerker (zie Decision 12) moet de **License Management-backend** zorgen voor een betrouwbare synchronisatie tussen het interne licentiesysteem en de externe facturatie.\n\nDe backend is de **enige bron van waarheid** voor licentiestatus, usage-statistieken en seat-registratie. Stripe fungeert uitsluitend als uitvoerend facturatieplatform. Zonder automatische synchronisatie zou het risico ontstaan dat verlopen licenties actief blijven of dat gebruik niet correct wordt afgerekend.\n\nDaarnaast moet usage-data actueel blijven, zonder dat gebruikers daarvoor hoeven te wachten of handmatig actie ondernemen. Build-gebeurtenissen moeten direct geregistreerd worden, terwijl overige usage (commands, views, notifiers, etc.) periodiek kan worden bijgewerkt."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "29fb4b0a-c240-4723-b6c3-699ed25368d6",
+                        "body": "# Beslissing\n\nDe **License Management-backend** integreert met **Stripe** via een gecontroleerde, backend-gedreven koppeling.\n\n### Synchronisatiefrequentie\n1. **Dagelijks** controleert de backend bij Stripe of alle actieve licenties nog geldig zijn en worden betalingen of schorsingen verwerkt.\n2. Tijdens diezelfde taak worden de actuele usage-gegevens naar Stripe geüpload als **Usage Records** voor facturatie.\n3. **Build-ticks** (het aantal builds per project) worden **event-based** direct naar Stripe gestuurd zodra een build is voltooid, om realtime-accuratesse te behouden.\n\nStripe verwerkt deze usage-records en genereert maandelijks facturen. De backend blijft leidend in alle beslissingen over licentie-status, activatie en validatie.\n\n### Afweging\n- **Alternatief 1:** Webhook-gedreven model → verhoogt complexiteit en maakt de backend afhankelijk van externe triggers.\n- **Alternatief 2:** Handmatige synchronisatie → foutgevoelig en niet betrouwbaar op schaal.\n\nEen backend-gedreven, dagelijkse synchronisatie biedt **volledige controle**, **minimale afhankelijkheden** en **betere audit-traceerbaarheid**.\n\n### Verwachte impact\n- **Architecturaal:** Stripe wordt een passieve facturatie-endpoint, volledig bestuurd door de backend.\n- **Operationeel:** Dagelijkse validatie voorkomt verlopen of foutieve licenties.\n- **Realtime-component:** Builds worden direct geregistreerd, zodat het dashboard actueel blijft.\n- **Beveiliging:** Alleen uitgaande communicatie met Stripe; geen inkomende webhooks of trust-assumpties."
+                    }
+                ],
+                "prio": 0,
+                "decision": "De License Management-backend voert dagelijks een synchronisatie met Stripe uit voor licentievalidatie en usage-registratie, met event-based updates voor builds.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "9286b792-bbd2-445a-b609-22a5758624c5",
+                    "target": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
+                    "label": "Register usage and validate license"
+                },
+                "updatedAt": "2025-10-27T22:28:59.525Z",
+                "tags": [
+                    "decision"
+                ]
+            },
+            "89bf2d4c-b38f-46da-b623-51f4c5cf9c03": {
+                "id": "89bf2d4c-b38f-46da-b623-51f4c5cf9c03",
+                "createdAt": "2025-10-24T22:12:46.817Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "Tracepaper",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "SAP 1: Test",
+                "principle": "### Statement\nDescribe **what** the principle enforces, in a clear, normative way.\nUse active voice — e.g. *“To ensure X, we design Y as Z.”*\nThis line should stand on its own and express the core architectural stance.\n\n### Rationale\nExplain **why** this principle exists — what value or trade-off it supports.\nOptionally include examples to make the motivation tangible.\nKeep it factual and reusable; others should be able to cite this principle as precedent.\n\n> Example: “This separation provides organisational flexibility, allowing each system to evolve independently — both technically and legally.”\n\n### Implication / Acceptance\nDescribe **what this principle implies** or **what we accept as a consequence**.\nThis section makes the trade-offs explicit, ensuring the principle isn’t interpreted as dogma.\n\n> Example: “We accept that this design prevents us from bundling our software into a single product.”",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-10-24T22:20:25.397Z",
+                "tags": [
+                    "principle"
+                ]
+            },
+            "17807819-9e47-4237-ae66-528ad580affe": {
+                "id": "17807819-9e47-4237-ae66-528ad580affe",
+                "createdAt": "2025-10-24T22:24:58.164Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "Tracepaper:Build Agent",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "CAP 1: test",
+                "principle": "### Statement\nDescribe **what** the principle enforces, in a clear, normative way.\nUse active voice — e.g. *“To ensure X, we design Y as Z.”*\nThis line should stand on its own and express the core architectural stance.\n\n### Rationale\nExplain **why** this principle exists — what value or trade-off it supports.\nOptionally include examples to make the motivation tangible.\nKeep it factual and reusable; others should be able to cite this principle as precedent.\n\n> Example: “This separation provides organisational flexibility, allowing each system to evolve independently — both technically and legally.”\n\n### Implication / Acceptance\nDescribe **what this principle implies** or **what we accept as a consequence**.\nThis section makes the trade-offs explicit, ensuring the principle isn’t interpreted as dogma.\n\n> Example: “We accept that this design prevents us from bundling our software into a single product.”",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-10-24T22:25:15.462Z",
+                "tags": [
+                    "principle"
+                ]
+            },
+            "845273a4-63a7-4e7f-92af-07232f79c0b3": {
+                "id": "845273a4-63a7-4e7f-92af-07232f79c0b3",
+                "createdAt": "2025-10-27T20:28:57.632Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "persona",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Persona: XYZ",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "883d306c-1671-4057-a0c3-d60e4139e193",
+                        "body": "# XYZ\n\nDescribe the persona..."
+                    }
+                ],
+                "effect": {
+                    "action": "new persona",
+                    "external": true,
+                    "name": "Modeler",
+                    "description": "BIA or Developer"
+                },
+                "tags": [
+                    "persona"
+                ],
+                "prio": 0,
+                "updatedAt": "2025-10-27T22:44:22.146Z"
+            },
+            "ef31a1f4-1740-4081-aaa0-432ce64cdc6c": {
+                "id": "ef31a1f4-1740-4081-aaa0-432ce64cdc6c",
+                "sequence_number": 14,
+                "createdAt": "2025-10-27T20:36:12.613Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 14",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "1c02c6a2-bc3c-419d-9143-424940ab653a",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "187aa595-cb89-44d6-8b4b-daaf7a8a691b",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "tags": [
+                    "decision"
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "introduces new",
+                    "source": "persona:new-persona",
+                    "target": "Tracepaper:Desktop Modeler",
+                    "label": "uses",
+                    "level": "component",
+                    "scope": "Tracepaper:Desktop Modeler",
+                    "system_name": "Webview Host",
+                    "technology": "PyWebview/Flask",
+                    "description": "GUI Bridge"
+                },
+                "updatedAt": "2025-10-27T22:40:05.972Z"
+            },
+            "c262d374-0b09-4049-937f-f7b1be4de5bb": {
+                "id": "c262d374-0b09-4049-937f-f7b1be4de5bb",
+                "sequence_number": 15,
+                "createdAt": "2025-10-27T20:52:39.216Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 15",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "0bef8f2a-c787-47c9-a535-32520351ab69",
+                        "body": "# Problem statement\n\nDescribe the problem you are solving..."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "d8f57ed8-2edf-40d9-8d7d-635e69489145",
+                        "body": "# Decision\n\nDescribe the decision that is taken..."
+                    }
+                ],
+                "tags": [
+                    "decision"
+                ],
+                "prio": 0,
+                "decision": "short summary of **problem** and **decision**",
+                "effect": {
+                    "action": "link two components",
+                    "source": "845273a4-63a7-4e7f-92af-07232f79c0b3",
+                    "target": "ef31a1f4-1740-4081-aaa0-432ce64cdc6c",
+                    "label": "uses"
+                },
+                "updatedAt": "2025-10-27T22:42:47.122Z"
+            }
         },
-        "updatedAt": "2025-10-25T12:43:09.086Z",
-        "prio": 0,
-        "tags": [
-          "pitch"
-        ]
-      },
-      "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
-        "id": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
-        "type": "pitch",
-        "status": "draft",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Todo",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Welcome to Markdown Editor\n\nType something..."
-          }
-        ],
-        "attributes": {
-          "appetite": "6"
-        },
-        "updatedAt": "2025-10-21T20:54:43.504Z",
-        "prio": 0,
-        "tags": [
-          "pitch"
-        ]
-      },
-      "bf54bfca-3bd8-4b41-9e84-4dd0671bf986": {
-        "id": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "createdAt": "2025-10-21T20:26:13.288Z",
-        "parent": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
-        "type": "scope",
-        "status": "active",
-        "authors": [
-          "Bo"
-        ],
-        "title": "System setup",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Welcome to Markdown Editor\n\nType something..."
-          }
-        ],
-        "attributes": {
-          "progress": 78.75
-        },
-        "updatedAt": "2025-10-25T13:33:25.504Z",
-        "prio": 0,
-        "tags": [
-          "scope"
-        ]
-      },
-      "89ebb234-da99-4e5b-ae43-e2739b386925": {
-        "id": "89ebb234-da99-4e5b-ae43-e2739b386925",
-        "createdAt": "2025-10-22T18:46:38.233Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "enterprise",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "EAP 1: Functionele grenzen en organisatorische flexibiliteit",
-        "principle": "### Stelling\nOm duidelijke functionele grenzen te realiseren, worden **Draftsman-producten ontworpen als afzonderlijke systemen**.\n\n### Redenering\nDeze scheiding biedt **organisatorische flexibiliteit**, doordat elk product zich onafhankelijk kan ontwikkelen — zowel technisch als juridisch.\nZo kunnen we voor verschillende producten afzonderlijke rechtspersonen gebruiken, waardoor isolatie mogelijk is waar dat wenselijk is.\n\n### Gevolgen / Acceptatie\nWe accepteren dat dit ontwerp ons verhindert om **onze software te bundelen** (bijv. *“één keer betalen en zowel Tracepaper als Workbench gebruiken”*).\nElk product moet daarom zijn eigen waardepropositie en prijsmodel kunnen verantwoorden.",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-22T18:47:28.356Z",
-        "tags": [
-          "principle"
-        ]
-      },
-      "a201f648-b359-4621-b45c-8ea40b4d76e3": {
-        "id": "a201f648-b359-4621-b45c-8ea40b4d76e3",
-        "createdAt": "2025-10-22T19:18:23.823Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "enterprise",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "EAP 2: We geven de voorkeur aan serverless technologieën",
-        "principle": "### Stelling\nOm schaalbaarheid te waarborgen en operationele lasten te verminderen, **geven we de voorkeur aan serverless technologieën** boven zelfbeheer van infrastructuur.\n\n### Redenering\nServerless-platformen stellen teams in staat zich te richten op businesslogica in plaats van infrastructuurbeheer.\nZe ondersteunen **kostenefficiëntie**, **automatische schaalbaarheid** en **nauwkeurige afrekening per gebruik**, wat aansluit bij ons streven naar slanke en adaptieve systemen.\nHoewel serverless afhankelijkheden creëert van specifieke aanbieders, wegen de voordelen in snelheid en autonomie zwaarder dan de nadelen voor de meeste workloads.\n\n### Gevolgen / Acceptatie\nWe accepteren dat deze voorkeur onze mogelijkheid beperkt om te deployen in bepaalde on-premise of multi-cloud omgevingen.\nTeams die bewust afwijken van serverless moeten hun keuze expliciet onderbouwen en aangeven hoe operationele risico’s worden beheerst.",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-24T22:12:11.748Z",
-        "tags": [
-          "principle"
-        ]
-      },
-      "f7031fcf-142e-4ed2-bf1a-92a192da5f93": {
-        "id": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
-        "sequence_number": 1,
-        "createdAt": "2025-10-21T20:26:24.078Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 1: Introductie van Tracepaper",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
-            "body": "# Probleemstelling\n\nBinnen Draftsman ontstond de behoefte om een eigen platform te ontwikkelen waarmee domeinmodellen niet alleen kunnen worden gedocumenteerd, maar ook direct kunnen worden vertaald naar productiecode.\n\nBestaande low-codeplatformen bieden vaak onvoldoende grip op de onderliggende architectuur en beperken de uitbreidbaarheid. Bovendien leggen ze hun eigen meningen op over hosting, runtime en integratie. Dit botst met onze wens om **software-architectuur expliciet en inzichtelijk** te modelleren — niet verborgen in black boxes.\n\nWe zochten dus naar een manier om onze **visie op model-gedreven ontwikkeling** (Model Driven Development) tastbaar te maken in een eigen product."
-          },
-          {
-            "type": "markdown",
-            "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
-            "body": "# Beslissing\n\nWe introduceren een nieuw softwaresysteem: **Tracepaper**. Dit systeem wordt ons primaire instrument om model-gedreven ontwikkeling te ondersteunen.\n\nTracepaper combineert:\n- Een visuele modelleertool waarmee domeinconcepten kunnen worden vastgelegd (commands, aggregates, views, projections en notifiers).\n- Een codegenerator die uit deze modellen direct productieklare AWS-serverless componenten genereert.\n\nMet deze keuze leggen we de basis voor een platform dat de kloof tussen **architectuur en uitvoering** verkleint.\n\n### Afweging\nAlternatieven zoals bestaande low-code tools (bijv. OutSystems, Mendix of Camunda) bieden snelheid, maar beperken de vrijheid en controle. Een volledig handmatige aanpak daarentegen maakt snelle iteratie onmogelijk. Tracepaper positioneert zich ertussenin: **volledige controle waar het telt, automatisering waar het kan.**\n\n### Verwachte impact\n- **Architecturaal:** Tracepaper wordt een nieuw kernsysteem binnen het Draftsman-landschap.\n- **Organisatorisch:** ondersteunt kennisdeling en herhaalbaarheid van architectuurbeslissingen.\n- **Technisch:** vormt de basis voor toekomstige producten die op dezelfde principes voortbouwen."
-          }
-        ],
-        "prio": "0",
-        "updatedAt": "2025-10-25T12:42:53.172Z",
-        "decision": "We introduceren een nieuw systeem, Tracepaper, om onze visie op model-gedreven ontwikkeling te realiseren binnen het Draftsman-ecosysteem.",
-        "effect": {
-          "action": "introduces new",
-          "level": "system",
-          "scope": "internal",
-          "system_name": "Tracepaper",
-          "technology": "software system",
-          "description": "Our take on low-code"
-        },
-        "precedent": "89ebb234-da99-4e5b-ae43-e2739b386925",
-        "tags": [
-          "decision"
-        ]
-      },
-      "67c1784d-7665-4d37-b010-790068e582a9": {
-        "id": "67c1784d-7665-4d37-b010-790068e582a9",
-        "sequence_number": 2,
-        "createdAt": "2025-10-22T21:03:07.473Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "ADR",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 2: Build a Code Generator",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
-            "body": "# Probleemstelling\n\nNadat Tracepaper als systeem is geïntroduceerd, hebben we een manier nodig om **de gemodelleerde domeinlogica automatisch om te zetten in uitvoerbare software**.\n\nHet doel van Tracepaper is om de kloof te verkleinen tussen een conceptueel model (commands, aggregates, views, projections, notifiers) en een gedistribueerde runtime. In de praktijk betekent dit dat de gegenereerde applicaties moeten kunnen draaien op **AWS Serverless**, met componenten zoals Lambda, DynamoDB, S3 en AppSync.\n\nHet handmatig schrijven van deze code is tijdrovend en foutgevoelig. Bovendien herhaalt veel infrastructuurcode zich per project (IaC, deploymentconfiguratie, boilerplate). We zoeken dus naar een manier om deze vertaalslag te **automatiseren**, zonder de transparantie van de gegenereerde code te verliezen."
-          },
-          {
-            "type": "markdown",
-            "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
-            "body": "# Beslissing\n\nWe bouwen een **codegenerator** die de DSL-modellen uit Tracepaper vertaalt naar productieklare code en infrastructuur (IaC) voor AWS Serverless.\n\nDeze generator vormt de schakel tussen het conceptuele model en de uitvoerbare realiteit. De build pipeline wordt uitgevoerd door een aparte component — de **Build Agent** — die verantwoordelijk is voor het ontvangen van ZIP-bestanden met modeldata, het genereren van code, en het publiceren van resultaten.\n\nDe generator wordt geïmplementeerd in **Python**, gebruikmakend van **AWS SAM** voor infrastructuurdefinitie en packaging.\n\n### Afweging\n- **Alternatief 1:** Handmatige codegeneratie via templates in de modeler zelf — te beperkt, te weinig controle over build lifecycle.\n- **Alternatief 2:** Een externe service (bijv. CloudBuild of CodePipeline) — verhoogt afhankelijkheden en beperkt de aanpasbaarheid.\n\nEen eigen generator biedt de beste balans tussen controle, snelheid en uitbreidbaarheid. Bovendien kunnen we hiermee in de toekomst **verschillende engines** ondersteunen, bijvoorbeeld voor containers of on-premises omgevingen.\n\n### Verwachte impact\n- **Architecturaal:** De Build Agent wordt een kerncomponent binnen Tracepaper.\n- **Technisch:** Codegeneratie en IaC worden gestandaardiseerd; build-uitvoer is reproduceerbaar.\n- **Strategisch:** Tracepaper onderscheidt zich van klassieke low-codeplatformen door **volledige transparantie in de gegenereerde code**."
-          }
-        ],
-        "prio": 0,
-        "effect": {
-          "action": "introduces new",
-          "level": "container",
-          "system_name": "Build Agent",
-          "scope": "Tracepaper",
-          "type": "internal_component",
-          "technology": "SAM / Python",
-          "description": "code generator"
-        },
-        "precedent": "a201f648-b359-4621-b45c-8ea40b4d76e3",
-        "updatedAt": "2025-10-25T22:53:31.717Z",
-        "tags": [
-          "adr",
-          "tracepaper",
-          "code-generation",
-          "aws-serverless",
-          "iac",
-          "python",
-          "automation",
-          "architecture"
-        ],
-        "ystatement": {
-          "context": "Within Tracepaper, which aims to transform domain models into executable software on AWS Serverless.",
-          "concern": "Manual translation of DSL models into executable code is error-prone, inconsistent, and time-consuming.",
-          "decision": "We build a code generator in Python that translates Tracepaper models into production-ready AWS Serverless code and IaC via AWS SAM.",
-          "alternatives": "Manual generation through modeler templates, or relying on external build services such as CloudBuild or CodePipeline.",
-          "quality": "Standardization, transparency, and higher development speed without losing control over generated code.",
-          "consequence": "The Build Agent becomes a central component within Tracepaper, managing the entire build and generation pipeline."
-        }
-      },
-      "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a": {
-        "id": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
-        "sequence_number": 3,
-        "createdAt": "2025-10-22T21:45:39.243Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 3: Desktop Modeler",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "1f1f6fc1-13b9-4283-8267-75b8f41ab82c",
-            "body": "# Probleemstelling\n\nDe eerste versies van Tracepaper (v0–v4) draaiden volledig in de browser. Hoewel dit een lage instapdrempel bood, leidde het tot beperkingen in **performance**, **bestandstoegang** en **gebruikservaring**.\n\nBrowsergebaseerde modellen vereisten complexe workarounds zoals IndexedDB, Web Workers en simulaties van een bestandsstructuur. Bovendien was offline werken lastig, en konden grotere projecten (met honderden XML- of JSON-modellen) de UI merkbaar vertragen.\n\nWe willen een omgeving creëren die aanvoelt als een **echte IDE** – snel, robuust, en geïntegreerd met lokale tools zoals Git, AWS CLI en editors. Dit vraagt om een verschuiving van een web-first benadering naar een **desktop-native ervaring**."
-          },
-          {
-            "type": "markdown",
-            "id": "89776171-58da-429f-8300-86f37d378ff4",
-            "body": "# Beslissing\n\nWe ontwikkelen een **desktopversie van de Tracepaper Modeler**, gebouwd met **PyWebView** en **Alpine.js**.\n\nDeze keuze maakt het mogelijk om:\n- Lokale bestandsstructuren en repositories direct te gebruiken zonder sandboxbeperkingen.\n- Een vloeiende, native-achtige gebruikerservaring te bieden.\n- Modellen offline te bewerken, zonder afhankelijkheid van een server of browsercache.\n\nDe desktopversie behoudt de moderne webtechnologie voor de UI (HTML, Tailwind, Alpine.js), maar verpakt deze in een desktopcontainer die **lokaal runt met Python** als backend.\n\n### Afweging\n- **Alternatief 1:** De webversie verbeteren (Tracepaper 4) met PWA-technieken. → Bleef traag bij grote modellen, beperkte toegang tot lokale bestanden.\n- **Alternatief 2:** Volledig native GUI bouwen met frameworks als Qt of Electron. → Hogere ontwikkel- en onderhoudskosten, geen hergebruik van bestaande frontendcode.\n\nPyWebView biedt het beste van beide werelden: webtechnologie met native integratie, lichtgewicht en cross-platform.\n\n### Verwachte impact\n- **Gebruikerservaring:** snellere laadtijden, betere editorrespons en native look & feel.\n- **Architecturaal:** de modeler wordt een zelfstandige container binnen Tracepaper, gescheiden van de Build Agent en backend.\n- **Strategisch:** de desktopversie maakt Tracepaper aantrekkelijker voor professionele gebruikers die IDE-kwaliteit verwachten."
-          }
-        ],
-        "prio": 0,
-        "decision": "We bouwen een desktopversie van de Tracepaper Modeler om de gebruikerservaring te optimaliseren en lokale workflows beter te ondersteunen.",
-        "effect": {
-          "action": "introduces new",
-          "level": "container",
-          "scope": "Tracepaper",
-          "type": "web_container",
-          "system_name": "Desktop Modeler",
-          "technology": "pywebview / alpinejs",
-          "description": "Developer experience optimized"
-        },
-        "updatedAt": "2025-10-23T20:43:28.660Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "df4dba93-2e4c-4b69-bb84-1d4579493641": {
-        "id": "df4dba93-2e4c-4b69-bb84-1d4579493641",
-        "sequence_number": 4,
-        "createdAt": "2025-10-23T20:53:16.033Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 4: Voeg een ZIP-gebaseerde API toe aan de Build Agent",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "de39f1db-2fb5-4d71-a564-d7bdd74624a4",
-            "body": "# Probleemstelling\n\nNu de **Build Agent** is ontworpen als een zelfstandige, serverless component die verantwoordelijk is voor codegeneratie, is een betrouwbare en efficiënte manier nodig om modelprojecten vanuit de **Desktop Modeler** aan te leveren.\n\nEen modelproject bestaat doorgaans uit tientallen tot honderden JSON- of XML-bestanden die samen de domeinbeschrijving vormen. Individuele API-calls per bestand zouden leiden tot veel netwerkverkeer, complex foutbeheer en hoge latency.\n\nWe willen daarom een **gestandaardiseerde, stateless interface** waarmee complete projecten in één keer kunnen worden overgedragen — zonder dat langdurige sessies of persistente opslag nodig zijn."
-          },
-          {
-            "type": "markdown",
-            "id": "17738ad1-54e8-43ed-b560-79de87f3b8a0",
-            "body": "# Beslissing\n\nWe introduceren een **ZIP-gebaseerde API** als primair aanlevermechanisme voor de Build Agent.\n\nDe **Desktop Modeler** bundelt alle modelbestanden in een ZIP-archief en verstuurt dit via een **HTTP POST**-verzoek naar een **AWS Lambda**-functie die fungeert als entrypoint voor de Build Agent.\n\nDe Lambda:\n1. Pakt het ZIP-bestand uit in een tijdelijke directory;\n2. Start de codegeneratie met de bijgeleverde metadata;\n3. Plaatst het resultaat in een S3-bucket voor verdere verwerking.\n\nDeze aanpak zorgt ervoor dat de Build Agent:\n- **Stateless** opereert (geen sessiebehoud of lokale opslag);\n- **Schaalbaar** is dankzij parallelle Lambda-executies;\n- **Robuust** blijft bij grotere projecten met veel bestanden.\n\n### Afweging\n- **Alternatief 1:** Upload van losse bestanden naar S3 met event triggers. → Complexe orchestratie en foutgevoelig.\n- **Alternatief 2:** REST API met individuele requests per modelbestand. → Te traag en ongeschikt voor grotere projecten.\n\nEen ZIP-gebaseerde aanpak biedt eenvoud, herhaalbaarheid en goede performance met minimale operationele overhead.\n\n### Verwachte impact\n- **Architecturaal:** De Build Agent krijgt een duidelijk, eenduidig entrypoint voor buildverzoeken.\n- **Technisch:** Volledige projecten kunnen als één transactie worden verwerkt.\n- **Beveiliging:** Tijdelijke opslag voorkomt langdurige blootstelling van modeldata."
-          }
-        ],
-        "prio": 0,
-        "decision": "We introduceren een ZIP-gebaseerde API waarmee complete modelprojecten efficiënt kunnen worden geüpload en verwerkt door de Build Agent.",
-        "effect": {
-          "action": "introduces new",
-          "level": "component",
-          "scope": "Tracepaper:Build Agent",
-          "system_name": "API",
-          "technology": "aws lambda",
-          "description": "The entrypoint for the build agent"
-        },
-        "updatedAt": "2025-10-24T20:01:18.158Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "1c9f5c4d-e848-4191-87a2-d40bae96b150": {
-        "id": "1c9f5c4d-e848-4191-87a2-d40bae96b150",
-        "sequence_number": 5,
-        "createdAt": "2025-10-22T22:15:30.217Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 5: Koppel de Modeler aan de Build Agent",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "bdc4cb89-56c4-4f89-8659-b6e4ffe5aadf",
-            "body": "# Probleemstelling\n\nMet de introductie van de **ZIP-gebaseerde API** binnen de Build Agent is er nu een schaalbare en stateless manier om modelprojecten te verwerken. De volgende stap is om de **Desktop Modeler** direct te laten communiceren met deze API.\n\nDe Modeler fungeert als ontwikkelomgeving waarin gebruikers hun domeinmodellen samenstellen. Voor een naadloze workflow moet de Modeler een buildverzoek kunnen uitvoeren zonder handmatige export- of uploadstappen.\n\nEen directe koppeling tussen de Modeler en de Build Agent is essentieel om:\n- de feedbackloop te verkorten;\n- builds te starten met één handeling;\n- de consistentie tussen lokale modellen en de gegenereerde output te waarborgen."
-          },
-          {
-            "type": "markdown",
-            "id": "3cd3361a-3bc8-498a-b515-bf166cebc692",
-            "body": "# Beslissing\n\nWe koppelen de **Desktop Modeler** rechtstreeks aan de **Build Agent** via de ZIP-gebaseerde API.\n\nBij het uitvoeren van een build in de Modeler:\n1. Worden alle modelbestanden automatisch gebundeld tot één ZIP-bestand;\n2. Vraagt de Modeler een **tijdelijk build-token** op via de licentie-backend;\n3. Stuurt het ZIP-bestand samen met metadata naar de Build Agent;\n4. Toont de Modeler de voortgang van de build (queued, running, done).\n\nDeze architectuur maakt de samenwerking tussen Modeler en Build Agent **transparant, efficiënt en volledig geautomatiseerd**.\n\n### Afweging\n- **Alternatief 1:** Externe CLI of uploader gebruiken. → Vereist technische kennis en veroorzaakt contextswitches.\n- **Alternatief 2:** Indirecte synchronisatie via S3. → Complexer rechtenbeheer en minder controle over feedback.\n\nEen directe API-koppeling biedt de kortste feedbackcyclus en de meest natuurlijke gebruikerservaring.\n\n### Verwachte impact\n- **Gebruikerservaring:** Eén klik om te builden, zonder handmatige acties.\n- **Architecturaal:** De Modeler wordt een formele client van de Build Agent.\n- **Beveiliging:** Elk buildverzoek is tijdelijk geautoriseerd via het licentiebeheer."
-          }
-        ],
-        "prio": 0,
-        "decision": "De Desktop Modeler communiceert direct met de Build Agent via de ZIP-gebaseerde API om builds automatisch te starten en te volgen.",
-        "effect": {
-          "action": "link two components",
-          "source": "Tracepaper:Desktop Modeler",
-          "target": "Tracepaper:Build Agent:API",
-          "label": "Sends build request"
-        },
-        "updatedAt": "2025-10-25T21:14:12.894Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "b3923e5a-a3c5-4167-831e-004915ac011f": {
-        "id": "b3923e5a-a3c5-4167-831e-004915ac011f",
-        "sequence_number": 6,
-        "createdAt": "2025-10-22T22:35:30.956Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 6: Voeg een bucket toe voor artifactopslag",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "15b82a35-eeff-4bdf-8f50-1be909d427ca",
-            "body": "# Probleemstelling\n\nNu de **Build Agent** builds kan uitvoeren en de resultaten genereert, ontstaat de behoefte aan een robuuste manier om deze uitvoerbestanden (artefacten) op te slaan en te ontsluiten.\n\nEen build kan meerdere bestanden opleveren — van gegenereerde code tot configuratie en metadata — die gezamenlijk te groot zijn om via directe HTTP-responses terug te sturen. Lambda’s maximale payloadlimiet (6 MB) maakt dit technisch onhoudbaar voor productiegebruik.\n\nEr is daarom een **asynchroon en schaalbaar opslagmechanisme** nodig waar buildresultaten tijdelijk kunnen worden bewaard, zodat de Modeler en backend deze later veilig kunnen ophalen."
-          },
-          {
-            "type": "markdown",
-            "id": "ed062e7c-045c-4e73-ab43-40c93b7c3989",
-            "body": "# Beslissing\n\nWe introduceren een **S3-gebaseerde Outbox** voor de opslag van build-artefacten.\n\nDe **Build Agent** uploadt na afronding van een build de gegenereerde bestanden naar deze bucket. De backend of Modeler kan het resultaat vervolgens downloaden via een **presigned URL** met beperkte geldigheidsduur.\n\nDeze architectuur ontkoppelt het buildproces van het overdrachtsproces, waardoor het systeem beter schaalbaar, betrouwbaarder en eenvoudiger te beheren is.\n\n### Afweging\n- **Alternatief 1:** Buildresultaten terugsturen via de HTTP-response. → Onbetrouwbaar en beperkt door payloadlimieten.\n- **Alternatief 2:** Opslag via externe service (bijv. Cloudflare R2 of Dropbox). → Extra afhankelijkheden en latency.\n\nS3 biedt native integratie, lage kosten en hoge betrouwbaarheid. Door gebruik van presigned URLs blijft de toegang tot bestanden tijdelijk, veilig en auditabel.\n\n### Verwachte impact\n- **Technisch:** Grote bestanden worden efficiënt opgeslagen buiten de compute-laag.\n- **Architecturaal:** De Outbox vormt een gedeelde schakel tussen Build Agent, Modeler en backend.\n- **Beveiliging:** Toegang tot artefacten verloopt via tijdelijk ondertekende links die automatisch verlopen."
-          }
-        ],
-        "prio": 0,
-        "decision": "We introduceren een S3-gebaseerde Outbox voor de opslag van build-artefacten, zodat resultaten asynchroon en veilig kunnen worden opgehaald.",
-        "effect": {
-          "action": "introduces new",
-          "level": "container",
-          "scope": "Tracepaper",
-          "type": "bucket",
-          "system_name": "Outbox",
-          "technology": "S3",
-          "description": "artifact repository"
-        },
-        "updatedAt": "2025-10-22T22:39:12.159Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "4ecc5f72-b895-4048-9172-bf823f0b1b7a": {
-        "id": "4ecc5f72-b895-4048-9172-bf823f0b1b7a",
-        "sequence_number": 7,
-        "createdAt": "2025-10-22T22:42:50.477Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 7: Koppel de Build Agent aan de Outbox",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "ddd1d05b-3683-4390-bb86-f8628538434c",
-            "body": "# Probleemstelling\n\nNa het introduceren van de **Outbox** als centrale opslaglocatie voor build-artefacten, is de volgende stap om de **Build Agent** hier direct mee te verbinden.\n\nDe Build Agent genereert na elke build één of meerdere uitvoerbestanden, maar zonder automatische publicatie zou de gebruiker nog steeds handmatig bestanden moeten ophalen. Dat leidt tot inconsistentie, wachttijd en mogelijke fouten.\n\nOm het buildproces volledig te automatiseren, moet de Build Agent zijn resultaten **direct kunnen uploaden** naar de Outbox zodra een build voltooid is."
-          },
-          {
-            "type": "markdown",
-            "id": "562c1e77-0fe1-4ebb-88bb-f8b48b815ea5",
-            "body": "# Beslissing\n\nDe **Build Agent** wordt gekoppeld aan de **Outbox** zodat alle buildresultaten automatisch worden geüpload naar S3.\n\nHet proces verloopt als volgt:\n1. Na afronding van een build bundelt de Build Agent de output in een ZIP-bestand;\n2. Er wordt een **presigned upload-URL** aangemaakt via de backend of AWS SDK;\n3. Het ZIP-bestand wordt direct geüpload naar de Outbox;\n4. De link naar het geüploade bestand wordt opgeslagen in de buildmetadata.\n\nDeze koppeling maakt het systeem end-to-end autonoom en elimineert de noodzaak voor handmatige downloadstappen of extra API-lagen.\n\n### Afweging\n- **Alternatief 1:** Upload via de backend. → Introduceert onnodige latency en compute-kosten.\n- **Alternatief 2:** Opslag in DynamoDB of custom blob store. → Niet geschikt voor binaire bestanden.\n\nEen directe koppeling met de Outbox is het eenvoudigst, schaalbaarst en meest kostenefficiënt. De presigned upload-URL zorgt voor een veilige overdracht zonder permanente rechten.\n\n### Verwachte impact\n- **Proces:** Builds worden automatisch gepubliceerd in de Outbox.\n- **Architecturaal:** De Build Agent en Outbox vormen samen een volledig geautomatiseerde build pipeline.\n- **Beveiliging:** Uploads verlopen via tijdelijk geautoriseerde S3-links."
-          }
-        ],
-        "prio": 0,
-        "decision": "De Build Agent uploadt na elke build automatisch de artefacten naar de Outbox via een presigned S3-upload.",
-        "effect": {
-          "action": "link two components",
-          "source": "Tracepaper:Build Agent",
-          "target": "Tracepaper:Outbox",
-          "label": "Upload artifact"
-        },
-        "updatedAt": "2025-10-22T23:07:18.215Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "849de746-95e0-4fee-9c4a-6bd625987833": {
-        "id": "849de746-95e0-4fee-9c4a-6bd625987833",
-        "sequence_number": 8,
-        "createdAt": "2025-10-22T22:43:17.360Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 8: Koppel de Modeler aan de Outbox",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "1f9ee6f6-9f05-4590-b0b2-9b910c95a4b7",
-            "body": "# Probleemstelling\n\nMet de **Outbox** als centrale opslaglocatie en de koppeling tussen de **Build Agent** en deze bucket, worden build-artefacten nu automatisch gepubliceerd. Wat nog ontbreekt is een directe verbinding tussen de **Desktop Modeler** en de Outbox, zodat gebruikers de resultaten van hun builds eenvoudig kunnen ophalen.\n\nZonder deze koppeling moeten gebruikers handmatig presigned URLs openen of externe tooling gebruiken om hun bestanden te downloaden. Dat is omslachtig, foutgevoelig en beperkt de gebruikservaring.\n\nOm de feedbackloop te sluiten, moet de Modeler een **naadloze manier** bieden om gegenereerde artefacten rechtstreeks vanuit de applicatie te downloaden."
-          },
-          {
-            "type": "markdown",
-            "id": "98027852-e7a0-429b-bf81-4c28d1c13784",
-            "body": "# Beslissing\n\nWe koppelen de **Desktop Modeler** rechtstreeks aan de **Outbox**, zodat gebruikers build-artefacten direct kunnen downloaden.\n\nNa afronding van een build:\n1. Registreert de Build Agent de locatie van het artefact in de backend;\n2. De backend levert een **presigned download-URL** aan de Modeler;\n3. De gebruiker kan met één klik het bestand downloaden of openen;\n4. De download verloopt rechtstreeks via S3, zonder tussenkomst van de backend.\n\nDeze architectuur sluit de build-cyclus volledig: van model naar artefact in één geïntegreerde flow.\n\n### Afweging\n- **Alternatief 1:** Bestanden laten streamen via de backend. → Trager en duurder in compute-kosten.\n- **Alternatief 2:** Handmatige download via browser of CLI. → Slechte UX en onbetrouwbaar bij verlopen URLs.\n\nEen rechtstreekse koppeling via presigned URLs biedt maximale snelheid, veiligheid en eenvoud.\n\n### Verwachte impact\n- **Gebruikerservaring:** De gebruiker kan direct vanuit de Modeler builds downloaden.\n- **Architecturaal:** De Modeler is nu formeel client van de Outbox.\n- **Beveiliging:** Toegang tot artefacten blijft tijdelijk en veilig dankzij presigned links."
-          }
-        ],
-        "prio": 0,
-        "decision": "De Desktop Modeler is gekoppeld aan de Outbox en kan build-artefacten direct downloaden via presigned URLs.",
-        "effect": {
-          "action": "link two components",
-          "source": "Tracepaper:Desktop Modeler",
-          "target": "Tracepaper:Outbox",
-          "label": "Download artifact"
-        },
-        "updatedAt": "2025-10-22T22:43:34.220Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "9286b792-bbd2-445a-b609-22a5758624c5": {
-        "id": "9286b792-bbd2-445a-b609-22a5758624c5",
-        "sequence_number": 9,
-        "createdAt": "2025-10-22T22:46:12.707Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 9: Voeg een backend toe voor licentie- en pipelinebeheer",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "3ada62b5-a5e8-468a-a5c2-5ad4efefa81d",
-            "body": "# Probleemstelling\n\nNu de build-keten (**Modeler → Build Agent → Outbox**) volledig operationeel is, ontstaat de noodzaak voor een centrale service die **gebruik, licenties en operationele status** beheert.\n\nDe Modeler, Build Agent en Outbox functioneren samen als één geautomatiseerde flow, maar missen nog een **autoritatieve bron** die bepaalt wie mag bouwen, hoe gebruik wordt geregistreerd en hoe pipelines en deployments worden gevolgd.\n\nDaarnaast moeten we inzicht krijgen in de **AWS-resources** die Tracepaper genereert — zoals Lambda’s, DynamoDB-tabellen, AppSync-API’s, Cognito-pools en CodePipelines — zodat gebruikers vanuit de Modeler kunnen navigeren naar hun actieve omgeving.\n\nOm dit te realiseren is een dedicated **backendcomponent** nodig die licentiebeheer, usage-tracking en operationele registratie samenbrengt."
-          },
-          {
-            "type": "markdown",
-            "id": "34818fc1-52cd-4ac6-b015-312e2e1fba24",
-            "body": "# Beslissing\n\nWe introduceren een nieuwe interne component binnen Tracepaper: **License Management**.\n\nDeze backend vervult vier kerntaken:\n\n1. **Licentie- en seatbeheer** – Controleert welke gebruikers en machines geautoriseerd zijn om builds uit te voeren.\n2. **Usage-registratie** – Logt het gebruik van Commands, Views en Notifiers als basis voor facturatie.\n3. **Pipeline- en deployment-administratie** – Wanneer een gebruiker in zijn eigen AWS-account een pipeline of deployment uitvoert, doet deze een **callback** naar de License Server. Daarmee ontstaat een actueel overzicht van alle actieve omgevingen per project.\n4. **Integratie met de Modeler** – Via deze backend kan de Modeler relevante links tonen naar AWS-resources, zoals pipelines, QA-rapporten, Lambda’s, databases, Cognito en AppSync.\n\nSamen vormt dit de **centrale administratieve laag** van Tracepaper: de plaats waar model, build en runtime samenkomen.\n\n### Afweging\n- **Alternatief 1:** Lokaal beheer in de Modeler. → Niet betrouwbaar en moeilijk te synchroniseren.\n- **Alternatief 2:** Externe third-party licentieservice. → Geen domeinlogica voor pipelines of buildmetrics.\n\nEen eigen backend biedt de juiste balans tussen **controle, inzicht en uitbreidbaarheid**.\n\n### Verwachte impact\n- **Architecturaal:** Nieuwe container “License Management” binnen Tracepaper.\n- **Operationeel:** Centrale validatie, registratie en koppeling met externe resources.\n- **Gebruikerservaring:** De Modeler toont directe links naar relevante AWS-componenten.\n- **Commercieel:** Maakt betrouwbare metering en licentiehandhaving mogelijk."
-          }
-        ],
-        "prio": 0,
-        "decision": "We introduceren de License Management-backend als centrale service voor licentiecontrole, usage-tracking en het bijhouden van pipelines en deployments binnen Tracepaper.",
-        "effect": {
-          "action": "introduces new",
-          "level": "container",
-          "scope": "Tracepaper",
-          "type": "internal_component",
-          "system_name": "License Management",
-          "technology": "Tracepaper App",
-          "description": "Backend"
-        },
-        "updatedAt": "2025-10-22T22:48:09.516Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "e78a618d-9cbd-4262-a3dd-177fc80a722f": {
-        "id": "e78a618d-9cbd-4262-a3dd-177fc80a722f",
-        "sequence_number": 10,
-        "createdAt": "2025-10-22T22:48:17.891Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 10: Koppel de Modeler aan de License Management-backend",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "9f06e3bb-2e47-4a04-838e-a8b4d1839567",
-            "body": "# Probleemstelling\n\nMet de introductie van de **License Management-backend** is de infrastructuur aanwezig om licenties, usage en pipeline-informatie centraal te beheren. Om hiervan gebruik te maken moet de **Desktop Modeler** rechtstreeks kunnen communiceren met deze backend.\n\nDe Modeler is het primaire toegangspunt voor gebruikers — hier worden builds gestart, licenties geactiveerd en projecten beheerd. Zonder integratie met de backend kan de Modeler geen actuele licentiestatus tonen, geen build-tokens ophalen en geen koppeling maken met pipelines of deployments in AWS.\n\nOm een consistente en betrouwbare gebruikerservaring te bieden, is een directe koppeling tussen de Modeler en de License Management-API noodzakelijk."
-          },
-          {
-            "type": "markdown",
-            "id": "72eb28f3-75c8-4245-931c-633e15f3a4b0",
-            "body": "# Beslissing\n\nDe **Desktop Modeler** wordt gekoppeld aan de **License Management-backend** via een REST API.\n\nBij het openen van een project:\n1. Controleert de Modeler de geldigheid van de lokale licentie en valideert deze via de backend.\n2. Haalt een tijdelijk **build-token** op dat wordt gebruikt bij communicatie met de Build Agent.\n3. Synchroniseert usage-data (zoals commands, read models, notifiers) om maandelijkse metering mogelijk te maken.\n4. Vraagt contextuele informatie op over gekoppelde pipelines en deployments, zodat relevante **AWS-links** direct in de UI beschikbaar zijn.\n\nDeze integratie maakt de Modeler niet alleen de plek waar wordt gemodelleerd, maar ook waar **status, licentie en operationele context samenkomen**.\n\n### Afweging\n- **Alternatief 1:** Licentievalidatie offline uitvoeren. → Niet betrouwbaar en fraudegevoelig.\n- **Alternatief 2:** Gebruiker zelf laten inloggen op een webportaal. → Fragmentatie van de workflow en slechtere UX.\n\nEen directe API-koppeling biedt de snelste en meest naadloze integratie tussen gebruiker, model en backend.\n\n### Verwachte impact\n- **Gebruikerservaring:** De Modeler toont actuele licentiestatus en directe links naar AWS-pipelines en deployments.\n- **Architecturaal:** De Modeler fungeert als eerste client van de License Management-backend.\n- **Beveiliging:** Alle communicatie verloopt via tijdelijke tokens en TLS.\n- **Operationeel:** Builds en usage-data worden automatisch gesynchroniseerd met de backend."
-          }
-        ],
-        "prio": 0,
-        "decision": "De Desktop Modeler gebruikt de License Management-API voor licentievalidatie, usage-synchronisatie en het tonen van pipeline- en deploymentlinks.",
-        "effect": {
-          "action": "link two components",
-          "source": "Tracepaper:Desktop Modeler",
-          "target": "Tracepaper:License Management",
-          "label": "Uses API"
-        },
-        "updatedAt": "2025-10-22T22:48:44.730Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c": {
-        "id": "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c",
-        "sequence_number": 11,
-        "createdAt": "2025-10-22T22:49:20.643Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 11: Koppel de Build Agent aan de License Management-backend",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "007ff59c-6dd4-47bb-b294-4acf17d25c05",
-            "body": "# Probleemstelling\n\nNu de **License Management-backend** operationeel is en verantwoordelijk is voor licentiecontrole, usage-registratie en pipeline-administratie, moet de **Build Agent** zijn buildgegevens hieraan kunnen rapporteren.\n\nElke build bevat waardevolle metadata — zoals start- en eindtijd, gebruikte resources, buildstatus, project-ID en gebruikte features (commands, read models, notifiers). Zonder centrale registratie blijven deze gegevens verspreid en kunnen we geen betrouwbaar overzicht bieden van gebruik of licentie-compliance.\n\nDaarnaast is het essentieel dat de backend weet **welke builds actief zijn** en **hoe vaak** een gebruiker de Build Agent aanroept, zodat usage-based billing, debugging en kwaliteitsmonitoring mogelijk worden."
-          },
-          {
-            "type": "markdown",
-            "id": "b3a4dfed-b27c-42cf-a97c-efc55fdf0044",
-            "body": "# Beslissing\n\nDe **Build Agent** wordt gekoppeld aan de **License Management-backend** en rapporteert na elke build de relevante **build metrics**.\n\nDe flow is als volgt:\n1. De Build Agent ontvangt van de Modeler een tijdelijk **build-token**.\n2. Na afronding van de build verstuurt de agent een **metrics payload** naar de backend via een beveiligde API-aanroep.\n3. De backend registreert deze data in de usage-administratie en koppelt de metrics aan de betreffende licentie en pipeline.\n4. Eventuele fouten of quota-overschrijdingen worden teruggekoppeld aan de Modeler.\n\nDe backend verwerkt deze informatie vervolgens voor facturatie, analyse en operationeel inzicht.\n\n### Afweging\n- **Alternatief 1:** Metrics opslaan in S3 of lokale logs. → Geen real-time inzicht en geen koppeling met licenties.\n- **Alternatief 2:** Periodieke synchronisatie door de Modeler. → Vertraging, inconsistente data en hogere complexiteit.\n\nEen directe koppeling tussen Build Agent en backend garandeert **real-time inzicht, eenvoudige billing en uniforme monitoring**.\n\n### Verwachte impact\n- **Architecturaal:** De Build Agent wordt een data-producer richting de License Management-API.\n- **Operationeel:** Metrics worden centraal opgeslagen en gebruikt voor licentie-validatie en billing.\n- **Gebruikerservaring:** Build-geschiedenis en gebruiksstatistieken zijn zichtbaar vanuit de Modeler.\n- **Beveiliging:** Communicatie verloopt via tijdelijke tokens en TLS-beveiligde endpoints."
-          }
-        ],
-        "prio": 0,
-        "decision": "De Build Agent rapporteert na elke build real-time metrics aan de License Management-backend voor usage-tracking, licentievalidatie en operationeel inzicht.",
-        "effect": {
-          "action": "link two components",
-          "source": "Tracepaper:Build Agent",
-          "target": "Tracepaper:License Management",
-          "label": "Put build metrics"
-        },
-        "updatedAt": "2025-10-22T22:49:47.093Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "faf777f8-112d-4c6a-9e74-d95b323f68b3": {
-        "id": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
-        "sequence_number": 12,
-        "createdAt": "2025-10-22T22:50:14.324Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 12: Selecteer Stripe als betalingsverwerker voor Professional-licenties",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "a0842b3f-ae8f-4a43-b6c8-f55a7fd81552",
-            "body": "# Probleemstelling\n\nDe **License Management-backend** beheert licenties en usage-gegevens voor alle Tracepaper-projecten. Binnen dit model bestaan drie licentietypen:\n- **Personal:** gratis, met beperkte quota;\n- **Non-profit:** gratis, met verhoogde quota en handmatige goedkeuring;\n- **Professional:** commercieel, met betaalde abonnementen en usage-gebaseerde kosten.\n\nOm Professional-licenties automatisch te kunnen factureren en betalingen veilig te verwerken, is een geïntegreerd betalingsplatform nodig. Dit platform moet periodieke abonnementskosten combineren met usage-afrekening (bijv. per command, view of notifier) en wereldwijd kunnen opereren.\n\nEen interne oplossing zou hoge kosten en compliance-last met zich meebrengen (PCI-DSS, fraudecontrole, valuta-ondersteuning). Daarom is aansluiting op een externe betalingsverwerker vereist."
-          },
-          {
-            "type": "markdown",
-            "id": "fe5ff8cb-160a-4f3d-80ae-6916eb3b2989",
-            "body": "# Beslissing\n\nWe kiezen voor **Stripe** als externe betalingsverwerker voor **Professional-licenties**.\n\nAlleen projecten met een Professional-licentie worden in Stripe geregistreerd. Personal- en Non-profit-licenties blijven volledig kosteloos en worden niet gekoppeld aan Stripe.\n\nDe integratie verloopt als volgt:\n1. Bij activatie van een Professional-licentie maakt de backend een **Stripe Customer** aan, gekoppeld aan het project-ID en de Git-repository.\n2. Usage-gegevens (commands, read models, notifiers, builds) worden periodiek naar **Stripe Usage Records** gesynchroniseerd.\n3. Stripe genereert maandelijks een factuur met de vaste licentiekosten en de usage-afrekening.\n4. Betalings- en abonnementsstatussen worden via **webhooks** teruggekoppeld naar de backend.\n\n### Afweging\n- **Alternatief 1:** Eigen facturatie implementeren → complex en risicovol qua compliance.\n- **Alternatief 2:** Gebruik van eenvoudiger platformen zoals Paddle of Lemon Squeezy → onvoldoende ondersteuning voor usage-based billing en seat-beheer.\n\nStripe biedt de juiste balans tussen **flexibiliteit, betrouwbaarheid en wereldwijde dekking**, en maakt het mogelijk om betaalde en gratis licenties naadloos naast elkaar te beheren.\n\n### Verwachte impact\n- **Architecturaal:** Integratie van een extern betalingssysteem voor enkel de commerciële licenties.\n- **Operationeel:** Facturatie en incasso verlopen automatisch voor Professional-gebruikers.\n- **Commercieel:** Non-profit- en Personal-gebruikers blijven vrijgesteld van betalingsverplichtingen.\n- **Beveiliging:** Stripe voldoet aan PCI-DSS en minimaliseert onze interne compliance-verantwoordelijkheid."
-          }
-        ],
-        "prio": 0,
-        "decision": "We gebruiken Stripe uitsluitend voor Professional-licenties, waarmee automatische facturatie, usage-billing en betalingen veilig worden afgehandeld.",
-        "effect": {
-          "action": "introduces new",
-          "level": "system",
-          "scope": "external",
-          "system_name": "Stripe",
-          "description": "payment processing"
-        },
-        "updatedAt": "2025-10-22T23:00:15.049Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "4adeb822-c309-49f6-847c-6ed1d111e91d": {
-        "id": "4adeb822-c309-49f6-847c-6ed1d111e91d",
-        "sequence_number": 13,
-        "createdAt": "2025-10-22T23:00:21.306Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 13: Koppel de License Management-backend aan Stripe",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "12f63087-c82b-491c-a16c-f3137fe8a2c7",
-            "body": "# Probleemstelling\n\nNa de keuze voor **Stripe** als betalingsverwerker (zie Decision 12) moet de **License Management-backend** zorgen voor een betrouwbare synchronisatie tussen het interne licentiesysteem en de externe facturatie.\n\nDe backend is de **enige bron van waarheid** voor licentiestatus, usage-statistieken en seat-registratie. Stripe fungeert uitsluitend als uitvoerend facturatieplatform. Zonder automatische synchronisatie zou het risico ontstaan dat verlopen licenties actief blijven of dat gebruik niet correct wordt afgerekend.\n\nDaarnaast moet usage-data actueel blijven, zonder dat gebruikers daarvoor hoeven te wachten of handmatig actie ondernemen. Build-gebeurtenissen moeten direct geregistreerd worden, terwijl overige usage (commands, views, notifiers, etc.) periodiek kan worden bijgewerkt."
-          },
-          {
-            "type": "markdown",
-            "id": "29fb4b0a-c240-4723-b6c3-699ed25368d6",
-            "body": "# Beslissing\n\nDe **License Management-backend** integreert met **Stripe** via een gecontroleerde, backend-gedreven koppeling.\n\n### Synchronisatiefrequentie\n1. **Dagelijks** controleert de backend bij Stripe of alle actieve licenties nog geldig zijn en worden betalingen of schorsingen verwerkt.\n2. Tijdens diezelfde taak worden de actuele usage-gegevens naar Stripe geüpload als **Usage Records** voor facturatie.\n3. **Build-ticks** (het aantal builds per project) worden **event-based** direct naar Stripe gestuurd zodra een build is voltooid, om realtime-accuratesse te behouden.\n\nStripe verwerkt deze usage-records en genereert maandelijks facturen. De backend blijft leidend in alle beslissingen over licentie-status, activatie en validatie.\n\n### Afweging\n- **Alternatief 1:** Webhook-gedreven model → verhoogt complexiteit en maakt de backend afhankelijk van externe triggers.\n- **Alternatief 2:** Handmatige synchronisatie → foutgevoelig en niet betrouwbaar op schaal.\n\nEen backend-gedreven, dagelijkse synchronisatie biedt **volledige controle**, **minimale afhankelijkheden** en **betere audit-traceerbaarheid**.\n\n### Verwachte impact\n- **Architecturaal:** Stripe wordt een passieve facturatie-endpoint, volledig bestuurd door de backend.\n- **Operationeel:** Dagelijkse validatie voorkomt verlopen of foutieve licenties.\n- **Realtime-component:** Builds worden direct geregistreerd, zodat het dashboard actueel blijft.\n- **Beveiliging:** Alleen uitgaande communicatie met Stripe; geen inkomende webhooks of trust-assumpties."
-          }
-        ],
-        "prio": 0,
-        "decision": "De License Management-backend voert dagelijks een synchronisatie met Stripe uit voor licentievalidatie en usage-registratie, met event-based updates voor builds.",
-        "effect": {
-          "action": "link two components",
-          "source": "Tracepaper:License Management",
-          "target": "Stripe",
-          "label": "Register usage and validate license"
-        },
-        "updatedAt": "2025-10-23T20:53:06.945Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "89bf2d4c-b38f-46da-b623-51f4c5cf9c03": {
-        "id": "89bf2d4c-b38f-46da-b623-51f4c5cf9c03",
-        "createdAt": "2025-10-24T22:12:46.817Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "Tracepaper",
-        "status": "draft",
-        "authors": [
-          "Bo"
-        ],
-        "title": "SAP 1: Test",
-        "principle": "### Statement\nDescribe **what** the principle enforces, in a clear, normative way.\nUse active voice — e.g. *“To ensure X, we design Y as Z.”*\nThis line should stand on its own and express the core architectural stance.\n\n### Rationale\nExplain **why** this principle exists — what value or trade-off it supports.\nOptionally include examples to make the motivation tangible.\nKeep it factual and reusable; others should be able to cite this principle as precedent.\n\n> Example: “This separation provides organisational flexibility, allowing each system to evolve independently — both technically and legally.”\n\n### Implication / Acceptance\nDescribe **what this principle implies** or **what we accept as a consequence**.\nThis section makes the trade-offs explicit, ensuring the principle isn’t interpreted as dogma.\n\n> Example: “We accept that this design prevents us from bundling our software into a single product.”",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-24T22:20:25.397Z",
-        "tags": [
-          "principle"
-        ]
-      },
-      "17807819-9e47-4237-ae66-528ad580affe": {
-        "id": "17807819-9e47-4237-ae66-528ad580affe",
-        "createdAt": "2025-10-24T22:24:58.164Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "Tracepaper:Build Agent",
-        "status": "draft",
-        "authors": [
-          "Bo"
-        ],
-        "title": "CAP 1: test",
-        "principle": "### Statement\nDescribe **what** the principle enforces, in a clear, normative way.\nUse active voice — e.g. *“To ensure X, we design Y as Z.”*\nThis line should stand on its own and express the core architectural stance.\n\n### Rationale\nExplain **why** this principle exists — what value or trade-off it supports.\nOptionally include examples to make the motivation tangible.\nKeep it factual and reusable; others should be able to cite this principle as precedent.\n\n> Example: “This separation provides organisational flexibility, allowing each system to evolve independently — both technically and legally.”\n\n### Implication / Acceptance\nDescribe **what this principle implies** or **what we accept as a consequence**.\nThis section makes the trade-offs explicit, ensuring the principle isn’t interpreted as dogma.\n\n> Example: “We accept that this design prevents us from bundling our software into a single product.”",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-24T22:25:15.462Z",
-        "tags": [
-          "principle"
-        ]
-      }
-    },
-    "decision_index": 13
-  }
+        "decision_index": 15
+    }
 }
