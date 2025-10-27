@@ -1,5 +1,8 @@
 # nog te shapen
 - persona's
+- currated docs (referenties naar secties)
+- adr links op technische sleutel?
+  - components functioneel laten, wordt toch iedere keer opnieuw berekent. Index bijhouden van functionele naam en document-id
 - constraints
 - technical debt items (tactisch) + registry (vlaggetje op ADR, causes technical debt)
 - breadboards?

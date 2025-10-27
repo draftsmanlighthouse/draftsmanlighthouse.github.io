@@ -57,7 +57,7 @@ document.addEventListener('alpine:init', () => {
                         components[parent_name + ":" + value.name] = child;
                     }
                   }
-                  let edges = data.edges.filter(x => x.source in components || x.target in components);
+                  let edges = data.edges.filter(x => !x.source.startsWith("persona:") && !x.target.startsWith("persona:")).filter(x => x.source in components || x.target in components);
                   for (const edge of edges) {
                     if (edge.source in components && edge.target in components){
                         diagram.add_relation(components[edge.source], components[edge.target], edge.label, "LR");
@@ -97,20 +97,27 @@ document.addEventListener('alpine:init', () => {
                         }
                     }
 
-
-//                    if (edge.source in components && (edge.target in components || edge.target in stash)){
-//                        if (!(edge.target in components)){
-//                            let component = await diagram.add_element('external_service', edge.target, stash[edge.target].description, stash[edge.target].technology);
-//                            components[edge.target] = component;
-//                        }
-//                        diagram.add_relation(components[edge.source], components[edge.target], edge.label, "LR");
-//                    } else if (level == "enterprise" && edge.source.split(":").at(0) in components && edge.target.split(":").at(0) in components){
-//                        diagram.add_relation(components[edge.source.split(":").at(0)], components[edge.target.split(":").at(0)], edge.label, "LR");
-//                    } else {
-//                        console.log(edge);
-//                    }
                   }
-                  console.log(diagram)
+
+                  edges = data.edges.filter(x => x.source.startsWith("persona:"))
+                  for (const edge of edges) {
+                    let target = edge.target;
+                    let grandparent = edge.target.split(":")[0]
+                    let parent = edge.target.split(":").slice(0,2).join(":");
+                    if (!(target in components)){
+                        target = parent;
+                    }
+                    if (!(target in components)){
+                        target = grandparent;
+                    }
+                    if (!(target in components)){
+                        continue;
+                    }
+                    let el = history[edge.source];
+                    let visual = el.external ? "person_external" : "person_internal";
+                    components[edge.source] = await diagram.add_element(visual,el.name,el.description);
+                    diagram.add_relation(components[edge.source], components[target], edge.label, "LR");
+                  }
                   await diagram.render();
                 })();
               } catch (error) {

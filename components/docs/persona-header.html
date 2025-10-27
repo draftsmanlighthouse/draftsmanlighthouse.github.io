@@ -1,0 +1,38 @@
+<template x-component="persona-header">
+    <template x-if="'type' in current && current.type == 'persona'">
+        <div>
+            <input class="text-5xl w-full" type="text" x-model="current.title" placeholder="Pitch Title"/>
+            <table class="table">
+                <tr>
+                    <th>Status</th>
+                    <td
+                            x-data="{status: {'draft':'select-primary', 'review': 'select-warning', 'decided': 'select-success', 'rejected': 'select-error'}}">
+                        <select x-model="current.status"
+                                :class="status[current.status]"
+                                class="select select-xs">
+                            <option>draft</option>
+                            <option>review</option>
+                            <option>published</option>
+                            <option>deleted</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>
+                        <input x-model="current.effect.name" type="text" placeholder="Primary"
+                               class="input input-primary input-xs w-[50%]"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>
+                        <input x-model="current.effect.description" type="text" placeholder="Primary"
+                               class="input input-primary input-xs w-[50%]"/>
+                    </td>
+                </tr>
+            </table>
+            <hr class="mb-10">
+        </div>
+    </template>
+</template>

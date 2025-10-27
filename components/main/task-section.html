@@ -21,6 +21,9 @@
                                     <div x-show="sub.type == 'ADR'" x-cloak x-transition
                                          class="badge badge-outline badge-warning">ADR
                                     </div>
+                                    <div x-show="sub.type == 'persona'" x-cloak x-transition
+                                         class="badge badge-outline badge-success">Persona
+                                    </div>
                                     <div x-show="sub.type == 'principle' && sub.scope == 'enterprise'" x-cloak
                                          x-transition
                                          class="badge badge-outline badge-primary whitespace-nowrap">EAP
@@ -65,7 +68,7 @@
                                         </select>
                                     </template>
 
-                                    <template x-if="['principle'].includes(sub.type)">
+                                    <template x-if="['principle','persona'].includes(sub.type)">
                                         <select x-model="sub.status"
                                                 :class="status[sub.status]"
                                                 class="select select-xs w-full">
@@ -93,7 +96,7 @@
                 <ul class="menu bg-neutral-content rounded-box w-56">
                     <li><a @click="create_decision(current.id)">New decision</a></li>
                     <li><a @click="create_principle(current.id)">New architecture principle</a></li>
-                    <li><a>Item 3</a></li>
+                    <li><a @click="create_persona(current.id)">New persona</a></li>
                 </ul>
             </div>
         </div>

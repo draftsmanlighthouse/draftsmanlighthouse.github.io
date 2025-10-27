@@ -74,7 +74,7 @@ class C4Diagram {
 
   async render() {
     if (this.elements.length == 0){
-        document.getElementById(this.containerId).innerHTML = `<img class="max-h-[80vh]" src="/assets/no-data.png" />`;
+        document.getElementById(this.containerId).innerHTML = `<h1 class="text-2xl">No visual elements on this level.</h1><h2 class="text-xl">But there may be principles and decisions</h2>`;
         return;
     }
     this.cy = cytoscape({

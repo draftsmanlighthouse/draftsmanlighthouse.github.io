@@ -195,7 +195,7 @@
                                             class="select select-primary select-xs w-[50%]">
                                         <option disabled></option>
                                         <template
-                                                x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1)"
+                                                x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1 && !x.startsWith('persona:'))"
                                                 :key="parent">
                                             <option x-text="parent" :value="parent"
                                                     :selected="parent == current.effect.target"></option>

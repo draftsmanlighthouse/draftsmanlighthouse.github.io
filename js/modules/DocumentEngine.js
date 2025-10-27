@@ -238,6 +238,31 @@ document.addEventListener('alpine:init', () => {
             };
             location.reload();
         },
+        create_persona(parent){
+            const id = crypto.randomUUID();
+            this.documents[id] = {
+                id: id,
+                createdAt: new Date(),
+                parent: parent,
+                type: "persona",
+                status: "draft",
+                authors: [this.author],
+                title: "Persona: XYZ",
+                sections: [{
+                    type: "markdown",
+                    id: crypto.randomUUID(),
+                    body: "# XYZ\n\nDescribe the persona..."
+                }],
+                effect: {
+                    action: "new persona",
+                    external: false,
+                    name: "new-persona",
+                    description: "description"
+                },
+                tags: ["persona"]
+            };
+            location.reload();
+        },
         get_work_items(documents) {
             const complete_state = ["decided","rejected","published","deleted"];
 
@@ -365,7 +390,7 @@ document.addEventListener('alpine:init', () => {
                 components: {},
                 edges: [],
             };
-            Object.values(documents).filter(doc => doc.type == 'DD' || doc.type == "ADR").filter(doc => doc.effect).forEach(doc => {
+            Object.values(documents).filter(doc => "effect" in doc).filter(doc => doc.effect).forEach(doc => {
                 let effect = doc.effect;
                 if (effect.action == "introduces new"){
                     if (effect.level == "system"){
@@ -395,6 +420,12 @@ document.addEventListener('alpine:init', () => {
                     }
                 } else if (effect.action == "link two components"){
                     arch.edges.push(effect);
+                } else if (effect.action == "new persona"){
+                    arch.components["persona:" + effect.name] = {
+                        name: effect.name,
+                        description: effect.description,
+                        type: "persona"
+                    };
                 }
             });
             if (JSON.stringify(arch) != JSON.stringify(this.c4_data)){
