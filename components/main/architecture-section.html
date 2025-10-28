@@ -48,7 +48,7 @@
 
             <template x-if="level.split(':').length > 1">
                 <template
-                        x-for="principle in Object.values(documents).filter(x => x.type == 'principle' && x.scope == level.split(':').at(1))"
+                        x-for="principle in Object.values(documents).filter(x => x.type == 'principle' && component_reverse_index[x.scope] == level.split(':').at(1))"
                         :key="principle.id">
                     <div x-show="`${principle.title} ${principle.principle}`.toLowerCase().includes(search.toLowerCase())" x-cloak x-transition class="collapse collapse-arrow bg-base-100 border border-base-300 mb-2">
                         <input type="radio" name="principles"/>
@@ -71,7 +71,7 @@
 
             <template x-if="level.split(':').length > 2">
                 <template
-                        x-for="principle in Object.values(documents).filter(x => x.type == 'principle' && x.scope == level.split(':').slice(1).join(':'))"
+                        x-for="principle in Object.values(documents).filter(x => x.type == 'principle' && component_reverse_index[x.scope] == level.split(':').slice(1).join(':'))"
                         :key="principle.id">
                     <div x-show="`${principle.title} ${principle.principle}`.toLowerCase().includes(search.toLowerCase())" x-cloak x-transition  class="collapse collapse-arrow bg-base-100 border border-base-300 mb-2">
                         <input type="radio" name="principles"/>

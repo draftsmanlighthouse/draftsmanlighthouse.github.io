@@ -25,7 +25,8 @@
                             <option value="enterprise">enterprise</option>
                             <template x-for="container in Object.keys(c4_data.components)">
                                 <template x-if="container.split(':').length != 3">
-                                    <option x-text="container"></option>
+                                    <option x-text="container" :value="component_index[container]"
+                                                    :selected="component_index[container] == current.scope"></option>
                                 </template>
                             </template>
                         </select>

@@ -1,38 +1,13 @@
 # nog te shapen
-- persona's
+- Taken in board ipv lijst?
 - currated docs (referenties naar secties)
-- adr links op technische sleutel?
-  - components functioneel laten, wordt toch iedere keer opnieuw berekent. Index bijhouden van functionele naam en document-id
+- taken/notes/questions
 - constraints
 - technical debt items (tactisch) + registry (vlaggetje op ADR, causes technical debt)
 - breadboards?
 - templates aanscherpen.
 - comments
-
-🧍 Persona’s — “who this part of the system serves”
-
-🎯 Wat je nu bedoelt
-
-Niet alleen user-type, maar een architecturaal artefact:
-een Persona als micro-doc die context geeft aan waarom bepaalde componenten of beslissingen bestaan.
-
-🔩 Model-gedrag
-	•	Type: persona (micro-doc type)
-	•	Links:
-	•	related_to: [C4 component | container | system]
-	•	referenced_by: [pitch | principle | ADR]
-	•	Eigenschappen:
-	•	doelen (jobs-to-be-done)
-	•	frustraties (pain points)
-	•	rol in shaping/building
-
-💡 UX-gedrag
-	•	Vanuit een C4-component kun je klikken: “Which personas depend on this?”
-	•	Vanuit een persona kun je: “Show all components this persona touches.”
-
-Zo ontstaat empathy tracing: context van mens ↔ systeemonderdeel.
-
-⸻
+- C4 "ordenen"
 
 ⚙️ Constraints — “rules that travel with the system”
 

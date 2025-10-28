@@ -10,6 +10,7 @@ document.addEventListener('alpine:init', () => {
         dashboard_data: {},
         c4_data: {},
         component_index: {},
+        component_reverse_index: {},
         tags: [],
         miniSearch: null,
 
@@ -403,6 +404,7 @@ document.addEventListener('alpine:init', () => {
                         }
                         tags.push(effect.system_name);
                         this.component_index[effect.system_name] = doc.id;
+                        this.component_reverse_index[doc.id] = effect.system_name;
                     }
                     if (effect.level == "container"){
                         arch.components[effect.scope + ":" + effect.system_name] = {
@@ -414,6 +416,7 @@ document.addEventListener('alpine:init', () => {
                         }
                         tags.push(effect.scope + ":" + effect.system_name);
                         this.component_index[effect.scope + ":" + effect.system_name] = doc.id;
+                        this.component_reverse_index[doc.id] = effect.scope + ":" + effect.system_name;
                     }
                     if (effect.level == "component"){
                         arch.components[effect.scope + ":" + effect.system_name] = {
@@ -424,6 +427,7 @@ document.addEventListener('alpine:init', () => {
                         }
                         tags.push(effect.scope + ":" + effect.system_name);
                         this.component_index[effect.scope + ":" + effect.system_name] = doc.id;
+                        this.component_reverse_index[doc.id] = effect.scope + ":" + effect.system_name;
                     }
                 } else if (effect.action == "link two components"){
                     let edge = {...effect};
@@ -439,6 +443,7 @@ document.addEventListener('alpine:init', () => {
                         type: "persona"
                     };
                     this.component_index["persona:" + effect.name] = doc.id;
+                    this.component_reverse_index[doc.id] = "persona:" + effect.name;
                 }
             });
 
