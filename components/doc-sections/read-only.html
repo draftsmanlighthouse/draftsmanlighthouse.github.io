@@ -1,0 +1,53 @@
+<template x-component="read-only">
+    <div>
+        <!-- Markdown -->
+        <template x-if="doc_section.type == 'markdown'">
+            <div
+                    x-data="{content: ''}"
+                    x-init="content = doc_section.body"
+                    x-import="doc-sections/markdown">
+                <ui-markdown></ui-markdown>
+            </div>
+        </template>
+
+        <!-- Draw.io -->
+        <template x-if="doc_section.type == 'drawio'">
+            <div
+                    x-data="{currentDiagram: '', selectedMode: 'minimal', readonly: true}"
+                    x-init="currentDiagram = doc_section.body"
+                    x-import="doc-sections/drawio">
+                <ui-drawio></ui-drawio>
+            </div>
+        </template>
+
+        <!-- Sketch -->
+        <template x-if="doc_section.type == 'sketch'">
+            <div
+                    x-data="{currentDiagram: '', selectedMode: 'sketch', readonly: true}"
+                    x-init="currentDiagram = doc_section.body"
+                    x-import="doc-sections/drawio">
+                <ui-drawio></ui-drawio>
+            </div>
+        </template>
+
+        <!-- Mermaid -->
+        <template x-if="doc_section.type == 'mermaid'">
+            <div
+                    x-data="{currentDiagram: '', readonly: true}"
+                    x-init="currentDiagram = doc_section.body"
+                    x-import="doc-sections/mermaid">
+                <ui-mermaid></ui-mermaid>
+            </div>
+        </template>
+
+        <!-- Chart -->
+        <template x-if="doc_section.type == 'chart'">
+            <div
+                    x-data="{currentData: '', readonly: true}"
+                    x-init="currentData = doc_section.body"
+                    x-import="doc-sections/charts">
+                <ui-charts></ui-charts>
+            </div>
+        </template>
+    </div>
+</template>

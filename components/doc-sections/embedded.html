@@ -1,0 +1,186 @@
+<template x-component="embedded">
+    <div x-data="{sections: []}"
+         x-effect="sections = documents[section.document].sections.filter(x => section.sections.includes(x.id))"
+         x-import="doc-sections/read-only">
+        <table class="table border border-1 border-primary-content">
+            <tr>
+                <td class="p-2">
+                    <template x-if="section.show_principle" key="principle">
+                        <div
+                                x-data="{content: '', readonly: true}"
+                                x-init="content = documents[section.document].principle ? documents[section.document].principle : PRINCIPLE"
+                                x-import="doc-sections/markdown">
+                            <ui-markdown></ui-markdown>
+                        </div>
+                    </template>
+                    <template x-if="section.show_decision == true" key="decision">
+                        <div
+                                x-data="{content: '', readonly: true}"
+                                x-init="content = documents[section.document].decision ? documents[section.document].decision : 'short summary of **problem** and **decision**'"
+                                x-import="doc-sections/markdown">
+                            <ui-markdown></ui-markdown>
+                        </div>
+                    </template>
+                    <template x-if="section.show_ystatement == true" key="ystatement">
+                        <div x-text="convert_y(documents[section.document].ystatement)"></div>
+                    </template>
+
+                    <template x-if="section.show_effect == true" key="effect">
+                        <table class="table">
+                            <template x-for="(value,key) in documents[section.document].effect" :key="key">
+                                <tr>
+                                    <th x-text="key"></th>
+                                    <td x-text="value in component_reverse_index ? component_reverse_index[value] : value"></td>
+                                </tr>
+                            </template>
+                        </table>
+                    </template>
+                    <template x-for="doc_section in sections" :key="doc_section.id">
+                        <ui-read-only></ui-read-only>
+                    </template>
+                </td>
+            </tr>
+            <tr class="bg-primary-content cursor-pointer" @click="$refs.setup.showModal()">
+                <th class="text-xs">Reference: <a class="link" :href="'#' + section.document"
+                                                  x-text="documents[section.document].title"></a>
+                </th>
+            </tr>
+        </table>
+
+        <dialog x-ref="setup" class="modal">
+            <div class="modal-box max-w-none w-[80vw] max-h-[80vh] overflow-y-auto"
+                 x-data="{search: '', items: []}">
+                <h3 class="text-lg font-bold">Section reference</h3>
+                <p class="py-4" x-effect="items = miniSearch.search(search)">
+                <div x-show="!section.document" x-cloak x-transition>
+                    <input
+                            type="search"
+                            x-model="search"
+                            placeholder="Search micro doc..."
+                            class="input input-primary input-sm w-full pr-10 mb-5"/>
+
+                    <ul class="menu bg-base-200 rounded-box w-full" x-show=items.length !=" 0"
+                        x-cloak x-transition>
+                        <template x-for="result in items" :key="result.id">
+                            <li><a @click="section.document = result.id"
+                                   x-text="result.title"></a></li>
+                        </template>
+                    </ul>
+                </div>
+                <div x-show="section.document" x-cloak x-transition>
+                    <table class="table">
+                        <tr class="text-3xl">
+                            <th>
+                                Document:&nbsp;
+                                <span x-text="documents[section.document].title"></span>
+                            </th>
+                            <td>
+                                <button @click="section.document = ''"
+                                        class="btn btn-ghost btn-circle">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <template x-if="documents[section.document].type == 'principle'">
+                            <tr>
+                                <td>
+                                    <h6 class="text-xl">Principle</h6>
+                                    <div
+                                            x-data="{content: '', readonly: true}"
+                                            x-init="content = documents[section.document].principle ? documents[section.document].principle : PRINCIPLE"
+                                            x-import="doc-sections/markdown">
+                                        <ui-markdown></ui-markdown>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input
+                                            type="checkbox"
+                                            class="checkbox checkbox-primary"
+                                            value="true"
+                                            x-model="section.show_principle"/>
+                                </td>
+                            </tr>
+                        </template>
+                        <template x-if="documents[section.document].type == 'DD'">
+                            <tr>
+                                <td>
+                                    <h6 class="text-xl">Decision</h6>
+                                    <div
+                                            x-data="{content: '', readonly: true}"
+                                            x-init="content = documents[section.document].decision ? documents[section.document].decision : 'short summary of **problem** and **decision**'"
+                                            x-import="doc-sections/markdown">
+                                        <ui-markdown></ui-markdown>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input
+                                            type="checkbox"
+                                            class="checkbox checkbox-primary"
+                                            value="true"
+                                            x-model="section.show_decision"/>
+                                </td>
+                            </tr>
+                        </template>
+                        <template x-if="documents[section.document].type == 'ADR'">
+                            <tr>
+                                <td>
+                                    <h6 class="text-xl">Y-Statement</h6>
+                                    <div x-text="convert_y(documents[section.document].ystatement)"></div>
+                                </td>
+                                <td>
+                                    <input
+                                            type="checkbox"
+                                            class="checkbox checkbox-primary"
+                                            value="true"
+                                            x-model="section.show_ystatement"/>
+                                </td>
+                            </tr>
+                        </template>
+                        <template x-if="'effect' in documents[section.document]">
+                            <tr>
+                                <td>
+                                    <h6 class="text-xl">Effect</h6>
+                                    <table class="table">
+                                        <template x-for="(value,key) in documents[section.document].effect" :key="key">
+                                            <tr>
+                                                <th x-text="key"></th>
+                                                <td x-text="value in component_reverse_index ? component_reverse_index[value] : value"></td>
+                                            </tr>
+                                        </template>
+                                    </table>
+                                </td>
+                                <td>
+                                    <input
+                                            type="checkbox"
+                                            class="checkbox checkbox-primary"
+                                            value="true"
+                                            x-model="section.show_effect"/>
+                                </td>
+                            </tr>
+                        </template>
+                        <template x-for="doc_section in documents[section.document].sections"
+                                  :key="doc_section.id">
+                            <tr>
+                                <td>
+                                    <ui-read-only></ui-read-only>
+                                </td>
+                                <td>
+                                    <input
+                                            type="checkbox"
+                                            class="checkbox checkbox-primary"
+                                            :value="doc_section.id"
+                                            x-model="section.sections"/>
+                                </td>
+                            </tr>
+                        </template>
+                    </table>
+                </div>
+
+                </p>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+            </form>
+        </dialog>
+    </div>
+</template>

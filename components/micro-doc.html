@@ -20,13 +20,6 @@
                 <template x-for="section in current.sections" :key="section.id">
                     <div class="relative my-10 group">
 
-                        <!-- Floating delete icon -->
-                        <button
-                                @click="removeSection(section)"
-                                class="absolute top-2 right-2 text-gray-400 hover:text-error transition">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-
                         <!-- Markdown -->
                         <template x-if="section.type == 'markdown'">
                             <div
@@ -82,6 +75,19 @@
                             </div>
                         </template>
 
+                        <!-- embed -->
+                        <template x-if="section.type == 'reference'">
+                            <div x-import="doc-sections/embedded">
+                                <ui-embedded></ui-embedded>
+                            </div>
+                        </template>
+
+                        <!-- Floating delete icon -->
+                        <button
+                                @click="removeSection(section)"
+                                class="absolute top-2 right-2 text-gray-400 hover:text-error transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </template>
 
@@ -127,6 +133,13 @@
                            class="tooltip tooltip-bottom"
                            data-tip="Add data section">
                             <i class="fa-solid fa-chart-line"></i>
+                        </a>
+                    </li>
+                    <li x-show="active" x-cloak x-transition>
+                        <a @click="add_reference_section"
+                           class="tooltip tooltip-bottom"
+                           data-tip="Add embed section">
+                            <i class="fa-solid fa-file-import"></i>
                         </a>
                     </li>
                 </ul>

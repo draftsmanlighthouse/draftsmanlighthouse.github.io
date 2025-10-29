@@ -7,6 +7,9 @@ document.addEventListener('alpine:init', () => {
             if (!this.currentDiagram){
                 this.currentDiagram = '<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/></root></mxGraphModel>';
             }
+            if (!("readonly" in this)){
+                this.readonly = false;
+            }
             this.displayDiagram();
             this.setupMessageHandling();
         },

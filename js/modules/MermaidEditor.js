@@ -5,6 +5,9 @@ document.addEventListener('alpine:init', () => {
         initialized: false,
 
         init() {
+            if (!("readonly" in this)){
+                this.readonly = false;
+            }
             if (!this.currentDiagram){
                 this.currentDiagram = `graph TD
     A[Start] --> B{Is it working?}

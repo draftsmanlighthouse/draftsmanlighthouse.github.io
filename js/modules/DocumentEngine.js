@@ -377,6 +377,16 @@ document.addEventListener('alpine:init', () => {
                 body: ""
             });
         },
+        add_reference_section(){
+            const id = crypto.randomUUID();
+            this.current.sections.push({
+                id: id,
+                type: "reference",
+                document: "",
+                sections: [],
+                version: "latest"
+            });
+        },
         removeSection(section){
             this.current.sections = this.current.sections.filter(x => x.id != section.id);
         },
