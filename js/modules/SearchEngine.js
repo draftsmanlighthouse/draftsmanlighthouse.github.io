@@ -6,6 +6,7 @@ document.addEventListener('alpine:init', () => {
         search: this.$persist("").as("fullTextSearch"),
         prefilter: this.$persist([]),
         results: [],
+        suggestions: [],
         init(){
             this.$watch("search",this.execute_pre_filter.bind(this));
         },
@@ -14,8 +15,11 @@ document.addEventListener('alpine:init', () => {
             this.search = "";
         },
         execute_pre_filter(){
-            let results = this.miniSearch.search(this.search)
-            this.prefilter = results.map(x => x.id);
+            let results = this.miniSearch.search(this.search);
+            console.log(results);
+            this.prefilter = results.filter(x => x.score > 1).map(x => x.id);
+            let suggestions = this.miniSearch.autoSuggest(this.search);
+            this.suggestions = suggestions.filter(x => x.score > 1).map(x => x.suggestion).slice(0,10);
         },
         prepare(tags){
             const sorted = [...tags].sort((a, b) => a.localeCompare(b));
@@ -30,9 +34,11 @@ document.addEventListener('alpine:init', () => {
             this.groupedTags = grouped;
         },
         filter(documents, selectedTags, prefilter) {
-          let filtered = Object.values(documents);
+          let filtered = [];
           if (prefilter.length > 0){
-            filtered = filtered.filter(x => prefilter.includes(x.id));
+            filtered = prefilter.map(id => documents[id]);
+          } else {
+            filtered = Object.values(documents);
           }
           if (selectedTags.length > 0) {
             filtered = filtered.filter(doc => {
@@ -65,9 +71,14 @@ document.addEventListener('alpine:init', () => {
             });
           }
 
-          this.results = filtered.sort(
-            (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
-          );
+          if (this.search == ""){
+            this.results = filtered.sort(
+                (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+              );
+          }else{
+            this.results = filtered;
+          }
+
         }
     }
   });

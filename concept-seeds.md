@@ -1,13 +1,12 @@
 # nog te shapen
-- Taken in board ipv lijst?
 - currated docs (referenties naar secties)
 - taken/notes/questions
 - constraints
 - technical debt items (tactisch) + registry (vlaggetje op ADR, causes technical debt)
-- breadboards?
 - templates aanscherpen.
 - comments
 - C4 "ordenen"
+- breadboards? (geen idee hoe, want moet expresief maar toch simpel)
 
 ⚙️ Constraints — “rules that travel with the system”
 
