@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Board (with Alpine Persist)</title>
+
+  <!-- Tailwind + DaisyUI -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+
+  <!-- Alpine.js + Persist plugin -->
+  <script defer src="/js/tp/alpine-persist.js"></script>
+    <script src="/js/tp/alpine.js" defer></script>
+
+
+  <!-- SortableJS -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+
+<body class="p-6 bg-base-200" x-data="taskBoard">
+
+  <h1 class="text-3xl font-bold mb-6">Task Board (Persistent)</h1>
+
+  <div class="grid grid-cols-4 gap-4">
+    <template x-for="(column, key) in columns" :key="key">
+      <div class="bg-base-100 p-3 rounded-xl shadow-sm flex flex-col">
+        <h2 class="font-bold mb-2 text-lg" x-text="column.title"></h2>
+
+        <div class="flex-1 space-y-2 min-h-[150px]" :id="key" x-init="initSortable($el, key)">
+          <template x-for="task in filteredTasks(key)" :key="task.id">
+            <div
+              class="card bg-base-200 p-3 shadow-sm border border-transparent hover:border-primary transition relative"
+              :data-id="task.id"
+            >
+              <div class="absolute top-1 right-1 text-base-content/60 hover:text-primary cursor-grab handle">≡</div>
+              <p class="font-semibold text-sm pr-6" x-text="task.title"></p>
+            </div>
+          </template>
+        </div>
+
+        <!-- Done + Rejected -->
+        <template x-if="key === 'done'">
+          <div class="mt-3 border-t pt-2">
+            <h3 class="text-sm opacity-70 mb-1">Rejected</h3>
+            <div id="rejected" x-init="initSortable($el, 'rejected')" class="space-y-2 min-h-[100px]">
+              <template x-for="task in filteredTasks('rejected')" :key="task.id">
+                <div
+                  class="card bg-error/10 p-3 border border-error/30 shadow-sm relative"
+                  :data-id="task.id"
+                >
+                  <div class="absolute top-1 right-1 text-error cursor-grab handle">≡</div>
+                  <p class="font-semibold text-sm line-through pr-6" x-text="task.title"></p>
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
+      <pre x-text="JSON.stringify(tasks,null,2)"></pre>
+  </div>
+
+  <div class="mt-8 flex gap-2">
+    <input type="text" placeholder="New task..." x-model="newTaskTitle"
+           class="input input-bordered input-sm w-full max-w-xs" />
+    <button class="btn btn-primary btn-sm" @click="addTask">Add</button>
+    <button class="btn btn-outline btn-sm" @click="resetBoard">Reset</button>
+  </div>
+
+  <script>
+    document.addEventListener("alpine:init", () => {
+      Alpine.data("taskBoard", function(){
+       return {
+        columns: {
+          todo: { title: "To Do" },
+          inprogress: { title: "In Progress" },
+          waiting: { title: "Waiting On…" },
+          done: { title: "Done" },
+        },
+
+        // Persist tasks locally
+        tasks: this.$persist([
+          { id: "1", title: "Implement ZIP-based API", status: "todo" },
+          { id: "2", title: "Connect Modeler to Agent", status: "inprogress" },
+          { id: "3", title: "Add Outbox for Artifacts", status: "waiting" },
+          { id: "4", title: "Integrate Stripe Billing", status: "done" },
+          { id: "5", title: "Old Prototype Cleanup", status: "rejected" },
+        ]),
+
+        newTaskTitle: "",
+
+        filteredTasks(status) {
+          return this.tasks.filter(t => t.status === status);
+        },
+
+        initSortable(el, status) {
+          new Sortable(el, {
+            group: "tasks",
+            animation: 150,
+            handle: ".handle",
+            onAdd: (evt) => {
+              const id = evt.item.dataset.id;
+              const task = this.tasks.find(t => t.id === id);
+              if (task) task.status = status;
+              // force reactivity + persist update
+              this.tasks = [...this.tasks];
+            },
+          });
+        },
+
+        addTask() {
+          const title = this.newTaskTitle.trim();
+          if (!title) return;
+          this.tasks.push({
+            id: Date.now().toString(),
+            title,
+            status: "todo",
+          });
+          this.newTaskTitle = "";
+        },
+
+        resetBoard() {
+          if (confirm("Reset all tasks to default?")) {
+            localStorage.removeItem("_x_tasks");
+            location.reload();
+          }
+        },
+      }});
+    });
+  </script>
+</body>
+</html>

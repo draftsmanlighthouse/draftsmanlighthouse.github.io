@@ -39,6 +39,9 @@
     <!-- minisearch -->
     <script src="/js/tp/minisearch.js"></script>
     <style>[x-cloak] { display: none !important; }</style>
+
+    <!-- sortable -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body x-data="main">
 
@@ -61,6 +64,7 @@
     <script src="/js/modules/HillChart.js"></script>
     <script src="/js/modules/ArchitectureDiagram.js"></script>
     <script src="/js/modules/SearchEngine.js"></script>
+    <script src="/js/modules/TaskBoard.js"></script>
     <span x-init="sessionStorage.architecture = sessionStorage.architecture ? sessionStorage.architecture : 'principles'"></span>
 </body>
 </html>

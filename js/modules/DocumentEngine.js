@@ -132,6 +132,17 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        update_document_inline(current){
+            if ("id" in current && current.id != ""){
+                let doc = JSON.parse(JSON.stringify(current));
+                if (!doc.authors.includes(this.author)){
+                    doc.authors.push(this.author)
+                }
+                doc.updatedAt = new Date();
+                this.documents[doc.id] = doc;
+            }
+        },
+
         create_pitch(){
             const id = crypto.randomUUID();
             this.documents[id] = {
@@ -188,7 +199,7 @@ document.addEventListener('alpine:init', () => {
                 createdAt: new Date(),
                 parent: parent,
                 type: "DD",
-                status: "draft",
+                status: "init",
                 authors: [this.author],
                 title: "Decision " + this.organisation.decision_index,
                 sections: [{
@@ -231,7 +242,7 @@ document.addEventListener('alpine:init', () => {
                 parent: parent,
                 type: "principle",
                 scope: "enterprise",
-                status: "draft",
+                status: "init",
                 authors: [this.author],
                 title: "EAP #: summary",
                 principle: PRINCIPLE,
@@ -247,7 +258,7 @@ document.addEventListener('alpine:init', () => {
                 createdAt: new Date(),
                 parent: parent,
                 type: "persona",
-                status: "draft",
+                status: "init",
                 authors: [this.author],
                 title: "Persona: XYZ",
                 sections: [{

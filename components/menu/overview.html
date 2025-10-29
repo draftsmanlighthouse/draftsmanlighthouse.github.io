@@ -1,9 +1,40 @@
 <template x-component="overview">
     <ul x-show="'name' in organisation" x-cloak x-transition
+        x-data="{show_map: $persist(false)}"
         class="menu bg-neutral-content m-5 rounded-box w-auto max-h-[80vh] overflow-y-auto">
         <li><a @click="open_document('dashboard')">Dashboard</a></li>
+        <li>
+
+            <a @click="show_map = true"
+               :class="show_map ? 'relative bg-[#00AAAA] w-full h-[200px] rounded-lg p-2 transition-all hover:bg-[#00AAAA]' : 'cursor-pointer'">
+                <span x-show="!show_map">Map</span>
+                <button x-show="show_map"
+                        @click.stop="show_map = false"
+                        class="btn btn-circle btn-ghost btn-xs absolute top-1 right-1"
+                        title="Close map">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div x-show="show_map"
+                     class="text-sm text-base-100">Node diagram...</div>
+            </a>
+
+<!--            <a @click="show_map = true" class="cursor-pointer">-->
+<!--                <span x-show="!show_map">Map</span>-->
+<!--                <div class="relative bg-[#00AAAA] w-full h-[100px] rounded-lg p-2 transition-all" x-show="show_map">-->
+<!--                    <button-->
+<!--                            @click.stop="show_map = false"-->
+<!--                            class="btn btn-circle btn-ghost btn-xs absolute top-1 right-1"-->
+<!--                            title="Close map">-->
+<!--                        <i class="fa-solid fa-xmark"></i>-->
+<!--                    </button>-->
+<!--                    <div class="text-sm text-base-100">Node diagram...</div>-->
+<!--                </div>-->
+<!--            </a>-->
+
+
+        </li>
         <li><a @click="open_document('about')">About <span x-text="organisation.name"></span></a></li>
         <li><a @click="open_document('architecture')">Architecture</a></li>
-        <li><a href="#all")">All documents</a></li>
+        <li><a href="#all" )">All documents</a></li>
     </ul>
 </template>
