@@ -129,11 +129,11 @@
                                      x-transition
                                      class="badge badge-outline badge-primary whitespace-nowrap">EAP
                                 </div>
-                                <div x-show="sub.type == 'principle' && sub.scope != 'enterprise' && sub.scope.split(':').length == 1"
+                                <div x-show="sub.type == 'principle' && sub.scope != 'enterprise' && component_reverse_index[sub.scope].split(':').length == 1"
                                      x-cloak x-transition
                                      class="badge badge-outline badge-secondary whitespace-nowrap">SAP
                                 </div>
-                                <div x-show="sub.type == 'principle' && sub.scope != 'enterprise' && sub.scope.split(':').length == 2"
+                                <div x-show="sub.type == 'principle' && sub.scope != 'enterprise' && component_reverse_index[sub.scope].split(':').length == 2"
                                      x-cloak
                                      x-transition
                                      class="badge badge-outline badge-accent whitespace-nowrap">CAP
