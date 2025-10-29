@@ -5,7 +5,12 @@
 
         <div class="navbar bg-base-200 shadow-sm rounded-box my-5">
             <div class="navbar-start">
-                <label class="swap swap-rotate">
+                <label class="swap swap-rotate btn btn-circle btn-ghost">
+                    <input type="checkbox" x-model="show_board"/>
+                    <i class="fa-solid fa-angles-up swap-on"></i>
+                    <i class="fa-solid fa-angles-down swap-off"></i>
+                </label>
+                <label class="swap swap-rotate btn btn-circle btn-ghost">
                     <input type="checkbox" x-model="show_list"/>
                     <i class="fa-solid fa-table-columns swap-on"></i>
                     <i class="fa-solid fa-list-check swap-off"></i>
@@ -31,22 +36,16 @@
             </div>
 
             <div class="navbar-end">
-                <label class="swap swap-rotate">
-                    <input type="checkbox" x-model="show_done"/>
-                    <i class="fa-solid fa-angles-right swap-on"></i>
-                    <i class="fa-solid fa-angles-left swap-off"></i>
-                </label>
+
+<!--                <label class="swap swap-rotate">-->
+<!--                    <input type="checkbox" x-model="show_done"/>-->
+<!--                    <i class="fa-solid fa-angles-right swap-on"></i>-->
+<!--                    <i class="fa-solid fa-angles-left swap-off"></i>-->
+<!--                </label>-->
             </div>
         </div>
 
         <div x-show="!show_list" x-cloak x-transition>
-            <div class="flex justify-center my-2">
-                <label class="swap swap-rotate">
-                    <input type="checkbox" x-model="show_board"/>
-                    <i class="fa-solid fa-angles-up swap-on"></i>
-                    <i class="fa-solid fa-angles-down swap-off"></i>
-                </label>
-            </div>
             <div class="grid gap-4" :class="show_done ? 'grid-cols-4' : 'grid-cols-3'"
                  x-show="show_board" x-cloak x-transition>
                 <template x-for="(column, key) in columns" :key="key">
@@ -101,19 +100,9 @@
 
                 </template>
             </div>
-
-            <div x-data="{current: {}}" x-effect="
-                if (Object.keys(current).length === 0 || current.id != selected){
-                    current = documents[selected]
-                } else {
-                    update_document_inline(current);
-                }
-            " x-import="micro-doc">
-                <ui-micro-doc hide-parent="true"></ui-micro-doc>
-            </div>
         </div>
 
-        <div x-show="show_list" x-cloak x-transition>
+        <div x-show="show_list && show_board" x-cloak x-transition>
             <table class="table table-pin-rows">
                 <tr>
                     <th>Name</th>
@@ -123,8 +112,9 @@
                 </tr>
                 <template x-for="sub in get_work_items(documents)" :key="sub.id">
                     <template x-if="current.id == sub.parent">
-                        <tr x-show="ids.length == 0 || ids.includes(sub.id)" x-cloak x-transition>
-                            <td x-text="sub.title"></td>
+                        <tr x-show="ids.length == 0 || ids.includes(sub.id)" x-cloak x-transition
+                            :class="selected == sub.id ? 'border-[#008080] border-4' : 'border-transparent hover:border-primary'">
+                            <td class="cursor-pointer" @click="selected = sub.id"x-text="sub.title"></td>
                             <td>
                                 <div x-show="sub.type == 'DD'" x-cloak x-transition
                                      class="badge badge-outline badge-info">DD
@@ -195,8 +185,9 @@
                             </td>
                             <td>
                                 <a class="btn btn-ghost btn-xs"
+                                   target="_blank"
                                    :href="'#' + sub.id">
-                                    edit
+                                    open tab
                                 </a>
                             </td>
                         </tr>
@@ -205,6 +196,15 @@
             </table>
         </div>
 
+        <div x-data="{current: {}}" x-effect="
+                if (Object.keys(current).length === 0 || current.id != selected){
+                    current = documents[selected]
+                } else {
+                    update_document_inline(current);
+                }
+            " x-import="micro-doc">
+                <ui-micro-doc hide-parent="true"></ui-micro-doc>
+            </div>
 
     </div>
 </template>
