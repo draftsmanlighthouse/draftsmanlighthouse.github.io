@@ -1,5 +1,4 @@
 # nog te shapen
-- currated docs (referenties naar secties)
 - taken/notes/questions
 - constraints
 - technical debt items (tactisch) + registry (vlaggetje op ADR, causes technical debt)
@@ -7,6 +6,7 @@
 - comments
 - C4 "ordenen"
 - breadboards? (geen idee hoe, want moet expresief maar toch simpel)
+- social nudge opties voor pijl labels in C4 bv "publish" 12x etc
 
 ⚙️ Constraints — “rules that travel with the system”
 
