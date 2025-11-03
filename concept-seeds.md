@@ -1,4 +1,5 @@
 # nog te shapen
+- C4 componenten gelijktreken met person voor auto line breaks
 - taken/notes/questions
 - constraints
 - technical debt items (tactisch) + registry (vlaggetje op ADR, causes technical debt)
