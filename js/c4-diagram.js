@@ -77,9 +77,13 @@ class C4Diagram {
         document.getElementById(this.containerId).innerHTML = `<h1 class="text-2xl">No visual elements on this level.</h1><h2 class="text-xl">But there may be principles and decisions</h2>`;
         return;
     }
+    console.log(this.elements)
     this.cy = cytoscape({
       container: document.getElementById(this.containerId),
-      elements: this.elements,
+      elements: this.elements.filter(x =>
+        x.group == 'nodes'
+        || (x.data.source && x.data.target )
+      ),
       style: [
         {
           selector: 'node',

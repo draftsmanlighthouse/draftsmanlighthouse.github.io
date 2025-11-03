@@ -9,44 +9,11 @@
 - breadboards? (geen idee hoe, want moet expresief maar toch simpel)
 - social nudge opties voor pijl labels in C4 bv "publish" 12x etc
 
-⚙️ Constraints — “rules that travel with the system”
-
-🎯 Wat je nu bedoelt
-
-Een constraint hoort bij een pitch (shapingfase), maar blijft meeliften met het systeem via tags en boundaries.
-
-🔩 Model-gedrag
-	•	Type: constraint (micro-doc type)
-	•	Links:
-	•	origin: [pitch]
-	•	applies_to: [C4 system/container/component]
-	•	Automatische herbruikbaarheid:
-Als een nieuw pitch-document een component raakt met bestaande constraints, krijgt het deze in context te zien (met een “these constraints apply” banner).
-
-💡 UX-gedrag
-	•	Tijdens shaping: “⚠️ This component has 3 existing constraints.”
-	•	Tijdens editing: auto-suggest constraints bij het taggen van C4-onderdelen.
-	•	View per component: Principles + Constraints + ADR’s + Technical Debt → vormt letterlijk de architectuur van dat component.
-
-⸻
-
-🧾 Technical Debt Items — “architecture with scars”
-
-🎯 Wat je nu bedoelt
-
-Een flag op ADR’s die bewust een suboptimale keuze vastleggen.
-
-🔩 Model-gedrag
-	•	Eigenschap op ADR: causes_technical_debt: true
-	•	Derived View: Technical Debt Registry = query op ADR’s met die flag.
-	•	Extra metadata (optioneel):
-	•	impact_scope: [component/system]
-	•	expected_repay_cycle: [6-weeks-cycle-id]
-	•	repayed_by: [ADR]
-
-💡 UX-gedrag
-	•	Filter/overview: “Show all ADRs with Technical Debt Flag.”
-	•	Component-view: badge ⚑ TD (2 open)
-	•	Cycle-dashboard: “Debt introduced vs repaid this cycle.”
-
-Zo wordt technical debt first-class — niet post-it’s in backlog, maar semantische entiteiten in de kennisgraaf.
+- backend = structuur -> s3 louter de bodies
+- per org 1 seat en 1 gb gratis
+  - daarna 10 euro per seat
+  - bij iedere seat 1gb extra
+  - 0.10 euro per gb extra (maar grote kans dat je daar niet overheen gaat met meer seats)
+    - maar stel je hebt veel content, en gaat dan naar maintenance mode (nog maar 3 gebruikers) dan betaal je voor de xtra gb
+    - alleen de s3 storage tellen we hier mee, met cleanup mogelijkheden (sowieso hard delete en cleanup nodig)
+  - staffel korting? bv 5 euro na de eerste x users?

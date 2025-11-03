@@ -83,8 +83,13 @@ document.addEventListener('alpine:init', () => {
                         } else {
                             let grandparent = edge.source.split(":")[0]
                             let parent = edge.source.split(":").slice(0,2).join(":");
+                            if (edge.source == 'Tracepaper:Build Agent:ZIP-based API'){
+                                console.log(grandparent)
+                                console.log(parent);
+                                console.log()
+                            }
                             if (parent in components){
-                                diagram.add_relation(components[edge.source], components[parent], edge.label, "LR");
+                                diagram.add_relation(components[parent], components[edge.target], edge.label, "LR");
                             } else if (grandparent in components || grandparent in parents){
                                 let target = grandparent in components ? components[grandparent] : parents[grandparent]
                                 let el_type = 'type' in history[parent] ? history[parent].type : history[parent].scope == 'external' ? 'external_service' : 'internal_component';
@@ -115,7 +120,6 @@ document.addEventListener('alpine:init', () => {
                         continue;
                     }
                     let el = history[edge.source];
-                    console.log(edge.source,el,history)
                     let visual = el.external ? "person_external" : "person_internal";
                     components[edge.source] = await diagram.add_element(visual,el.name,el.description);
                     diagram.add_relation(components[edge.source], components[target], edge.label, "LR");
