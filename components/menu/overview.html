@@ -6,7 +6,7 @@
         <li>
 
             <a @click="show_map = true"
-               :class="show_map ? 'relative bg-[#00AAAA] w-full h-[200px] rounded-lg p-2 transition-all hover:bg-[#00AAAA]' : 'cursor-pointer'">
+               :class="show_map ? 'relative w-full h-[200px] rounded-lg p-2 transition-all' : 'cursor-pointer'" x-ref="parent">
                 <span x-show="!show_map">Map</span>
                 <button x-show="show_map"
                         @click.stop="show_map = false"
@@ -14,22 +14,51 @@
                         title="Close map">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-                <div x-show="show_map"
-                     class="text-sm text-base-100">Node diagram...</div>
-            </a>
+                <div x-show="show_map" x-cloak x-transition>
+                    <template x-if="show_map">
+                        <div x-data="NodeDiagram">
+                            <div x-init="
+                            $nextTick(() => {
+                              rawData = {};
+                              rect = $refs.parent.getBoundingClientRect();
+                              prepare_data(node_index,window.location.hash.replace('#',''))
+                              render(rect.width*0.93, rect.height*0.95);
+                            })
+                            "></div>
+                        </div>
+                    </template>
+                </div>
+                <div x-data="{clicked: false}">
+                    <button x-show="show_map" x-cloak x-transition
+                        class="btn btn-circle btn-ghost btn-xs absolute bottom-1 right-1"
+                        @click="my_modal_2.showModal();clicked=true">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </button>
+                    <dialog id="my_modal_2" class="modal">
+                      <div class="modal-box w-11/12 max-w-6xl">
+                        <h3 class="text-lg font-bold">Document map</h3>
+                        <p class="py-4">
+                            <template x-if="clicked">
+                            <div x-data="NodeDiagram" class="w-full h-[80vh]" x-ref="modal_parent">
+                                <div x-init="
+                                $nextTick(() => {
+                                  rect = $refs.modal_parent.getBoundingClientRect();
+                                  rawData = node_index;
+                                  render(rect.width, rect.height);
+                                })
+                                "></div>
+                            </div>
+                        </template>
+                        </p>
+                      </div>
+                      <form method="dialog" class="modal-backdrop">
+                        <button>close</button>
+                      </form>
+                    </dialog>
+                </div>
 
-<!--            <a @click="show_map = true" class="cursor-pointer">-->
-<!--                <span x-show="!show_map">Map</span>-->
-<!--                <div class="relative bg-[#00AAAA] w-full h-[100px] rounded-lg p-2 transition-all" x-show="show_map">-->
-<!--                    <button-->
-<!--                            @click.stop="show_map = false"-->
-<!--                            class="btn btn-circle btn-ghost btn-xs absolute top-1 right-1"-->
-<!--                            title="Close map">-->
-<!--                        <i class="fa-solid fa-xmark"></i>-->
-<!--                    </button>-->
-<!--                    <div class="text-sm text-base-100">Node diagram...</div>-->
-<!--                </div>-->
-<!--            </a>-->
+
+            </a>
 
 
         </li>

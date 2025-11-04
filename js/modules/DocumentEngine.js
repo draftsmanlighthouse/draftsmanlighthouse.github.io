@@ -11,6 +11,7 @@ document.addEventListener('alpine:init', () => {
         c4_data: {},
         component_index: {},
         component_reverse_index: {},
+        node_index: {},
         tags: [],
         miniSearch: null,
 
@@ -115,7 +116,7 @@ document.addEventListener('alpine:init', () => {
                     this.navigation = id;
                     location.hash = "#" + id;
                 });
-            } else if (["dashboard",'architecture','all'].includes(id)){
+            } else if (["dashboard",'architecture','all','node-diagram'].includes(id)){
                 this.current = {id: "", sections: []};
                 this.navigation = id;
                 location.hash = "#" + id;
@@ -487,8 +488,45 @@ document.addEventListener('alpine:init', () => {
                 });
             });
             this.tags = tags;
-        },
 
+            Object.values(documents).filter(doc => doc.id != "about").forEach(doc => {
+                let id = doc.id
+                this.make_sure_node_exists(id);
+                this.node_index[doc.id].title = doc.title;
+                if ("parent" in doc && doc.parent){
+                    this.node_index[doc.id].inbound[doc.parent] = "child of";
+                    this.make_sure_node_exists(doc.parent);
+                    this.node_index[doc.parent].outbound[doc.id] = "parent of";
+                }
+                doc.sections.filter(x => x.type == "reference" && "document" in x && x.document).forEach(section => {
+                    this.node_index[doc.id].outbound[section.document] = "references";
+                    this.make_sure_node_exists(section.document);
+                    this.node_index[section.document].inbound[doc.id] = "referenced by";
+                });
+                if ("precedent" in doc && doc.precedent){
+                    this.node_index[doc.id].inbound[doc.precedent] = "references";
+                    this.make_sure_node_exists(doc.precedent);
+                    this.node_index[doc.precedent].outbound[doc.id] = "referenced by";
+                }
+                if ("effect" in doc && doc.effect.action == "link two components"){
+                    if ("source" in doc.effect && doc.effect.source){
+                        this.node_index[doc.id].inbound[doc.effect.source] = "references";
+                        this.make_sure_node_exists(doc.effect.source);
+                        this.node_index[doc.effect.source].outbound[doc.id] = "referenced by";
+                    }
+                    if ("target" in doc.effect && doc.effect.target){
+                        this.node_index[doc.id].inbound[doc.effect.target] = "references";
+                        this.make_sure_node_exists(doc.effect.target);
+                        this.node_index[doc.effect.target].outbound[doc.id] = "referenced by";
+                    }
+                }
+            });
+        },
+        make_sure_node_exists(id){
+            if (!(id in this.node_index)){
+                this.node_index[id] = {inbound: {}, outbound: {}};
+            }
+        },
         load_data(){
             fetch("/js/config/test-data.json")
               .then(response => {

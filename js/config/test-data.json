@@ -1,1222 +1,1283 @@
 {
-  "Draftsman": {
-    "name": "Draftsman",
-    "documents": {
-      "about": {
-        "id": "about",
-        "createdAt": "2025-10-21T20:25:01.093Z",
-        "type": "organisation",
-        "authors": [
-          "Bo"
-        ],
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Draftsman\n\n**Draftsman** is the organisation behind the Tracepaper ecosystem — a collection of tools that transform domain knowledge into executable systems.\n\nOur mission is to make **architectural thinking operational**: helping teams design, evolve, and deploy software that remains explainable over time.  \nWe combine model-driven design, serverless automation, and visual traceability into one coherent environment.\n\n## Structure\nDraftsman operates as a **federated organisation** of focused products:\n- **Tracepaper** – for domain modelling and automated code generation.\n- **Workbench** – for documentation, shaping, and architectural reasoning.\n- **Papers** – for publishing knowledge artefacts and shared principles.\n\nEach product is intentionally independent — both technically and legally — enabling flexible evolution and clear value attribution.\n\n## Vision\nDraftsman believes that software architecture should be **composable, transparent, and explainable**.  \nEvery decision, from a design trade-off to a business rule, should remain traceable from intent to implementation.\n\nWe pursue this through:\n- Declarative models that describe behaviour, not syntax.\n- Reproducible builds and measurable architectural integrity.\n- Tight feedback loops between model, runtime, and organisation.\n\n## Governance\nArchitectural principles and decisions are managed as first-class artefacts.  \nEvery change is stored, versioned, and reviewable — ensuring accountability without bureaucracy.  \nLicensing, billing, and build metrics are coordinated through the Draftsman backend, aligning operational transparency with business clarity."
-          }
-        ],
-        "prio": 0,
-        "updatedAt": "2025-10-30T23:05:55.985Z",
-        "tags": [
-          "organisation",
-          "draftsman",
-          "tracepaper",
-          "workbench",
-          "governance",
-          "architecture"
-        ]
-      },
-      "2a33d267-d8b3-491b-8cb8-068a64f78f09": {
-        "id": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
-        "type": "pitch",
-        "status": "inprogress",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Documenting Tracepaper",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Documenting Tracepaper\n\nTracepaper is rapidly evolving from a prototype into a full-fledged platform. Its architecture is rich — spanning modeler, build agent, backend, and integrations — but that same richness makes it **hard to explain succinctly**.\n\nWe need a structured, self-consistent way to **document how Tracepaper works, why it exists, and how all parts connect**. The goal is not to produce traditional documentation, but to make the system *self-describing* — where models, decisions, and principles collectively tell the story.\n\n## The problem\nToday, understanding Tracepaper requires traversing multiple mental layers — DSL, architecture, pricing, licensing, and philosophy. These insights live in our heads, microdocs, and Slack threads, but not yet in one navigable form.\n\nThis makes it difficult to:\n- Onboard contributors or collaborators.\n- Communicate Tracepaper’s design philosophy to partners or early adopters.\n- Keep architectural intent aligned as the system evolves.\n\n## The idea\nBuild a **living documentation space** within Workbench that reflects Tracepaper’s inner structure:\n- Each decision, principle, and persona becomes a navigable node.\n- Visual overviews (C4 + Mermaid) reveal system relationships.\n- Contextual references (e.g., license model, AWS architecture) are embedded where relevant.\n\nThe output should feel like an **interactive codex**, blending architecture and narrative — something you can *read, explore, or reason through*.\n\n## Appetite\nWe set an appetite of **six weeks**. The goal is not perfection but coherence: by the end, anyone reading the documentation should understand how Tracepaper fits together and why it was built this way.\n\n## Risks and boundaries\n- We deliberately avoid implementing advanced publishing or export features — focus on the internal narrative first.\n- The scope is limited to documenting Tracepaper itself, not Draftsman as a whole.\n\n## Success looks like\n- Each major subsystem (Modeler, Build Agent, Backend) has a corresponding scope.\n- Decisions are linked to principles and personas, forming an explorable web.\n- The documentation is understandable without prior context.\n\n> “A reader should be able to start anywhere in the Tracepaper model and end up understanding why it exists.”"
-          },
-          {
-            "id": "0e27c584-345d-4624-bc68-ee41465f30db",
-            "type": "mermaid",
-            "body": "graph TD\n    A[Tracepaper System] --> B[Modeler]\n    A --> C[Build Agent]\n    A --> D[Backend]\n    B --> E[User Interaction]\n    C --> F[Code Generation]\n    D --> G[Licensing & Billing]\n    E --> H[Documentation Layer]\n    H -->|Connects| B\n    H -->|Connects| C\n    H -->|Connects| D"
-          }
-        ],
-        "attributes": {
-          "appetite": 6,
-          "deadline": "2025-12-02"
-        },
-        "updatedAt": "2025-10-30T23:21:03.122Z",
-        "prio": 0,
-        "tags": [
-          "pitch",
-          "tracepaper",
-          "documentation",
-          "architecture",
-          "shapeup"
-        ]
-      },
-      "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
-        "id": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
-        "type": "pitch",
-        "status": "inprogress",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Workbench",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# Workbench\n\n**Workbench** is the environment where thinking and building converge — a tool for shaping ideas, capturing reasoning, and evolving architecture as living knowledge.\n\n## The problem\nTeams accumulate knowledge in disconnected places: design docs, tickets, chat threads, and wikis. None of these stay aligned with the actual architecture. As systems evolve, **context decays** — decisions lose their “why,” and the link between intent and implementation fades.\n\nWe need a way to keep architectural intent and project reality in sync — without introducing process overhead.\n\n## The concept\nWorkbench provides a structured yet flexible way to document **“what is,” “what might be,” and “what is now.”**  \nIt treats every piece of information — decisions, principles, personas, scopes, and pitches — as **microdocs**: atomic, versioned, and traceable. Together they form a navigable knowledge graph that reflects the organisation’s evolving system landscape.\n\nWorkbench is not another note-taking tool. It’s a **thinking surface** for shaping work — one that connects architecture, decision-making, and documentation into a single flow.\n\n## Key ideas\n- **Microdocs:** small, atomic documents that represent reasoning rather than prose.\n- **Linkability:** every concept (decision, principle, scope) can reference others — forming living architecture.\n- **Temporal awareness:** change is not overwritten but **accumulated**, preserving traceability.\n- **Shape Up integration:** supports shaping cycles, pitches, and bets natively.\n\n## Appetite\nSix weeks to establish the core: editing, linking, and navigating microdocs. This cycle focuses on **structure, navigation, and persistence**, not polish or publishing.\n\n## Boundaries\n- No real-time collaboration (out of scope).\n- No external sync (e.g., GitHub, Confluence) in this iteration.\n- Focus on usability and local persistence first.\n\n## Success looks like\n- Users can create, edit, and link microdocs in a coherent workspace.\n- Relationships between docs can be visualised (e.g., decision links, scope hierarchy).\n- The system feels frictionless — **writing equals modelling.**\n\n> “Workbench captures the thinking that happens between code and conversation — before it’s lost.”"
-          }
-        ],
-        "attributes": {
-          "appetite": 6,
-          "deadline": "2025-12-09"
-        },
-        "updatedAt": "2025-10-30T23:34:26.193Z",
-        "prio": 0,
-        "tags": [
-          "pitch",
-          "workbench",
-          "microdocs",
-          "architecture",
-          "documentation",
-          "shapeup"
-        ]
-      },
-      "bf54bfca-3bd8-4b41-9e84-4dd0671bf986": {
-        "id": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "createdAt": "2025-10-21T20:26:13.288Z",
-        "parent": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
-        "type": "scope",
-        "status": "active",
-        "authors": [
-          "Bo"
-        ],
-        "title": "System setup",
-        "sections": [
-          {
-            "type": "markdown",
-            "body": "# System setup\n\nThe **System setup** scope defines the foundational architecture of the Tracepaper ecosystem — the minimal set of components needed to make the system coherent, deployable, and observable.\n\nIt captures all early design decisions that shaped the technical backbone: how components connect, where boundaries lie, and what trade-offs define the platform’s structure.\n\n### Purpose\nTo establish a consistent baseline across Tracepaper’s modeler, build agent, backend, and supporting infrastructure. This ensures that every product can evolve independently while remaining part of one cohesive ecosystem.\n\n### In scope\n- Initial system decomposition (Modeler, Build Agent, Backend, Outbox).\n- Communication flows and API contracts.\n- Decisions that govern packaging, deployment, and cross-component interaction.\n- The principles and constraints that shape each subsystem’s autonomy.\n\n### Out of scope\n- Detailed implementation of individual features (e.g., licensing flows, billing UI).\n- Runtime operations, monitoring, and cost-optimization work.\n\n### Deliverables\n- A documented system map (components, relations, responsibilities).\n- Decision records (DD/ADR) explaining key trade-offs.\n- Linked principles and personas to provide rationale and context.\n\n### Progress\nCurrent progress: **78.75%** — major decisions and component relationships are defined; refinement and cross-linking are ongoing."
-          }
-        ],
-        "attributes": {
-          "progress": 78.75
-        },
-        "updatedAt": "2025-10-30T23:44:59.378Z",
-        "prio": 0,
-        "tags": [
-          "scope",
-          "tracepaper",
-          "architecture",
-          "system-setup"
-        ]
-      },
-      "89ebb234-da99-4e5b-ae43-e2739b386925": {
-        "id": "89ebb234-da99-4e5b-ae43-e2739b386925",
-        "createdAt": "2025-10-22T18:46:38.233Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "enterprise",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "EAP 1: Functional boundaries and organizational flexibility",
-        "principle": "### Statement\nTo ensure long-term resilience and independence, we design products around **clear functional and organizational boundaries**.\nEach product in the Draftsman ecosystem (e.g. Tracepaper, Workbench) operates as a standalone system with its own runtime, licensing model, and commercial identity.\n\n### Rationale\nThis separation limits systemic risk and prevents cross-product coupling — both technically and commercially. By keeping products fully autonomous, we preserve the ability to evolve, pause, or transfer them independently, without affecting the rest of the portfolio.\n\nEven shared infrastructure such as licensing, authentication, or billing is implemented **per product**, not centrally. Only truly external services (e.g. Stripe for payments) are cross-cutting, and even then isolated by environment and catalog.\n\nThis approach means we cannot easily bundle products commercially — for example, offering joint discounts or shared entitlements. To compensate, each product must be **competitively priced on its own merits**.\n\n> Example: Tracepaper and Workbench each operate their own license server, reflecting distinct license semantics and deployment models. If one product is discontinued or sold, the other continues unaffected.\n\n### Implication / Acceptance\nWe accept that architectural independence comes at the cost of commercial integration. However, it also ensures clean handovers, reduced blast radius, and optional separation into distinct legal entities when needed (e.g. risk management or IP transfer).\n\n> Example: if a product reaches end-of-life but retains value for others, it can be sold or open-sourced without disrupting the rest of the ecosystem.",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-31T00:32:15.945Z",
-        "tags": [
-          "principle",
-          "enterprise",
-          "architecture",
-          "boundaries",
-          "organization",
-          "resilience",
-          "pricing"
-        ]
-      },
-      "a201f648-b359-4621-b45c-8ea40b4d76e3": {
-        "id": "a201f648-b359-4621-b45c-8ea40b4d76e3",
-        "createdAt": "2025-10-22T19:18:23.823Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "enterprise",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "EAP 2: We prefer serverless technologies",
-        "principle": "### Statement\nTo maximize focus on domain logic and reduce operational burden, we **prefer serverless technologies** for all Draftsman products.\nEach product is designed as a standalone system that leverages managed cloud services whenever possible.\n\n### Rationale\nServerless platforms (such as AWS Lambda, DynamoDB, and AppSync) allow small teams to operate at scale without managing infrastructure. This choice aligns with our goal of maintaining functional independence across products, while ensuring operational consistency and predictable cost structures.\n\nBy avoiding persistent infrastructure, we also reduce the blast radius of change: every deployment is ephemeral, traceable, and fully reproducible.\n\nThis architectural stance supports our lean organizational model — no central DevOps team, minimal cloud footprint, and direct ownership of runtime behaviour within each product.\n\n### Implication / Acceptance\nWe accept that this preference limits portability and deep customization. Certain use cases (e.g. heavy compute, long-running processes, or specific integrations) may not fit within a serverless boundary.\n\nIn such cases, exceptions must be explicitly justified, and isolation maintained to prevent drift from the overall deployment model.\n\n> Example: Tracepaper’s Build Agent is fully serverless by design, translating models into deployable AWS SAM stacks. Future products may adopt containerized alternatives, but only if they preserve the same hands-off operational characteristics.",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-31T00:52:32.748Z",
-        "tags": [
-          "principle",
-          "enterprise",
-          "architecture",
-          "serverless",
-          "cloud",
-          "operations"
-        ]
-      },
-      "f7031fcf-142e-4ed2-bf1a-92a192da5f93": {
-        "id": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
-        "sequence_number": 1,
-        "createdAt": "2025-10-21T20:26:24.078Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 1: Introduction of Tracepaper",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
-            "body": "# Problem statement\n\nWithin Draftsman we identified the need for a platform that not only documents domain models, but also translates them directly into production-ready software.\n\nExisting low-code platforms often obscure the underlying architecture, limit extensibility, and impose their own opinions on hosting and integration. This conflicts with our goal to make **software architecture explicit and inspectable**—not hidden behind black boxes.\n\nWe therefore looked for a way to make our **vision of model-driven development** tangible in our own product."
-          },
-          {
-            "type": "markdown",
-            "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
-            "body": "# Decision\n\nWe introduce a new software system: **Tracepaper**. It becomes our primary instrument to realize model-driven development within the Draftsman ecosystem.\n\nTracepaper combines:\n- A visual modeling tool for capturing domain concepts such as commands, aggregates, views, projections, and notifiers.\n- A code generator that transforms these models into production-ready AWS Serverless components.\n\nWith this decision we establish the foundation for a platform that narrows the gap between **architecture and execution**.\n\n### Considerations\nAlternatives such as commercial low-code tools (e.g. OutSystems, Mendix, Camunda) offer speed but limit control and transparency. A fully manual approach, on the other hand, makes rapid iteration impossible. Tracepaper positions itself in between: **full control where it matters, automation where it helps.**\n\n### Expected impact\n- **Architectural:** Tracepaper becomes a new core system within the Draftsman landscape.\n- **Organizational:** Facilitates knowledge sharing and repeatable architectural decisions.\n- **Technical:** Establishes the basis for future products built on the same principles."
-          }
-        ],
-        "prio": 0,
-        "updatedAt": "2025-10-31T01:09:53.172Z",
-        "decision": "We introduce a new system, Tracepaper, to realize our vision of model-driven development within the Draftsman ecosystem.",
-        "effect": {
-          "action": "introduces new",
-          "level": "system",
-          "scope": "internal",
-          "system_name": "Tracepaper",
-          "technology": "software system",
-          "description": "Our take on low-code"
-        },
-        "precedent": "89ebb234-da99-4e5b-ae43-e2739b386925",
-        "tags": [
-          "decision",
-          "tracepaper",
-          "model-driven",
-          "architecture",
-          "low-code"
-        ]
-      },
-      "67c1784d-7665-4d37-b010-790068e582a9": {
-        "id": "67c1784d-7665-4d37-b010-790068e582a9",
-        "sequence_number": 2,
-        "createdAt": "2025-10-22T21:03:07.473Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "ADR",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 2: Build a Code Generator",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
-            "body": "# Problem statement\n\nAfter introducing Tracepaper as a system, we need a way to **automatically translate the modeled domain logic into executable software**.\n\nThe purpose of Tracepaper is to bridge the gap between conceptual modeling (commands, aggregates, views, projections, notifiers) and a distributed runtime. In practice, this means that generated applications must run on **AWS Serverless**, using components such as Lambda, DynamoDB, S3, and AppSync.\n\nWriting this code manually is time-consuming and error-prone. Much of the infrastructure code (IaC, deployment configuration, boilerplate) repeats across projects. We therefore seek to **automate this translation**, without sacrificing transparency of the generated code."
-          },
-          {
-            "type": "markdown",
-            "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
-            "body": "# Decision\n\nWe build a **code generator** that translates Tracepaper DSL models into production-ready application code and infrastructure (IaC) for AWS Serverless.\n\nThis generator acts as the bridge between conceptual models and executable reality. The build process is executed by a dedicated component — the **Build Agent** — responsible for receiving ZIP files with model data, generating code, and publishing the results.\n\nThe generator is implemented in **Python**, using **AWS SAM** for infrastructure definition and packaging.\n\n### Considerations\n- **Alternative 1:** Manual code generation via templates inside the modeler — too limited and lacks lifecycle control.  \n- **Alternative 2:** External build services (e.g. CloudBuild, CodePipeline) — add dependencies and reduce flexibility.\n\nA custom generator provides the best balance of control, speed, and extensibility. It also allows support for **additional generation engines** in the future (e.g. container-based or on-premise deployments).\n\n### Expected impact\n- **Architectural:** The Build Agent becomes a core component within Tracepaper.  \n- **Technical:** Code generation and IaC are standardized; build outputs are reproducible.  \n- **Strategic:** Tracepaper differentiates itself from conventional low-code platforms by providing **full transparency of generated code**."
-          }
-        ],
-        "prio": 0,
-        "effect": {
-          "action": "introduces new",
-          "level": "container",
-          "system_name": "Build Agent",
-          "scope": "Tracepaper",
-          "type": "internal_component",
-          "technology": "AWS SAM / Python",
-          "description": "Code generator for transforming models into AWS Serverless artifacts."
-        },
-        "precedent": "a201f648-b359-4621-b45c-8ea40b4d76e3",
-        "updatedAt": "2025-10-31T01:17:52.886Z",
-        "tags": [
-          "adr",
-          "tracepaper",
-          "code-generation",
-          "aws-serverless",
-          "iac",
-          "python",
-          "automation",
-          "architecture"
-        ],
-        "ystatement": {
-          "context": "Within Tracepaper, which aims to transform domain models into executable software on AWS Serverless.",
-          "concern": "Manual translation of DSL models into executable code is error-prone, inconsistent, and time-consuming.",
-          "decision": "We build a code generator in Python that translates Tracepaper models into production-ready AWS Serverless code and IaC via AWS SAM.",
-          "alternatives": "Manual generation through modeler templates, or relying on external build services such as CloudBuild or CodePipeline.",
-          "quality": "Standardization, transparency, and higher development speed without losing control over generated code.",
-          "consequence": "The Build Agent becomes a central component within Tracepaper, managing the entire build and generation pipeline."
-        }
-      },
-      "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a": {
-        "id": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
-        "sequence_number": 3,
-        "createdAt": "2025-10-22T21:45:39.243Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "ADR",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 3: Desktop Modeler",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "1f1f6fc1-13b9-4283-8267-75b8f41ab82c",
-            "body": "# Problem statement\n\nThe first versions of Tracepaper (v0–v4) ran entirely in the browser. While this provided a low entry barrier, it led to limitations in **performance**, **file access**, and **user experience**.\n\nBrowser-based models required complex workarounds such as IndexedDB, Web Workers, and simulated file systems. Offline editing was difficult, and larger projects (hundreds of XML or JSON models) could noticeably slow down the UI.\n\nWe want to create an environment that feels like a **true IDE**—fast, robust, and integrated with local developer tools such as Git, the AWS CLI, and external editors. This requires a shift from a web-first approach to a **desktop-native experience**."
-          },
-          {
-            "type": "markdown",
-            "id": "89776171-58da-429f-8300-86f37d378ff4",
-            "body": "# Decision\n\nWe develop a **desktop version of the Tracepaper Modeler**, built with **PyWebView** and **Alpine.js**.\n\nThis choice enables:\n- Direct access to local file structures and repositories without browser sandbox restrictions.\n- A smooth, native-like user experience.\n- Offline editing without dependency on a browser cache or remote server.\n\nThe desktop modeler retains the modern web-based UI (HTML, Tailwind, Alpine.js) while running inside a lightweight desktop container with a **local Python backend**.\n\n### Considerations\n- **Alternative 1:** Improve the web version (Tracepaper 4) using PWA techniques → remained slow for large models and limited in file access.\n- **Alternative 2:** Build a fully native GUI using Qt or Electron → higher development and maintenance cost, loss of existing frontend reuse.\n\nPyWebView offers the best of both worlds: web technology with native integration, lightweight and cross-platform.\n\n### Expected impact\n- **User experience:** faster loading times, smoother editor performance, native look & feel.  \n- **Architectural:** the modeler becomes a standalone container within Tracepaper, separated from the Build Agent and backend.  \n- **Strategic:** a desktop version makes Tracepaper more appealing to professional users expecting IDE-grade tooling."
-          }
-        ],
-        "prio": 0,
-        "effect": {
-          "action": "introduces new",
-          "level": "container",
-          "scope": "Tracepaper",
-          "type": "web_container",
-          "system_name": "Desktop Modeler",
-          "technology": "PyWebView / Alpine.js",
-          "description": "Developer experience optimized"
-        },
-        "updatedAt": "2025-10-31T01:26:32.671Z",
-        "tags": [
-          "decision",
-          "tracepaper",
-          "desktop",
-          "pywebview",
-          "alpinejs",
-          "architecture",
-          "developer-experience"
-        ],
-        "ystatement": {
-          "context": "Within Tracepaper, earlier web-based versions (v0–v4) suffered from performance, file-access, and UX constraints.",
-          "concern": "Browser limitations hindered scalability, offline editing, and integration with local developer workflows.",
-          "decision": "We build a desktop modeler using PyWebView and Alpine.js to deliver native performance and local integration while retaining web-based flexibility.",
-          "alternatives": "Improve the existing web PWA or build a fully native GUI using frameworks such as Qt or Electron.",
-          "quality": "Fast, reliable, cross-platform experience with minimal maintenance overhead.",
-          "consequence": "The modeler becomes a standalone container, decoupled from the Build Agent and backend, forming the user-facing core of Tracepaper."
-        }
-      },
-      "df4dba93-2e4c-4b69-bb84-1d4579493641": {
-        "id": "df4dba93-2e4c-4b69-bb84-1d4579493641",
-        "sequence_number": 4,
-        "createdAt": "2025-10-23T20:53:16.033Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "ADR",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 4: Introduce a ZIP-based API for the Build Agent",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "de39f1db-2fb5-4d71-a564-d7bdd74624a4",
-            "body": "# Problem statement\n\nNow that the **Build Agent** is designed as a standalone, serverless component responsible for code generation, a reliable and efficient way is needed to deliver model projects from the **Desktop Modeler**.\n\nA project typically consists of dozens or hundreds of JSON or XML files forming the domain description. Sending these individually through API calls would result in excessive network traffic, complex error handling, and high latency.\n\nWe therefore need a **standardized, stateless interface** that allows complete projects to be transferred in a single request, without persistent sessions or long-lived storage."
-          },
-          {
-            "type": "markdown",
-            "id": "17738ad1-54e8-43ed-b560-79de87f3b8a0",
-            "body": "# Decision\n\nWe introduce a **ZIP-based API** as the primary submission mechanism for the Build Agent.\n\nThe **Desktop Modeler** bundles all model files into a ZIP archive and sends it via **HTTP POST** to an **AWS Lambda** that serves as the Build Agent entrypoint.\n\nThe Lambda:\n1. Extracts the ZIP archive into a temporary directory;  \n2. Starts the code generation process with the provided metadata;  \n3. Uploads the resulting artifacts to an S3 bucket for further processing.\n\nThis design ensures that the Build Agent:\n- Operates **statelessly** (no session or local storage);  \n- Scales horizontally via parallel Lambda invocations;  \n- Remains **robust** for large projects with many files.\n\n### Considerations\n- **Alternative 1:** Upload individual files to S3 with event triggers → complex orchestration, higher error surface.  \n- **Alternative 2:** REST API with per-file requests → too slow and unsuitable for large projects.  \n\nThe ZIP-based approach provides simplicity, repeatability, and high throughput with minimal operational overhead.\n\n### Expected impact\n- **Architectural:** The Build Agent gains a clear, single entrypoint for build requests.  \n- **Technical:** Complete projects can be processed atomically in one transaction.  \n- **Security:** Temporary storage minimizes exposure of model data."
-          }
-        ],
-        "prio": 0,
-        "effect": {
-          "action": "introduces new",
-          "level": "component",
-          "scope": "Tracepaper:Build Agent",
-          "system_name": "ZIP-based API",
-          "technology": "AWS Lambda",
-          "description": "Stateless entrypoint for model uploads and code generation"
-        },
-        "updatedAt": "2025-10-31T01:39:18.158Z",
-        "tags": [
-          "adr",
-          "tracepaper",
-          "build-agent",
-          "aws-lambda",
-          "api",
-          "architecture"
-        ],
-        "ystatement": {
-          "context": "Within Tracepaper, the Build Agent is a serverless component responsible for translating uploaded model projects into executable code.",
-          "concern": "Uploading individual model files creates high network overhead, complexity, and poor scalability for large projects.",
-          "decision": "We introduce a ZIP-based API where the Desktop Modeler sends the complete project archive to a Lambda entrypoint that unpacks, processes, and publishes results.",
-          "alternatives": "Uploading individual files to S3 with triggers, or exposing a REST endpoint for per-file uploads.",
-          "quality": "Stateless design, reproducible builds, and scalable execution with minimal latency.",
-          "consequence": "The Build Agent now exposes a single, efficient entrypoint that simplifies orchestration and reduces operational complexity."
-        }
-      },
-      "1c9f5c4d-e848-4191-87a2-d40bae96b150": {
-  "id": "1c9f5c4d-e848-4191-87a2-d40bae96b150",
-  "sequence_number": 5,
-  "createdAt": "2025-10-22T22:15:30.217Z",
-  "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-  "type": "DD",
-  "status": "decided",
-  "authors": ["Bo"],
-  "title": "Decision 5: Link the Modeler to the Build Agent",
-  "sections": [
-    {
-      "type": "markdown",
-      "id": "bdc4cb89-56c4-4f89-8659-b6e4ffe5aadf",
-      "body": "# Problem statement\n\nWith the **ZIP-based API** now available in the Build Agent, there is a scalable and stateless way to process model projects. The next step is to let the **Desktop Modeler** communicate directly with this API.\n\nThe Modeler serves as the development environment where users assemble their domain models. For a seamless workflow, the Modeler must be able to initiate a build request without manual export or upload steps.\n\nA direct connection between the Modeler and Build Agent is essential to:\n- shorten the feedback loop;\n- trigger builds with a single action;\n- ensure consistency between local models and generated output."
-    },
-    {
-      "type": "markdown",
-      "id": "3cd3361a-3bc8-498a-b515-bf166cebc692",
-      "body": "# Decision\n\nWe link the **Desktop Modeler** directly to the **Build Agent** using the ZIP-based API.\n\nWhen a build is triggered from the Modeler:\n1. All model files are automatically bundled into a ZIP archive;  \n2. The Modeler requests a **temporary build token** from the License Management backend;  \n3. The ZIP archive and metadata are sent to the Build Agent via HTTP POST;  \n4. The Modeler displays build progress (queued, running, done).\n\nThis architecture makes the collaboration between Modeler and Build Agent **transparent, efficient, and fully automated**."
-    }
-  ],
-  "decision": "The Desktop Modeler connects directly to the Build Agent using the ZIP-based API for one-click, automated builds.",
-  "prio": 0,
-  "effect": {
-    "action": "link two components",
-    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
-    "target": "67c1784d-7665-4d37-b010-790068e582a9",
-    "label": "Sends build request"
-  },
-  "precedent": "67c1784d-7665-4d37-b010-790068e582a9",
-  "updatedAt": "2025-10-31T02:34:36.859Z",
-  "tags": [
-    "decision",
-    "tracepaper",
-    "link",
-    "build-agent",
-    "desktop-modeler"
-  ]
-},
-      "b3923e5a-a3c5-4167-831e-004915ac011f": {
-  "id": "b3923e5a-a3c5-4167-831e-004915ac011f",
-  "sequence_number": 6,
-  "createdAt": "2025-10-22T22:35:30.956Z",
-  "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-  "type": "DD",
-  "status": "decided",
-  "authors": ["Bo"],
-  "title": "Decision 6: Add an Outbox bucket for artifact storage",
-  "sections": [
-    {
-      "type": "markdown",
-      "id": "15b82a35-eeff-4bdf-8f50-1be909d427ca",
-      "body": "# Problem statement\n\nNow that the **Build Agent** can execute builds and generate results, a reliable way is needed to store and expose these output files (artifacts).\n\nA build may produce multiple files — generated code, configuration, metadata — which together exceed Lambda’s 6 MB response limit. Returning them directly over HTTP is therefore infeasible for production use.\n\nWe need an **asynchronous, scalable storage mechanism** where build results can be temporarily persisted, so that the Modeler and backend can later retrieve them securely."
-    },
-    {
-      "type": "markdown",
-      "id": "ed062e7c-045c-4e73-ab43-40c93b7c3989",
-      "body": "# Decision\n\nWe introduce an **S3-based Outbox** for storing build artifacts.\n\nAfter completing a build, the **Build Agent** uploads all generated files to this bucket. The backend or Modeler can then download them through **presigned URLs** with limited lifetime.\n\nThis design decouples build execution from result delivery, improving scalability, reliability, and maintainability.\n\n### Trade-offs\n- **Alternative 1:** Return build results in HTTP response → unreliable and limited by payload size.  \n- **Alternative 2:** Use external storage services (e.g. Cloudflare R2, Dropbox) → adds dependencies and latency.\n\nS3 provides native integration, low cost, and strong durability. Using presigned URLs ensures temporary, secure, and auditable access."
-    }
-  ],
-  "decision": "We add an S3-based Outbox bucket to store build artifacts and deliver them via temporary presigned URLs.",
-  "prio": 0,
-  "effect": {
-    "action": "introduces new",
-    "level": "component",
-    "scope": "Tracepaper:Build Agent",
-    "type": "bucket",
-    "system_name": "Outbox",
-    "technology": "S3",
-    "description": "Artifact repository for generated build outputs"
-  },
-  "precedent": "67c1784d-7665-4d37-b010-790068e582a9",
-  "updatedAt": "2025-10-31T02:45:12.159Z",
-  "tags": [
-    "decision",
-    "tracepaper",
-    "build-agent",
-    "s3",
-    "outbox",
-    "artifact-storage"
-  ]
-},
-      "4ecc5f72-b895-4048-9172-bf823f0b1b7a": {
-  "id": "4ecc5f72-b895-4048-9172-bf823f0b1b7a",
-  "sequence_number": 7,
-  "createdAt": "2025-10-22T22:42:50.477Z",
-  "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-  "type": "DD",
-  "status": "decided",
-  "authors": ["Bo"],
-  "title": "Decision 7: Link the Build Agent to the Outbox",
-  "sections": [
-    {
-      "type": "markdown",
-      "id": "ddd1d05b-3683-4390-bb86-f8628538434c",
-      "body": "# Problem statement\n\nAfter introducing the **Outbox** as the central artifact storage, the next step is to connect the **Build Agent** directly to it.\n\nThe Build Agent generates multiple output files after each build, but without automatic publication, users would still need to manually retrieve them — leading to delays and inconsistencies.\n\nTo make the build process fully automated, the Build Agent must **upload its results directly** to the Outbox once a build completes."
-    },
-    {
-      "type": "markdown",
-      "id": "562c1e77-0fe1-4ebb-88bb-f8b48b815ea5",
-      "body": "# Decision\n\nThe **Build Agent** is connected to the **Outbox**, ensuring all build artifacts are automatically uploaded to S3 upon completion.\n\nThe process works as follows:\n1. After a build finishes, the Build Agent bundles the output into a ZIP archive;  \n2. A **presigned upload URL** is generated via the backend or AWS SDK;  \n3. The ZIP is uploaded directly to the Outbox;  \n4. The resulting link is stored in the build metadata.\n\nThis integration makes the system fully autonomous, eliminating manual downloads or extra API layers.\n\n### Trade-offs\n- **Alternative 1:** Upload via backend → adds latency and compute overhead.  \n- **Alternative 2:** Store artifacts in DynamoDB or custom blob storage → unsuitable for binary files.\n\nA direct S3 link offers simplicity, scalability, and security through temporary credentials."
-    }
-  ],
-  "decision": "The Build Agent automatically uploads all generated artifacts to the Outbox via a presigned S3 upload URL.",
-  "prio": 0,
-  "effect": {
-    "action": "link two components",
-    "source": "67c1784d-7665-4d37-b010-790068e582a9",
-    "target": "b3923e5a-a3c5-4167-831e-004915ac011f",
-    "label": "Uploads build artifact"
-  },
-  "precedent": "b3923e5a-a3c5-4167-831e-004915ac011f",
-  "updatedAt": "2025-10-31T02:52:07.016Z",
-  "tags": [
-    "decision",
-    "tracepaper",
-    "build-agent",
-    "outbox",
-    "artifact-upload"
-  ]
-},
-      "849de746-95e0-4fee-9c4a-6bd625987833": {
-  "id": "849de746-95e0-4fee-9c4a-6bd625987833",
-  "sequence_number": 8,
-  "createdAt": "2025-10-22T22:43:17.360Z",
-  "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-  "type": "DD",
-  "status": "decided",
-  "authors": ["Bo"],
-  "title": "Decision 8: Link the Modeler to the Outbox",
-  "sections": [
-    {
-      "type": "markdown",
-      "id": "1f9ee6f6-9f05-4590-b0b2-9b910c95a4b7",
-      "body": "# Problem statement\n\nWith the **Outbox** now acting as central artifact storage and the **Build Agent** already connected, build artifacts are automatically published. The missing link is between the **Desktop Modeler** and the Outbox, allowing users to easily retrieve their build results.\n\nWithout this connection, users must manually open presigned URLs or use external tools to download their files. This is cumbersome, error-prone, and limits the user experience.\n\nTo close the feedback loop, the Modeler should provide a **seamless way** to download generated artifacts directly from within the application."
-    },
-    {
-      "type": "markdown",
-      "id": "98027852-e7a0-429b-bf81-4c28d1c13784",
-      "body": "# Decision\n\nWe link the **Desktop Modeler** directly to the **Outbox**, allowing users to download build artifacts immediately after a build.\n\nAfter a build completes:\n1. The Build Agent registers the artifact’s location in the backend;  \n2. The backend provides the Modeler with a **presigned download URL**;  \n3. The user can download or open the file with a single click;  \n4. The download occurs directly via S3, without passing through the backend.\n\nThis architecture fully closes the build cycle — from model to artifact — in a single integrated flow.\n\n### Trade-offs\n- **Alternative 1:** Stream files through the backend → slower and more costly.  \n- **Alternative 2:** Manual download via browser or CLI → poor UX and unreliable when URLs expire.\n\nA direct S3 connection via presigned URLs provides maximum speed, safety, and simplicity."
-    }
-  ],
-  "decision": "The Desktop Modeler connects directly to the Outbox, allowing one-click artifact downloads via presigned S3 URLs.",
-  "prio": 0,
-  "effect": {
-    "action": "link two components",
-    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
-    "target": "b3923e5a-a3c5-4167-831e-004915ac011f",
-    "label": "Downloads build artifact"
-  },
-  "precedent": "4ecc5f72-b895-4048-9172-bf823f0b1b7a",
-  "updatedAt": "2025-10-31T03:03:21.118Z",
-  "tags": [
-    "decision",
-    "tracepaper",
-    "modeler",
-    "outbox",
-    "artifact-download"
-  ]
-},
-      "9286b792-bbd2-445a-b609-22a5758624c5": {
-  "id": "9286b792-bbd2-445a-b609-22a5758624c5",
-  "sequence_number": 9,
-  "createdAt": "2025-10-22T22:46:12.707Z",
-  "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-  "type": "ADR",
-  "status": "decided",
-  "authors": ["Bo"],
-  "title": "Decision 9: Introduce the License Management Backend",
-  "sections": [
-    {
-      "type": "markdown",
-      "id": "3ada62b5-a5e8-468a-a5c2-5ad4efefa81d",
-      "body": "# Problem statement\n\nNow that the build chain (**Modeler → Build Agent → Outbox**) is fully operational, we need a central service that manages **licensing, usage, and operational visibility**.\n\nWhile these components together enable an automated flow from model to code, they still lack an **authoritative system of record** that governs who is allowed to build, how usage is measured, and how deployments are monitored across environments.\n\nAdditionally, we want Tracepaper to offer users insights into their **runtime resources** — Lambdas, DynamoDB tables, AppSync APIs, Cognito pools, and pipelines — directly from within the Modeler.\n\nTo achieve this, we require a new internal component that unifies license management, usage tracking, and operational awareness."
-    },
-    {
-      "type": "markdown",
-      "id": "34818fc1-52cd-4ac6-b015-312e2e1fba24",
-      "body": "# Decision\n\nWe introduce a new **backend service** within Tracepaper called **License Management**.\n\nThis backend fulfills four core responsibilities:\n\n1. **License & seat management** — Verifies which users and machines are authorized to execute builds.  \n2. **Usage tracking** — Logs the number of Commands, Views, and Notifiers used per build for billing and analytics.  \n3. **Pipeline & deployment registry** — When a build is deployed to AWS, a callback to this service records its operational state.  \n4. **Modeler integration** — The Modeler retrieves metadata and direct AWS links (pipelines, QA reports, Lambdas, Cognito, etc.) via this backend.\n\nThis component becomes the **central administrative layer** of Tracepaper — the junction where model, build, and runtime meet.\n\n### Trade-offs\n- **Alternative 1:** Local management in the Modeler → unreliable and hard to synchronize.  \n- **Alternative 2:** Third-party licensing service → lacks domain-specific logic for Tracepaper builds and usage metering.\n\nOwning this backend provides full control, better observability, and extensibility for future pricing or compliance features."
-    }
-  ],
-  "prio": 0,
-  "effect": {
-    "action": "introduces new",
-    "level": "container",
-    "scope": "Tracepaper",
-    "type": "internal_component",
-    "system_name": "License Management",
-    "technology": "Tracepaper App",
-    "description": "Backend for licensing, metering, and operational visibility"
-  },
-  "precedent": "89ebb234-da99-4e5b-ae43-e2739b386925",
-  "updatedAt": "2025-10-31T03:57:31.516Z",
-  "tags": [
-    "adr",
-    "tracepaper",
-    "backend",
-    "licensing",
-    "usage-tracking",
-    "operations",
-    "architecture"
-  ],
-  "ystatement": {
-    "context": "Within the Tracepaper ecosystem, which connects model, build, and runtime components.",
-    "concern": "There is no single authoritative service managing licensing, usage metering, or operational visibility across builds and deployments.",
-    "decision": "We introduce a new backend component — License Management — as the administrative core for Tracepaper.",
-    "alternatives": "Handle licenses locally within the Modeler, or delegate management to an external third-party service.",
-    "quality": "Unified control, auditability, and extensibility for future billing, analytics, and compliance.",
-    "consequence": "Tracepaper gains a centralized backend that authorizes builds, tracks usage, and integrates runtime awareness, completing the architectural foundation of the ecosystem."
-  }
-},
-      "e78a618d-9cbd-4262-a3dd-177fc80a722f": {
-  "id": "e78a618d-9cbd-4262-a3dd-177fc80a722f",
-  "sequence_number": 10,
-  "createdAt": "2025-10-22T22:48:17.891Z",
-  "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-  "type": "DD",
-  "status": "decided",
-  "authors": ["Bo"],
-  "title": "Decision 10: Connect the Desktop Modeler to the License Management Backend",
-  "sections": [
-    {
-      "type": "markdown",
-      "id": "9f06e3bb-2e47-4a04-838e-a8b4d1839567",
-      "body": "# Problem statement\n\nWith the introduction of the **License Management Backend**, Tracepaper now has the infrastructure to centrally manage licensing, usage, and pipelines. To leverage this, the **Desktop Modeler** must communicate directly with that backend.\n\nThe Modeler is the user’s main entry point — where builds are triggered, licenses are validated, and projects are managed. Without backend integration it cannot display license status, obtain build tokens, or show linked AWS pipelines and deployments.\n\nA direct API connection is required to provide a consistent and reliable experience across all components."
-    },
-    {
-      "type": "markdown",
-      "id": "72eb28f3-75c8-4245-931c-633e15f3a4b0",
-      "body": "# Decision\n\nThe **Desktop Modeler** connects to the **License Management Backend** through a REST API.\n\nWhen a project is opened:\n1. The Modeler validates the local license with the backend.  \n2. It requests a temporary **build token** used for communication with the Build Agent.  \n3. It synchronizes usage data (Commands, Read Models, Notifiers) for monthly metering.  \n4. It retrieves contextual information about linked pipelines and deployments, exposing relevant **AWS links** in the UI.\n\nThis integration makes the Modeler not only a modeling environment but also the hub where **status, licensing, and operational context converge**.\n\n### Trade-offs\n- **Alternative 1:** Validate licenses offline → unreliable and prone to abuse.  \n- **Alternative 2:** Require users to log in to a separate portal → fragmented workflow and poorer UX.\n\nA direct API integration offers the fastest and most seamless connection between user, model, and backend.\n\n### Expected impact\n- **UX:** Real-time license status and direct access to AWS pipelines and deployments.  \n- **Architectural:** The Modeler becomes the first client of the License Management Backend.  \n- **Security:** All communication uses short-lived tokens over TLS.  \n- **Operational:** Builds and usage metrics are synchronized automatically."
-    }
-  ],
-  "prio": 0,
-  "decision": "The Desktop Modeler integrates directly with the License Management Backend via REST API for license validation, usage synchronization, and operational visibility.",
-  "effect": {
-    "action": "link two components",
-    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
-    "target": "9286b792-bbd2-445a-b609-22a5758624c5",
-    "label": "Uses API"
-  },
-  "updatedAt": "2025-10-31T04:15:40.552Z",
-  "tags": [
-    "decision",
-    "tracepaper",
-    "modeler",
-    "backend",
-    "integration",
-    "licensing"
-  ]
-},
-      "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c": {
-  "id": "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c",
-  "sequence_number": 11,
-  "createdAt": "2025-10-22T22:49:20.643Z",
-  "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-  "type": "DD",
-  "status": "decided",
-  "authors": ["Bo"],
-  "title": "Decision 11: Connect the Build Agent to the License Management Backend",
-  "sections": [
-    {
-      "type": "markdown",
-      "id": "007ff59c-6dd4-47bb-b294-4acf17d25c05",
-      "body": "# Problem statement\n\nWith the **License Management Backend** now operational and responsible for license validation, usage tracking, and pipeline administration, the **Build Agent** must be able to report its build data to it.\n\nEach build contains valuable metadata — start and end time, resources used, build status, project ID, and feature counts (commands, read models, notifiers). Without central registration, these details remain scattered, preventing accurate usage reporting and license compliance monitoring.\n\nIt is also essential that the backend knows **which builds are active** and **how often** each user invokes the Build Agent, to enable usage-based billing, debugging, and quality analysis."
-    },
-    {
-      "type": "markdown",
-      "id": "b3a4dfed-b27c-42cf-a97c-efc55fdf0044",
-      "body": "# Decision\n\nThe **Build Agent** connects to the **License Management Backend** and reports relevant **build metrics** after each build.\n\nThe process is as follows:\n1. The Build Agent receives a temporary **build token** from the Modeler.  \n2. After completing a build, it sends a **metrics payload** to the backend through a secure API call.  \n3. The backend records this data in its usage registry, linking it to the corresponding license and pipeline.  \n4. Any quota violations or errors are reported back to the Modeler.\n\nThe backend processes these metrics for billing, analysis, and operational monitoring.\n\n### Trade-offs\n- **Alternative 1:** Store metrics in S3 or local logs → no real-time insight and no license linkage.  \n- **Alternative 2:** Periodic synchronization by the Modeler → delayed data, inconsistency, and added complexity.\n\nA direct connection between Build Agent and backend ensures **real-time visibility, simple billing integration, and consistent monitoring**.\n\n### Expected impact\n- **Architectural:** The Build Agent becomes a data-producer for the License Management API.  \n- **Operational:** Metrics are stored centrally for validation and billing.  \n- **UX:** Build history and usage statistics become visible within the Modeler.  \n- **Security:** Communication uses short-lived tokens over TLS-secured endpoints."
-    }
-  ],
-  "prio": 0,
-  "decision": "The Build Agent reports build metrics in real time to the License Management Backend for usage tracking, license validation, and operational insight.",
-  "effect": {
-    "action": "link two components",
-    "source": "67c1784d-7665-4d37-b010-790068e582a9",
-    "target": "9286b792-bbd2-445a-b609-22a5758624c5",
-    "label": "Put build metrics"
-  },
-  "updatedAt": "2025-10-31T04:27:07.233Z",
-  "tags": [
-    "decision",
-    "tracepaper",
-    "build-agent",
-    "backend",
-    "usage-tracking",
-    "integration"
-  ]
-},
-      "faf777f8-112d-4c6a-9e74-d95b323f68b3": {
-  "id": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
-  "sequence_number": 12,
-  "createdAt": "2025-10-22T22:50:14.324Z",
-  "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-  "type": "ADR",
-  "status": "decided",
-  "authors": ["Bo"],
-  "title": "Decision 12: Select Stripe as Payment Processor for Professional Licenses",
-  "sections": [
-    {
-      "type": "markdown",
-      "id": "a0842b3f-ae8f-4a43-b6c8-f55a7fd81552",
-      "body": "# Problem statement\n\nThe **License Management Backend** manages all licenses and usage data for Tracepaper projects. Three license types exist:\n- **Personal:** free, limited quota.  \n- **Non-profit:** free, higher quota, manual approval.  \n- **Professional:** commercial, with paid subscriptions and usage-based billing.\n\nTo automatically invoice Professional licenses and securely process payments, an integrated payment platform is required. This platform must combine recurring subscriptions with metered usage (e.g., per Command, Read Model, or Notifier) and support global payments.\n\nBuilding an in-house payment system would add high operational and compliance costs (PCI-DSS, fraud detection, multi-currency handling). Therefore, integration with a third-party payment processor is necessary."
-    },
-    {
-      "type": "markdown",
-      "id": "fe5ff8cb-160a-4f3d-80ae-6916eb3b2989",
-      "body": "# Decision\n\nWe select **Stripe** as the external payment processor for **Professional licenses**.\n\nOnly projects with a Professional license are registered in Stripe. Personal and Non-profit licenses remain free and untracked.\n\nIntegration flow:\n1. When a Professional license is activated, the backend creates a **Stripe Customer** linked to the project ID and Git repository.  \n2. Usage data (commands, read models, notifiers, builds) is periodically sent to **Stripe Usage Records**.  \n3. Stripe automatically generates a monthly invoice combining base license fees and metered usage.  \n4. Payment and subscription statuses are reported back to the backend via **webhooks**.\n\n### Trade-offs\n- **Alternative 1:** Build our own billing system → high complexity and compliance risk.  \n- **Alternative 2:** Use simpler platforms (Paddle, Lemon Squeezy) → limited metered billing and seat management support.\n\nStripe offers the best balance of **flexibility, reliability, and global reach**, enabling seamless coexistence of free and paid licenses.\n\n### Expected impact\n- **Architectural:** External payment system integrated for commercial licenses only.  \n- **Operational:** Automated billing and invoicing for Professional users.  \n- **Commercial:** Personal and Non-profit tiers remain free.  \n- **Security:** Stripe ensures PCI-DSS compliance, reducing internal liability."
-    }
-  ],
-  "prio": 0,
-  "effect": {
-    "action": "introduces new",
-    "level": "system",
-    "scope": "external",
-    "system_name": "Stripe",
-    "technology": "SaaS",
-    "description": "Payment processing for Professional licenses"
-  },
-  "precedent": "9286b792-bbd2-445a-b609-22a5758624c5",
-  "updatedAt": "2025-10-31T04:52:46.827Z",
-  "tags": [
-    "adr",
-    "tracepaper",
-    "billing",
-    "payments",
-    "stripe",
-    "licensing"
-  ],
-  "ystatement": {
-    "context": "Tracepaper’s License Management Backend requires a reliable mechanism to handle paid Professional licenses with metered usage.",
-    "concern": "Internal billing would be costly and non-compliant with PCI-DSS; simpler third-party tools lack metered usage and seat-based billing capabilities.",
-    "decision": "Integrate Stripe as the external payment processor for Professional licenses, handling subscriptions, metering, and invoices.",
-    "alternatives": "Build an in-house billing system; use Paddle or Lemon Squeezy for simplified subscriptions.",
-    "quality": "Security, compliance, and operational scalability with minimal internal complexity.",
-    "consequence": "Stripe becomes the authoritative billing system for Professional users, enabling automated payments while maintaining separation between free and paid license tiers."
-  }
-},
-      "4adeb822-c309-49f6-847c-6ed1d111e91d": {
-        "id": "4adeb822-c309-49f6-847c-6ed1d111e91d",
-        "sequence_number": 13,
-        "createdAt": "2025-10-22T23:00:21.306Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 13: Koppel de License Management-backend aan Stripe",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "12f63087-c82b-491c-a16c-f3137fe8a2c7",
-            "body": "# Probleemstelling\n\nNa de keuze voor **Stripe** als betalingsverwerker (zie Decision 12) moet de **License Management-backend** zorgen voor een betrouwbare synchronisatie tussen het interne licentiesysteem en de externe facturatie.\n\nDe backend is de **enige bron van waarheid** voor licentiestatus, usage-statistieken en seat-registratie. Stripe fungeert uitsluitend als uitvoerend facturatieplatform. Zonder automatische synchronisatie zou het risico ontstaan dat verlopen licenties actief blijven of dat gebruik niet correct wordt afgerekend.\n\nDaarnaast moet usage-data actueel blijven, zonder dat gebruikers daarvoor hoeven te wachten of handmatig actie ondernemen. Build-gebeurtenissen moeten direct geregistreerd worden, terwijl overige usage (commands, views, notifiers, etc.) periodiek kan worden bijgewerkt."
-          },
-          {
-            "type": "markdown",
-            "id": "29fb4b0a-c240-4723-b6c3-699ed25368d6",
-            "body": "# Beslissing\n\nDe **License Management-backend** integreert met **Stripe** via een gecontroleerde, backend-gedreven koppeling.\n\n### Synchronisatiefrequentie\n1. **Dagelijks** controleert de backend bij Stripe of alle actieve licenties nog geldig zijn en worden betalingen of schorsingen verwerkt.\n2. Tijdens diezelfde taak worden de actuele usage-gegevens naar Stripe geüpload als **Usage Records** voor facturatie.\n3. **Build-ticks** (het aantal builds per project) worden **event-based** direct naar Stripe gestuurd zodra een build is voltooid, om realtime-accuratesse te behouden.\n\nStripe verwerkt deze usage-records en genereert maandelijks facturen. De backend blijft leidend in alle beslissingen over licentie-status, activatie en validatie.\n\n### Afweging\n- **Alternatief 1:** Webhook-gedreven model → verhoogt complexiteit en maakt de backend afhankelijk van externe triggers.\n- **Alternatief 2:** Handmatige synchronisatie → foutgevoelig en niet betrouwbaar op schaal.\n\nEen backend-gedreven, dagelijkse synchronisatie biedt **volledige controle**, **minimale afhankelijkheden** en **betere audit-traceerbaarheid**.\n\n### Verwachte impact\n- **Architecturaal:** Stripe wordt een passieve facturatie-endpoint, volledig bestuurd door de backend.\n- **Operationeel:** Dagelijkse validatie voorkomt verlopen of foutieve licenties.\n- **Realtime-component:** Builds worden direct geregistreerd, zodat het dashboard actueel blijft.\n- **Beveiliging:** Alleen uitgaande communicatie met Stripe; geen inkomende webhooks of trust-assumpties."
-          }
-        ],
-        "prio": 0,
-        "decision": "De License Management-backend voert dagelijks een synchronisatie met Stripe uit voor licentievalidatie en usage-registratie, met event-based updates voor builds.",
-        "effect": {
-          "action": "link two components",
-          "source": "9286b792-bbd2-445a-b609-22a5758624c5",
-          "target": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
-          "label": "Register usage and validate license"
-        },
-        "updatedAt": "2025-10-27T22:28:59.525Z",
-        "tags": [
-          "decision"
-        ]
-      },
-      "89bf2d4c-b38f-46da-b623-51f4c5cf9c03": {
-        "id": "89bf2d4c-b38f-46da-b623-51f4c5cf9c03",
-        "createdAt": "2025-10-24T22:12:46.817Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "SAP 1: Tracepaper-systemen zijn modulair ontworpen",
-        "principle": "### Statement\nTo ensure **clear separation of responsibility**, all Tracepaper subsystems are designed as **independent, composable modules**.\n\nEach module exposes a minimal, stable interface and avoids shared state, enabling flexible deployment and independent evolution.\n\n### Rationale\nThis modularity allows Tracepaper to evolve without tight coupling between components such as the Desktop Modeler, Build Agent, and License Management backend.\nIt supports both **technical isolation** (different technologies, runtimes, or release cycles) and **organizational isolation** (different ownership, or even legal entities if needed).\n\nThis approach also makes it easier to test and deploy subsystems individually, keeping the overall system maintainable and resilient to change.\n\n### Implication / Acceptance\nWe accept that cross-module features (for example, direct data access between the Modeler and Build Agent) must be implemented through **explicit APIs** or **message passing**.\nThis increases the coordination overhead but preserves long-term stability.\n\nWe also accept that user experience improvements requiring deeper integration will need **careful orchestration**, rather than shortcut coupling.",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-28T20:33:50.622Z",
-        "tags": [
-          "principle",
-          "tracepaper",
-          "architecture",
-          "modularity",
-          "separation-of-concerns",
-          "system-design"
-        ]
-      },
-      "17807819-9e47-4237-ae66-528ad580affe": {
-        "id": "17807819-9e47-4237-ae66-528ad580affe",
-        "createdAt": "2025-10-24T22:24:58.164Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "principle",
-        "scope": "67c1784d-7665-4d37-b010-790068e582a9",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "CAP 1: Build Agent werkt stateless en idempotent",
-        "principle": "### Statement\nTo ensure **deterministic and reproducible builds**, the Build Agent operates as a **stateless, idempotent component**.\nEach build request contains all required context (model, configuration, and license token), allowing the agent to process it without relying on prior executions.\n\n### Rationale\nStatelessness simplifies scaling and isolation. Multiple build requests can be executed in parallel or retried without side effects. This design minimizes risk of corruption or dependency between builds and aligns with the serverless nature of Tracepaper’s runtime.\n\nAn idempotent build process ensures that rerunning a build with the same inputs always produces the same output — a key requirement for traceability, licensing, and reproducibility.\n\n### Implication / Acceptance\nWe accept that the Build Agent **does not retain local caches or intermediate state** across builds. Any persistent output (e.g. generated artifacts, logs) must be stored externally, typically in the S3-based Outbox.\n\nWe also accept that stateful optimizations (like incremental builds or dependency caching) can only be introduced when they are **deterministically reconstructible** from input data or versioned storage.\n\nThis design favors **reliability and auditability** over raw build performance.",
-        "sections": [],
-        "prio": 0,
-        "updatedAt": "2025-10-30T21:57:52.011Z",
-        "tags": [
-          "principle",
-          "tracepaper",
-          "build-agent",
-          "stateless",
-          "idempotent",
-          "serverless",
-          "architecture"
-        ]
-      },
-      "845273a4-63a7-4e7f-92af-07232f79c0b3": {
-        "id": "845273a4-63a7-4e7f-92af-07232f79c0b3",
-        "createdAt": "2025-10-27T20:28:57.632Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "persona",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Persona: The Modeler",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "883d306c-1671-4057-a0c3-d60e4139e193",
-            "body": "# The Modeler\n\n**Role summary**\nThe Modeler is responsible for translating business intent into executable domain models within Tracepaper. They operate at the intersection of business analysis and software design, using visual modeling rather than source code.\n\n**Motivation**\nThey want to capture complex processes and domain logic quickly — without depending on a full engineering team for every change. Transparency and traceability are essential; they expect the generated code to be production-ready but understandable.\n\n**Goals**\n- Express intent through Commands, Aggregates, and Views.\n- Validate design decisions visually before implementation.\n- Generate deployable serverless systems without writing infrastructure code.\n\n**Frustrations**\n- Manual deployment steps or unclear runtime behavior.\n- Hidden automation or ‘black box’ low-code platforms.\n\n**Collaboration context**\nModelers often collaborate with Architects and Developers to refine domain boundaries and optimize build configurations. They work closely with the Build Agent through the Desktop Modeler to trigger builds and inspect generated artifacts.\n\n**Example quote**\n> “I want to design the behavior once — and know that what goes to production truly matches my model.”"
-          }
-        ],
-        "effect": {
-          "action": "new persona",
-          "external": true,
-          "name": "Modeler",
-          "description": "Business-oriented developer or domain designer responsible for authoring Tracepaper models."
-        },
-        "tags": [
-          "persona",
-          "tracepaper",
-          "modeling",
-          "low-code",
-          "ux"
-        ],
-        "prio": "0",
-        "updatedAt": "2025-10-30T22:07:45.391Z"
-      },
-      "ef31a1f4-1740-4081-aaa0-432ce64cdc6c": {
-        "id": "ef31a1f4-1740-4081-aaa0-432ce64cdc6c",
-        "sequence_number": 14,
-        "createdAt": "2025-10-27T20:36:12.613Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 14: Introduce PyWebview/Flask host for the Desktop Modeler",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "1c02c6a2-bc3c-419d-9143-424940ab653a",
-            "body": "# Problem statement\n\nTo provide a seamless user experience, the Tracepaper Modeler needs a **desktop runtime** that behaves like a native application but reuses existing web components.\n\nPrevious browser-based versions (Tracepaper 2–4) relied on PWAs and local storage, but they lacked deep system integration (file access, Git operations, local caching) and suffered from browser sandbox restrictions.\n\nWe need a host layer that can:\n- Serve the local web UI with full offline support.\n- Expose backend functionality (file I/O, ZIP processing, Git, AWS presigned uploads) to the UI.\n- Keep the UX lightweight and responsive without bundling a full browser engine like Electron."
-          },
-          {
-            "type": "markdown",
-            "id": "187aa595-cb89-44d6-8b4b-daaf7a8a691b",
-            "body": "# Decision\n\nWe introduce a **Webview Host** implemented with **PyWebview** and **Flask**.\n\nFlask provides a lightweight local API server, while PyWebview renders the Alpine.js/DaisyUI interface in a native window. This combination allows us to reuse the same HTML/JS assets across all platforms (macOS, Windows, Linux) and expose controlled Python endpoints to the UI layer.\n\n### Alternatives considered\n- **Electron** – powerful, but heavy; adds ~150 MB runtime overhead.\n- **Tauri** – leaner, but Rust-based; increases build complexity.\n\nPyWebview/Flask offers the right balance between control, portability, and simplicity while keeping the stack consistent with other Python-based components (e.g., the Build Agent)."
-          },
-          {
-            "id": "f036afdc-fd1b-4451-a9a5-2142c565e869",
-            "type": "chart",
-            "body": {
-              "labels": [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June"
-              ],
-              "datasets": [
-                {
-                  "label": "Prototype performance tests (ms per render)",
-                  "data": [
-                    65,
-                    59,
-                    50,
-                    41,
-                    38,
-                    35
-                  ],
-                  "backgroundColor": "rgba(75, 192, 192, 0.2)",
-                  "borderColor": "rgba(75, 192, 192, 1)",
-                  "borderWidth": 1
-                }
-              ]
+    "Draftsman": {
+        "name": "Draftsman",
+        "documents": {
+            "about": {
+                "id": "about",
+                "createdAt": "2025-10-21T20:25:01.093Z",
+                "type": "organisation",
+                "authors": [
+                    "Bo"
+                ],
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Draftsman\n\n**Draftsman** is the organisation behind the Tracepaper ecosystem — a collection of tools that transform domain knowledge into executable systems.\n\nOur mission is to make **architectural thinking operational**: helping teams design, evolve, and deploy software that remains explainable over time.  \nWe combine model-driven design, serverless automation, and visual traceability into one coherent environment.\n\n## Structure\nDraftsman operates as a **federated organisation** of focused products:\n- **Tracepaper** – for domain modelling and automated code generation.\n- **Workbench** – for documentation, shaping, and architectural reasoning.\n\nEach product is intentionally independent — both technically and legally — enabling flexible evolution and clear value attribution.\n\n## Vision\nDraftsman believes that software architecture should be **composable, transparent, and explainable**.  \nEvery decision, from a design trade-off to a business rule, should remain traceable from intent to implementation.\n\nWe pursue this through:\n- Declarative models that describe behaviour, not syntax.\n- Reproducible builds and measurable architectural integrity.\n- Tight feedback loops between model, runtime, and organisation.\n\n## Governance\nArchitectural principles and decisions are managed as first-class artefacts.  \nEvery change is stored, versioned, and reviewable — ensuring accountability without bureaucracy.  \nLicensing, billing, and build metrics are coordinated through the Draftsman backend, aligning operational transparency with business clarity."
+                    }
+                ],
+                "prio": 0,
+                "updatedAt": "2025-11-03T21:16:38.126Z",
+                "tags": [
+                    "organisation",
+                    "draftsman",
+                    "tracepaper",
+                    "workbench",
+                    "governance",
+                    "architecture"
+                ]
             },
-            "chart_type": "bar",
-            "view_mode": "chart"
-          }
-        ],
-        "tags": [
-          "decision",
-          "desktop-app",
-          "pywebview",
-          "flask",
-          "tracepaper",
-          "ux",
-          "architecture"
-        ],
-        "prio": "0",
-        "decision": "Use PyWebview with Flask as the desktop host bridge to expose local functionality and render the web-based Modeler UI natively.",
-        "effect": {
-          "action": "introduces new",
-          "source": "persona:Modeler",
-          "target": "Tracepaper:Desktop Modeler",
-          "label": "uses",
-          "level": "component",
-          "scope": "Tracepaper:Desktop Modeler",
-          "system_name": "Webview Host",
-          "technology": "PyWebview/Flask",
-          "description": "GUI bridge between the frontend and local backend."
+            "2a33d267-d8b3-491b-8cb8-068a64f78f09": {
+                "id": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
+                "type": "pitch",
+                "status": "inprogress",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Documenting Tracepaper",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Documenting Tracepaper\n\nTracepaper is rapidly evolving from a prototype into a full-fledged platform. Its architecture is rich — spanning modeler, build agent, backend, and integrations — but that same richness makes it **hard to explain succinctly**.\n\nThis initiative is an act of **architectural archaeology** — a reconstruction of how Tracepaper’s architecture evolved over the past five years. Many of today’s principles and decisions are the *fossilized traces* of earlier experiments, refactors, and lessons learned. By uncovering and connecting these layers, we aim to make the evolution itself visible: how each subsystem came to be, how it interacts with others, and which trade-offs shaped its current form.\n\nWe need a structured, self-consistent way to **document how Tracepaper works, why it exists, and how all parts connect**. The goal is not to produce traditional documentation, but to make the system *self-describing* — where models, decisions, and principles collectively tell the story.\n\n## The problem\nToday, understanding Tracepaper requires traversing multiple mental layers — DSL, architecture, pricing, licensing, and philosophy. These insights live in our heads, scattered docs, and Basecamp threads, but not yet in one navigable form.\n\nThis makes it difficult to:\n- Onboard contributors or collaborators.\n- Communicate Tracepaper’s design philosophy to partners or early adopters.\n- Keep architectural intent aligned as the system evolves.\n\n## The idea\nBuild a **living documentation space** within Workbench that reflects Tracepaper’s inner structure:\n- Each decision, principle, and persona becomes a navigable node.\n- Visual overviews (C4 + Mermaid) reveal system relationships.\n- Contextual references (e.g., license model, AWS architecture) are embedded where relevant.\n\nThe output should feel like an **interactive codex**, blending architecture and narrative — something you can *read, explore, or reason through*.\n\n## Appetite\nWe set an appetite of **six weeks**. The goal is not perfection but coherence: by the end, anyone reading the documentation should understand how Tracepaper fits together and why it was built this way.\n\n## Risks and boundaries\n- We deliberately avoid implementing advanced publishing or export features — focus on the internal narrative first.\n- The scope is limited to documenting Tracepaper itself, not Draftsman as a whole.\n\n## Success looks like\n- Each major subsystem (Modeler, Build Agent, Backend) has a corresponding scope.\n- Decisions are linked to principles and personas, forming an explorable web.\n- The documentation is understandable without prior context.\n\n> “A reader should be able to start anywhere in the Tracepaper model and end up understanding why it exists.”"
+                    },
+                    {
+                        "id": "0e27c584-345d-4624-bc68-ee41465f30db",
+                        "type": "mermaid",
+                        "body": "graph TD\n    A[Tracepaper System] --> B[Modeler]\n    A --> C[Build Agent]\n    A --> D[Backend]\n    B --> E[User Interaction]\n    C --> F[Code Generation]\n    D --> G[Licensing & Billing]\n    E --> H[Documentation Layer]\n    H -->|Connects| B\n    H -->|Connects| C\n    H -->|Connects| D"
+                    },
+                    {
+                        "id": "c7bdebe3-6ac7-4cb7-9a8e-0a43e083b2bb",
+                        "type": "reference",
+                        "document": "89ebb234-da99-4e5b-ae43-e2739b386925",
+                        "sections": [],
+                        "version": "latest",
+                        "show_principle": true
+                    }
+                ],
+                "attributes": {
+                    "appetite": 6,
+                    "deadline": "2025-12-02"
+                },
+                "updatedAt": "2025-11-04T20:47:48.703Z",
+                "prio": 0,
+                "tags": [
+                    "pitch",
+                    "tracepaper",
+                    "documentation",
+                    "architecture",
+                    "shapeup",
+                    "archeology"
+                ]
+            },
+            "235daebd-6a9a-4f7e-9da6-842b2a91d589": {
+                "id": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
+                "type": "pitch",
+                "status": "inprogress",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Workbench",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# Workbench\n\n**Workbench** is the environment where thinking and building converge — a tool for shaping ideas, capturing reasoning, and evolving architecture as living knowledge.\n\n## The problem\nTeams accumulate knowledge in disconnected places: design docs, tickets, chat threads, and wikis. None of these stay aligned with the actual architecture. As systems evolve, **context decays** — decisions lose their “why,” and the link between intent and implementation fades.\n\nWe need a way to keep architectural intent and project reality in sync — without introducing process overhead.\n\n## The concept\nWorkbench provides a structured yet flexible way to document **“what is,” “what might be,” and “what is now.”**  \nIt treats every piece of information — decisions, principles, personas, scopes, and pitches — as **microdocs**: atomic, versioned, and traceable. Together they form a navigable knowledge graph that reflects the organisation’s evolving system landscape.\n\nWorkbench is not another note-taking tool. It’s a **thinking surface** for shaping work — one that connects architecture, decision-making, and documentation into a single flow.\n\n## Key ideas\n- **Microdocs:** small, atomic documents that represent reasoning rather than prose.\n- **Linkability:** every concept (decision, principle, scope) can reference others — forming living architecture.\n- **Temporal awareness:** change is not overwritten but **accumulated**, preserving traceability.\n- **Shape Up integration:** supports shaping cycles, pitches, and bets natively.\n\n## Appetite\nSix weeks to establish the core: editing, linking, and navigating microdocs. This cycle focuses on **structure, navigation, and persistence**, not polish or publishing.\n\n## Boundaries\n- No real-time collaboration (out of scope).\n- No external sync (e.g., GitHub, Confluence) in this iteration.\n- Focus on usability and local persistence first.\n\n## Success looks like\n- Users can create, edit, and link microdocs in a coherent workspace.\n- Relationships between docs can be visualised (e.g., decision links, scope hierarchy).\n- The system feels frictionless — **writing equals modelling.**\n\n> “Workbench captures the thinking that happens between code and conversation — before it’s lost.”"
+                    }
+                ],
+                "attributes": {
+                    "appetite": 6,
+                    "deadline": "2025-12-09"
+                },
+                "updatedAt": "2025-11-03T21:31:10.623Z",
+                "prio": 0,
+                "tags": [
+                    "pitch",
+                    "workbench",
+                    "microdocs",
+                    "architecture",
+                    "documentation",
+                    "shapeup"
+                ]
+            },
+            "bf54bfca-3bd8-4b41-9e84-4dd0671bf986": {
+                "id": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "createdAt": "2025-10-21T20:26:13.288Z",
+                "parent": "2a33d267-d8b3-491b-8cb8-068a64f78f09",
+                "type": "scope",
+                "status": "active",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "System setup",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "body": "# System setup\n\nThe **System setup** scope defines the foundational architecture of the Tracepaper ecosystem — the minimal set of components needed to make the system coherent, deployable, and observable.\n\nIt captures all early design decisions that shaped the technical backbone: how components connect, where boundaries lie, and what trade-offs define the platform’s structure.\n\n### Purpose\nTo establish a consistent baseline across Tracepaper’s modeler, build agent, backend, and supporting infrastructure. This ensures that every product can evolve independently while remaining part of one cohesive ecosystem.\n\n### In scope\n- Initial system decomposition (Modeler, Build Agent, Backend, Outbox).\n- Communication flows and API contracts.\n- Decisions that govern packaging, deployment, and cross-component interaction.\n- The principles and constraints that shape each subsystem’s autonomy.\n\n### Out of scope\n- Detailed implementation of individual features (e.g., licensing flows, billing UI).\n- Runtime operations, monitoring, and cost-optimization work.\n\n### Deliverables\n- A documented system map (components, relations, responsibilities).\n- Decision records (DD/ADR) explaining key trade-offs.\n- Linked principles and personas to provide rationale and context.\n\n### Progress\nCurrent progress: **78.75%** — major decisions and component relationships are defined; refinement and cross-linking are ongoing."
+                    }
+                ],
+                "attributes": {
+                    "progress": 78.75
+                },
+                "updatedAt": "2025-11-03T21:05:55.015Z",
+                "prio": 0,
+                "tags": [
+                    "scope",
+                    "tracepaper",
+                    "architecture",
+                    "system-setup"
+                ]
+            },
+            "89ebb234-da99-4e5b-ae43-e2739b386925": {
+                "id": "89ebb234-da99-4e5b-ae43-e2739b386925",
+                "createdAt": "2025-10-22T18:46:38.233Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "enterprise",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "EAP 1: Functional boundaries and organizational flexibility",
+                "principle": "### Statement\nTo ensure long-term resilience and independence, we design products around **clear functional and organizational boundaries**.\nEach product in the Draftsman ecosystem (e.g. Tracepaper, Workbench) operates as a standalone system with its own runtime, licensing model, and commercial identity.\n\n### Rationale\nThis separation limits systemic risk and prevents cross-product coupling — both technically and commercially. By keeping products fully autonomous, we preserve the ability to evolve, pause, or transfer them independently, without affecting the rest of the portfolio.\n\nEven shared infrastructure such as licensing, authentication, or billing is implemented **per product**, not centrally. Only truly external services (e.g. Stripe for payments) are cross-cutting, and even then isolated by environment and catalog.\n\nThis approach means we cannot easily bundle products commercially — for example, offering joint discounts or shared entitlements. To compensate, each product must be **competitively priced on its own merits**.\n\n> Example: Tracepaper and Workbench each operate their own license server, reflecting distinct license semantics and deployment models. If one product is discontinued or sold, the other continues unaffected.\n\n### Implication / Acceptance\nWe accept that architectural independence comes at the cost of commercial integration. However, it also ensures clean handovers, reduced blast radius, and optional separation into distinct legal entities when needed (e.g. risk management or IP transfer).\n\n> Example: if a product reaches end-of-life but retains value for others, it can be sold or open-sourced without disrupting the rest of the ecosystem.",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-10-31T00:32:15.945Z",
+                "tags": [
+                    "principle",
+                    "enterprise",
+                    "architecture",
+                    "boundaries",
+                    "organization",
+                    "resilience",
+                    "pricing"
+                ]
+            },
+            "a201f648-b359-4621-b45c-8ea40b4d76e3": {
+                "id": "a201f648-b359-4621-b45c-8ea40b4d76e3",
+                "createdAt": "2025-10-22T19:18:23.823Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "enterprise",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "EAP 2: We prefer serverless technologies",
+                "principle": "### Statement\nTo maximize focus on domain logic and reduce operational burden, we **prefer serverless technologies** for all Draftsman products.\nEach product is designed as a standalone system that leverages managed cloud services whenever possible.\n\n### Rationale\nServerless platforms (such as AWS Lambda, DynamoDB, and AppSync) allow small teams to operate at scale without managing infrastructure. This choice aligns with our goal of maintaining functional independence across products, while ensuring operational consistency and predictable cost structures.\n\nBy avoiding persistent infrastructure, we also reduce the blast radius of change: every deployment is ephemeral, traceable, and fully reproducible.\n\nThis architectural stance supports our lean organizational model — no central DevOps team, minimal cloud footprint, and direct ownership of runtime behaviour within each product.\n\n### Implication / Acceptance\nWe accept that this preference limits portability and deep customization. Certain use cases (e.g. heavy compute, long-running processes, or specific integrations) may not fit within a serverless boundary.\n\nIn such cases, exceptions must be explicitly justified, and isolation maintained to prevent drift from the overall deployment model.\n\n> Example: Tracepaper’s Build Agent is fully serverless by design, translating models into deployable AWS SAM stacks. Future products may adopt containerized alternatives, but only if they preserve the same hands-off operational characteristics.",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-10-31T00:52:32.748Z",
+                "tags": [
+                    "principle",
+                    "enterprise",
+                    "architecture",
+                    "serverless",
+                    "cloud",
+                    "operations"
+                ]
+            },
+            "f7031fcf-142e-4ed2-bf1a-92a192da5f93": {
+                "id": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
+                "sequence_number": 1,
+                "createdAt": "2025-10-21T20:26:24.078Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 1: Introduction of Tracepaper",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
+                        "body": "# Problem statement\n\nWithin Draftsman we identified the need for a platform that not only documents domain models, but also translates them directly into production-ready software.\n\nExisting low-code platforms often obscure the underlying architecture, limit extensibility, and impose their own opinions on hosting and integration. This conflicts with our goal to make **software architecture explicit and inspectable**—not hidden behind black boxes.\n\nWe therefore looked for a way to make our **vision of model-driven development** tangible in our own product."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
+                        "body": "# Decision\n\nWe introduce a new software system: **Tracepaper**. It becomes our primary instrument to realize model-driven development within the Draftsman ecosystem.\n\nTracepaper combines:\n- A visual modeling tool for capturing domain concepts such as commands, aggregates, views, projections, and notifiers.\n- A code generator that transforms these models into production-ready AWS Serverless components.\n\nWith this decision we establish the foundation for a platform that narrows the gap between **architecture and execution**.\n\n### Considerations\nAlternatives such as commercial low-code tools (e.g. OutSystems, Mendix, Camunda) offer speed but limit control and transparency. A fully manual approach, on the other hand, makes rapid iteration impossible. Tracepaper positions itself in between: **full control where it matters, automation where it helps.**\n\n### Expected impact\n- **Architectural:** Tracepaper becomes a new core system within the Draftsman landscape.\n- **Organizational:** Facilitates knowledge sharing and repeatable architectural decisions.\n- **Technical:** Establishes the basis for future products built on the same principles."
+                    }
+                ],
+                "prio": 0,
+                "updatedAt": "2025-10-31T01:09:53.172Z",
+                "decision": "We introduce a new system, Tracepaper, to realize our vision of model-driven development within the Draftsman ecosystem.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "system",
+                    "scope": "internal",
+                    "system_name": "Tracepaper",
+                    "technology": "software system",
+                    "description": "Our take on low-code"
+                },
+                "precedent": "89ebb234-da99-4e5b-ae43-e2739b386925",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "model-driven",
+                    "architecture",
+                    "low-code"
+                ]
+            },
+            "67c1784d-7665-4d37-b010-790068e582a9": {
+                "id": "67c1784d-7665-4d37-b010-790068e582a9",
+                "sequence_number": 2,
+                "createdAt": "2025-10-22T21:03:07.473Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "ADR",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 2: Build a Code Generator",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "a01fb2c0-e0f2-4afb-b564-da250da01184",
+                        "body": "# Problem statement\n\nAfter introducing Tracepaper as a system, we need a way to **automatically translate the modeled domain logic into executable software**.\n\nThe purpose of Tracepaper is to bridge the gap between conceptual modeling (commands, aggregates, views, projections, notifiers) and a distributed runtime. In practice, this means that generated applications must run on **AWS Serverless**, using components such as Lambda, DynamoDB, S3, and AppSync.\n\nWriting this code manually is time-consuming and error-prone. Much of the infrastructure code (IaC, deployment configuration, boilerplate) repeats across projects. We therefore seek to **automate this translation**, without sacrificing transparency of the generated code."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "1e33ae82-cdf0-4f7b-931c-5e3bc8d3c7fc",
+                        "body": "# Decision\n\nWe build a **code generator** that translates Tracepaper DSL models into production-ready application code and infrastructure (IaC) for AWS Serverless.\n\nThis generator acts as the bridge between conceptual models and executable reality. The build process is executed by a dedicated component — the **Build Agent** — responsible for receiving ZIP files with model data, generating code, and publishing the results.\n\nThe generator is implemented in **Python**, using **AWS SAM** for infrastructure definition and packaging.\n\n### Considerations\n- **Alternative 1:** Manual code generation via templates inside the modeler — too limited and lacks lifecycle control.  \n- **Alternative 2:** External build services (e.g. CloudBuild, CodePipeline) — add dependencies and reduce flexibility.\n\nA custom generator provides the best balance of control, speed, and extensibility. It also allows support for **additional generation engines** in the future (e.g. container-based or on-premise deployments).\n\n### Expected impact\n- **Architectural:** The Build Agent becomes a core component within Tracepaper.  \n- **Technical:** Code generation and IaC are standardized; build outputs are reproducible.  \n- **Strategic:** Tracepaper differentiates itself from conventional low-code platforms by providing **full transparency of generated code**."
+                    }
+                ],
+                "prio": 0,
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "system_name": "Build Agent",
+                    "scope": "Tracepaper",
+                    "type": "internal_component",
+                    "technology": "AWS SAM / Python",
+                    "description": "Code generator for transforming models into AWS Serverless artifacts."
+                },
+                "precedent": "a201f648-b359-4621-b45c-8ea40b4d76e3",
+                "updatedAt": "2025-10-31T01:17:52.886Z",
+                "tags": [
+                    "adr",
+                    "tracepaper",
+                    "code-generation",
+                    "aws-serverless",
+                    "iac",
+                    "python",
+                    "automation",
+                    "architecture"
+                ],
+                "ystatement": {
+                    "context": "Within Tracepaper, which aims to transform domain models into executable software on AWS Serverless.",
+                    "concern": "Manual translation of DSL models into executable code is error-prone, inconsistent, and time-consuming.",
+                    "decision": "We build a code generator in Python that translates Tracepaper models into production-ready AWS Serverless code and IaC via AWS SAM.",
+                    "alternatives": "Manual generation through modeler templates, or relying on external build services such as CloudBuild or CodePipeline.",
+                    "quality": "Standardization, transparency, and higher development speed without losing control over generated code.",
+                    "consequence": "The Build Agent becomes a central component within Tracepaper, managing the entire build and generation pipeline."
+                }
+            },
+            "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a": {
+                "id": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                "sequence_number": 3,
+                "createdAt": "2025-10-22T21:45:39.243Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "ADR",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 3: Desktop Modeler",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "1f1f6fc1-13b9-4283-8267-75b8f41ab82c",
+                        "body": "# Problem statement\n\nThe first versions of Tracepaper (v0–v4) ran entirely in the browser. While this provided a low entry barrier, it led to limitations in **performance**, **file access**, and **user experience**.\n\nBrowser-based models required complex workarounds such as IndexedDB, Web Workers, and simulated file systems. Offline editing was difficult, and larger projects (hundreds of XML or JSON models) could noticeably slow down the UI.\n\nWe want to create an environment that feels like a **true IDE**—fast, robust, and integrated with local developer tools such as Git, the AWS CLI, and external editors. This requires a shift from a web-first approach to a **desktop-native experience**."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "89776171-58da-429f-8300-86f37d378ff4",
+                        "body": "# Decision\n\nWe develop a **desktop version of the Tracepaper Modeler**, built with **PyWebView** and **Alpine.js**.\n\nThis choice enables:\n- Direct access to local file structures and repositories without browser sandbox restrictions.\n- A smooth, native-like user experience.\n- Offline editing without dependency on a browser cache or remote server.\n\nThe desktop modeler retains the modern web-based UI (HTML, Tailwind, Alpine.js) while running inside a lightweight desktop container with a **local Python backend**.\n\n### Considerations\n- **Alternative 1:** Improve the web version (Tracepaper 4) using PWA techniques → remained slow for large models and limited in file access.\n- **Alternative 2:** Build a fully native GUI using Qt or Electron → higher development and maintenance cost, loss of existing frontend reuse.\n\nPyWebView offers the best of both worlds: web technology with native integration, lightweight and cross-platform.\n\n### Expected impact\n- **User experience:** faster loading times, smoother editor performance, native look & feel.  \n- **Architectural:** the modeler becomes a standalone container within Tracepaper, separated from the Build Agent and backend.  \n- **Strategic:** a desktop version makes Tracepaper more appealing to professional users expecting IDE-grade tooling."
+                    }
+                ],
+                "prio": 0,
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "web_container",
+                    "system_name": "Desktop Modeler",
+                    "technology": "PyWebView / Alpine.js",
+                    "description": "Developer experience optimized"
+                },
+                "updatedAt": "2025-10-31T01:26:32.671Z",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "desktop",
+                    "pywebview",
+                    "alpinejs",
+                    "architecture",
+                    "developer-experience"
+                ],
+                "ystatement": {
+                    "context": "Within Tracepaper, earlier web-based versions (v0–v4) suffered from performance, file-access, and UX constraints.",
+                    "concern": "Browser limitations hindered scalability, offline editing, and integration with local developer workflows.",
+                    "decision": "We build a desktop modeler using PyWebView and Alpine.js to deliver native performance and local integration while retaining web-based flexibility.",
+                    "alternatives": "Improve the existing web PWA or build a fully native GUI using frameworks such as Qt or Electron.",
+                    "quality": "Fast, reliable, cross-platform experience with minimal maintenance overhead.",
+                    "consequence": "The modeler becomes a standalone container, decoupled from the Build Agent and backend, forming the user-facing core of Tracepaper."
+                }
+            },
+            "df4dba93-2e4c-4b69-bb84-1d4579493641": {
+                "id": "df4dba93-2e4c-4b69-bb84-1d4579493641",
+                "sequence_number": 4,
+                "createdAt": "2025-10-23T20:53:16.033Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "ADR",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 4: Introduce a ZIP-based API for the Build Agent",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "de39f1db-2fb5-4d71-a564-d7bdd74624a4",
+                        "body": "# Problem statement\n\nNow that the **Build Agent** is designed as a standalone, serverless component responsible for code generation, a reliable and efficient way is needed to deliver model projects from the **Desktop Modeler**.\n\nA project typically consists of dozens or hundreds of JSON or XML files forming the domain description. Sending these individually through API calls would result in excessive network traffic, complex error handling, and high latency.\n\nWe therefore need a **standardized, stateless interface** that allows complete projects to be transferred in a single request, without persistent sessions or long-lived storage."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "17738ad1-54e8-43ed-b560-79de87f3b8a0",
+                        "body": "# Decision\n\nWe introduce a **ZIP-based API** as the primary submission mechanism for the Build Agent.\n\nThe **Desktop Modeler** bundles all model files into a ZIP archive and sends it via **HTTP POST** to an **AWS Lambda** that serves as the Build Agent entrypoint.\n\nThe Lambda:\n1. Extracts the ZIP archive into a temporary directory;  \n2. Starts the code generation process with the provided metadata;  \n3. Uploads the resulting artifacts to an S3 bucket for further processing.\n\nThis design ensures that the Build Agent:\n- Operates **statelessly** (no session or local storage);  \n- Scales horizontally via parallel Lambda invocations;  \n- Remains **robust** for large projects with many files.\n\n### Considerations\n- **Alternative 1:** Upload individual files to S3 with event triggers → complex orchestration, higher error surface.  \n- **Alternative 2:** REST API with per-file requests → too slow and unsuitable for large projects.  \n\nThe ZIP-based approach provides simplicity, repeatability, and high throughput with minimal operational overhead.\n\n### Expected impact\n- **Architectural:** The Build Agent gains a clear, single entrypoint for build requests.  \n- **Technical:** Complete projects can be processed atomically in one transaction.  \n- **Security:** Temporary storage minimizes exposure of model data."
+                    }
+                ],
+                "prio": 0,
+                "effect": {
+                    "action": "introduces new",
+                    "level": "component",
+                    "scope": "Tracepaper:Build Agent",
+                    "system_name": "ZIP-based API",
+                    "technology": "AWS Lambda",
+                    "description": "Stateless entrypoint for model uploads and code generation"
+                },
+                "updatedAt": "2025-10-31T01:39:18.158Z",
+                "tags": [
+                    "adr",
+                    "tracepaper",
+                    "build-agent",
+                    "aws-lambda",
+                    "api",
+                    "architecture"
+                ],
+                "ystatement": {
+                    "context": "Within Tracepaper, the Build Agent is a serverless component responsible for translating uploaded model projects into executable code.",
+                    "concern": "Uploading individual model files creates high network overhead, complexity, and poor scalability for large projects.",
+                    "decision": "We introduce a ZIP-based API where the Desktop Modeler sends the complete project archive to a Lambda entrypoint that unpacks, processes, and publishes results.",
+                    "alternatives": "Uploading individual files to S3 with triggers, or exposing a REST endpoint for per-file uploads.",
+                    "quality": "Stateless design, reproducible builds, and scalable execution with minimal latency.",
+                    "consequence": "The Build Agent now exposes a single, efficient entrypoint that simplifies orchestration and reduces operational complexity."
+                }
+            },
+            "1c9f5c4d-e848-4191-87a2-d40bae96b150": {
+                "id": "1c9f5c4d-e848-4191-87a2-d40bae96b150",
+                "sequence_number": 5,
+                "createdAt": "2025-10-22T22:15:30.217Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 5: Link the Modeler to the Build Agent",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "bdc4cb89-56c4-4f89-8659-b6e4ffe5aadf",
+                        "body": "# Problem statement\n\nWith the **ZIP-based API** now available in the Build Agent, there is a scalable and stateless way to process model projects. The next step is to let the **Desktop Modeler** communicate directly with this API.\n\nThe Modeler serves as the development environment where users assemble their domain models. For a seamless workflow, the Modeler must be able to initiate a build request without manual export or upload steps.\n\nA direct connection between the Modeler and Build Agent is essential to:\n- shorten the feedback loop;\n- trigger builds with a single action;\n- ensure consistency between local models and generated output."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "3cd3361a-3bc8-498a-b515-bf166cebc692",
+                        "body": "# Decision\n\nWe link the **Desktop Modeler** directly to the **Build Agent** using the ZIP-based API.\n\nWhen a build is triggered from the Modeler:\n1. All model files are automatically bundled into a ZIP archive;  \n2. The Modeler requests a **temporary build token** from the License Management backend;  \n3. The ZIP archive and metadata are sent to the Build Agent via HTTP POST;  \n4. The Modeler displays build progress (queued, running, done).\n\nThis architecture makes the collaboration between Modeler and Build Agent **transparent, efficient, and fully automated**."
+                    }
+                ],
+                "decision": "The Desktop Modeler connects directly to the Build Agent using the ZIP-based API for one-click, automated builds.",
+                "prio": 0,
+                "effect": {
+                    "action": "link two components",
+                    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                    "target": "df4dba93-2e4c-4b69-bb84-1d4579493641",
+                    "label": "Sends build request"
+                },
+                "precedent": "67c1784d-7665-4d37-b010-790068e582a9",
+                "updatedAt": "2025-11-03T21:02:51.699Z",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "link",
+                    "build-agent",
+                    "desktop-modeler"
+                ]
+            },
+            "b3923e5a-a3c5-4167-831e-004915ac011f": {
+                "id": "b3923e5a-a3c5-4167-831e-004915ac011f",
+                "sequence_number": 6,
+                "createdAt": "2025-10-22T22:35:30.956Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 6: Add an Outbox bucket for artifact storage",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "15b82a35-eeff-4bdf-8f50-1be909d427ca",
+                        "body": "# Problem statement\n\nNow that the **Build Agent** can execute builds and generate results, a reliable way is needed to store and expose these output files (artifacts).\n\nA build may produce multiple files — generated code, configuration, metadata — which together exceed Lambda’s 6 MB response limit. Returning them directly over HTTP is therefore infeasible for production use.\n\nWe need an **asynchronous, scalable storage mechanism** where build results can be temporarily persisted, so that the Modeler and backend can later retrieve them securely."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "ed062e7c-045c-4e73-ab43-40c93b7c3989",
+                        "body": "# Decision\n\nWe introduce an **S3-based Outbox** for storing build artifacts.\n\nAfter completing a build, the **Build Agent** uploads all generated files to this bucket. The backend or Modeler can then download them through **presigned URLs** with limited lifetime.\n\nThis design decouples build execution from result delivery, improving scalability, reliability, and maintainability.\n\n### Trade-offs\n- **Alternative 1:** Return build results in HTTP response → unreliable and limited by payload size.  \n- **Alternative 2:** Use external storage services (e.g. Cloudflare R2, Dropbox) → adds dependencies and latency.\n\nS3 provides native integration, low cost, and strong durability. Using presigned URLs ensures temporary, secure, and auditable access."
+                    }
+                ],
+                "decision": "We add an S3-based Outbox bucket to store build artifacts and deliver them via temporary presigned URLs.",
+                "prio": 0,
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "bucket",
+                    "system_name": "Outbox",
+                    "technology": "S3",
+                    "description": "Artifact repository for generated build outputs"
+                },
+                "precedent": "67c1784d-7665-4d37-b010-790068e582a9",
+                "updatedAt": "2025-11-03T20:12:02.884Z",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "build-agent",
+                    "s3",
+                    "outbox",
+                    "artifact-storage"
+                ]
+            },
+            "4ecc5f72-b895-4048-9172-bf823f0b1b7a": {
+                "id": "4ecc5f72-b895-4048-9172-bf823f0b1b7a",
+                "sequence_number": 7,
+                "createdAt": "2025-10-22T22:42:50.477Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 7: Link the Build Agent to the Outbox",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "ddd1d05b-3683-4390-bb86-f8628538434c",
+                        "body": "# Problem statement\n\nAfter introducing the **Outbox** as the central artifact storage, the next step is to connect the **Build Agent** directly to it.\n\nThe Build Agent generates multiple output files after each build, but without automatic publication, users would still need to manually retrieve them — leading to delays and inconsistencies.\n\nTo make the build process fully automated, the Build Agent must **upload its results directly** to the Outbox once a build completes."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "562c1e77-0fe1-4ebb-88bb-f8b48b815ea5",
+                        "body": "# Decision\n\nThe **Build Agent** is connected to the **Outbox**, ensuring all build artifacts are automatically uploaded to S3 upon completion.\n\nThe process works as follows:\n1. After a build finishes, the Build Agent bundles the output into a ZIP archive;  \n2. A **presigned upload URL** is generated via the backend or AWS SDK;  \n3. The ZIP is uploaded directly to the Outbox;  \n4. The resulting link is stored in the build metadata.\n\nThis integration makes the system fully autonomous, eliminating manual downloads or extra API layers.\n\n### Trade-offs\n- **Alternative 1:** Upload via backend → adds latency and compute overhead.  \n- **Alternative 2:** Store artifacts in DynamoDB or custom blob storage → unsuitable for binary files.\n\nA direct S3 link offers simplicity, scalability, and security through temporary credentials."
+                    }
+                ],
+                "decision": "The Build Agent automatically uploads all generated artifacts to the Outbox via a presigned S3 upload URL.",
+                "prio": 0,
+                "effect": {
+                    "action": "link two components",
+                    "source": "df4dba93-2e4c-4b69-bb84-1d4579493641",
+                    "target": "b3923e5a-a3c5-4167-831e-004915ac011f",
+                    "label": "Uploads build artifact"
+                },
+                "precedent": "b3923e5a-a3c5-4167-831e-004915ac011f",
+                "updatedAt": "2025-11-03T20:29:25.756Z",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "build-agent",
+                    "outbox",
+                    "artifact-upload"
+                ]
+            },
+            "849de746-95e0-4fee-9c4a-6bd625987833": {
+                "id": "849de746-95e0-4fee-9c4a-6bd625987833",
+                "sequence_number": 8,
+                "createdAt": "2025-10-22T22:43:17.360Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 8: Link the Modeler to the Outbox",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "1f9ee6f6-9f05-4590-b0b2-9b910c95a4b7",
+                        "body": "# Problem statement\n\nWith the **Outbox** now acting as central artifact storage and the **Build Agent** already connected, build artifacts are automatically published. The missing link is between the **Desktop Modeler** and the Outbox, allowing users to easily retrieve their build results.\n\nWithout this connection, users must manually open presigned URLs or use external tools to download their files. This is cumbersome, error-prone, and limits the user experience.\n\nTo close the feedback loop, the Modeler should provide a **seamless way** to download generated artifacts directly from within the application."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "98027852-e7a0-429b-bf81-4c28d1c13784",
+                        "body": "# Decision\n\nWe link the **Desktop Modeler** directly to the **Outbox**, allowing users to download build artifacts immediately after a build.\n\nAfter a build completes:\n1. The Build Agent registers the artifact’s location in the backend;  \n2. The backend provides the Modeler with a **presigned download URL**;  \n3. The user can download or open the file with a single click;  \n4. The download occurs directly via S3, without passing through the backend.\n\nThis architecture fully closes the build cycle — from model to artifact — in a single integrated flow.\n\n### Trade-offs\n- **Alternative 1:** Stream files through the backend → slower and more costly.  \n- **Alternative 2:** Manual download via browser or CLI → poor UX and unreliable when URLs expire.\n\nA direct S3 connection via presigned URLs provides maximum speed, safety, and simplicity."
+                    }
+                ],
+                "decision": "The Desktop Modeler connects directly to the Outbox, allowing one-click artifact downloads via presigned S3 URLs.",
+                "prio": 0,
+                "effect": {
+                    "action": "link two components",
+                    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                    "target": "b3923e5a-a3c5-4167-831e-004915ac011f",
+                    "label": "Downloads build artifact"
+                },
+                "precedent": "4ecc5f72-b895-4048-9172-bf823f0b1b7a",
+                "updatedAt": "2025-11-03T20:28:46.912Z",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "modeler",
+                    "outbox",
+                    "artifact-download"
+                ]
+            },
+            "9286b792-bbd2-445a-b609-22a5758624c5": {
+                "id": "9286b792-bbd2-445a-b609-22a5758624c5",
+                "sequence_number": 9,
+                "createdAt": "2025-10-22T22:46:12.707Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "ADR",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 9: Introduce the License Management Backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "3ada62b5-a5e8-468a-a5c2-5ad4efefa81d",
+                        "body": "# Problem statement\n\nNow that the build chain (**Modeler → Build Agent → Outbox**) is fully operational, we need a central service that manages **licensing, usage, and operational visibility**.\n\nWhile these components together enable an automated flow from model to code, they still lack an **authoritative system of record** that governs who is allowed to build, how usage is measured, and how deployments are monitored across environments.\n\nAdditionally, we want Tracepaper to offer users insights into their **runtime resources** — Lambdas, DynamoDB tables, AppSync APIs, Cognito pools, and pipelines — directly from within the Modeler.\n\nTo achieve this, we require a new internal component that unifies license management, usage tracking, and operational awareness."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "34818fc1-52cd-4ac6-b015-312e2e1fba24",
+                        "body": "# Decision\n\nWe introduce a new **backend service** within Tracepaper called **License Management**.\n\nThis backend fulfills four core responsibilities:\n\n1. **License & seat management** — Verifies which users and machines are authorized to execute builds.  \n2. **Usage tracking** — Logs the number of Commands, Views, and Notifiers used per build for billing and analytics.  \n3. **Pipeline & deployment registry** — When a build is deployed to AWS, a callback to this service records its operational state.  \n4. **Modeler integration** — The Modeler retrieves metadata and direct AWS links (pipelines, QA reports, Lambdas, Cognito, etc.) via this backend.\n\nThis component becomes the **central administrative layer** of Tracepaper — the junction where model, build, and runtime meet.\n\n### Trade-offs\n- **Alternative 1:** Local management in the Modeler → unreliable and hard to synchronize.  \n- **Alternative 2:** Third-party licensing service → lacks domain-specific logic for Tracepaper builds and usage metering.\n\nOwning this backend provides full control, better observability, and extensibility for future pricing or compliance features."
+                    }
+                ],
+                "prio": 0,
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Tracepaper",
+                    "type": "internal_component",
+                    "system_name": "License Management",
+                    "technology": "Tracepaper App",
+                    "description": "Backend for licensing, metering, and operational visibility"
+                },
+                "precedent": "89ebb234-da99-4e5b-ae43-e2739b386925",
+                "updatedAt": "2025-10-31T03:57:31.516Z",
+                "tags": [
+                    "adr",
+                    "tracepaper",
+                    "backend",
+                    "licensing",
+                    "usage-tracking",
+                    "operations",
+                    "architecture"
+                ],
+                "ystatement": {
+                    "context": "Within the Tracepaper ecosystem, which connects model, build, and runtime components.",
+                    "concern": "There is no single authoritative service managing licensing, usage metering, or operational visibility across builds and deployments.",
+                    "decision": "We introduce a new backend component — License Management — as the administrative core for Tracepaper.",
+                    "alternatives": "Handle licenses locally within the Modeler, or delegate management to an external third-party service.",
+                    "quality": "Unified control, auditability, and extensibility for future billing, analytics, and compliance.",
+                    "consequence": "Tracepaper gains a centralized backend that authorizes builds, tracks usage, and integrates runtime awareness, completing the architectural foundation of the ecosystem."
+                }
+            },
+            "e78a618d-9cbd-4262-a3dd-177fc80a722f": {
+                "id": "e78a618d-9cbd-4262-a3dd-177fc80a722f",
+                "sequence_number": 10,
+                "createdAt": "2025-10-22T22:48:17.891Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 10: Connect the Desktop Modeler to the License Management Backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "9f06e3bb-2e47-4a04-838e-a8b4d1839567",
+                        "body": "# Problem statement\n\nWith the introduction of the **License Management Backend**, Tracepaper now has the infrastructure to centrally manage licensing, usage, and pipelines. To leverage this, the **Desktop Modeler** must communicate directly with that backend.\n\nThe Modeler is the user’s main entry point — where builds are triggered, licenses are validated, and projects are managed. Without backend integration it cannot display license status, obtain build tokens, or show linked AWS pipelines and deployments.\n\nA direct API connection is required to provide a consistent and reliable experience across all components."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "72eb28f3-75c8-4245-931c-633e15f3a4b0",
+                        "body": "# Decision\n\nThe **Desktop Modeler** connects to the **License Management Backend** through a REST API.\n\nWhen a project is opened:\n1. The Modeler validates the local license with the backend.  \n2. It requests a temporary **build token** used for communication with the Build Agent.  \n3. It synchronizes usage data (Commands, Read Models, Notifiers) for monthly metering.  \n4. It retrieves contextual information about linked pipelines and deployments, exposing relevant **AWS links** in the UI.\n\nThis integration makes the Modeler not only a modeling environment but also the hub where **status, licensing, and operational context converge**.\n\n### Trade-offs\n- **Alternative 1:** Validate licenses offline → unreliable and prone to abuse.  \n- **Alternative 2:** Require users to log in to a separate portal → fragmented workflow and poorer UX.\n\nA direct API integration offers the fastest and most seamless connection between user, model, and backend.\n\n### Expected impact\n- **UX:** Real-time license status and direct access to AWS pipelines and deployments.  \n- **Architectural:** The Modeler becomes the first client of the License Management Backend.  \n- **Security:** All communication uses short-lived tokens over TLS.  \n- **Operational:** Builds and usage metrics are synchronized automatically."
+                    }
+                ],
+                "prio": 0,
+                "decision": "The Desktop Modeler integrates directly with the License Management Backend via REST API for license validation, usage synchronization, and operational visibility.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "b0cd53b0-fc0a-434e-af7b-23b5b2a9c53a",
+                    "target": "9286b792-bbd2-445a-b609-22a5758624c5",
+                    "label": "Uses API"
+                },
+                "updatedAt": "2025-10-31T04:15:40.552Z",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "modeler",
+                    "backend",
+                    "integration",
+                    "licensing"
+                ]
+            },
+            "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c": {
+                "id": "d0a780bd-0b27-4b05-aa71-8e2dc455bc6c",
+                "sequence_number": 11,
+                "createdAt": "2025-10-22T22:49:20.643Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 11: Connect the Build Agent to the License Management Backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "007ff59c-6dd4-47bb-b294-4acf17d25c05",
+                        "body": "# Problem statement\n\nWith the **License Management Backend** now operational and responsible for license validation, usage tracking, and pipeline administration, the **Build Agent** must be able to report its build data to it.\n\nEach build contains valuable metadata — start and end time, resources used, build status, project ID, and feature counts (commands, read models, notifiers). Without central registration, these details remain scattered, preventing accurate usage reporting and license compliance monitoring.\n\nIt is also essential that the backend knows **which builds are active** and **how often** each user invokes the Build Agent, to enable usage-based billing, debugging, and quality analysis."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "b3a4dfed-b27c-42cf-a97c-efc55fdf0044",
+                        "body": "# Decision\n\nThe **Build Agent** connects to the **License Management Backend** and reports relevant **build metrics** after each build.\n\nThe process is as follows:\n1. The Build Agent receives a temporary **build token** from the Modeler.  \n2. After completing a build, it sends a **metrics payload** to the backend through a secure API call.  \n3. The backend records this data in its usage registry, linking it to the corresponding license and pipeline.  \n4. Any quota violations or errors are reported back to the Modeler.\n\nThe backend processes these metrics for billing, analysis, and operational monitoring.\n\n### Trade-offs\n- **Alternative 1:** Store metrics in S3 or local logs → no real-time insight and no license linkage.  \n- **Alternative 2:** Periodic synchronization by the Modeler → delayed data, inconsistency, and added complexity.\n\nA direct connection between Build Agent and backend ensures **real-time visibility, simple billing integration, and consistent monitoring**.\n\n### Expected impact\n- **Architectural:** The Build Agent becomes a data-producer for the License Management API.  \n- **Operational:** Metrics are stored centrally for validation and billing.  \n- **UX:** Build history and usage statistics become visible within the Modeler.  \n- **Security:** Communication uses short-lived tokens over TLS-secured endpoints."
+                    }
+                ],
+                "prio": 0,
+                "decision": "The Build Agent reports build metrics in real time to the License Management Backend for usage tracking, license validation, and operational insight.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "67c1784d-7665-4d37-b010-790068e582a9",
+                    "target": "9286b792-bbd2-445a-b609-22a5758624c5",
+                    "label": "Put build metrics"
+                },
+                "updatedAt": "2025-10-31T04:27:07.233Z",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "build-agent",
+                    "backend",
+                    "usage-tracking",
+                    "integration"
+                ]
+            },
+            "faf777f8-112d-4c6a-9e74-d95b323f68b3": {
+                "id": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
+                "sequence_number": 12,
+                "createdAt": "2025-10-22T22:50:14.324Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "ADR",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 12: Select Stripe as Payment Processor for Professional Licenses",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "a0842b3f-ae8f-4a43-b6c8-f55a7fd81552",
+                        "body": "# Problem statement\n\nThe **License Management Backend** manages all licenses and usage data for Tracepaper projects. Three license types exist:\n- **Personal:** free, limited quota.  \n- **Non-profit:** free, higher quota, manual approval.  \n- **Professional:** commercial, with paid subscriptions and usage-based billing.\n\nTo automatically invoice Professional licenses and securely process payments, an integrated payment platform is required. This platform must combine recurring subscriptions with metered usage (e.g., per Command, Read Model, or Notifier) and support global payments.\n\nBuilding an in-house payment system would add high operational and compliance costs (PCI-DSS, fraud detection, multi-currency handling). Therefore, integration with a third-party payment processor is necessary."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "fe5ff8cb-160a-4f3d-80ae-6916eb3b2989",
+                        "body": "# Decision\n\nWe select **Stripe** as the external payment processor for **Professional licenses**.\n\nOnly projects with a Professional license are registered in Stripe. Personal and Non-profit licenses remain free and untracked.\n\nIntegration flow:\n1. When a Professional license is activated, the backend creates a **Stripe Customer** linked to the project ID and Git repository.  \n2. Usage data (commands, read models, notifiers, builds) is periodically sent to **Stripe Usage Records**.  \n3. Stripe automatically generates a monthly invoice combining base license fees and metered usage.  \n4. Payment and subscription statuses are reported back to the backend via **webhooks**.\n\n### Trade-offs\n- **Alternative 1:** Build our own billing system → high complexity and compliance risk.  \n- **Alternative 2:** Use simpler platforms (Paddle, Lemon Squeezy) → limited metered billing and seat management support.\n\nStripe offers the best balance of **flexibility, reliability, and global reach**, enabling seamless coexistence of free and paid licenses.\n\n### Expected impact\n- **Architectural:** External payment system integrated for commercial licenses only.  \n- **Operational:** Automated billing and invoicing for Professional users.  \n- **Commercial:** Personal and Non-profit tiers remain free.  \n- **Security:** Stripe ensures PCI-DSS compliance, reducing internal liability."
+                    }
+                ],
+                "prio": 0,
+                "effect": {
+                    "action": "introduces new",
+                    "level": "system",
+                    "scope": "external",
+                    "system_name": "Stripe",
+                    "technology": "SaaS",
+                    "description": "Payment processing for Professional licenses"
+                },
+                "precedent": "9286b792-bbd2-445a-b609-22a5758624c5",
+                "updatedAt": "2025-10-31T04:52:46.827Z",
+                "tags": [
+                    "adr",
+                    "tracepaper",
+                    "billing",
+                    "payments",
+                    "stripe",
+                    "licensing"
+                ],
+                "ystatement": {
+                    "context": "Tracepaper’s License Management Backend requires a reliable mechanism to handle paid Professional licenses with metered usage.",
+                    "concern": "Internal billing would be costly and non-compliant with PCI-DSS; simpler third-party tools lack metered usage and seat-based billing capabilities.",
+                    "decision": "Integrate Stripe as the external payment processor for Professional licenses, handling subscriptions, metering, and invoices.",
+                    "alternatives": "Build an in-house billing system; use Paddle or Lemon Squeezy for simplified subscriptions.",
+                    "quality": "Security, compliance, and operational scalability with minimal internal complexity.",
+                    "consequence": "Stripe becomes the authoritative billing system for Professional users, enabling automated payments while maintaining separation between free and paid license tiers."
+                }
+            },
+            "4adeb822-c309-49f6-847c-6ed1d111e91d": {
+                "id": "4adeb822-c309-49f6-847c-6ed1d111e91d",
+                "sequence_number": 13,
+                "createdAt": "2025-10-22T23:00:21.306Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 13: Connect the License Management Backend to Stripe",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "12f63087-c82b-491c-a16c-f3137fe8a2c7",
+                        "body": "# Problem statement\n\nAfter selecting **Stripe** as the payment processor (see Decision 12), the **License Management Backend** must ensure reliable synchronization between the internal licensing system and external billing.\n\nThe backend acts as the **single source of truth** for license status, usage metrics, and seat registration. Stripe functions purely as an external billing endpoint. Without automated synchronization, there is a risk that expired licenses remain active or that usage is billed incorrectly.\n\nUsage data must also remain **up to date** without requiring user action or delays. Build events should be registered immediately, while other usage metrics (commands, views, notifiers, etc.) can be updated periodically."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "29fb4b0a-c240-4723-b6c3-699ed25368d6",
+                        "body": "# Decision\n\nThe **License Management Backend** integrates with **Stripe** through a controlled, backend-driven synchronization process.\n\n### Synchronization cadence\n1. **Daily**, the backend verifies all active licenses with Stripe, processing renewals, suspensions, or cancellations.  \n2. During the same job, the backend uploads the latest usage data to Stripe as **Usage Records** for billing.  \n3. **Build ticks** (the number of builds per project) are sent to Stripe **event-based**, immediately after each build completes, ensuring real-time accuracy.\n\nStripe processes these usage records and generates monthly invoices. The backend remains authoritative for all license validation and activation logic.\n\n### Considerations\n- **Alternative 1:** Webhook-driven model → adds complexity and external dependency.  \n- **Alternative 2:** Manual synchronization → error-prone and unreliable at scale.  \n\nA backend-driven daily synchronization offers **full control**, **minimal dependencies**, and **strong audit traceability**.\n\n### Expected impact\n- **Architectural:** Stripe becomes a passive billing endpoint, fully orchestrated by the backend.  \n- **Operational:** Daily validation prevents expired or inconsistent licenses.  \n- **Real-time component:** Build events are registered instantly, keeping the dashboard current.  \n- **Security:** Only outbound communication with Stripe; no inbound webhooks or implicit trust assumptions."
+                    }
+                ],
+                "prio": 0,
+                "decision": "The License Management Backend performs daily synchronization with Stripe for license validation and usage registration, with event-based updates for builds.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "9286b792-bbd2-445a-b609-22a5758624c5",
+                    "target": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
+                    "label": "Register usage and validate license"
+                },
+                "updatedAt": "2025-11-03T22:31:00.000Z",
+                "tags": [
+                    "decision",
+                    "tracepaper",
+                    "backend",
+                    "billing",
+                    "stripe",
+                    "licensing",
+                    "integration"
+                ]
+            },
+            "89bf2d4c-b38f-46da-b623-51f4c5cf9c03": {
+                "id": "89bf2d4c-b38f-46da-b623-51f4c5cf9c03",
+                "createdAt": "2025-10-24T22:12:46.817Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "f7031fcf-142e-4ed2-bf1a-92a192da5f93",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "SAP 1: Tracepaper systems are modular by design",
+                "principle": "### Statement\nTo ensure **clear separation of responsibility**, all Tracepaper subsystems are designed as **independent, composable modules**.\n\nEach module exposes a minimal, stable interface and avoids shared state, enabling flexible deployment and independent evolution.\n\n### Rationale\nThis modular design allows Tracepaper to evolve without tight coupling between components such as the Desktop Modeler, Build Agent, and License Management backend.\nIt supports both **technical isolation** (different technologies, runtimes, or release cycles) and **organizational isolation** (distinct ownership domains or even separate legal entities when appropriate).\n\nThe result is a system that remains adaptable, testable, and maintainable even as it grows in scope and complexity.\n\n### Implications / Acceptance\nWe accept that cross-module functionality (for example, data exchange between the Modeler and the Build Agent) must occur through **explicit APIs** or **message-passing channels**.\nThis adds coordination overhead but preserves long-term stability and clarity of boundaries.\n\nWe also accept that user-experience features requiring deeper integration demand **intentional orchestration** rather than shortcut coupling.",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-11-03T22:47:00.000Z",
+                "tags": [
+                    "principle",
+                    "tracepaper",
+                    "architecture",
+                    "modularity",
+                    "separation-of-concerns",
+                    "system-design"
+                ]
+            },
+            "17807819-9e47-4237-ae66-528ad580affe": {
+                "id": "17807819-9e47-4237-ae66-528ad580affe",
+                "createdAt": "2025-10-24T22:24:58.164Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "principle",
+                "scope": "67c1784d-7665-4d37-b010-790068e582a9",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "CAP 1: The Build Agent is stateless and idempotent",
+                "principle": "### Statement\nTo ensure **deterministic and reproducible builds**, the Build Agent operates as a **stateless, idempotent component**.\nEach build request contains the complete context — model data, configuration, and license token — allowing the agent to execute it independently of any previous run.\n\n### Rationale\nStatelessness simplifies scaling and isolation. Multiple builds can run in parallel or be retried without side effects. This approach minimizes risk of corruption or cross-build dependencies and aligns with the serverless nature of Tracepaper’s runtime.\n\nIdempotency guarantees that repeating a build with identical inputs yields identical outputs — an essential property for **traceability**, **licensing**, and **reproducibility**.\n\n### Implications / Acceptance\nWe accept that the Build Agent **does not maintain local caches or intermediate state** between builds. Any persistent output — such as generated artifacts or logs — must be stored externally, typically in the S3-based Outbox.\n\nWe also accept that stateful optimizations (like incremental builds or dependency caching) may only be introduced when they are **deterministically reconstructible** from input data or versioned storage.\n\nThis design prioritizes **reliability, transparency, and auditability** over raw build performance.",
+                "sections": [],
+                "prio": 0,
+                "updatedAt": "2025-11-03T21:30:19.995Z",
+                "tags": [
+                    "principle",
+                    "tracepaper",
+                    "build-agent",
+                    "stateless",
+                    "idempotent",
+                    "serverless",
+                    "architecture",
+                    "reproducibility"
+                ]
+            },
+            "845273a4-63a7-4e7f-92af-07232f79c0b3": {
+                "id": "845273a4-63a7-4e7f-92af-07232f79c0b3",
+                "createdAt": "2025-10-27T20:28:57.632Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "persona",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Persona: The Modeler",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "883d306c-1671-4057-a0c3-d60e4139e193",
+                        "body": "# The Modeler\n\n**Role summary**\nThe Modeler is responsible for translating business intent into executable domain models within Tracepaper. They operate at the intersection of business analysis and software design, using visual modeling rather than source code.\n\n**Motivation**\nThey want to capture complex processes and domain logic quickly — without depending on a full engineering team for every change. Transparency and traceability are essential; they expect the generated code to be production-ready but understandable.\n\n**Goals**\n- Express intent through Commands, Aggregates, and Views.\n- Validate design decisions visually before implementation.\n- Generate deployable serverless systems without writing infrastructure code.\n\n**Frustrations**\n- Manual deployment steps or unclear runtime behavior.\n- Hidden automation or ‘black box’ low-code platforms.\n\n**Collaboration context**\nModelers often collaborate with Architects and Developers to refine domain boundaries and optimize build configurations. They work closely with the Build Agent through the Desktop Modeler to trigger builds and inspect generated artifacts.\n\n**Example quote**\n> “I want to design the behavior once — and know that what goes to production truly matches my model.”"
+                    }
+                ],
+                "effect": {
+                    "action": "new persona",
+                    "external": true,
+                    "name": "Modeler",
+                    "description": "Business-oriented developer or domain designer responsible for authoring Tracepaper models."
+                },
+                "tags": [
+                    "persona",
+                    "tracepaper",
+                    "modeling",
+                    "low-code",
+                    "ux"
+                ],
+                "prio": "0",
+                "updatedAt": "2025-10-30T22:07:45.391Z"
+            },
+            "ef31a1f4-1740-4081-aaa0-432ce64cdc6c": {
+                "id": "ef31a1f4-1740-4081-aaa0-432ce64cdc6c",
+                "sequence_number": 14,
+                "createdAt": "2025-10-27T20:36:12.613Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 14: Introduce PyWebview/Flask host for the Desktop Modeler",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "1c02c6a2-bc3c-419d-9143-424940ab653a",
+                        "body": "# Problem statement\n\nTo provide a seamless user experience, the Tracepaper Modeler needs a **desktop runtime** that behaves like a native application but reuses existing web components.\n\nPrevious browser-based versions (Tracepaper 2–4) relied on PWAs and local storage, but they lacked deep system integration (file access, Git operations, local caching) and suffered from browser sandbox restrictions.\n\nWe need a host layer that can:\n- Serve the local web UI with full offline support.\n- Expose backend functionality (file I/O, ZIP processing, Git, AWS presigned uploads) to the UI.\n- Keep the UX lightweight and responsive without bundling a full browser engine like Electron."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "187aa595-cb89-44d6-8b4b-daaf7a8a691b",
+                        "body": "# Decision\n\nWe introduce a **Webview Host** implemented with **PyWebview** and **Flask**.\n\nFlask provides a lightweight local API server, while PyWebview renders the Alpine.js/DaisyUI interface in a native window. This combination allows us to reuse the same HTML/JS assets across all platforms (macOS, Windows, Linux) and expose controlled Python endpoints to the UI layer.\n\n### Alternatives considered\n- **Electron** – powerful, but heavy; adds ~150 MB runtime overhead.\n- **Tauri** – leaner, but Rust-based; increases build complexity.\n\nPyWebview/Flask offers the right balance between control, portability, and simplicity while keeping the stack consistent with other Python-based components (e.g., the Build Agent)."
+                    },
+                    {
+                        "id": "f036afdc-fd1b-4451-a9a5-2142c565e869",
+                        "type": "chart",
+                        "body": {
+                            "labels": [
+                                "January",
+                                "February",
+                                "March",
+                                "April",
+                                "May",
+                                "June"
+                            ],
+                            "datasets": [
+                                {
+                                    "label": "Prototype performance tests (ms per render)",
+                                    "data": [
+                                        65,
+                                        59,
+                                        50,
+                                        41,
+                                        38,
+                                        35
+                                    ],
+                                    "backgroundColor": "rgba(75, 192, 192, 0.2)",
+                                    "borderColor": "rgba(75, 192, 192, 1)",
+                                    "borderWidth": 1
+                                }
+                            ]
+                        },
+                        "chart_type": "bar",
+                        "view_mode": "chart"
+                    }
+                ],
+                "tags": [
+                    "decision",
+                    "desktop-app",
+                    "pywebview",
+                    "flask",
+                    "tracepaper",
+                    "ux",
+                    "architecture"
+                ],
+                "prio": "0",
+                "decision": "Use PyWebview with Flask as the desktop host bridge to expose local functionality and render the web-based Modeler UI natively.",
+                "effect": {
+                    "action": "introduces new",
+                    "source": "persona:Modeler",
+                    "target": "Tracepaper:Desktop Modeler",
+                    "label": "uses",
+                    "level": "component",
+                    "scope": "Tracepaper:Desktop Modeler",
+                    "system_name": "Webview Host",
+                    "technology": "PyWebview/Flask",
+                    "description": "GUI bridge between the frontend and local backend."
+                },
+                "updatedAt": "2025-10-30T22:18:11.025Z"
+            },
+            "c262d374-0b09-4049-937f-f7b1be4de5bb": {
+                "id": "c262d374-0b09-4049-937f-f7b1be4de5bb",
+                "sequence_number": 15,
+                "createdAt": "2025-10-27T20:52:39.216Z",
+                "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 15: Define interaction between the Modeler persona and the Desktop Modeler",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "0bef8f2a-c787-47c9-a535-32520351ab69",
+                        "body": "# Problem statement\n\nThe **Modeler** persona designs and validates domain models through the Tracepaper interface. For this role, the modeling experience must feel **direct, responsive, and transparent**, without exposing unnecessary technical complexity.\n\nWhile the PyWebview/Flask-based Desktop Modeler (Decision 14) provides the technical foundation for this, the user interaction model — how Modelers create, inspect, and build — still needed to be defined.\n\nThe challenge is to balance **autonomy** (users can model and build without technical barriers) with **safety and control** (respecting licensing, usage metrics, and build isolation)."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "d8f57ed8-2edf-40d9-8d7d-635e69489145",
+                        "body": "# Decision\n\nWe define the **Modeler-to-Desktop Modeler interaction** as a lightweight client–host relationship.\n\nThe Modeler persona interacts exclusively through the UI layer (Alpine.js + DaisyUI) within the PyWebview window. All backend operations — such as opening projects, initiating builds, or retrieving artifacts — are handled via Flask endpoints that expose local functionality.\n\nThis design allows Modelers to:\n- Work fully offline with locally cached model data.\n- Trigger builds via a single command that securely communicates with the Build Agent.\n- View build results, logs, and links (e.g. AWS Pipeline, Outbox) without leaving the Modeler environment.\n\n### Alternatives considered\n- **Web-only Modeler (PWA)** – insufficient system access and poor offline support.\n- **Full Electron shell** – unnecessary runtime weight and duplication of existing web logic.\n\nThe chosen approach enables a **coherent and extensible UX** while maintaining a lightweight footprint."
+                    }
+                ],
+                "tags": [
+                    "decision",
+                    "persona",
+                    "tracepaper",
+                    "desktop-modeler",
+                    "ux",
+                    "architecture"
+                ],
+                "prio": 0,
+                "decision": "The Modeler interacts with the Desktop Modeler through a PyWebview-based host layer, combining local control with a lightweight web UI for a transparent, offline-first modeling experience.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "845273a4-63a7-4e7f-92af-07232f79c0b3",
+                    "target": "ef31a1f4-1740-4081-aaa0-432ce64cdc6c",
+                    "label": "uses"
+                },
+                "updatedAt": "2025-10-30T22:34:51.122Z"
+            },
+            "30851ea4-d39a-4c8d-97d9-cd9fb90381f2": {
+                "id": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
+                "createdAt": "2025-10-28T07:19:36.584Z",
+                "parent": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
+                "type": "scope",
+                "status": "active",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Build foundation for the Workbench project",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "83235c4c-90f6-4458-b8ae-d943302afd14",
+                        "body": "# Build foundation for the Workbench project\n\nWorkbench is envisioned as the **narrative layer** of the Draftsman ecosystem — a place where teams capture context, decisions, and architectural knowledge as *living documentation*.\n\nThis scope defines the foundational work required to make Workbench a stable and extensible product. It focuses on building the core infrastructure and interaction model rather than feature completeness.\n\n## Objectives\n- Establish a **robust document model** for microdocs (markdown, JSON, diagrams, etc.) ~~stored in S3~~.\n- ~~Implement **synchronization logic** between local IndexedDB and cloud storage via presigned URLs.~~\n- Define the **core domain model**: Projects, Scopes, Pitches, Principles, Decisions, and Personas.\n- Provide a lightweight **Alpine.js + DaisyUI interface** for editing, navigating, and linking documents.\n- ~~Ensure a solid **backend foundation** for authentication, S3 integration, and metadata retrieval.~~\n\n## Rationale\nWorkbench aims to solve a recurring pain: architectural knowledge often fragments across tools, chats, and slides. By combining Tracepaper’s modeling discipline with Workbench’s knowledge structure, we create a continuous story — from *decision* to *implementation*.\n\nThe foundation must therefore prioritize **consistency, traceability, and composability** over visual polish. Once stable, it can support advanced capabilities like visual navigation, C4 overlays, and shape-up workflows.\n\n## Scope boundaries\n- The focus is on the **core system architecture** — data model, ~~storage, and synchronization.~~\n- No advanced publishing, commenting, or real-time collaboration yet.\n- Integration with Tracepaper is limited to linking scopes and shared identity (pure semantic - no shared storage).\n\n## Deliverables\n- A minimal but complete **Workbench prototype**, capable of creating ~~and synchronizing~~ documents.\n- Basic visualization of relationships between scopes, principles, and decisions.\n- ~~Automated S3 upload/download cycle using presigned URLs.~~\n- Internal documentation of architecture, API contracts, and data flow.\n\n## Success criteria\n- The UX is clear on a conceptual level, how do I want to reason about projects & documentation?"
+                    }
+                ],
+                "attributes": {
+                    "progress": 25
+                },
+                "tags": [
+                    "scope",
+                    "workbench",
+                    "architecture",
+                    "foundation",
+                    "draftsman"
+                ],
+                "updatedAt": "2025-11-03T21:35:26.998Z",
+                "prio": 0
+            },
+            "c621011f-0afc-492b-9fe4-aaeeb1c7c74f": {
+                "id": "c621011f-0afc-492b-9fe4-aaeeb1c7c74f",
+                "sequence_number": 16,
+                "createdAt": "2025-10-28T07:19:55.738Z",
+                "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 16: Introduce Workbench as a new system",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "f98a45bc-5dfe-4ef7-9a94-3eb0aa985e3c",
+                        "body": "# Problem statement\n\nWithin the Draftsman ecosystem, architectural knowledge is distributed across multiple places — Tracepaper models, design notes, and ad-hoc documents. This fragmentation makes it hard to reconstruct *why* certain design decisions were made and how they evolved.\n\nThere is a need for a dedicated system that captures **context, decisions, and reasoning** in a structured yet lightweight way — complementing Tracepaper’s model-driven approach with a narrative and reflective layer."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "02faf343-66ad-4b52-92e7-8e42cdedd24d",
+                        "body": "# Decision\n\nWe introduce **Workbench** as a new system within Draftsman.\n\nWorkbench provides the narrative layer for capturing and connecting architectural knowledge — from pitches and principles to decisions and personas. It serves as the cognitive workspace where reasoning, documentation, and system evolution come together.\n\nInitially, Workbench focuses on a local, document-based experience to minimize complexity and validate the conceptual model before adding synchronization or collaboration features."
+                    }
+                ],
+                "tags": [
+                    "decision",
+                    "workbench",
+                    "architecture",
+                    "documentation"
+                ],
+                "prio": 0,
+                "decision": "We introduce Workbench as a new system that captures architectural reasoning and connects decisions, principles, and scopes within the Draftsman ecosystem.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "system",
+                    "scope": "internal",
+                    "system_name": "Workbench",
+                    "technology": "Software System",
+                    "description": "Project and knowledge management"
+                },
+                "updatedAt": "2025-11-03T23:37:00.000Z"
+            },
+            "6d317d47-5cf0-43c9-aa91-3a685aa89fa3": {
+                "id": "6d317d47-5cf0-43c9-aa91-3a685aa89fa3",
+                "sequence_number": 17,
+                "createdAt": "2025-10-28T07:21:43.234Z",
+                "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 17: Project a future Workbench backend",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "56495b65-7386-4900-9d7f-37f83c9db34c",
+                        "body": "# Problem statement\n\nThe first version of Workbench is intentionally local and self-contained. However, as the system grows, certain features — such as shared identity, cross-project linking, and aggregated insights — will require a backend service.\n\nWithout such a component, Workbench would remain isolated, unable to participate in the broader Draftsman ecosystem or share structural metadata across users and installations."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "ac56fa3f-db0b-4910-b417-38cbdc0a7dbd",
+                        "body": "# Decision\n\nWe acknowledge the need for a **future backend component** within Workbench, to be introduced once the local foundation proves stable.\n\nThis backend is projected to provide:\n- Identity and authentication integration with other Draftsman systems.\n- Aggregation of metadata and relationships across projects.\n- A foundation for future synchronization or collaboration capabilities.\n\nFor now, this remains a **conceptual placeholder** — the decision establishes the architectural intent, not the implementation timeline."
+                    }
+                ],
+                "tags": [
+                    "decision",
+                    "workbench",
+                    "architecture",
+                    "projection"
+                ],
+                "prio": 0,
+                "decision": "We acknowledge the need for a future Workbench backend to handle identity, metadata aggregation, and integration across the Draftsman ecosystem.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Workbench",
+                    "type": "internal_component",
+                    "system_name": "Backend",
+                    "technology": "Projected component",
+                    "description": "Future integration and metadata service"
+                },
+                "updatedAt": "2025-11-04T00:06:00.000Z"
+            },
+            "f818f9d0-ec1e-49cc-9bc3-3ecc1d046bd2": {
+                "id": "f818f9d0-ec1e-49cc-9bc3-3ecc1d046bd2",
+                "sequence_number": 18,
+                "createdAt": "2025-10-28T07:22:35.067Z",
+                "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 18: Project a link between Workbench and Stripe",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "86ae3bbf-2e5a-4d3b-8aad-48dcb309c572",
+                        "body": "# Problem statement\n\nWorkbench is designed as a standalone system, but in the broader Draftsman ecosystem, commercial usage may eventually need to be registered for billing and license reporting — similar to how Tracepaper integrates with Stripe via its backend.\n\nTo maintain architectural consistency, any future usage reporting from Workbench should follow the same model: a backend-mediated, usage-based registration rather than direct client-to-service integration."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "61a58a54-b808-400f-95f0-079318731911",
+                        "body": "# Decision\n\nWe project a future integration between **Workbench’s backend** and **Stripe**, following the established usage-registration flow used by Tracepaper.\n\nThis ensures Workbench can, when needed, report feature usage or seat allocations for Professional licenses through the same billing infrastructure.\n\nThe decision is conceptual only — it records the **architectural intent** to reuse the existing Stripe integration rather than introducing a separate payment flow."
+                    }
+                ],
+                "tags": [
+                    "decision",
+                    "workbench",
+                    "architecture",
+                    "projection",
+                    "stripe"
+                ],
+                "prio": 0,
+                "decision": "We project a future connection between the Workbench backend and Stripe for consistent usage and billing registration across Draftsman systems.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "6d317d47-5cf0-43c9-aa91-3a685aa89fa3",
+                    "target": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
+                    "label": "Register usage"
+                },
+                "updatedAt": "2025-11-04T00:16:00.000Z"
+            },
+            "f9013331-8135-4130-ab8d-b78344553bd0": {
+                "id": "f9013331-8135-4130-ab8d-b78344553bd0",
+                "createdAt": "2025-10-28T07:23:06.168Z",
+                "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
+                "type": "persona",
+                "status": "published",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Persona: Project Member",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "2b4add74-e783-42ac-b09d-294602419438",
+                        "body": "# Project Member\n\nProject Members are contributors who participate in shaping or maintaining a Draftsman project — for example, engineers, analysts, or architects.\n\nThey often join an ongoing initiative and need to **understand context quickly**: what has been decided, why, and how it impacts their scope of work.\n\n## Motivations\n- Wants to understand the *current architectural intent* without reading through lengthy documents.\n- Needs clarity on *what is fixed* (principles, decisions) versus *what is evolving* (open scopes, pitches).\n- Prefers working with **structured, explorable knowledge** rather than static reports.\n\n## Pain points\n- Information is often fragmented across Slack, Basecamp, and source code.\n- Decisions and rationales get lost over time, making onboarding slow.\n- Visual models or documents lack explicit linkage to underlying rationale.\n\n## How Workbench helps\nWorkbench offers a **living, interconnected view** of the project’s architecture and reasoning. It helps project members:\n- Trace decisions back to their principles.\n- Understand how their current task fits within the broader system.\n- Navigate from “what” (a model or scope) to “why” (a principle or decision) in seconds.\n\nIn essence, Workbench reduces the cognitive gap between *doing the work* and *understanding the work*."
+                    }
+                ],
+                "effect": {
+                    "action": "new persona",
+                    "external": true,
+                    "name": "Project Member",
+                    "description": "Contributes to a Draftsman project and relies on Workbench to understand decisions, principles, and project context quickly."
+                },
+                "tags": [
+                    "persona",
+                    "workbench",
+                    "documentation",
+                    "architecture"
+                ],
+                "prio": 0,
+                "updatedAt": "2025-11-04T00:24:00.000Z"
+            },
+            "9632972b-1e4f-47fd-8704-dd9831ac3f1a": {
+                "id": "9632972b-1e4f-47fd-8704-dd9831ac3f1a",
+                "sequence_number": 19,
+                "createdAt": "2025-10-28T07:23:27.616Z",
+                "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 19: Use Alpine.js for the Workbench interface",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "6b8c73ca-8e5c-4476-8b27-659f5cc4fdfa",
+                        "body": "# Problem statement\n\nWorkbench needs an interface that feels **immediate and lightweight**, supporting fast iteration and direct manipulation of documents. Traditional SPA frameworks (React, Vue, Angular) introduce build pipelines, runtime overhead, and additional abstraction layers that slow down early prototyping.\n\nBecause Workbench operates mostly offline and interacts directly with local data, we need a framework that provides **reactivity without infrastructure** — simple to reason about, easy to extend, and minimal in footprint."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "1d4ab8a2-c4fb-4edb-820a-5bf04a46495e",
+                        "body": "# Decision\n\nWe build the **Workbench interface** using **Alpine.js** with **DaisyUI** for styling.\n\nThis combination offers declarative reactivity and modern UI components while keeping the implementation transparent and easy to maintain.\n\n### Rationale\n- **Lightweight and embedded:** Works directly in HTML without a build step.\n- **Transparent state model:** Data lives close to the DOM — easy to debug and reason about.\n- **Consistent with Tracepaper:** Reuses familiar technologies, allowing shared UX patterns and code snippets.\n\n### Implications\n- Limited support for complex, stateful UI patterns (e.g. virtual lists or heavy data visualization), which can be added later through dedicated components.\n- Developers must maintain discipline in structuring Alpine components to avoid coupling.\n\nThe goal is a **clear, tactile interface** where documents and links are visible, editable, and explorable without friction."
+                    }
+                ],
+                "tags": [
+                    "decision",
+                    "workbench",
+                    "frontend",
+                    "architecture"
+                ],
+                "prio": 0,
+                "decision": "Workbench uses Alpine.js and DaisyUI for a lightweight, declarative, and transparent interface aligned with Tracepaper’s design philosophy.",
+                "effect": {
+                    "action": "introduces new",
+                    "level": "container",
+                    "scope": "Workbench",
+                    "type": "web_container",
+                    "system_name": "Graphic Interface",
+                    "technology": "Alpine.js + DaisyUI",
+                    "description": "Lightweight reactive UI for Workbench"
+                },
+                "updatedAt": "2025-11-04T00:31:00.000Z"
+            },
+            "fa511173-e3fd-4484-b2df-50f480fe9e1f": {
+                "id": "fa511173-e3fd-4484-b2df-50f480fe9e1f",
+                "sequence_number": 20,
+                "createdAt": "2025-10-28T07:24:15.317Z",
+                "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
+                "type": "DD",
+                "status": "decided",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 20: Design the interface around the Project Member’s workflow",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "fd480f71-4023-4946-b38c-e74a8650534a",
+                        "body": "# Problem statement\n\nThe **Project Member** persona represents users who join an ongoing initiative and need to quickly understand its context — what has been decided, what remains open, and how their work connects to the broader architecture.\n\nWithout explicit guidance, these users spend significant time reconstructing intent from scattered notes, documents, and diagrams. The interface must therefore prioritize **orientation** over data density: helping users understand *where they are* in the project narrative and *why things are the way they are*."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "d880df6a-1ba7-46a2-bf3e-ac774e88c164",
+                        "body": "# Decision\n\nThe **Workbench interface** is designed around the perspective of the Project Member.\n\nInstead of a feature-driven layout, the UI emphasizes *narrative flow* and *traceability* — linking every artifact (decision, principle, pitch) to its surrounding context.\n\nKey design choices:\n- Visual cues (color, hierarchy, relation lines) show where the user stands in the architecture.\n- Context panels reveal connected decisions and principles without breaking focus.\n- Navigation mimics a guided story rather than a file browser.\n\nThis orientation ensures that even new contributors can reason about architecture without needing prior knowledge or full project history."
+                    }
+                ],
+                "tags": [
+                    "decision",
+                    "workbench",
+                    "ux",
+                    "persona"
+                ],
+                "prio": 0,
+                "decision": "The Workbench interface is designed around the Project Member’s workflow, emphasizing context, orientation, and traceability over raw data presentation.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "f9013331-8135-4130-ab8d-b78344553bd0",
+                    "target": "9632972b-1e4f-47fd-8704-dd9831ac3f1a",
+                    "label": "Uses"
+                },
+                "updatedAt": "2025-11-04T00:38:00.000Z"
+            },
+            "f4343938-654d-4fe4-b167-db75b9717ee7": {
+                "id": "f4343938-654d-4fe4-b167-db75b9717ee7",
+                "sequence_number": 21,
+                "createdAt": "2025-10-28T07:25:13.302Z",
+                "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
+                "type": "DD",
+                "status": "draft",
+                "authors": [
+                    "Bo"
+                ],
+                "title": "Decision 21: Prepare the interface for future backend integration",
+                "sections": [
+                    {
+                        "type": "markdown",
+                        "id": "bdc0d7eb-6174-4fd4-bb8e-4545f68bfe65",
+                        "body": "# Problem statement\n\nWorkbench currently operates as a **local-first application** — documents are loaded from and persisted to the browser’s IndexedDB. This approach works well for early prototyping, but it limits collaboration and long-term persistence.\n\nAs the system evolves, a **backend component** will be introduced to handle authentication, synchronization, and shared metadata. To enable a smooth transition, the current interface must be structured in a way that anticipates this integration without introducing premature complexity."
+                    },
+                    {
+                        "type": "markdown",
+                        "id": "7e13009e-91c8-45e4-9f54-9f2981f366a0",
+                        "body": "# Decision\n\nThe **Alpine.js interface** is designed with a backend-ready abstraction layer.\n\nAll data access and persistence operations are funneled through a thin **storage adapter**, which currently targets local IndexedDB but can later point to an API.\n\n### Rationale\n- Maintains local-first speed and simplicity for early users.\n- Keeps the architecture flexible — backend integration becomes a configuration change, not a rewrite.\n- Aligns with Tracepaper’s philosophy of **explicit separation between client logic and backend orchestration**.\n\n### Implications\n- A small layer of indirection adds slight complexity now, but prevents tight coupling between UI and storage later.\n- Enables progressive enhancement: the same UI will work offline, in hybrid mode, or connected to a backend.\n\nThis ensures that Workbench can evolve from a standalone tool into a connected platform **without breaking its local-first design roots**."
+                    }
+                ],
+                "tags": [
+                    "decision",
+                    "workbench",
+                    "frontend",
+                    "architecture"
+                ],
+                "prio": 0,
+                "decision": "The Alpine.js interface uses a storage adapter pattern to remain backend-ready while preserving a local-first workflow.",
+                "effect": {
+                    "action": "link two components",
+                    "source": "9632972b-1e4f-47fd-8704-dd9831ac3f1a",
+                    "target": "6d317d47-5cf0-43c9-aa91-3a685aa89fa3",
+                    "label": "Uses"
+                },
+                "updatedAt": "2025-11-04T00:43:00.000Z"
+            }
         },
-        "updatedAt": "2025-10-30T22:18:11.025Z"
-      },
-      "c262d374-0b09-4049-937f-f7b1be4de5bb": {
-        "id": "c262d374-0b09-4049-937f-f7b1be4de5bb",
-        "sequence_number": 15,
-        "createdAt": "2025-10-27T20:52:39.216Z",
-        "parent": "bf54bfca-3bd8-4b41-9e84-4dd0671bf986",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 15: Define interaction between the Modeler persona and the Desktop Modeler",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "0bef8f2a-c787-47c9-a535-32520351ab69",
-            "body": "# Problem statement\n\nThe **Modeler** persona designs and validates domain models through the Tracepaper interface. For this role, the modeling experience must feel **direct, responsive, and transparent**, without exposing unnecessary technical complexity.\n\nWhile the PyWebview/Flask-based Desktop Modeler (Decision 14) provides the technical foundation for this, the user interaction model — how Modelers create, inspect, and build — still needed to be defined.\n\nThe challenge is to balance **autonomy** (users can model and build without technical barriers) with **safety and control** (respecting licensing, usage metrics, and build isolation)."
-          },
-          {
-            "type": "markdown",
-            "id": "d8f57ed8-2edf-40d9-8d7d-635e69489145",
-            "body": "# Decision\n\nWe define the **Modeler-to-Desktop Modeler interaction** as a lightweight client–host relationship.\n\nThe Modeler persona interacts exclusively through the UI layer (Alpine.js + DaisyUI) within the PyWebview window. All backend operations — such as opening projects, initiating builds, or retrieving artifacts — are handled via Flask endpoints that expose local functionality.\n\nThis design allows Modelers to:\n- Work fully offline with locally cached model data.\n- Trigger builds via a single command that securely communicates with the Build Agent.\n- View build results, logs, and links (e.g. AWS Pipeline, Outbox) without leaving the Modeler environment.\n\n### Alternatives considered\n- **Web-only Modeler (PWA)** – insufficient system access and poor offline support.\n- **Full Electron shell** – unnecessary runtime weight and duplication of existing web logic.\n\nThe chosen approach enables a **coherent and extensible UX** while maintaining a lightweight footprint."
-          }
-        ],
-        "tags": [
-          "decision",
-          "persona",
-          "tracepaper",
-          "desktop-modeler",
-          "ux",
-          "architecture"
-        ],
-        "prio": 0,
-        "decision": "The Modeler interacts with the Desktop Modeler through a PyWebview-based host layer, combining local control with a lightweight web UI for a transparent, offline-first modeling experience.",
-        "effect": {
-          "action": "link two components",
-          "source": "845273a4-63a7-4e7f-92af-07232f79c0b3",
-          "target": "ef31a1f4-1740-4081-aaa0-432ce64cdc6c",
-          "label": "uses"
-        },
-        "updatedAt": "2025-10-30T22:34:51.122Z"
-      },
-      "30851ea4-d39a-4c8d-97d9-cd9fb90381f2": {
-        "id": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
-        "createdAt": "2025-10-28T07:19:36.584Z",
-        "parent": "235daebd-6a9a-4f7e-9da6-842b2a91d589",
-        "type": "scope",
-        "status": "active",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Build foundation for the project Workbench",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "83235c4c-90f6-4458-b8ae-d943302afd14",
-            "body": "# Welcome to Markdown Editor\n\nType something..."
-          }
-        ],
-        "attributes": {
-          "progress": 0
-        },
-        "tags": [
-          "scope"
-        ],
-        "updatedAt": "2025-10-30T20:32:34.927Z"
-      },
-      "c621011f-0afc-492b-9fe4-aaeeb1c7c74f": {
-        "id": "c621011f-0afc-492b-9fe4-aaeeb1c7c74f",
-        "sequence_number": 16,
-        "createdAt": "2025-10-28T07:19:55.738Z",
-        "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 16: New system",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "f98a45bc-5dfe-4ef7-9a94-3eb0aa985e3c",
-            "body": "# Problem statement\n\nDescribe the problem you are solving..."
-          },
-          {
-            "type": "markdown",
-            "id": "02faf343-66ad-4b52-92e7-8e42cdedd24d",
-            "body": "# Decision\n\nDescribe the decision that is taken..."
-          }
-        ],
-        "tags": [
-          "decision"
-        ],
-        "prio": 0,
-        "decision": "short summary of **problem** and **decision**",
-        "effect": {
-          "action": "introduces new",
-          "level": "system",
-          "scope": "internal",
-          "system_name": "Workbench",
-          "technology": "Software System",
-          "description": "Project/Knowledge management"
-        },
-        "updatedAt": "2025-10-28T07:21:33.825Z"
-      },
-      "6d317d47-5cf0-43c9-aa91-3a685aa89fa3": {
-        "id": "6d317d47-5cf0-43c9-aa91-3a685aa89fa3",
-        "sequence_number": 17,
-        "createdAt": "2025-10-28T07:21:43.234Z",
-        "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 17",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "56495b65-7386-4900-9d7f-37f83c9db34c",
-            "body": "# Problem statement\n\nDescribe the problem you are solving..."
-          },
-          {
-            "type": "markdown",
-            "id": "ac56fa3f-db0b-4910-b417-38cbdc0a7dbd",
-            "body": "# Decision\n\nDescribe the decision that is taken..."
-          }
-        ],
-        "tags": [
-          "decision"
-        ],
-        "prio": 0,
-        "decision": "short summary of **problem** and **decision**",
-        "effect": {
-          "action": "introduces new",
-          "level": "container",
-          "scope": "Workbench",
-          "type": "internal_component",
-          "system_name": "Backend",
-          "technology": "Tracepaper App"
-        },
-        "updatedAt": "2025-10-28T07:22:26.162Z"
-      },
-      "f818f9d0-ec1e-49cc-9bc3-3ecc1d046bd2": {
-        "id": "f818f9d0-ec1e-49cc-9bc3-3ecc1d046bd2",
-        "sequence_number": 18,
-        "createdAt": "2025-10-28T07:22:35.067Z",
-        "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 18",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "86ae3bbf-2e5a-4d3b-8aad-48dcb309c572",
-            "body": "# Problem statement\n\nDescribe the problem you are solving..."
-          },
-          {
-            "type": "markdown",
-            "id": "61a58a54-b808-400f-95f0-079318731911",
-            "body": "# Decision\n\nDescribe the decision that is taken..."
-          }
-        ],
-        "tags": [
-          "decision"
-        ],
-        "prio": 0,
-        "decision": "short summary of **problem** and **decision**",
-        "effect": {
-          "action": "link two components",
-          "source": "6d317d47-5cf0-43c9-aa91-3a685aa89fa3",
-          "target": "faf777f8-112d-4c6a-9e74-d95b323f68b3",
-          "label": "Register usage"
-        },
-        "updatedAt": "2025-10-28T07:22:51.195Z"
-      },
-      "f9013331-8135-4130-ab8d-b78344553bd0": {
-        "id": "f9013331-8135-4130-ab8d-b78344553bd0",
-        "createdAt": "2025-10-28T07:23:06.168Z",
-        "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
-        "type": "persona",
-        "status": "published",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Persona: Project member",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "2b4add74-e783-42ac-b09d-294602419438",
-            "body": "# XYZ\n\nDescribe the persona..."
-          }
-        ],
-        "effect": {
-          "action": "new persona",
-          "external": true,
-          "name": "Project Member",
-          "description": "description"
-        },
-        "tags": [
-          "persona"
-        ],
-        "prio": 0,
-        "updatedAt": "2025-10-28T21:32:09.491Z"
-      },
-      "9632972b-1e4f-47fd-8704-dd9831ac3f1a": {
-        "id": "9632972b-1e4f-47fd-8704-dd9831ac3f1a",
-        "sequence_number": 19,
-        "createdAt": "2025-10-28T07:23:27.616Z",
-        "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 19",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "6b8c73ca-8e5c-4476-8b27-659f5cc4fdfa",
-            "body": "# Problem statement\n\nDescribe the problem you are solving..."
-          },
-          {
-            "type": "markdown",
-            "id": "1d4ab8a2-c4fb-4edb-820a-5bf04a46495e",
-            "body": "# Decision\n\nDescribe the decision that is taken..."
-          }
-        ],
-        "tags": [
-          "decision"
-        ],
-        "prio": 0,
-        "decision": "short summary of **problem** and **decision**",
-        "effect": {
-          "action": "introduces new",
-          "level": "container",
-          "scope": "Workbench",
-          "type": "web_container",
-          "system_name": "Graphic Interface",
-          "technology": "AlpineJS"
-        },
-        "updatedAt": "2025-10-28T07:24:09.937Z"
-      },
-      "fa511173-e3fd-4484-b2df-50f480fe9e1f": {
-        "id": "fa511173-e3fd-4484-b2df-50f480fe9e1f",
-        "sequence_number": 20,
-        "createdAt": "2025-10-28T07:24:15.317Z",
-        "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 20",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "fd480f71-4023-4946-b38c-e74a8650534a",
-            "body": "# Problem statement\n\nDescribe the problem you are solving..."
-          },
-          {
-            "type": "markdown",
-            "id": "d880df6a-1ba7-46a2-bf3e-ac774e88c164",
-            "body": "# Decision\n\nDescribe the decision that is taken..."
-          }
-        ],
-        "tags": [
-          "decision"
-        ],
-        "prio": 0,
-        "decision": "short summary of **problem** and **decision**",
-        "effect": {
-          "action": "link two components",
-          "source": "f9013331-8135-4130-ab8d-b78344553bd0",
-          "target": "9632972b-1e4f-47fd-8704-dd9831ac3f1a",
-          "label": "Uses"
-        },
-        "updatedAt": "2025-10-28T07:24:59.812Z"
-      },
-      "f4343938-654d-4fe4-b167-db75b9717ee7": {
-        "id": "f4343938-654d-4fe4-b167-db75b9717ee7",
-        "sequence_number": 21,
-        "createdAt": "2025-10-28T07:25:13.302Z",
-        "parent": "30851ea4-d39a-4c8d-97d9-cd9fb90381f2",
-        "type": "DD",
-        "status": "decided",
-        "authors": [
-          "Bo"
-        ],
-        "title": "Decision 21",
-        "sections": [
-          {
-            "type": "markdown",
-            "id": "bdc0d7eb-6174-4fd4-bb8e-4545f68bfe65",
-            "body": "# Problem statement\n\nDescribe the problem you are solving..."
-          },
-          {
-            "type": "markdown",
-            "id": "7e13009e-91c8-45e4-9f54-9f2981f366a0",
-            "body": "# Decision\n\nDescribe the decision that is taken..."
-          }
-        ],
-        "tags": [
-          "decision"
-        ],
-        "prio": 0,
-        "decision": "short summary of **problem** and **decision**",
-        "effect": {
-          "action": "link two components",
-          "source": "9632972b-1e4f-47fd-8704-dd9831ac3f1a",
-          "target": "6d317d47-5cf0-43c9-aa91-3a685aa89fa3",
-          "label": "Uses"
-        },
-        "updatedAt": "2025-10-28T21:37:10.653Z"
-      }
-    },
-    "decision_index": 21
-  }
+        "decision_index": 21
+    }
 }
