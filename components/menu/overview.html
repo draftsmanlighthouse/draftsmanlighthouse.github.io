@@ -21,7 +21,16 @@
                             $nextTick(() => {
                               rawData = {};
                               rect = $refs.parent.getBoundingClientRect();
-                              prepare_data(node_index,window.location.hash.replace('#',''))
+                              let id = window.location.hash.replace('#','');
+                              if (['about','architecture','dashboard','all'].includes(id)){
+                                if (localStorage.last){
+                                    id = localStorage.last;
+                                } else {
+                                    id = Object.keys(documents).at(-1)
+                                }
+                              }
+                              localStorage.last = id;
+                              prepare_data(node_index,id);
                               render(rect.width*0.93, rect.height*0.95);
                             })
                             "></div>
