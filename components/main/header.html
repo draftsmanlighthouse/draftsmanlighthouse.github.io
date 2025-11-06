@@ -25,7 +25,7 @@
             </button>
             <button @click="level += ':' + selected.label;location.reload()"
                     x-show="selected && selected.selected && level.split(':').length != 3" x-cloak x-transition
-                    class="btn btn-sm m-2 btn-primary"><span x-text="selected.label"></span> <i class="fa-solid fa-angles-down"></i>
+                    class="btn btn-sm m-2 btn-primary"><span x-text="selected && selected.label ? selected.label : ''"></span> <i class="fa-solid fa-angles-down"></i>
             </button>
             <button @click="active_tab = 'C4';sessionStorage.setItem(navigation,active_tab)"
                     :class="active_tab == 'C4' ? 'btn-neutral' : 'btn-neutral btn-outline'"
