@@ -611,6 +611,7 @@ function prepare_searchable(doc){
 }
 
 function convert_y(y){
+    if (!y){return ""}
     return `In the context of ${y.context || '…'}, ` +
                   `facing ${y.concern || '…'}, ` +
                   `we decided for ${y.decision || '…'} ` +
