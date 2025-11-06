@@ -8,6 +8,7 @@
 - C4 "ordenen"
 - breadboards? (geen idee hoe, want moet expresief maar toch simpel)
 - social nudge opties voor pijl labels in C4 bv "publish" 12x etc
+- Loom.com achtige secties?
 
 - backend = structuur -> s3 louter de bodies
 - per org 1 seat en 1 gb gratis
