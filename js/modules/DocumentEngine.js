@@ -1,6 +1,7 @@
 document.addEventListener('alpine:init', () => {
   Alpine.data('main', function(){
     return {
+        collections: this.$persist([]),
         organisations: this.$persist({}),
         organisation: this.$persist({}),
         documents: this.$persist({}),
@@ -527,38 +528,125 @@ document.addEventListener('alpine:init', () => {
                 this.node_index[id] = {inbound: {}, outbound: {}};
             }
         },
-        load_data(){
-            fetch("/js/config/test-data.json")
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP ${response.status}`);
+        load_data(event) {
+          const file = event?.target?.files?.[0];
+
+          if (!file) {
+            console.warn("⚠️ No file selected.");
+            return;
+          }
+
+          const reader = new FileReader();
+
+          reader.onload = async (e) => {
+            try {
+              const newData = JSON.parse(e.target.result);
+
+              // ✅ bestaande data behouden, nieuwe toevoegen of overschrijven
+              const org_collection = this.get_collection("organisations");
+
+              for (const [key, value] of Object.entries(newData)) {
+                const { documents, ...org } = value;
+
+                // Organisatie-level metadata
+                await org_collection.setItem(key, org);
+
+                // Sub-collecties per organisatie
+                const document_collection = this.get_collection(`${key}_documents`);
+                const content_collection = this.get_collection(`${key}_content`);
+
+                for (const [id, doc] of Object.entries(documents)) {
+                  let document = { ...doc };
+
+                  if ("sections" in document) {
+                    document.sections.forEach(section => {
+                      if ("body" in section) {
+                        content_collection.setItem(section.id, section.body);
+                        delete section.body;
+                      }
+                    });
+                  }
+                  await document_collection.setItem(id, document);
                 }
-                return response.json();
-              })
-              .then(newData => {
-                // ✅ bestaande data behouden, nieuwe toevoegen of overschrijven
-                this.organisations = {
-                  ...this.organisations,
-                  ...newData
-                };
-                console.log("✅ Data updated:", this.organisations);
-                let org = Object.keys(this.organisations)[0];
-                this.open_organisation(org);
-              })
-              .catch(err => {
-                console.error("❌ Failed to load test data:", err);
-              });
+              }
+
+              // Update Alpine-state (optioneel)
+              this.organisations = {
+                ...this.organisations,
+                ...newData
+              };
+
+              console.log("✅ Local data loaded:", this.organisations);
+
+              let org = Object.keys(this.organisations)[0];
+              // this.open_organisation(org);
+            } catch (err) {
+              console.error("❌ Failed to parse file:", err);
+            }
+          };
+
+          reader.readAsText(file);
+        },
+        get_collection(name){
+            if (!this.collections.includes(name)){
+                this.collections.push(name);
+            }
+            return localforage.createInstance({name: name});
+        },
+        async export_data(){
+            let data = {};
+            let org_collection = this.get_collection("organisations");
+            let keys = await org_collection.keys();
+            for (org of keys){
+                data[org] = await org_collection.getItem(org);
+                data[org].documents = {};
+                let documents = this.get_collection(`${org}_documents`);
+                let content = this.get_collection(`${org}_content`);
+                let docs = await documents.keys();
+                for (doc of docs){
+                  data[org].documents[doc] = await documents.getItem(doc);
+                  for (section of data[org].documents[doc].sections){
+                    let body = await content.getItem(section.id);
+                    if (body){
+                        section.body = body;
+                    }
+                  }
+                }
+            }
+            const jsonStr = JSON.stringify(data, null, 2);
+
+            // 2️⃣ Maak een blob
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+
+            // 3️⃣ Maak een tijdelijke download-link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "worbench-export.json";
+
+            // 4️⃣ Trigger de download
+            document.body.appendChild(a);
+            a.click();
+
+            // 5️⃣ Opruimen
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         },
         clear_storage(){
-            if (this.unwatchDocuments) {
-                this.unwatchDocuments();
-            }
-            this.author = "";
-            this.documents = {};
-            this.current = {};
-            this.organisations = {};
-            this.organisation = {};
-            location.reload();
+              this.collections.forEach(c => {
+                var collection = this.get_collection(c);
+                collection.clear();
+              });
+              this.collections = [];
+//            if (this.unwatchDocuments) {
+//                this.unwatchDocuments();
+//            }
+//            this.author = "";
+//            this.documents = {};
+//            this.current = {};
+//            this.organisations = {};
+//            this.organisation = {};
+//            location.reload();
         }
     }
   });
