@@ -4,8 +4,8 @@
         <select @change="open_organisation($el.value)"
                 class="select select-ghost text-white text-xl m-5 w-auto">
             <option disabled selected>Select organisation</option>
-            <template x-for="org in organisations" :key="org.name">
-                <option :value="org.name" :selected="org.name == organisation.name" x-text="org.name"></option>
+            <template x-for="org in organisations" :key="org">
+                <option :value="org" :selected="org == organisation.name" x-text="org"></option>
             </template>
             <option>new</option>
         </select>

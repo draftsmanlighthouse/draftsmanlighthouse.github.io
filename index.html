@@ -48,8 +48,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js" integrity="sha512-+BMamP0e7wn39JGL8nKAZ3yAQT2dL5oaXWr4ZYlTGkKOaoXM/Yj7c4oy50Ngz5yoUutAG17flueD4F6QpTlPng==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body x-data="main">
-
-    <div class="grid grid-cols-12">
+    <div x-data="MicroDocUtils">
+        <div class="grid grid-cols-12">
         <div class="col-span-3 h-screen bg-neutral" x-import="side-menu">
             <ui-side-menu></ui-side-menu>
         </div>
@@ -57,10 +57,14 @@
             <ui-main-content></ui-main-content>
         </div>
     </div>
+    </div>
+
+
 
     <!-- Custom modules -->
     <script src="/js/config/templates.js"></script>
     <script src="/js/modules/DocumentEngine.js"></script>
+    <script src="/js/modules/MicroDocUtils.js"></script>
     <script src="/js/modules/MarkdownEditor.js"></script>
     <script src="/js/modules/DrawioEditor.js"></script>
     <script src="/js/modules/MermaidEditor.js"></script>

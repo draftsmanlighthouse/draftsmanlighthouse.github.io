@@ -200,7 +200,7 @@
                 if (Object.keys(current).length === 0 || current.id != selected){
                     current = documents[selected]
                 } else {
-                    update_document_inline(current);
+                    await update_document_inline(current);
                 }
             " x-import="micro-doc">
                 <ui-micro-doc hide-parent="true"></ui-micro-doc>

@@ -157,7 +157,10 @@ class C4Diagram {
           }
         }
       ],
-      layout: { name: 'cose', padding: 60 }
+      layout: {
+        name: 'breadthfirst',
+        directed: true,
+        padding: 50 }
     });
     this.cy.on('tap', 'node', (evt) => {
       const node = evt.target;
