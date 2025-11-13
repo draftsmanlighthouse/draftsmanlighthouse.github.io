@@ -47,7 +47,11 @@ document.addEventListener("alpine:init", () => {
       newTaskTitle: "",
       ids: this.$persist([]),
       text_filter(search){
-        this.ids = this.miniSearch.search(search).map(x => x.id);
+        if (search){
+            this.ids = this.miniSearch.search(search).map(x => x.id);
+        } else {
+            this.ids = [];
+        }
       },
       // ✅ Kolom toont ALLE taken met status in column.statuses
       filteredTasks(columnKey) {

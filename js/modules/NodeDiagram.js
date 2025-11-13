@@ -1,36 +1,41 @@
 document.addEventListener('alpine:init', () => {
   Alpine.data('NodeDiagram', function(){
     return {
-       rawData: {},
-       prepare_data(data, id,depth=1) {
-          this.rawData = {};
-          this.rawData[id] = data[id];
-          for (let i = 0; i < depth; i++){
-            const keys = Object.keys(this.rawData);
-            for (const [key, value] of Object.entries(data)) {
-              Object.keys(value.outbound).filter(id => keys.includes(id)).forEach(id => {
-                this.rawData[key] = value;
-              });
-              Object.keys(value.inbound).filter(id => keys.includes(id)).forEach(id => {
-                this.rawData[key] = value;
-              });
-            }
+      rawData: {},
+
+      prepare_data(data, id, depth = 1) {
+        this.rawData = {};
+        this.rawData[id] = data[id];
+        for (let i = 0; i < depth; i++) {
+          const keys = Object.keys(this.rawData);
+          for (const [key, value] of Object.entries(data)) {
+            if (!value.outbound || !value.inbound) continue;
+            Object.keys(value.outbound).filter(id => keys.includes(id)).forEach(id => {
+              this.rawData[key] = value;
+            });
+            Object.keys(value.inbound).filter(id => keys.includes(id)).forEach(id => {
+              this.rawData[key] = value;
+            });
           }
-        },
-       updateRect() {
-          const parent = this.$el.parentElement;
-          const r = parent.getBoundingClientRect();
-          this.rect = { width: r.width, height: r.height };
-        },
-      render(w=null,h=null) {
+        }
+      },
+
+      updateRect() {
+        const parent = this.$el.parentElement;
+        const r = parent.getBoundingClientRect();
+        this.rect = { width: r.width || 600, height: r.height || 400 };
+      },
+
+      render(w = null, h = null) {
         // --- Convert data to nodes and links ---
         const nodes = Object.entries(this.rawData).map(([id, obj]) => ({ id, title: obj.title }));
         const links = [];
         const keys = Object.keys(this.rawData);
+
         for (const [sourceId, obj] of Object.entries(this.rawData)) {
           if (obj.outbound) {
             for (const [targetId, label] of Object.entries(obj.outbound)) {
-              if (keys.includes(sourceId) && keys.includes(targetId)){
+              if (keys.includes(sourceId) && keys.includes(targetId)) {
                 links.push({ source: sourceId, target: targetId, label });
               }
             }
@@ -38,8 +43,8 @@ document.addEventListener('alpine:init', () => {
         }
 
         // --- SVG setup ---
-        const width = w || 600;
-        const height = h || 400;
+        const width = Number(w) || 600;
+        const height = Number(h) || 400;
 
         const svg = d3.select(this.$el)
           .append("svg")
@@ -69,24 +74,24 @@ document.addEventListener('alpine:init', () => {
           .selectAll("circle")
           .data(nodes)
           .join("circle")
-          .attr("r", d => d.id === window.location.hash.replace("#","") ? 22 : 15)
-          .attr("fill", d => d.id === window.location.hash.replace("#","") ? "#f59e0b" : "#4f46e5")
+          .attr("r", d => d.id === window.location.hash.replace("#", "") ? 22 : 15)
+          .attr("fill", d => d.id === window.location.hash.replace("#", "") ? "#f59e0b" : "#4f46e5")
           .call(drag(simulation))
           .on("mouseover", (event, d) => {
-            if (d.id !== window.location.hash.replace("#","")) d3.select(event.currentTarget).attr("fill", "#818cf8");
+            if (d.id !== window.location.hash.replace("#", "")) d3.select(event.currentTarget).attr("fill", "#818cf8");
             label.filter(l => l.id === d.id)
               .attr("visibility", "visible")
               .attr("fill", "black")
               .attr("font-weight", "bold");
           })
           .on("mouseout", (event, d) => {
-            if (d.id !== window.location.hash.replace("#","")) d3.select(event.currentTarget).attr("fill", "#4f46e5");
-            if (d.id !== window.location.hash.replace("#",""))
+            if (d.id !== window.location.hash.replace("#", "")) d3.select(event.currentTarget).attr("fill", "#4f46e5");
+            if (d.id !== window.location.hash.replace("#", ""))
               label.filter(l => l.id === d.id).attr("visibility", "hidden");
           })
           .on("dblclick", (event, d) => {
             location.href = "#" + d.id;
-            setTimeout(location.reload,100);
+            setTimeout(location.reload, 100);
           });
 
         // --- Labels ---
@@ -96,10 +101,10 @@ document.addEventListener('alpine:init', () => {
           .join("text")
           .attr("text-anchor", "middle")
           .attr("dy", 28)
-          .attr("visibility", d => d.id === window.location.hash.replace("#","") ? "visible" : "hidden")
+          .attr("visibility", d => d.id === window.location.hash.replace("#", "") ? "visible" : "hidden")
           .attr("fill", "black")
           .attr("font-size", "10px")
-          .attr("font-weight", d => d.id === window.location.hash.replace("#","") ? "bold" : "normal")
+          .attr("font-weight", d => d.id === window.location.hash.replace("#", "") ? "bold" : "normal")
           .text(d => d.title);
 
         // --- Simulation tick updates ---
@@ -129,19 +134,36 @@ document.addEventListener('alpine:init', () => {
         svg.call(zoom);
 
         // --- Auto-fit after simulation ends ---
-        simulation.on("end", () => fitView());
+        simulation.on("end", () => {
+          if (nodes.length > 0) fitView();
+        });
 
         function fitView() {
           const bounds = zoomLayer.node().getBBox();
-          const scale = 0.9 / Math.max(bounds.width / width, bounds.height / height);
+          const bw = bounds.width  || 1;
+          const bh = bounds.height || 1;
+          const bx = bounds.x      || 0;
+          const by = bounds.y      || 0;
+
+          if (!width || !height || !isFinite(bw) || !isFinite(bh)) {
+            console.warn("⚠️ fitView skipped — invalid bounds or canvas size");
+            return;
+          }
+
+          const scale = 0.9 / Math.max(bw / width, bh / height);
           const translate = [
-            width / 2 - scale * (bounds.x + bounds.width / 2),
-            height / 2 - scale * (bounds.y + bounds.height / 2)
+            width / 2 - scale * (bx + bw / 2),
+            height / 2 - scale * (by + bh / 2)
           ];
-          svg.transition().duration(750).call(
-            zoom.transform,
-            d3.zoomIdentity.translate(...translate).scale(scale)
-          );
+
+          if (isNaN(scale) || translate.some(isNaN)) {
+            console.warn("⚠️ fitView skipped — NaN transform");
+            return;
+          }
+
+          svg.transition()
+            .duration(750)
+            .call(zoom.transform, d3.zoomIdentity.translate(...translate).scale(scale));
         }
 
         // --- Drag behavior helper ---

@@ -3,16 +3,16 @@ document.addEventListener('alpine:init', () => {
     return {
         collections: this.$persist([]),
         organisations: [],
-        organisation: this.$persist({}).using(sessionStorage),
-        documents: this.$persist({}).using(sessionStorage),
+        organisation: this.$persist({}),
+        documents: this.$persist({}),
         author: this.$persist(""),
         current: this.$persist({}).using(sessionStorage),
         navigation: this.$persist("").using(sessionStorage),
         dashboard_data: {},
-        c4_data: this.$persist({}).using(sessionStorage),
-        component_index: this.$persist({}).using(sessionStorage),
-        component_reverse_index: this.$persist({}).using(sessionStorage),
-        node_index: this.$persist({}).using(sessionStorage),
+        c4_data: this.$persist({}),
+        component_index: this.$persist({}),
+        component_reverse_index: this.$persist({}),
+        node_index: this.$persist({}),
         tags: [],
         miniSearch: null,
 
@@ -88,35 +88,49 @@ document.addEventListener('alpine:init', () => {
         },
 
         async open_organisation(name){
-//            if (name == "new"){
-//                name = prompt("Organisation name:")
-//                if (!(name in this.organisations)){
-//                    this.organisations[name] = {
-//                        name,
-//                        documents: {
-//                            "about": {
-//                                id: "about",
-//                                createdAt: new Date(),
-//                                type: "organisation",
-//                                authors: [this.author],
-//                                sections: [{
-//                                    type: "markdown",
-//                                    id: crypto.randomUUID(),
-//                                    body: `# ${name}\n\n About this organisation...`
-//                                }]
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            if (this.unwatchDocuments) {
-//                this.unwatchDocuments();
-//            }
             let organisations = this.get_collection('organisations');
+            if (name == "new"){
+                name = prompt("Organisation name:")
+                let keys = await organisations.keys();
+                if (!keys.includes(this.organisations)){
+                    await organisations.setItem(name,{
+                        name,
+                        decision_index: 0,
+                        documents: {
+                            "about": {
+                                id: "about",
+                                createdAt: new Date(),
+                                type: "organisation",
+                                authors: [this.author],
+                                sections: [{
+                                    type: "markdown",
+                                    id: crypto.randomUUID(),
+                                    body: `# ${name}\n\n About this organisation...`
+                                }]
+                            }
+                        }
+                    });
+                    let documents = this.get_collection(`${name}_documents`);
+                    let content = this.get_collection(`${name}_content`);
+                    let content_id = crypto.randomUUID();
+                    await documents.setItem("about",{
+                        id: "about",
+                        createdAt: new Date(),
+                        type: "organisation",
+                        authors: [this.author],
+                        sections: [{
+                            type: "markdown",
+                            id: content_id
+                        }]
+                    });
+                    await content.setItem(content_id, `# ${name}\n\n About this organisation...`);
+                }
+            }
             console.log(name)
             this.organisation = await organisations.getItem(name);
             console.log(this.organisation)
             this.navigation = "about";
+            location = "#about"
             location.reload();
         },
         async update_organisation(){
@@ -372,6 +386,13 @@ document.addEventListener('alpine:init', () => {
           reader.readAsText(file);
         },
         get_collection(name){
+            if (!name || typeof name !== "string") {
+                throw new Error(`❌ Invalid collection name: ${name}`);
+              }
+
+              if (name.startsWith("undefined_")) {
+                throw new Error(`❌ Invalid collection name prefix: "${name}" — likely missing organisation context`);
+              }
             if (!this.collections.includes(name)){
                 this.collections.push(name);
             }
@@ -422,15 +443,9 @@ document.addEventListener('alpine:init', () => {
                 collection.clear();
               });
               this.collections = [];
-//            if (this.unwatchDocuments) {
-//                this.unwatchDocuments();
-//            }
-//            this.author = "";
-//            this.documents = {};
-//            this.current = {};
-//            this.organisations = {};
-//            this.organisation = {};
-//            location.reload();
+            localStorage.clear();
+            sessionStorage.clear();
+            location.reload();
         }
     }
   });
