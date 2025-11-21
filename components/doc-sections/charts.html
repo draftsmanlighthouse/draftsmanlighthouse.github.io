@@ -15,7 +15,7 @@
     </div>
 
     <!-- Controls -->
-    <div x-show="!isEditing" class="flex flex-wrap items-center gap-3">
+    <div x-show="!isEditing && !readonly" class="flex flex-wrap items-center gap-3">
       <button @click="startEditing" class="btn btn-primary btn-sm" x-show="!readonly">Edit Data</button>
 
       <select @change="changeChartType($event.target.value)" class="select select-bordered select-sm">

@@ -1,0 +1,26 @@
+<template x-component="inbound">
+    <div x-show="node_index[microDoc.id].inbound.length != 0" x-cloak x-transition class="border p-2 rounded-box mb-4">
+        <p class="text-sm text-gray-400">Incoming Relationships</p>
+        <ul class="menu menu-xs rounded-box w-full">
+            <template x-for="(relation,id) in node_index[microDoc.id].inbound">
+                <li><a @click="open_doc(id)">
+                    <span x-text="relation"></span>
+                <span x-text="index.documents[id].name"></span>
+                </a></li>
+            </template>
+        </ul>
+    </div>
+</template>
+<template x-component="outbound">
+    <div x-show="node_index[microDoc.id].outbound.length != 0" x-cloak x-transition class="border p-2 rounded-box mb-4">
+        <p class="text-sm text-gray-400">Outgoing Relationships</p>
+        <ul class="menu menu-xs rounded-box w-full">
+            <template x-for="(relation,id) in node_index[microDoc.id].outbound">
+                <li><a @click="open_doc(id)">
+                    <span x-text="relation"></span>
+                <span x-text="index.documents[id].name"></span>
+                </a></li>
+            </template>
+        </ul>
+    </div>
+</template>

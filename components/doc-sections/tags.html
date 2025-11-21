@@ -1,23 +1,24 @@
 <template x-component="tags">
-    <div>
-        <template x-for="tag in current.tags" :key="tag">
+    <div class="border p-2 rounded-box">
+        <p class="text-sm text-gray-400">Tags</p>
+        <template x-for="tag in microDoc.json.tags" :key="tag">
             <div class="badge badge-outline badge-primary gap-2 mr-2">
                 <span x-text="tag"></span>
                 <button
                         type="button"
-                        @click="current.tags = current.tags.filter(x => x != tag)"
+                        @click="microDoc.json.tags = microDoc.json.tags.filter(x => x != tag);$dispatch('change')"
                         class="btn btn-xs btn-circle btn-outline border-none text-primary hover:bg-primary hover:text-white">
                     ✕
                 </button>
             </div>
         </template>
-        <input type="text" class="input input-sm"
-               @keyup.enter="if (!$el.value){return};current.tags.push($el.value);$el.value = ''"
-               @focusout="if (!$el.value){return};current.tags.push($el.value);$el.value = ''"
-               x-effect="if(!('tags' in current)){current.tags = []}"
+        <input type="text" class="input input-sm mt-2"
+               @keyup.enter="if (!$el.value){return};microDoc.json.tags.push($el.value);$el.value = ''"
+               @focusout="if (!$el.value){return};microDoc.json.tags.push($el.value);$el.value = ''"
+               x-effect="if(!('tags' in microDoc.json)){microDoc.json.tags = []}"
                placeholder="add tag..." list="tags"/>
         <datalist id="tags">
-            <template x-for="tag in tags.filter(x => !current.tags.includes(x))" :key="tag">
+            <template x-for="tag in tags.filter(x => !microDoc.json.tags.includes(x))" :key="tag">
                 <option :value="tag"></option>
             </template>
         </datalist>

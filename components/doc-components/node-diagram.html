@@ -1,0 +1,73 @@
+<template x-component="node-diagram">
+    <div x-ref="parent" class="w-full h-[25vh]">
+        <div x-data="NodeDiagram">
+            <div x-init="
+                                $nextTick(() => {
+                                  rawData = {};
+                                  rect = $refs.parent.getBoundingClientRect();
+                                  let id = microDoc.json.id;
+                                  prepare_data(node_index,id);
+                                  render(rect.width*0.93, rect.height*0.95);
+                                })
+                                "
+                 @reload.window="rawData = {};
+                                  rect = $refs.parent.getBoundingClientRect();
+                                  let id = microDoc.json.id;
+                                  prepare_data(node_index,id);
+                                  render(rect.width*0.93, rect.height*0.95);"></div>
+        </div>
+    </div>
+</template>
+
+<template x-component="large-node-diagram">
+    <div x-data="{clicked: false}">
+        <div x-ref="parent" class="w-full h-[25vh]">
+            <div x-data="NodeDiagram" class="cursor-pointer" @click="node_modal.showModal();clicked=true">
+                <div x-init="
+                                $nextTick(() => {
+                                  rawData = {};
+                                  rect = $refs.parent.getBoundingClientRect();
+                                  let id = results.map(x => x.id);
+                                  prepare_data(node_index,id);
+                                  render(rect.width*0.93, rect.height*0.95);
+                                })
+                                "
+                     @reload.window="rawData = {};
+                                  rect = $refs.parent.getBoundingClientRect();
+                                  let id = results.map(x => x.id);
+                                  prepare_data(node_index,id);
+                                  render(rect.width*0.93, rect.height*0.95);"></div>
+            </div>
+        </div>
+
+        <dialog id="node_modal" class="modal">
+                <div class="modal-box w-[90vw] max-w-[100vw]">
+                    <h3 class="text-lg font-bold">Document map</h3>
+                    <p class="py-4">
+                        <template x-if="clicked">
+                            <div x-data="NodeDiagram" class="w-[88vw] h-[75vh]" x-ref="modal_parent">
+                                <div x-init="
+                                $nextTick(() => {
+                                  rawData = {};
+                                  rect = $refs.modal_parent.getBoundingClientRect();
+                                  let id = results.map(x => x.id);
+                                  prepare_data(node_index,id);
+                                  render(rect.width, rect.height);
+                                })
+                                "
+                             @reload.window="rawData = {};
+                                  rect = $refs.modal_parent.getBoundingClientRect();
+                                  let id = results.map(x => x.id);
+                                  prepare_data(node_index,id);
+                                  render(rect.width*0.93, rect.height*0.95);"></div>
+                            </div>
+                        </template>
+                    </p>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+    </div>
+
+</template>

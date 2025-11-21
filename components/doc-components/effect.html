@@ -1,0 +1,182 @@
+<template x-component="effect">
+    <template x-if="'effect' in microDoc.json && microDoc.json.type != 'persona'">
+        <div class="rounded-box border mb-4"
+             x-show="'effect' in microDoc.json" x-cloak x-transition>
+            <table class="table table-sm">
+                <tr>
+                    <th colspan="2">Effect</th>
+                </tr>
+
+                <tr>
+                    <th>Action</th>
+                    <td>
+                        <select x-model="microDoc.json.effect.action"
+                                @change="microDoc.json.effect = {action: microDoc.json.effect.action}"
+                                class="select select-primary select-xs w-full">
+                            <option disabled></option>
+                            <option>introduces new</option>
+                            <option>link two components</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <!-- link -->
+                <tr x-show="microDoc.json.effect.action == 'link two components'" x-cloak x-transition>
+                    <th>Active component</th>
+                    <td>
+                        <select x-model="microDoc.json.effect.source"
+                                class="select select-primary select-xs w-full">
+                            <option disabled></option>
+                            <template
+                                    x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1)"
+                                    :key="parent">
+                                <option x-text="parent" :value="component_index[parent]"
+                                        :selected="component_index[parent] == microDoc.json.effect.source"></option>
+                            </template>
+                        </select>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.action == 'link two components'" x-cloak x-transition>
+                    <th>Passive component</th>
+                    <td>
+                        <select x-model="microDoc.json.effect.target"
+                                class="select select-primary select-xs w-full">
+                            <option disabled></option>
+                            <template
+                                    x-for="parent in Object.keys(c4_data.components).filter(x => x.split(':').length > 1 && !x.startsWith('persona:'))"
+                                    :key="parent">
+                                <option x-text="parent" :value="component_index[parent]"
+                                        :selected="component_index[parent] == microDoc.json.effect.target"></option>
+                            </template>
+                            <template
+                                    x-for="([key, value]) in Object.entries(c4_data.components).filter(([_, v]) => v.scope === 'external')"
+                                    :key="key">
+                                <option
+                                        :value="value.id"
+                                        x-text="key"
+                                        :selected="value.id == microDoc.json.effect.target">
+                                </option>
+                            </template>
+                        </select>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.action == 'link two components'" x-cloak x-transition>
+                    <th>Label</th>
+                    <td>
+                        <input x-model="microDoc.json.effect.label" type="text" placeholder="Label"
+                               class="input input-primary input-xs w-full"/>
+                    </td>
+                </tr>
+                
+                <!-- new -->
+                <tr x-show="microDoc.json.effect.action == 'introduces new'" x-cloak x-transition>
+                    <th>Level</th>
+                    <td>
+                        <select x-model="microDoc.json.effect.level"
+                                class="select select-primary select-xs w-full">
+                            <option disabled></option>
+                            <option>system</option>
+                            <option>container</option>
+                            <option>component</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.level == 'system'" x-cloak x-transition>
+                    <th>Scope</th>
+                    <td>
+                        <select x-model="microDoc.json.effect.scope"
+                                class="select select-primary select-xs w-full">
+                            <option disabled></option>
+                            <option>internal</option>
+                            <option>external</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.level == 'container'" x-cloak x-transition>
+                    <th>Scope</th>
+                    <td>
+                        <select x-model="microDoc.json.effect.scope"
+                                class="select select-primary select-xs w-full">
+                            <option disabled></option>
+                            <template
+                                    x-for="parent in Object.entries(c4_data.components).filter(([key, value]) => key.split(':').length == 1 && value.scope === 'internal' ).map(([key]) => key)"
+                                    :key="parent">
+                                <option x-text="parent" :value="parent"
+                                        :selected="parent == microDoc.json.effect.scope"></option>
+                            </template>
+                        </select>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.level == 'component'" x-cloak x-transition>
+                    <th>Scope</th>
+                    <td>
+                        <select x-model="microDoc.json.effect.scope"
+                                class="select select-primary select-xs w-full">
+                            <option disabled></option>
+                            <template
+                                    x-for="parent in Object.entries(c4_data.components).filter(([key, value]) => key.split(':').length == 2 ).map(([key]) => key)"
+                                    :key="parent">
+                                <option x-text="parent" :value="parent"
+                                        :selected="parent == microDoc.json.effect.scope"></option>
+                            </template>
+                        </select>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.level == 'container'" x-cloak x-transition>
+                    <th>Type</th>
+                    <td>
+                        <select x-model="microDoc.json.effect.type"
+                                class="select select-primary select-xs w-full">
+                            <option disabled></option>
+                            <option>internal_component</option>
+                            <option>web_container</option>
+                            <option>database</option>
+                            <option>directory</option>
+                            <option>bucket</option>
+                            <option>message_channel</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.action == 'introduces new' && microDoc.json.effect.level == 'system'"
+                    x-cloak x-transition>
+                    <th>System Name</th>
+                    <td>
+                        <input x-model="microDoc.json.effect.system_name" type="text" placeholder="Primary"
+                               class="input input-primary input-xs w-full"/>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.action == 'introduces new' && microDoc.json.effect.level == 'container'"
+                    x-cloak x-transition>
+                    <th>Container Name</th>
+                    <td>
+                        <input x-model="microDoc.json.effect.system_name" type="text" placeholder="Primary"
+                               class="input input-primary input-xs w-full"/>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.action == 'introduces new' && microDoc.json.effect.level == 'component'"
+                    x-cloak x-transition>
+                    <th>Component Name</th>
+                    <td>
+                        <input x-model="microDoc.json.effect.system_name" type="text" placeholder="Primary"
+                               class="input input-primary input-xs w-full"/>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.action == 'introduces new' && (microDoc.json.effect.scope == 'internal' || microDoc.json.effect.level == 'container' || microDoc.json.effect.level == 'component')"
+                    x-cloak x-transition>
+                    <th>Technology</th>
+                    <td>
+                        <input x-model="microDoc.json.effect.technology" type="text" placeholder="Primary"
+                               class="input input-primary input-xs w-full"/>
+                    </td>
+                </tr>
+                <tr x-show="microDoc.json.effect.action == 'introduces new'" x-cloak x-transition>
+                    <th>Short description</th>
+                    <td>
+                        <input x-model="microDoc.json.effect.description" type="text" placeholder="Primary"
+                               class="input input-primary input-xs w-full"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+</template>

@@ -1,114 +1,178 @@
 document.addEventListener('alpine:init', () => {
-  Alpine.data('NodeDiagram', function(){
-    return {
-      rawData: {},
+  Alpine.data('NodeDiagram', () => ({
+    rawData: {},
+    root: null,
 
-      prepare_data(data, id, depth = 1) {
-        this.rawData = {};
-        this.rawData[id] = data[id];
-        for (let i = 0; i < depth; i++) {
-          const keys = Object.keys(this.rawData);
-          for (const [key, value] of Object.entries(data)) {
-            if (!value.outbound || !value.inbound) continue;
-            Object.keys(value.outbound).filter(id => keys.includes(id)).forEach(id => {
-              this.rawData[key] = value;
-            });
-            Object.keys(value.inbound).filter(id => keys.includes(id)).forEach(id => {
-              this.rawData[key] = value;
-            });
+    prepare_data(data, root, depth = 1) {
+      // BFS — veel efficiënter en duidelijker
+      const queue = Array.isArray(root) ? root : [root];
+      this.root = [...queue];
+      const visited = new Set(this.root);
+
+      for (let i = 0; i < depth; i++) {
+        const next = [];
+        for (const id of queue) {
+          const node = data[id];
+          if (!node) continue;
+
+          // Outbound
+          for (const t of Object.keys(node.outbound || {})) {
+            if (!visited.has(t)) {
+              visited.add(t);
+              next.push(t);
+            }
           }
-        }
-      },
 
-      updateRect() {
-        const parent = this.$el.parentElement;
-        const r = parent.getBoundingClientRect();
-        this.rect = { width: r.width || 600, height: r.height || 400 };
-      },
-
-      render(w = null, h = null) {
-        // --- Convert data to nodes and links ---
-        const nodes = Object.entries(this.rawData).map(([id, obj]) => ({ id, title: obj.title }));
-        const links = [];
-        const keys = Object.keys(this.rawData);
-
-        for (const [sourceId, obj] of Object.entries(this.rawData)) {
-          if (obj.outbound) {
-            for (const [targetId, label] of Object.entries(obj.outbound)) {
-              if (keys.includes(sourceId) && keys.includes(targetId)) {
-                links.push({ source: sourceId, target: targetId, label });
-              }
+          // Inbound
+          for (const s of Object.keys(node.inbound || {})) {
+            if (!visited.has(s)) {
+              visited.add(s);
+              next.push(s);
             }
           }
         }
+        queue.splice(0, queue.length, ...next);
+      }
 
-        // --- SVG setup ---
-        const width = Number(w) || 600;
-        const height = Number(h) || 400;
+      // Build rawData
+      this.rawData = {};
+      for (const id of visited) this.rawData[id] = data[id];
+    },
 
-        const svg = d3.select(this.$el)
-          .append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .style("cursor", "grab");
+    render(w = 600, h = 400) {
+      // Cleanup
+      d3.select(this.$el).select("svg").remove();
 
-        const zoomLayer = svg.append("g").attr("class", "zoom-layer");
+      const nodes = Object.entries(this.rawData).map(([id, obj]) => ({
+        id, title: obj.title
+      }));
 
-        const simulation = d3.forceSimulation(nodes)
-          .force("link", d3.forceLink(links).distance(150).id(d => d.id))
-          .force("charge", d3.forceManyBody().strength(-250))
-          .force("center", d3.forceCenter(width / 2, height / 2));
+      const links = [];
+      const keys = Object.keys(this.rawData);
 
-        // --- Draw links ---
-        const link = zoomLayer.append("g")
-          .attr("stroke", "#d1d5db")
-          .selectAll("line")
+      for (const [src, obj] of Object.entries(this.rawData)) {
+        for (const [dst, label] of Object.entries(obj.outbound || {})) {
+          if (keys.includes(dst)) {
+            links.push({ source: src, target: dst, label });
+          }
+        }
+      }
+
+      const svg = d3.select(this.$el)
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+      const zoomLayer = svg.append("g");
+
+      const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(140))
+        .force("charge", d3.forceManyBody().strength(-240))
+        .force("center", d3.forceCenter(w / 2, h / 2));
+
+      const link = zoomLayer.append("g")
+        .attr("stroke", "#d1d5db")
+        .selectAll("line")
+        .data(links)
+        .join("line")
+        .attr("stroke-width", 1.4);
+
+      const linkLabel = zoomLayer.append("g")
+          .selectAll("text")
           .data(links)
-          .join("line")
-          .attr("stroke-width", 1.5);
+          .join("text")
+          .attr("font-size", "9px")
+          .attr("fill", "#4b5563")
+          .attr("text-anchor", "middle")
+          .style("visibility", "hidden");
 
-        // --- Draw nodes ---
-        const node = zoomLayer.append("g")
-          .attr("stroke", "#fff")
-          .attr("stroke-width", 1.5)
+      const node = zoomLayer.append("g")
           .selectAll("circle")
           .data(nodes)
           .join("circle")
-          .attr("r", d => d.id === window.location.hash.replace("#", "") ? 22 : 15)
-          .attr("fill", d => d.id === window.location.hash.replace("#", "") ? "#f59e0b" : "#4f46e5")
-          .call(drag(simulation))
-          .on("mouseover", (event, d) => {
-            if (d.id !== window.location.hash.replace("#", "")) d3.select(event.currentTarget).attr("fill", "#818cf8");
-            label.filter(l => l.id === d.id)
-              .attr("visibility", "visible")
-              .attr("fill", "black")
-              .attr("font-weight", "bold");
-          })
-          .on("mouseout", (event, d) => {
-            if (d.id !== window.location.hash.replace("#", "")) d3.select(event.currentTarget).attr("fill", "#4f46e5");
-            if (d.id !== window.location.hash.replace("#", ""))
-              label.filter(l => l.id === d.id).attr("visibility", "hidden");
-          })
-          .on("dblclick", (event, d) => {
-            location.href = "#" + d.id;
-            setTimeout(location.reload, 100);
+          .attr("r", d => this.root.includes(d.id) ? 22 : 14)
+          .attr("fill", d => this.root.includes(d.id) ? "#f59e0b" : "#4f46e5")
+          .call(d3.drag()
+            .on("start", dragstart)
+            .on("drag", dragmove)
+            .on("end", dragend)
+          )
+          .on("click", (_, d) => {
+            this.open_doc(d.id);
           });
 
-        // --- Labels ---
-        const label = zoomLayer.append("g")
-          .selectAll("text")
-          .data(nodes)
-          .join("text")
-          .attr("text-anchor", "middle")
-          .attr("dy", 28)
-          .attr("visibility", d => d.id === window.location.hash.replace("#", "") ? "visible" : "hidden")
-          .attr("fill", "black")
-          .attr("font-size", "10px")
-          .attr("font-weight", d => d.id === window.location.hash.replace("#", "") ? "bold" : "normal")
-          .text(d => d.title);
+      node.on("mouseover", (event, d) => {
 
-        // --- Simulation tick updates ---
-        simulation.on("tick", () => {
+          // Bepaal buren
+          const neighbors = new Set([
+            ...Object.keys(this.rawData[d.id]?.outbound || {}),
+            ...Object.keys(this.rawData[d.id]?.inbound || {})
+          ]);
+
+          // Node labels zichtbaar maken voor hover node + neighbors
+            label.attr("visibility", n =>
+              this.root.includes(n.id)
+                ? "visible"
+                : (neighbors.has(n.id) || n.id === d.id ? "visible" : "hidden")
+            );
+          // Highlight nodes
+          node.attr("fill", n =>
+            this.root.includes(n.id)
+              ? "#f59e0b"
+              : neighbors.has(n.id) || n.id === d.id
+                ? "#818cf8"
+                : "#4f46e5"
+          );
+
+          // Highlight links
+          link.attr("stroke", e =>
+            e.source.id === d.id || e.target.id === d.id ? "#818cf8" : "#d1d5db"
+          );
+
+          // Labels per link bepalen vanuit d (hover node)
+          linkLabel
+            .text(e => {
+              if (e.source.id === d.id) {
+                return this.rawData[d.id]?.outbound?.[e.target.id] || "";
+              }
+              if (e.target.id === d.id) {
+                return this.rawData[d.id]?.inbound?.[e.source.id] || "";
+              }
+              return "";
+            })
+            .style("visibility", e =>
+              e.source.id === d.id || e.target.id === d.id
+                ? "visible"
+                : "hidden"
+            );
+        });
+      node.on("mouseout", () => {
+          node.attr("fill", n =>
+            this.root.includes(n.id) ? "#f59e0b" : "#4f46e5"
+          );
+
+          link.attr("stroke", "#d1d5db");
+
+          // node-labels resetten
+          label.attr("visibility", n =>
+            this.root.includes(n.id) ? "visible" : "hidden"
+          );
+          // hide all labels
+          linkLabel.style("visibility", "hidden");
+        });
+
+      const label = zoomLayer.append("g")
+        .selectAll("text")
+        .data(nodes)
+        .join("text")
+        .attr("text-anchor", "middle")
+        .attr("dy", 28)
+        .attr("font-size", "10px")
+        .attr("font-weight", d => this.root.includes(d.id) ? "bold" : "normal")
+        .attr("visibility", d => this.root.includes(d.id) ? "visible" : "hidden")
+        .text(d => d.title);
+
+      simulation.on("tick", () => {
           link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
@@ -122,71 +186,47 @@ document.addEventListener('alpine:init', () => {
           label
             .attr("x", d => d.x)
             .attr("y", d => d.y);
+
+          linkLabel
+              .attr("x", d => (d.source.x + d.target.x) / 2)
+              .attr("y", d => (d.source.y + d.target.y) / 2);
         });
 
-        // --- Add zoom behavior ---
-        const zoom = d3.zoom()
+
+      const zoom = d3.zoom()
           .scaleExtent([0.2, 3])
-          .on("zoom", (event) => {
-            zoomLayer.attr("transform", event.transform);
-          });
+          .on("zoom", e => zoomLayer.attr("transform", e.transform));
 
         svg.call(zoom);
 
-        // --- Auto-fit after simulation ends ---
-        simulation.on("end", () => {
-          if (nodes.length > 0) fitView();
-        });
+      simulation.on("end", fitView);
 
-        function fitView() {
-          const bounds = zoomLayer.node().getBBox();
-          const bw = bounds.width  || 1;
-          const bh = bounds.height || 1;
-          const bx = bounds.x      || 0;
-          const by = bounds.y      || 0;
+      function fitView() {
+        const b = zoomLayer.node().getBBox();
+        const scale = 0.9 / Math.max(b.width / w, b.height / h);
+        const translate = [
+          w / 2 - scale * (b.x + b.width / 2),
+          h / 2 - scale * (b.y + b.height / 2)
+        ];
 
-          if (!width || !height || !isFinite(bw) || !isFinite(bh)) {
-            console.warn("⚠️ fitView skipped — invalid bounds or canvas size");
-            return;
-          }
-
-          const scale = 0.9 / Math.max(bw / width, bh / height);
-          const translate = [
-            width / 2 - scale * (bx + bw / 2),
-            height / 2 - scale * (by + bh / 2)
-          ];
-
-          if (isNaN(scale) || translate.some(isNaN)) {
-            console.warn("⚠️ fitView skipped — NaN transform");
-            return;
-          }
-
-          svg.transition()
-            .duration(750)
+        svg.transition().duration(750)
             .call(zoom.transform, d3.zoomIdentity.translate(...translate).scale(scale));
-        }
+      }
 
-        // --- Drag behavior helper ---
-        function drag(simulation) {
-          function dragstarted(event, d) {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-            svg.style("cursor", "grabbing");
-          }
-          function dragged(event, d) {
-            d.fx = event.x;
-            d.fy = event.y;
-          }
-          function dragended(event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-            svg.style("cursor", "grab");
-          }
-          return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
-        }
+      function dragstart(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+      function dragmove(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+      }
+      function dragend(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
       }
     }
-  });
+  }));
 });

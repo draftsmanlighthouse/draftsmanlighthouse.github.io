@@ -1,0 +1,171 @@
+<template x-component="architecture">
+    <div>
+
+        <div x-show="active_tab == 'C4'" x-cloak x-transition
+             x-data="C4Diagram"
+             class="mt-5">
+            <template x-if="active_tab == 'C4'">
+                <div x-init="draw(level,c4_data)" @redraw.window="draw(level,c4_data)">
+                    <div id="c4" class="w-full h-[85vh]"></div>
+                    <div @c4-node-clicked.window="selected = $event.detail">
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <div x-show="active_tab == 'decisions'" x-cloak x-transition
+             class="grid grid-cols-12 mt-5 gap-5">
+            <div class="col-span-11" x-data="{search: $persist('').as('decisionSearch')}">
+                <table class="table table-pin-rows" x-data="Decisions">
+                    <tr>
+                        <td colspan="3">
+                            <input type="search" x-model="search" class="input mb-5" required placeholder="Filter..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Summary</th>
+                    </tr>
+                    <template
+                            x-for="decision in filter_decisions(index.documents,level)"
+                            :key="decision.id">
+                        <tr x-show="`${decision.name} ${decision.decision} ${decision.ystatement}`.toLowerCase().includes(search.toLowerCase())">
+                            <th x-text="decision.name"></th>
+                            <td>
+                                <div x-show="decision.type == 'design decision'" x-cloak x-transition
+                                     class="badge badge-outline badge-info whitespace-nowrap">Design Decision
+                                </div>
+                                <div x-show="decision.type == 'ADR'" x-cloak x-transition
+                                     class="badge badge-outline badge-primary whitespace-nowrap">Architecture Decision
+                                    Record
+                                </div>
+                            </td>
+                            <td>
+                                <div x-show="decision.status == 'decided'" x-cloak x-transition
+                                     class="badge badge-success badge-outline">decided
+                                </div>
+                                <div x-show="decision.status == 'rejected'" x-cloak x-transition
+                                     class="badge badge-error badge-outline">rejected
+                                </div>
+                                <div x-show="decision.status == 'draft'" x-cloak x-transition
+                                     class="badge badge-neutral badge-outline">draft
+                                </div>
+                                <div x-show="decision.status == 'review'" x-cloak x-transition
+                                     class="badge badge-warning badge-outline">review
+                                </div>
+                            </td>
+                            <td x-show="decision.type == 'design decision'" x-cloak x-transition>
+                                <div
+                                        x-data="{content: '', readonly: true}"
+                                        x-init="content = decision.decision ? decision.decision : 'short summary of **problem** and **decision**'"
+                                        x-import="doc-sections/markdown">
+                                    <ui-markdown></ui-markdown>
+                                </div>
+                            </td>
+                            <td x-show="decision.type == 'ADR'" x-cloak x-transition>
+                                <div x-text="convert_y(decision.ystatement)"></div>
+                            </td>
+
+                            <td>
+                                <a class="btn btn-ghost btn-xs"
+                                   @click="open_doc(decision.id)">
+                                    go to
+                                </a>
+                            </td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+        </div>
+
+        <div x-show="active_tab == 'principles'" x-data="{search: $persist('').as('principleSearch'),openPrinciple: $persist(null).as('principleOpen')}" x-cloak x-transition class="mt-5">
+
+            <input type="search" x-model="search" class="input mb-5" required placeholder="Filter..." />
+
+            <template
+                    x-for="principle in Object.values(index.documents).filter(x => x.type == 'principle' && x.scope == 'landscape')"
+                    :key="principle.id">
+                <div x-show="`${principle.name} ${principle.principle}`.toLowerCase().includes(search.toLowerCase())" x-cloak x-transition class="collapse collapse-arrow bg-base-100 border border-base-300 mb-2">
+                    <input
+                        type="checkbox"
+                        :checked="openPrinciple === principle.id"
+                        @change="openPrinciple = (openPrinciple === principle.id ? null : principle.id)"/>
+                    <div class="collapse-title font-semibold">
+                        <div class="badge badge-outline badge-primary mr-5">EAP</div> <span x-text="principle.name"></span>
+                    </div>
+                    <div class="collapse-content text-sm">
+                        <div
+                                x-data="{content: '', readonly: true}"
+                                x-init="content = principle.principle ? principle.principle : PRINCIPLE"
+                                x-import="doc-sections/markdown">
+                            <ui-markdown></ui-markdown>
+                        </div>
+                        <a class="btn btn-outline btn-primary btn-sm mt-5"
+                           @click="open_doc(principle.id)">
+                            Open
+                        </a>
+                    </div>
+                </div>
+            </template>
+
+            <template x-if="level.split(':').length > 1">
+                <template
+                        x-for="principle in Object.values(index.documents).filter(x => x.type == 'principle' && component_reverse_index[x.scope] == level.split(':').at(1))"
+                        :key="principle.id">
+                    <div x-show="`${principle.name} ${principle.principle}`.toLowerCase().includes(search.toLowerCase())" x-cloak x-transition class="collapse collapse-arrow bg-base-100 border border-base-300 mb-2">
+                        <input
+                            type="checkbox"
+                            :checked="openPrinciple === principle.id"
+                            @change="openPrinciple = (openPrinciple === principle.id ? null : principle.id)"/>
+                        <div class="collapse-title font-semibold">
+                            <div class="badge badge-outline badge-secondary mr-5">SAP</div> <span x-text="principle.name"></span>
+                        </div>
+                        <div class="collapse-content text-sm">
+                            <div
+                                    x-data="{content: '', readonly: true}"
+                                    x-init="content = principle.principle ? principle.principle : PRINCIPLE"
+                                    x-import="doc-sections/markdown">
+                                <ui-markdown></ui-markdown>
+                            </div>
+                            <a class="btn btn-outline btn-primary btn-sm mt-5"
+                               @click="open_doc(principle.id)">
+                                Open
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <template x-if="level.split(':').length > 2">
+                <template
+                        x-for="principle in Object.values(index.documents).filter(x => x.type == 'principle' && component_reverse_index[x.scope] == level.split(':').slice(1).join(':'))"
+                        :key="principle.id">
+                    <div x-show="`${principle.name} ${principle.principle}`.toLowerCase().includes(search.toLowerCase())" x-cloak x-transition  class="collapse collapse-arrow bg-base-100 border border-base-300 mb-2">
+                        <input
+                            type="checkbox"
+                            :checked="openPrinciple === principle.id"
+                            @change="openPrinciple = (openPrinciple === principle.id ? null : principle.id)"/>
+                        <div class="collapse-title font-semibold">
+                            <div class="badge badge-outline badge-accent mr-5">CAP</div> <span x-text="principle.name"></span>
+                        </div>
+                        <div class="collapse-content text-sm">
+                            <div
+                                    x-data="{content: '', readonly: true}"
+                                    x-init="content = principle.principle ? principle.principle : PRINCIPLE"
+                                    x-import="doc-sections/markdown">
+                                <ui-markdown></ui-markdown>
+                            </div>
+                            <a class="btn btn-outline btn-primary btn-sm mt-5"
+                               @click="open_doc(principle.id)">
+                                Open
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </template>
+        </div>
+
+    </div>
+</template>

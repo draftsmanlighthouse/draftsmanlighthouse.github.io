@@ -1,225 +1,260 @@
-document.addEventListener('alpine:init', () => {
-  Alpine.data('main', function(){
+document.addEventListener("alpine:init", () => {
+  Alpine.data("main", function () {
     return {
-        collections: this.$persist([]),
-        organisations: [],
-        organisation: this.$persist({}),
-        documents: this.$persist({}),
-        author: this.$persist(""),
-        current: this.$persist({}).using(sessionStorage),
-        navigation: this.$persist("").using(sessionStorage),
-        dashboard_data: {},
-        c4_data: this.$persist({}),
-        component_index: this.$persist({}),
-        component_reverse_index: this.$persist({}),
-        node_index: this.$persist({}),
-        tags: [],
-        miniSearch: null,
+      notebooks: {},
+      notebook: "",
+      navigation: this.$persist("doc"),
+      index: {
+        documents: {},
+        navigation: [],
+        lineage: {},
+      },
+      node_index: this.$persist({}),
 
-        openPath(name) {
-          // zoek het element met data-name
-          const el = this.$root.querySelector(`[data-name="${name}"]`);
-          if (!el) return;
+      c4_data: this.$persist({}),
+      component_index: this.$persist({}),
+      component_reverse_index: this.$persist({}),
 
-          // loop omhoog door alle parents
-          let parent = el.parentElement;
-          while (parent) {
-            if (parent.tagName.toLowerCase() === 'details') {
-              parent.open = true; // open elk bovenliggend details-element
+      openState: this.$persist({}).as("nav-open-state"),
+
+      tags: this.$persist([]),
+      menuHTML: "",
+      microDoc: {},
+      miniSearch: null,
+
+      saveTimeout: null,
+      debounceDelay: 1000,
+      saving: false,
+      pendingSave: false,
+
+      async init() {
+        await idb.init();
+        await this.restoreNotebooks();
+      },
+
+      //---------------------------------------------------------------------
+      // RESTORE FROM INDEXEDDB
+      //---------------------------------------------------------------------
+      async restoreNotebooks() {
+        const entries = await idb.getAll();
+        this.notebooks = {};
+
+        for (const entry of entries) {
+          this.notebooks[entry.id] = entry;
+        }
+
+        if (localStorage.lastNotebook && this.notebooks[localStorage.lastNotebook]) {
+          this.notebook = localStorage.lastNotebook;
+          await this.openNotebook(this.notebook);
+        }
+
+        if (localStorage.lastDocument && this.index.documents[localStorage.lastDocument]){
+            if (this.navigation == "doc"){
+                await this.open_doc(localStorage.lastDocument);
             }
-            parent = parent.parentElement;
+        }
+      },
+
+      //---------------------------------------------------------------------
+      // IMPORT NOTEBOOK (Add folder)
+      //---------------------------------------------------------------------
+      async importNotebook() {
+        try {
+          const handle = await window.showDirectoryPicker({
+            mode: "readwrite"
+          });
+
+          await this.verifyPermissions(handle);
+
+          const id = "notebook-" + crypto.randomUUID();
+          const entry = { id, name: handle.name, handle };
+
+          this.notebooks[id] = entry;
+          await idb.save(id, entry);
+
+          localStorage.lastNotebook = id;
+          this.notebook = id;
+
+          await this.openNotebook(id);
+
+        } catch (err) {
+          console.error("importNotebook error:", err);
+        }
+      },
+
+      //---------------------------------------------------------------------
+      // OPEN NOTEBOOK (load all small JSON files)
+      //---------------------------------------------------------------------
+      async openNotebook(id) {
+        if (id === "new/import") {
+          return await this.importNotebook();
+        }
+
+        this.notebook = id;
+        localStorage.lastNotebook = id;
+
+        const entry = this.notebooks[id];
+        if (!entry) return;
+
+        const dir = entry.handle;
+
+        await this.verifyPermissions(dir);
+
+        await this.indexFiles(dir);
+
+        console.log("Loaded notebook", id, this.files);
+      },
+
+      //---------------------------------------------------------------------
+      // LOAD ALL SMALL FILES
+      //---------------------------------------------------------------------
+      async indexFiles(dir) {
+          const start = performance.now();     // <- START TIMER
+          const searchIndex = [];
+          const index = {
+            documents: {},
+            navigation: [],
+            lineage: {},
+          };
+          const node_index = {}
+
+          function make_sure_node_exists(id){
+                if (!(id in node_index)){
+                    node_index[id] = {inbound: {}, outbound: {}};
+                }
+            }
+          for await (const [name, handle] of dir.entries()) {
+
+            if (handle.kind === "directory") {
+              try {
+                const indexHandle = await handle.getFileHandle("index.json");
+                const file = await indexHandle.getFile();
+                const text = await file.text();
+
+                let json = {};
+                try {
+                  json = JSON.parse(text);
+                } catch {
+                  json = text;
+                }
+
+                index.documents[name] = {
+                  id: name,
+                  type: json.type || "note",
+                  name: json.name || name,
+                  parent: json.parent || "",
+                  sections: json.sections || [],
+                  tags: json.tags || [],
+                  decision: json.decision || "",
+                  principle: json.principle || "",
+                  ystatement: json.ystatement || {},
+                  status: json.status || "draft",
+                  scope: json.scope || ""
+                };
+                if ("effect" in json){
+                    index.documents[name].effect = json.effect;
+                }
+
+                // Register lineage
+                if (json.parent) {
+                  if (!(json.parent in index.lineage)) {
+                    index.lineage[json.parent] = [];
+                  }
+                  index.lineage[json.parent].push(name);
+                }
+
+                // Prepare search
+                let searchText = "";
+                for (const section of json.sections){
+                    if (section.type == "markdown"){
+                        const markdownHandle = await handle.getFileHandle(section.id + ".md");
+                        const markdownFile = await markdownHandle.getFile();
+                        searchText += " " + await markdownFile.text();
+                    }
+                }
+
+                // Update node index
+                let id = json.id
+                make_sure_node_exists(id);
+                node_index[id].title = json.name;
+                if ("parent" in json && json.parent){
+                    node_index[id].inbound[json.parent] = "child of";
+                    make_sure_node_exists(json.parent);
+                    node_index[json.parent].outbound[json.id] = "parent of";
+                }
+                json.sections.filter(x => x.type == "reference" && "document" in x && x.document).forEach(section => {
+                    node_index[id].outbound[section.document] = "references";
+                    make_sure_node_exists(section.document);
+                    node_index[section.document].inbound[id] = "referenced by";
+                });
+                if ("precedent" in json && json.precedent){
+                    node_index[id].inbound[json.precedent] = "guided by";
+                    make_sure_node_exists(json.precedent);
+                    node_index[json.precedent].outbound[id] = "guides";
+                }
+                if ("effect" in json && json.effect.action == "link two components"){
+                    if ("source" in json.effect && json.effect.source){
+                        node_index[id].outbound[json.effect.source] = "links to";
+                        make_sure_node_exists(json.effect.source);
+                        node_index[json.effect.source].inbound[id] = "linked from";
+                    }
+                    if ("target" in json.effect && json.effect.target){
+                        node_index[id].outbound[json.effect.target] = "links to";
+                        make_sure_node_exists(json.effect.target);
+                        node_index[json.effect.target].inbound[id] = "linked from";
+                    }
+                }
+                this.node_index = node_index;
+                searchIndex.push({
+                    id: json.id,
+                    title: json.name,
+                    text: searchText
+                });
+              } catch (err) {
+                console.log("Skip! -->",err)
+                // geen index.json? → skip
+              }
+            }
           }
 
-          // optioneel: scroll in beeld
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        },
+          const parseEnd = performance.now();     // timing van alleen dir-scan + JSON parse
 
-        async init(){
-            if (!this.author){
-                this.author = prompt("Nickname");
-            }
-            let organisations = this.get_collection('organisations');
-            this.organisations = await organisations.keys();
+          function buildTree(documents) {
+            const children = {};
 
-            let navigation = location.hash.replace("#","");
-            if (navigation){
-                this.navigation = navigation;
-            }
-            if (this.organisation){
-                this.$watch("organisation", async (val) => {
-                  await this.update_organisation(val);
-                });
-                let documents = this.get_collection(`${this.organisation.name}_documents`);
-                let keys = await documents.keys()
-                for (const key of keys){
-                    this.documents[key] = await documents.getItem(key);
-                }
-                for (const key of Object.keys(this.documents)){
-                    if (!keys.includes(key)){
-                        delete this.documents[key];
-                    }
-                }
-            }
-            window.addEventListener("hashchange", () => {
-                let navigation = location.hash.replace("#","");
-                if (this.navigation != navigation){
-                    this.navigation = navigation;
-                    location.reload();
-                }
+            Object.values(documents).forEach(doc => {
+              const parent = doc.parent || "_root";
+              if (!children[parent]) children[parent] = [];
+              children[parent].push(doc);
             });
-            this.miniSearch = new MiniSearch({
-              fields: ['title', 'text'],
-              storeFields: ['title', 'type'],
-              searchOptions: {
-                prefix: true,
-                boost: { title: 2 },
-                fuzzy: 0.2
-              }
+
+            Object.values(children).forEach(list => {
+              list.sort((a, b) => a.name.localeCompare(b.name, 'nl'));
             });
-            if (this.documents){
-                this.index_project(this.documents);
-                let index = [];
-                let content = this.get_collection(`${this.organisation.name}_content`);
-                for (const doc of Object.values(this.documents)){
-                    index.push(await prepare_searchable(doc,content));
-                }
-                this.miniSearch.addAll(index);
-            }
-        },
 
-        async open_organisation(name){
-            let organisations = this.get_collection('organisations');
-            if (name == "new"){
-                name = prompt("Organisation name:")
-                let keys = await organisations.keys();
-                if (!keys.includes(this.organisations)){
-                    await organisations.setItem(name,{
-                        name,
-                        decision_index: 0,
-                        documents: {
-                            "about": {
-                                id: "about",
-                                createdAt: new Date(),
-                                type: "organisation",
-                                authors: [this.author],
-                                sections: [{
-                                    type: "markdown",
-                                    id: crypto.randomUUID(),
-                                    body: `# ${name}\n\n About this organisation...`
-                                }]
-                            }
-                        }
-                    });
-                    let documents = this.get_collection(`${name}_documents`);
-                    let content = this.get_collection(`${name}_content`);
-                    let content_id = crypto.randomUUID();
-                    await documents.setItem("about",{
-                        id: "about",
-                        createdAt: new Date(),
-                        type: "organisation",
-                        authors: [this.author],
-                        sections: [{
-                            type: "markdown",
-                            id: content_id
-                        }]
-                    });
-                    await content.setItem(content_id, `# ${name}\n\n About this organisation...`);
-                }
+            function buildNode(node) {
+              return {
+                id: node.id,
+                name: node.name,
+                documents: (children[node.id] || []).map(buildNode),
+              };
             }
-            console.log(name)
-            this.organisation = await organisations.getItem(name);
-            console.log(this.organisation)
-            this.navigation = "about";
-            location = "#about"
-            location.reload();
-        },
-        async update_organisation(){
-            if (this.organisation && "name" in this.organisation){
-                let organisations = this.get_collection("organisations");
-                await organisations.setItem(this.organisation.name,this.organisation);
-            }
-        },
-        async open_document(id){
-            if (id in this.documents){
-                this.current = {id: "", sections: []};
-                await this.$nextTick();
-                let documents = this.get_collection(`${this.organisation.name}_documents`);
-                let current = await documents.getItem(id);
-                let content = this.get_collection(`${this.organisation.name}_content`);
-                for (const sec of current.sections){
-                    let body = await content.getItem(sec.id);
-                    if(body){
-                        sec.body = body;
-                    }
-                }
-                this.navigation = id;
-                location.hash = "#" + id;
-                if (this.unwatchCurrent){
-                    this.unwatchCurrent();
-                }
-                this.current = current;
-                this.unwatchCurrent = this.$watch("current", async (val) => {
-                  await this.update_document(val);
-                });
-            } else if (["dashboard",'architecture','all','node-diagram'].includes(id)){
-                this.current = {id: "", sections: []};
-                this.navigation = id;
-                location.hash = "#" + id;
-            }
-        },
-        async update_document(){
-            await this.update_document_inline(this.current)
-        },
 
-        async update_document_inline(current){
-            if ("id" in current && current.id != ""){
-                let doc = JSON.parse(JSON.stringify(current));
-                if (!doc.authors.includes(this.author)){
-                    doc.authors.push(this.author)
-                }
-                doc.updatedAt = new Date();
+            const roots = children["_root"] || [];
+            return roots.map(buildNode);
+          }
 
-              if ("sections" in doc) {
-                let content_collection = this.get_collection(`${this.organisation.name}_content`);
-                for (const section of doc.sections){
-                    if ("body" in section && "id" in section) {
-                        let body = await content_collection.getItem(section.id);
-                        if (body != section.body){
-                            await content_collection.setItem(section.id, section.body);
-                            enqueueChange({type: 'section', section})
-                        }
-                        delete section.body;
-                      }
-                }
-              }
-              let document_collection = this.get_collection(`${this.organisation.name}_documents`);
-              await document_collection.setItem(current.id, doc);
-            }
-        },
+          index.navigation = buildTree(index.documents);
 
-        index_project(documents){
-            // Dashboard Hillchart
-            let data = {};
-            let tags = [];
-            Object.values(documents).filter(doc => doc.type == 'scope').forEach(doc => {
-                let project = documents[doc.parent].title;
-                if (!(project in data)){
-                    data[project] = {"id": doc.parent, "name": project, "progress": []};
-                }
-                data[project]["progress"].push(doc.attributes.progress);
-            });
-            data = Object.values(data);
-            data.forEach(x => {
-                x.progress = x.progress.length ? x.progress.reduce((a, b) => a + b, 0) / x.progress.length : 0;
-            });
-            this.dashboard_data["hillchart"] = data;
+          const treeEnd = performance.now();    // timing tot en met boom-opbouw
 
-            // C4 components
+          // C4 components
+          const tags = [];
             let arch = {
                 components: {},
                 edges: [],
             };
-            Object.values(documents).filter(doc => "effect" in doc).filter(doc => doc.effect).forEach(doc => {
+            Object.values(index.documents).filter(doc => "effect" in doc).filter(doc => doc.effect).forEach(doc => {
                 let effect = doc.effect;
                 if (effect.action == "introduces new"){
                     if (effect.level == "system"){
@@ -258,8 +293,8 @@ document.addEventListener('alpine:init', () => {
                     }
                 } else if (effect.action == "link two components"){
                     let edge = {...effect};
-                    edge.source = Object.keys(this.component_index).find(k => this.component_index[k] === effect.source);
-                    edge.target = Object.keys(this.component_index).find(k => this.component_index[k] === effect.target);
+                    edge.source = this.component_reverse_index[effect.source];
+                    edge.target = this.component_reverse_index[effect.target];
                     arch.edges.push(edge);
                 } else if (effect.action == "new persona"){
                     arch.components["persona:" + effect.name] = {
@@ -279,13 +314,15 @@ document.addEventListener('alpine:init', () => {
             }
             arch.edges.forEach(x => {
                 if (!(x.source in this.component_index)){
-                    x.source = Object.keys(this.component_index).find(k => this.component_index[k] === x.source);
+                    x.source = this.component_reverse_index[x.source];
                 }
                 if (!(x.target in this.component_index)){
-                    x.target = Object.keys(this.component_index).find(k => this.component_index[k] === x.target);
+                    x.target = this.component_reverse_index[x.target];
                 }
             });
-            Object.values(documents).filter(x => 'tags' in x && x.tags.length != 0).forEach(doc => {
+
+          // Index tags
+          Object.values(index.documents).filter(x => 'tags' in x && x.tags.length != 0).forEach(doc => {
                 doc.tags.forEach(t => {
                     if (!tags.includes(t)){
                         tags.push(t);
@@ -294,218 +331,420 @@ document.addEventListener('alpine:init', () => {
             });
             this.tags = tags;
 
-            Object.values(documents).filter(doc => doc.id != "about").forEach(doc => {
-                let id = doc.id
-                this.make_sure_node_exists(id);
-                this.node_index[doc.id].title = doc.title;
-                if ("parent" in doc && doc.parent){
-                    this.node_index[doc.id].inbound[doc.parent] = "child of";
-                    this.make_sure_node_exists(doc.parent);
-                    this.node_index[doc.parent].outbound[doc.id] = "parent of";
-                }
-                doc.sections.filter(x => x.type == "reference" && "document" in x && x.document).forEach(section => {
-                    this.node_index[doc.id].outbound[section.document] = "references";
-                    this.make_sure_node_exists(section.document);
-                    this.node_index[section.document].inbound[doc.id] = "referenced by";
-                });
-                if ("precedent" in doc && doc.precedent){
-                    this.node_index[doc.id].inbound[doc.precedent] = "references";
-                    this.make_sure_node_exists(doc.precedent);
-                    this.node_index[doc.precedent].outbound[doc.id] = "referenced by";
-                }
-                if ("effect" in doc && doc.effect.action == "link two components"){
-                    if ("source" in doc.effect && doc.effect.source){
-                        this.node_index[doc.id].inbound[doc.effect.source] = "references";
-                        this.make_sure_node_exists(doc.effect.source);
-                        this.node_index[doc.effect.source].outbound[doc.id] = "referenced by";
-                    }
-                    if ("target" in doc.effect && doc.effect.target){
-                        this.node_index[doc.id].inbound[doc.effect.target] = "references";
-                        this.make_sure_node_exists(doc.effect.target);
-                        this.node_index[doc.effect.target].outbound[doc.id] = "referenced by";
-                    }
-                }
-            });
-        },
-        make_sure_node_exists(id){
-            if (!(id in this.node_index)){
-                this.node_index[id] = {inbound: {}, outbound: {}};
-            }
-        },
-        load_data(event) {
-          const file = event?.target?.files?.[0];
+          this.miniSearch = new MiniSearch({
+          fields: ['title', 'text'],
+          storeFields: ['title', 'type'],
+          searchOptions: {
+            prefix: true,
+            boost: { title: 10 },
+            fuzzy: 0.2
+          }
+        });
+          this.miniSearch.addAll(searchIndex);
+          const contentIndexEnd = performance.now();    // timing tot en met boom-opbouw
 
-          if (!file) {
-            console.warn("⚠️ No file selected.");
+          this.index = index;
+          this.menuHTML = buildMenuHTML(this.index.navigation);
+
+          const totalEnd = performance.now();   // totaal
+          // -------------------------
+          // LOGGING (high-resolution)
+          // -------------------------
+          console.log(
+            `%c[indexFiles] Directory scan + JSON parse: ${(parseEnd - start).toFixed(2)} ms`,
+            "color:#4ade80"
+          );
+          console.log(
+            `%c[indexFiles] Build tree: ${(treeEnd - parseEnd).toFixed(2)} ms`,
+            "color:#60a5fa"
+          );
+          console.log(
+            `%c[indexFiles] Index content: ${(contentIndexEnd - treeEnd).toFixed(2)} ms`,
+            "color:#008080"
+          );
+          console.log(
+            `%c[indexFiles] Total time: ${(totalEnd - start).toFixed(2)} ms`,
+            "color:#facc15; font-weight:bold"
+          );
+        },
+
+      //---------------------------------------------------------------------
+      // CREATE NEW DOCUMENT IN FOLDER
+      //---------------------------------------------------------------------
+      async create_doc() {
+          const entry = this.notebooks[this.notebook];
+          if (!entry) return;
+
+          const dir = entry.handle;
+          await this.verifyPermissions(dir);
+
+          // 1. Maak directory voor document
+          const id = crypto.randomUUID();
+          const docDir = await dir.getDirectoryHandle(id, { create: true });
+
+          // 2. Maak index.json in die map
+          const indexHandle = await docDir.getFileHandle("index.json", { create: true });
+
+          const defaultContent = {
+            id,
+            name: "New note",
+            status: "draft",
+            created: Date.now(),
+            updated: Date.now(),
+            type: "note",
+            parent: "",
+            sections: [],
+            archive: []
+          };
+
+          const writable = await indexHandle.createWritable();
+          await writable.write(JSON.stringify(defaultContent, null, 2));
+          await writable.close();
+          await this.open_doc(id);
+          // 3. Reload document list
+          await this.indexFiles(dir);
+        },
+
+      async fetch_doc(id){
+      // Haal notebook entry op
+          const notebookEntry = this.notebooks[this.notebook];
+          if (!notebookEntry) return;
+
+          const notebookDir = notebookEntry.handle;
+          await this.verifyPermissions(notebookDir);
+
+          // 1. Documentmap ophalen
+          let docDir;
+          try {
+            docDir = await notebookDir.getDirectoryHandle(id);
+          } catch (err) {
+            console.error("Documentmap niet gevonden:", id);
             return;
           }
 
-          const reader = new FileReader();
+          // 2. index.json ophalen binnen docDir
+          let indexHandle;
+          try {
+            indexHandle = await docDir.getFileHandle("index.json");
+          } catch (err) {
+            console.error("index.json ontbreekt in document:", id);
+            return;
+          }
 
-          reader.onload = async (e) => {
-            try {
-              const newData = JSON.parse(e.target.result);
+          // 3. Inhoud lezen
+          const file = await indexHandle.getFile();
+          const text = await file.text();
 
-              // ✅ bestaande data behouden, nieuwe toevoegen of overschrijven
-              const org_collection = this.get_collection("organisations");
+          let json;
+          try {
+            json = JSON.parse(text);
+          } catch (err) {
+            console.error("Ongeldige JSON in index.json:", err);
+            json = {};
+          }
 
-              for (const [key, value] of Object.entries(newData)) {
-                const { documents, ...org } = value;
-
-                // Organisatie-level metadata
-                await org_collection.setItem(key, org);
-
-                // Sub-collecties per organisatie
-                const document_collection = this.get_collection(`${key}_documents`);
-                const content_collection = this.get_collection(`${key}_content`);
-
-                for (const [id, doc] of Object.entries(documents)) {
-                  let document = { ...doc };
-
-                  if ("sections" in document) {
-                    document.sections.forEach(section => {
-                      if ("body" in section) {
-                        content_collection.setItem(section.id, section.body);
-                        delete section.body;
-                      }
-                    });
-                  }
-                  await document_collection.setItem(id, document);
+          async function read_section(section){
+            try{
+                const sectionHandle = await docDir.getFileHandle(section.id + "." + section.extension);
+                const sectionFile = await sectionHandle.getFile();
+                if (section.extension == 'json'){
+                    let text = await sectionFile.text();
+                    section.data = JSON.parse(text);
+                } else {
+                    section.data = await sectionFile.text();
                 }
-              }
-              console.log("✅ Local data loaded:", this.organisations);
-
-              let organisations = this.get_collection("organisations");
-              let org = await organisations.keys();
-              await this.open_organisation(org[0]);
-            } catch (err) {
-              console.error("❌ Failed to parse file:", err);
+            }catch{
+                section.data = "";
             }
+          }
+          for (const section of json.sections){
+            await read_section(section)
+          }
+
+//          for (const section of json.archive){
+//            await read_section(section)
+//          }
+        return {json, docDir};
+      },
+      async open_doc(id) {
+          if (!this.notebook) return;
+          this.navigation = "doc";
+          this.save_enabled = false;
+          localStorage.lastDocument = id;
+
+          const {json, docDir} = await this.fetch_doc(id);
+
+          // 4. Documentstate zetten
+          let lineage = [];
+          function add_children_to_lineage(node,index){
+            lineage.push(node);
+            if (node in index.lineage){
+                index.lineage[node].forEach(node => add_children_to_lineage(node,index));
+            }
+          }
+          add_children_to_lineage(id,this.index);
+          this.microDoc = {
+            id,
+            lineage,
+            dir: docDir,
+            json,
           };
-
-          reader.readAsText(file);
+          setTimeout(function(){
+            window.dispatchEvent(new CustomEvent("reload"));
+          },500);
+          setTimeout(this.enable_save.bind(this),1500);
         },
-        get_collection(name){
-            if (!name || typeof name !== "string") {
-                throw new Error(`❌ Invalid collection name: ${name}`);
-              }
 
-              if (name.startsWith("undefined_")) {
-                throw new Error(`❌ Invalid collection name prefix: "${name}" — likely missing organisation context`);
-              }
-            if (!this.collections.includes(name)){
-                this.collections.push(name);
+      update_doc_type(){
+          const allowed = [
+            "id", "name", "status", "created", "updated",
+            "type", "parent", "sections", "archive"
+          ];
+
+          const old = this.microDoc.json || {};
+
+          // alleen de allowed keys meenemen
+          const filtered = Object.fromEntries(
+            Object.entries(old).filter(([k]) => allowed.includes(k))
+          );
+
+          // defaults opnieuw zetten
+          filtered.status = "draft";
+
+          // nieuwe object-assign zodat Alpine reageert
+          if (filtered.type == 'design decision' || filtered.type == "ADR"){
+            filtered.effect = {
+                action: "",
             }
-            return localforage.createInstance({name:'workbench',storeName: name});
-        },
-        async export_data(){
-            let data = {};
-            let org_collection = this.get_collection("organisations");
-            let keys = await org_collection.keys();
-            for (org of keys){
-                data[org] = await org_collection.getItem(org);
-                data[org].documents = {};
-                let documents = this.get_collection(`${org}_documents`);
-                let content = this.get_collection(`${org}_content`);
-                let docs = await documents.keys();
-                for (doc of docs){
-                  data[org].documents[doc] = await documents.getItem(doc);
-                  for (section of data[org].documents[doc].sections){
-                    let body = await content.getItem(section.id);
-                    if (body){
-                        section.body = body;
-                    }
-                  }
+            if (filtered.type == 'design decision'){
+                filtered.decision = "short summary of **problem** and **decision**";
+            } else {
+                filtered.ystatement = {
+                  context: '',
+                  concern: '',
+                  decision: '',
+                  alternatives: '',
+                  quality: '',
+                  consequence: ''
                 }
             }
-            const jsonStr = JSON.stringify(data, null, 2);
+            const sections = filtered.sections.map(x => x.id);
+            const archive = filtered.archive.map(x => x.id);
+            if (!sections.includes("decision") && !archive.includes("decision")){
+                filtered.sections.unshift({
+                    type: "markdown",
+                    extension: "md",
+                    id: "decision",
+                    data: "# Decision\n\nDescribe the decision that is taken..."
+                });
+            } else if (!sections.includes("decision")){
+                filtered.sections.unshift(removeById(filtered.archive, "decision"));
+            }
+            if (!sections.includes("problem-statement") && !archive.includes("problem-statement")){
+                filtered.sections.unshift({
+                    type: "markdown",
+                    extension: "md",
+                    id: "problem-statement",
+                    data: "# Problem statement\n\nDescribe the problem you are solving..."
+                });
+            } else if (!sections.includes("problem-statement")){
+                filtered.sections.unshift(removeById(filtered.archive, "problem-statement"));
+            }
 
-            // 2️⃣ Maak een blob
-            const blob = new Blob([jsonStr], { type: 'application/json' });
 
-            // 3️⃣ Maak een tijdelijke download-link
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "worbench-export.json";
+          }
+          else if (filtered.type == "principle"){
+            filtered.scope = "landscape";
+            filtered.principle = PRINCIPLE;
+          } else if (filtered.type == 'persona'){
+            filtered.effect = {
+                    "action": "new persona",
+                    "external": true,
+                    "name": "<Persona>",
+                    "description": "<description>"
+                }
+          }
+          this.microDoc.json = filtered;
+      },
 
-            // 4️⃣ Trigger de download
-            document.body.appendChild(a);
-            a.click();
+      resize_textarea(){
+        this.$nextTick(() => { this.$el.style.height='auto'; this.$el.style.height= (this.$el.scrollHeight +2 ) +'px' })
+      },
+      enable_save(){
+        this.save_enabled = true;
+      },
 
-            // 5️⃣ Opruimen
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+      debouncedSave() {
+          clearTimeout(this.saveTimeout);
+
+          this.saveTimeout = setTimeout(async () => {
+            await this._save_doc_internal();
+          }, this.debounceDelay);
         },
-        clear_storage(){
-              this.collections.forEach(c => {
-                var collection = this.get_collection(c);
-                collection.clear();
-              });
-              this.collections = [];
-            localStorage.clear();
-            sessionStorage.clear();
-            location.reload();
+
+      async _save_doc_internal() {
+          // Als we al aan het saven zijn → markeer dat er nog een save moet komen
+          if (this.saving) {
+            this.pendingSave = true;
+            return;
+          }
+
+          this.saving = true;
+
+          try {
+            await this.save_doc(); // <- jouw bestaande functie
+          } finally {
+            this.saving = false;
+
+            // Als er tijdens save nieuwe wijzigingen kwamen → nog een keer saven
+            if (this.pendingSave) {
+              this.pendingSave = false;
+              await this._save_doc_internal();  // recursive flush
+            }
+          }
+        },
+
+      async save_doc() {
+          if (!this.save_enabled){return}
+          let microDoc = this.microDoc;
+          if (!microDoc || !microDoc.dir) {
+            console.error("save_doc: microDoc of directory ontbreekt");
+            return;
+          }
+
+          const { dir, json, id } = microDoc;
+          json.tags = [...new Set(json.tags)];
+          try {
+            // 1. Bestaat index.json? Anders aanmaken
+            const indexHandle = await dir.getFileHandle("index.json", { create: true });
+
+            // 2. Overschrijven
+            const writable = await indexHandle.createWritable();
+            json.updated = Date.now();
+            let data = JSON.parse(JSON.stringify(json));
+
+            async function save_section(section){
+                if ("data" in section && section.data){
+                    const sectionHandle = await dir.getFileHandle(section.id + "." + section.extension, { create: true });
+                    const sectionWritable = await sectionHandle.createWritable();
+                    if (section.extension == 'json'){
+                        await sectionWritable.write(JSON.stringify(section.data,null,2));
+                    } else {
+                        await sectionWritable.write(section.data);
+                    }
+                    await sectionWritable.close();
+                    delete section.data;
+                }
+            }
+
+            for (const section of data.sections){
+                await save_section(section);
+            }
+
+            if (!("archive" in data)){
+                data.archive = [];
+            }
+            for (const section of data.archive){
+                await save_section(section);
+            }
+
+            await writable.write(JSON.stringify(data, null, 2));
+            await writable.close();
+
+            console.log(`Document ${id} opgeslagen.`);
+
+            const entry = this.notebooks[this.notebook];
+            const root_dir = entry.handle;
+            await this.verifyPermissions(root_dir);
+            await this.indexFiles(root_dir);
+          } catch (err) {
+            console.error("Kon document niet opslaan:", err);
+          }
+        },
+
+      //---------------------------------------------------------------------
+      // REMOVE NOTEBOOK (soft delete)
+      //---------------------------------------------------------------------
+      async remove(id) {
+        if (!id) return;
+
+        delete this.notebooks[id];
+
+        await new Promise((resolve, reject) => {
+          const tx = idb.db.transaction("handles", "readwrite");
+          tx.objectStore("handles").delete(id);
+          tx.oncomplete = resolve;
+          tx.onerror = reject;
+        });
+
+        if (localStorage.lastNotebook === id) {
+          localStorage.removeItem("lastNotebook");
         }
+
+        if (this.notebook === id) {
+          this.notebook = "";
+          this.files = [];
+        }
+
+        location.reload();
+      },
+
+      //---------------------------------------------------------------------
+      // PERMISSION CHECK
+      //---------------------------------------------------------------------
+      async verifyPermissions(handle) {
+        const opts = { mode: "readwrite" };
+
+        if (typeof handle.queryPermission !== "function") {
+          return true;
+        }
+
+        const perm = await handle.queryPermission(opts);
+        if (perm === "granted") return true;
+
+        const status = await handle.requestPermission(opts);
+        if (status !== "granted") {
+          throw new Error("Permission not granted");
+        }
+
+        return true;
+      },
+
+      get_referable_decisions(documents){
+        let types = ["ADR","principle"];
+        let status = ["decided","published"];
+        return Object.values(documents).filter(x => types.includes(x.type)).filter(x => status.includes(x.status));
     }
+    };
   });
+
 });
 
-function weeksFromNow(weeks) {
-  const now = new Date();
-  const endDate = new Date(now);
-  endDate.setDate(now.getDate() + weeks * 7);
-  return endDate;
+function removeById(array, id) {
+  const index = array.findIndex(x => x.id === id);
+  if (index === -1) return null;
+  return array.splice(index, 1)[0];
 }
 
-function workdaysUntil(targetDateStr) {
-  const start = new Date();                     // vandaag
-  const end = new Date(targetDateStr);          // doel-datum
-  let count = 0;
+const PRINCIPLE = `### Statement
+Describe **what** the principle enforces, in a clear, normative way.
+Use active voice — e.g. *“To ensure X, we design Y as Z.”*
+This line should stand on its own and express the core architectural stance.
 
-  // als einddatum in het verleden ligt, return 0
-  if (end < start) return 0;
+> Example: To ensure domain clarity, each functional area is designed as an autonomous module with its own data model and lifecycle.
 
-  // van vandaag tot einddatum (inclusief einddatum)
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-    const day = d.getDay(); // 0 = zondag, 6 = zaterdag
-    if (day !== 0 && day !== 6) {
-      count++;
-    }
-  }
+### Rationale
+Explain **why** this principle exists — what value or trade-off it supports.
+Optionally include examples to make the motivation tangible.
+Keep it factual and reusable; others should be able to cite this principle as precedent.
 
-  return count;
-}
+> Example: Clear separation reduces coupling and prevents changes in one area from unexpectedly impacting another.
+> It supports independent evolution, parallel development, and cleaner reasoning about behaviour.
+> In practice, this helps teams avoid “god modules” and accidental shared state.
 
-async function prepare_searchable(doc,content){
-    let text = "";
-    if ("sections" in doc){
-        for (const sec of doc.sections){
-            let body = await content.getItem(sec.id);
-            if (body){
-                text += "\n\n" + body;
-            }
-        }
-    }
-    if ("principle" in doc){
-        text += "\n\n" + doc.principle;
-    }
-    if ("decision" in doc){
-        text += "\n\n" + doc.decision;
-    }
-    return {
-        id: doc.id,
-        title: doc.title,
-        text
-    }
-}
+### Implication / Acceptance
+Describe **what this principle implies** or **what we accept as a consequence**.
+This section makes the trade-offs explicit, ensuring the principle isn’t interpreted as dogma.
 
-function convert_y(y){
-    if (!y){return ""}
-    return `In the context of ${y.context || '…'}, ` +
-                  `facing ${y.concern || '…'}, ` +
-                  `we decided for ${y.decision || '…'} ` +
-                  `and discarded ${y.alternatives || '…'}, ` +
-                  `to achieve ${y.quality || '…'}, ` +
-                  `accepting the consequence of ${y.consequence || '…'}.`;
-}
+> Example: We accept additional integration work between modules, such as explicit APIs or events.
+> We also accept that cross-module operations may require coordination rather than shared access.`

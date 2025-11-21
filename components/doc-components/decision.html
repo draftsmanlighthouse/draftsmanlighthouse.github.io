@@ -1,0 +1,13 @@
+<template x-component="decision">
+    <template x-if="microDoc.json.type == 'design decision' && 'decision' in microDoc.json">
+        <div x-show="microDoc.json.type == 'design decision'" x-cloak x-transition>
+            <div
+                    x-data="{content: ''}"
+                    x-init="content = microDoc.json.decision"
+                    x-effect="microDoc.json.decision = content;$dispatch('change')"
+                    x-import="doc-sections/markdown">
+                <ui-markdown></ui-markdown>
+            </div>
+        </div>
+    </template>
+</template>

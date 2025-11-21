@@ -1,21 +1,28 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('chartEditor', () => ({
       chart: null,
-      currentChartType: 'bar',
-      currentViewMode: 'chart',
       currentEditorMode: 'csv',
       isEditing: false,
       error: '',
 
       init() {
-        if (!('chart_type' in this.section)){
-            this.section.chart_type = "bar";
+        // 1. Defaults voor de component zelf
+        this.currentChartType ??= "bar";
+        this.currentViewMode  ??= "chart";
+        this.readonly         ??= false;
+
+        // 2. Alleen als dit een chart-section is:
+        if (this.section.type === "chart") {
+
+            // Zet defaults als ze ontbreken
+            this.section.chart_type ??= "bar";
+            this.section.view_mode  ??= "chart";
+
+            // Sync component state met section
+            this.currentChartType = this.section.chart_type;
+            this.currentViewMode  = this.section.view_mode;
         }
-        this.currentChartType = this.section.chart_type;
-        if (!('view_mode' in this.section)){
-            this.section.view_mode = "chart";
-        }
-        this.currentViewMode = this.section.view_mode;
+
         if (!this.currentData){
             this.currentData = {
               labels: ['January', 'February', 'March', 'April', 'May', 'June'],

@@ -1,0 +1,13 @@
+<template x-component="principle">
+    <template x-if="microDoc.json.type == 'principle' && 'principle' in microDoc.json">
+        <div x-show="microDoc.json.type == 'principle'" x-cloak x-transition>
+            <div
+                    x-data="{content: ''}"
+                    x-init="content = microDoc.json.principle"
+                    x-effect="microDoc.json.principle = content;$dispatch('change')"
+                    x-import="doc-sections/markdown">
+                <ui-markdown></ui-markdown>
+            </div>
+        </div>
+    </template>
+</template>

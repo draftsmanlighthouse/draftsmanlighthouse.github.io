@@ -1,0 +1,68 @@
+<template x-component="y-statement">
+    <template x-if="microDoc.json.type == 'ADR' && 'ystatement' in microDoc.json">
+        <div x-show="microDoc.json.type == 'ADR'" x-cloak x-transition>
+           <table class="table">
+               <tr>
+                   <th>In the context of</th>
+                   <td>
+                       <textarea class="textarea textarea-neutral  w-full"
+                                 x-model="microDoc.json.ystatement.context"
+                                 placeholder="<context>"
+                                 rows="1"
+                                 x-init="resize_textarea"
+                                 @keyup.debounce="$dispatch('change')"></textarea>
+                   </td>
+                   <th>Facing</th>
+                   <td>
+                       <textarea class="textarea textarea-neutral  w-full"
+                                 x-model="microDoc.json.ystatement.concern"
+                                 placeholder="<concern>"
+                                 rows="1"
+                                 x-init="resize_textarea"
+                                 @keyup.debounce="$dispatch('change')"></textarea>
+                   </td>
+               </tr>
+               <tr>
+                   <th>We decided for</th>
+                   <td>
+                       <textarea class="textarea textarea-neutral  w-full"
+                                 x-model="microDoc.json.ystatement.decision"
+                                 placeholder="<decision>"
+                                 rows="1"
+                                 x-init="resize_textarea"
+                                 @keyup.debounce="$dispatch('change')"></textarea>
+                   </td>
+                   <th>And discarded</th>
+                   <td>
+                       <textarea class="textarea textarea-neutral  w-full"
+                                 x-model="microDoc.json.ystatement.alternatives"
+                                 placeholder="<alternatives>"
+                                 rows="1"
+                                 x-init="resize_textarea"
+                                 @keyup.debounce="$dispatch('change')"></textarea>
+                   </td>
+               </tr>
+               <tr>
+                   <th>To achieve</th>
+                   <td>
+                       <textarea class="textarea textarea-neutral  w-full"
+                                 x-model="microDoc.json.ystatement.quality"
+                                 placeholder="<characteristic>"
+                                 rows="1"
+                                 x-init="resize_textarea"
+                                 @keyup.debounce="$dispatch('change')"></textarea>
+                   </td>
+                   <th>Accepting the consequence of</th>
+                   <td>
+                       <textarea class="textarea textarea-neutral  w-full"
+                                 x-model="microDoc.json.ystatement.consequence"
+                                 placeholder="<consequence>"
+                                 rows="1"
+                                 x-init="resize_textarea"
+                                 @keyup.debounce="$dispatch('change')"></textarea>
+                   </td>
+               </tr>
+           </table>
+        </div>
+    </template>
+</template>

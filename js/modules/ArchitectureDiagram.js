@@ -13,14 +13,14 @@ document.addEventListener('alpine:init', () => {
                   // TODO: Er voor zorgen dat systeem/component namen geen : bevatten. Want dat heeft betekenis in ons model.
                   let stash = {};
                   let history = {};
-                  console.log(data)
+                  if(!data){return}
                   for (const [key, value] of Object.entries(data.components)) {
                     history[key] = value;
-                    if (level == "enterprise" && !key.includes(":") && value.scope == "internal"){
+                    if (level == "landscape" && !key.includes(":") && value.scope == "internal"){
                         let component = await diagram.add_element('internal_component', key, value.description, value.technology);
                         components[key] = component;
                     }
-                    if (level == "enterprise" && !key.includes(":") && value.scope == "external"){
+                    if (level == "landscape" && !key.includes(":") && value.scope == "external"){
                         let component = await diagram.add_element('external_service', key, value.description, value.technology);
                         components[key] = component;
                     }
@@ -62,7 +62,7 @@ document.addEventListener('alpine:init', () => {
                   for (const edge of edges) {
                     if (edge.source in components && edge.target in components){
                         diagram.add_relation(components[edge.source], components[edge.target], edge.label, "LR");
-                    } else if (level == "enterprise" && edge.source.split(":").at(0) in components && edge.target.split(":").at(0) in components){
+                    } else if (level == "landscape" && edge.source.split(":").at(0) in components && edge.target.split(":").at(0) in components){
                         diagram.add_relation(components[edge.source.split(":").at(0)], components[edge.target.split(":").at(0)], edge.label, "LR");
                     } else {
                         if (!(edge.target in components)){
@@ -120,6 +120,10 @@ document.addEventListener('alpine:init', () => {
                         continue;
                     }
                     let el = history[edge.source];
+                    if (!el){
+                        console.log(edge)
+                        continue;
+                    }
                     let visual = el.external ? "person_external" : "person_internal";
                     components[edge.source] = await diagram.add_element(visual,el.name,el.description);
                     diagram.add_relation(components[edge.source], components[target], edge.label, "LR");
@@ -130,6 +134,30 @@ document.addEventListener('alpine:init', () => {
                 console.error('Fout bij laden van diagram:', error);
               }
         }
+    }
+  });
+  Alpine.data("Decisions",function(){
+    return {
+        filter_decisions(documents,level){
+            let decisions = Object.values(documents).filter(x => x.type == 'design decision' || x.type == 'ADR');
+            if (level == "landscape"){
+                return decisions;
+            }
+            let retval = [];
+            let pre = level.replace("landscape:","");
+            decisions.forEach(decision => {
+                if ("source" in decision.effect && decision.effect.source.startsWith(pre)){
+                    retval.push(decision);
+                } else if ("target" in decision.effect && decision.effect.target.startsWith(pre)){
+                    retval.push(decision);
+                } else if ("system_name" in decision.effect && level.endsWith(decision.effect.system_name)){
+                    retval.push(decision);
+                } else if ("system_name" in decision.effect && level.split(":").length == 2 && level.includes(decision.effect.scope)){
+                    retval.push(decision);
+                }
+            })
+            return retval;
+        },
     }
   });
 });

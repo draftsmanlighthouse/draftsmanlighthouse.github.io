@@ -1,0 +1,219 @@
+<template x-component="header">
+    <table class="table table-sm">
+        <tr>
+            <th>Type</th>
+            <td>
+                <select class="select select-ghost select-sm"
+                        @change="update_doc_type"
+                        x-model="microDoc.json.type">
+                    <option>note</option>
+                    <option>design decision</option>
+                    <option>ADR</option>
+                    <option>principle</option>
+                    <option>persona</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>
+                <select class="select select-ghost select-sm" x-model="microDoc.json.status">
+                    <option>draft</option>
+                    <option x-show="['note','principle','persona'].includes(microDoc.json.type)" x-cloak x-transition>
+                        published
+                    </option>
+
+                    <option x-show="['ADR','design decision','principle','persona'].includes(microDoc.json.type)"
+                            x-cloak x-transition>review
+                    </option>
+                    <option x-show="['ADR','design decision'].includes(microDoc.json.type)" x-cloak x-transition>
+                        decided
+                    </option>
+                    <option x-show="['ADR','design decision'].includes(microDoc.json.type)" x-cloak x-transition>
+                        rejected
+                    </option>
+
+                    <option x-show="['note','principle','persona'].includes(microDoc.json.type)" x-cloak x-transition>
+                        deleted
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Parent</th>
+            <td>
+                            <span x-text="microDoc.json.parent ? index.documents[microDoc.json.parent].name : ''"
+                                  @click="open_doc(microDoc.json.parent)"
+                                  class="link ml-4"></span>
+                <span x-show="!microDoc.json.parent" x-cloak x-transition>n.a.</span>
+
+                <i class="ml-5 cursor-pointer fa-regular fa-pen-to-square"
+                   @click="$refs.select_document.showModal()"></i>
+                <dialog x-ref="select_document" class="modal">
+                    <div class="modal-box"
+                         x-data="{search: '', items: []}"
+                         x-effect="
+                                        let results = miniSearch.search(search);
+                                        if (results.length != 0){
+                                            items = results.map(x => index.documents[x.id]);
+                                        } else {
+                                            items = index.documents;
+                                        }">
+                        <h3 class="text-lg font-bold">Select parent</h3>
+                        <input
+                                type="search"
+                                x-model="search"
+                                placeholder="Search micro doc..."
+                                class="input input-primary input-sm w-full pr-10 mb-5"/>
+
+                        <table class="table table-xs">
+                            <tr>
+                                <th>n.a.</th>
+                                <td>
+                                    <button @click="microDoc.json.parent = '';$dispatch('change');$refs.select_document.close()"
+                                            class="btn btn-xs btn-ghost">select
+                                    </button>
+                                </td>
+                            </tr>
+                            <template x-for="doc in items" :key="doc.id">
+                                <tr x-show="!microDoc.lineage.includes(doc.id)" x-cloak x-transition>
+                                    <th x-text="doc.name"></th>
+                                    <td>
+                                        <button @click="microDoc.json.parent = doc.id;$dispatch('change');$refs.select_document.close()"
+                                                class="btn btn-xs btn-ghost">select
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </table>
+                    </div>
+                    <form method="dialog" class="modal-backdrop">
+                        <button>close</button>
+                    </form>
+                </dialog>
+            </td>
+        </tr>
+        <template x-if="microDoc.json.type == 'principle'">
+            <tr>
+                <th>Scope</th>
+                <td>
+                    <select x-model="microDoc.json.scope"
+                            class="select select-xs">
+                        <option value="landscape">landscape</option>
+                        <template x-for="container in Object.keys(c4_data.components)">
+                            <template x-if="container.split(':').length != 3">
+                                <option x-text="container" :value="component_index[container]"
+                                        :selected="component_index[container] == microDoc.json.scope"></option>
+                            </template>
+                        </template>
+                    </select>
+                </td>
+            </tr>
+        </template>
+        <template x-if="microDoc.json.type == 'persona'">
+            <tr>
+                <th>Persona name</th>
+                <td>
+                    <input class="input input-sm" x-model="microDoc.json.effect.name"/>
+                </td>
+            </tr>
+        </template>
+        <template x-if="microDoc.json.type == 'persona'">
+            <tr>
+                <th>Description</th>
+                <td>
+                    <input class="input input-sm" x-model="microDoc.json.effect.description"/>
+                </td>
+            </tr>
+        </template>
+        <template x-if="microDoc.json.type == 'persona'">
+            <tr>
+                <th>External</th>
+                <td>
+                    <input type="checkbox" x-model="microDoc.json.effect.external"
+                           class="toggle border-indigo-600 bg-indigo-500 checked:border-orange-500 checked:bg-orange-400 checked:text-orange-800">
+                </td>
+            </tr>
+        </template>
+        <template x-if="['design decision','ADR','principle'].includes(microDoc.json.type)">
+            <tr>
+                <th>Guided by</th>
+                <td>
+                    <span x-show="!('precedent' in microDoc.json) || !microDoc.json.precedent">n.a.</span>
+                    <template x-if="'precedent' in microDoc.json && microDoc.json.precedent">
+                        <a class="link" @click="open_doc(microDoc.json.precedent)"
+                           x-text="index.documents[microDoc.json.precedent].name"></a>
+                    </template>
+                    <button class="btn btn-ghost btn-xs" onclick="precedent_modal.showModal()">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                    <dialog id="precedent_modal" class="modal">
+                        <div class="modal-box max-w-3xl max-h-[90vh] overflow-y-auto" x-data="{search: ''}">
+
+                            <label class="input text-xs m-5">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="search" placeholder="Search" x-model="search"/>
+                            </label>
+
+                            <template x-if="'precedent' in microDoc.json && microDoc.json.precedent">
+                                <p class="m-5">
+                                    Current link: <span x-text="index.documents[microDoc.json.precedent].name"></span>
+                                    <button @click="microDoc.json.precedent = ''" class="btn btn-ghost btn-xs">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </p>
+                            </template>
+
+
+                            <template x-for="item in get_referable_decisions(index.documents)" :key="item.id">
+                                <div x-show="search == '' || `${item.title} ${item.principle}`.toLowerCase().includes(search.toLowerCase())"
+                                     x-cloak x-transition
+                                     class="card w-[90%] bg-base-100 border card-sm m-5">
+                                    <div class="card-body">
+                                        <h2 class="card-title">
+                                            <span x-text="item.name"></span>
+                                        </h2>
+                                        <p>
+                                            <template x-if="item.type == 'principle' && item.principle">
+                                                <div
+                                                        x-data="{content: '', readonly: true}"
+                                                        x-init="content = item.principle"
+                                                        x-import="doc-sections/markdown">
+                                                    <ui-markdown></ui-markdown>
+                                                </div>
+                                            </template>
+                                            <template x-if="item.type == 'ADR' && item.ystatement">
+                                                <div x-text="convert_y(item.ystatement)"></div>
+                                            </template>
+                                        </p>
+                                        <div class="justify-end card-actions">
+                                            <button @click="microDoc.json.precedent = item.id;precedent_modal.close();$dispatch('change')"
+                                                    class="btn btn-primary btn-outline btn-sm">Link
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                        </div>
+                        <form method="dialog" class="modal-backdrop">
+                            <button>close</button>
+                        </form>
+                    </dialog>
+                </td>
+            </tr>
+        </template>
+        <tr>
+            <th>Created</th>
+            <td>
+                <span class="ml-4" x-text="formatCreated(microDoc.json.created)"></span>
+            </td>
+        </tr>
+        <tr x-show="formatCreated(microDoc.json.created) != formatCreated(microDoc.json.updated)" x-cloak x-transition>
+            <th>Updated</th>
+            <td>
+                <span class="ml-4" x-text="formatCreated(microDoc.json.updated)"></span>
+            </td>
+        </tr>
+    </table>
+</template>

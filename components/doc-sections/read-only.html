@@ -4,7 +4,7 @@
         <template x-if="doc_section.type == 'markdown'">
             <div
                     x-data="{content: ''}"
-                    x-init="content = doc_section.body"
+                    x-init="content = doc_section.data"
                     x-import="doc-sections/markdown">
                 <ui-markdown></ui-markdown>
             </div>
@@ -14,7 +14,7 @@
         <template x-if="doc_section.type == 'drawio'">
             <div
                     x-data="{currentDiagram: '', selectedMode: 'minimal', readonly: true}"
-                    x-init="currentDiagram = doc_section.body"
+                    x-init="currentDiagram = doc_section.data"
                     x-import="doc-sections/drawio">
                 <ui-drawio></ui-drawio>
             </div>
@@ -24,7 +24,7 @@
         <template x-if="doc_section.type == 'sketch'">
             <div
                     x-data="{currentDiagram: '', selectedMode: 'sketch', readonly: true}"
-                    x-init="currentDiagram = doc_section.body"
+                    x-init="currentDiagram = doc_section.data"
                     x-import="doc-sections/drawio">
                 <ui-drawio></ui-drawio>
             </div>
@@ -34,7 +34,7 @@
         <template x-if="doc_section.type == 'mermaid'">
             <div
                     x-data="{currentDiagram: '', readonly: true}"
-                    x-init="currentDiagram = doc_section.body"
+                    x-init="currentDiagram = doc_section.data"
                     x-import="doc-sections/mermaid">
                 <ui-mermaid></ui-mermaid>
             </div>
@@ -43,8 +43,8 @@
         <!-- Chart -->
         <template x-if="doc_section.type == 'chart'">
             <div
-                    x-data="{currentData: '', readonly: true}"
-                    x-init="currentData = doc_section.body"
+                    x-data="{currentData: '', readonly: true, currentChartType: doc_section.chart_type, currentViewMode: doc_section.view_mode}"
+                    x-init="currentData = doc_section.data"
                     x-import="doc-sections/charts">
                 <ui-charts></ui-charts>
             </div>
