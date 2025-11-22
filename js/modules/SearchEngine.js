@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
         groupedTags: {},
         search: this.$persist("").as("fullTextSearch"),
         prefilter: this.$persist([]),
+        showDeleted: this.$persist(false),
         results: [],
         suggestions: [],
         init(){
@@ -40,6 +41,12 @@ document.addEventListener('alpine:init', () => {
           } else {
             filtered = Object.values(documents);
           }
+          if (this.showDeleted){
+            filtered = filtered.filter(x => x.status == "deleted");
+          } else {
+            filtered = filtered.filter(x => x.status != "deleted");
+          }
+
           if (selectedTags.length > 0) {
             filtered = filtered.filter(doc => {
               let tags = Array.isArray(doc.tags) ? [...doc.tags] : [];
@@ -72,13 +79,14 @@ document.addEventListener('alpine:init', () => {
           }
 
           if (this.search == ""){
-            this.results = filtered.sort(
+            results = filtered.sort(
                 (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
               );
           }else{
-            this.results = filtered;
+            results = filtered;
           }
 
+           this.results = sortByPreferredOrder(results,this.history)
         }
     }
   });

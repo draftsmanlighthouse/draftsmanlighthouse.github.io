@@ -1,9 +1,12 @@
 function buildMenuHTML(nodes) {
 
-  if (nodes.length == 0){
+  if (nodes.filter(x => x.status != "deleted").length == 0){
     return "";
   }
   function renderNode(node) {
+    if (node.status == "deleted"){
+        return "";
+    }
     const hasChildren = node.documents && node.documents.length > 0;
 
     if (!hasChildren) {

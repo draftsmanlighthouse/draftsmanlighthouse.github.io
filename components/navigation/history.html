@@ -1,0 +1,38 @@
+<template x-component="history">
+    <ul class="menu menu-xs bg-base-200 rounded-box m-5 w-[85%]" x-show="history.length != 0" x-cloak x-transition>
+        <style>
+            .truncate-fade {
+              position: relative;
+              overflow: hidden;
+              display: block;
+              max-width: 100%;
+            }
+
+            .truncate-fade span {
+              display: inline-block;
+              white-space: nowrap;   /* voor single-line fade */
+              width: 100%;
+            }
+
+            /* Fade-out mask */
+            .truncate-fade::after {
+              content: "";
+              position: absolute;
+              right: 0;
+              top: 0;
+              height: 100%;
+              width: 3rem;
+              pointer-events: none;
+              background: linear-gradient(to right, transparent, rgb(243 244 246));
+              /* kleur: bg-base-200 van daisyui */
+            }
+        </style>
+        <template x-for="id in history.slice(0,5)" :key="id">
+            <li class="truncate-fade">
+                <a @click="open_doc(id)">
+                    <span x-text="index.documents[id].name"></span>
+                </a>
+            </li>
+        </template>
+    </ul>
+</template>

@@ -3,6 +3,7 @@ document.addEventListener("alpine:init", () => {
     return {
       notebooks: {},
       notebook: "",
+      permissionIssue: false,
       navigation: this.$persist("doc"),
       index: {
         documents: {},
@@ -10,6 +11,7 @@ document.addEventListener("alpine:init", () => {
         lineage: {},
       },
       node_index: this.$persist({}),
+      history: this.$persist([]),
 
       c4_data: this.$persist({}),
       component_index: this.$persist({}),
@@ -89,7 +91,15 @@ document.addEventListener("alpine:init", () => {
         if (id === "new/import") {
           return await this.importNotebook();
         }
+        if (id == "soft delete"){
+            await this.remove(this.notebook);
+            return;
+        }
 
+        if (this.notebook && this.notebook != id){
+            this.history = [];
+            // de rest ook resetten
+        }
         this.notebook = id;
         localStorage.lastNotebook = id;
 
@@ -237,6 +247,7 @@ document.addEventListener("alpine:init", () => {
                 id: node.id,
                 name: node.name,
                 documents: (children[node.id] || []).map(buildNode),
+                status: node.status
               };
             }
 
@@ -346,6 +357,8 @@ document.addEventListener("alpine:init", () => {
           this.index = index;
           this.menuHTML = buildMenuHTML(this.index.navigation);
 
+          let keys = Object.keys(this.index.documents);
+          this.history = this.history.filter(x => keys.includes(x));
           const totalEnd = performance.now();   // totaal
           // -------------------------
           // LOGGING (high-resolution)
@@ -461,14 +474,16 @@ document.addEventListener("alpine:init", () => {
             await read_section(section)
           }
 
-//          for (const section of json.archive){
-//            await read_section(section)
-//          }
+          for (const section of json.archive){
+            await read_section(section)
+          }
         return {json, docDir};
       },
       async open_doc(id) {
           if (!this.notebook) return;
           this.navigation = "doc";
+          this.history = this.history.filter(x => x != id);
+          this.history.unshift(id);
           this.save_enabled = false;
           localStorage.lastDocument = id;
 
@@ -493,8 +508,67 @@ document.addEventListener("alpine:init", () => {
             window.dispatchEvent(new CustomEvent("reload"));
           },500);
           setTimeout(this.enable_save.bind(this),1500);
+          if (json.parent && !Object.keys(this.index.documents).includes(json.parent)){
+            json.parent = "";
+            setTimeout(this.save_doc.bind(this),1600);
+          }
         },
 
+      async delete_doc(id) {
+          const notebookEntry = this.notebooks[this.notebook];
+          if (!notebookEntry) return;
+          if (!confirm("Delete from disk?")){return}
+          // TODO: remove references e.g. parent ref
+          const notebookDir = notebookEntry.handle;
+          await this.verifyPermissions(notebookDir);
+
+          let docDir;
+          try {
+            docDir = await notebookDir.getDirectoryHandle(id);
+          } catch {
+            console.error("Map bestaat niet:", id);
+            return;
+          }
+
+          // 1. Alles in de map verwijderen
+          for await (const [name, handle] of docDir.entries()) {
+            await docDir.removeEntry(name, { recursive: true });
+          }
+
+          // 2. De map zelf verwijderen in de notebook map
+          try {
+            await notebookDir.removeEntry(id, { recursive: true });
+          } catch (err) {
+            console.error("Kon map niet verwijderen:", err);
+            return;
+          }
+
+          // 3. UI opruimen
+          if (this.microDoc?.json?.id === id) {
+            this.microDoc = null;
+          }
+
+          // 4. Index opnieuw opbouwen
+          await this.indexFiles(notebookDir);
+
+          console.log(`Document "${id}" volledig verwijderd.`);
+        },
+      async delete_section(id) {
+          const notebookEntry = this.notebooks[this.notebook];
+          if (!notebookEntry) return;
+          if (!confirm("Delete section from disk?")){return}
+          this.microDoc.json.archive = this.microDoc.json.archive.filter(x => x.id != id);
+          const notebookDir = notebookEntry.handle;
+          await this.verifyPermissions(notebookDir);
+
+          let docDir = this.microDoc.dir;
+          for await (const [name, handle] of docDir.entries()) {
+            if (name.startsWith(id + ".")){
+                await docDir.removeEntry(name);
+            }
+          }
+          await this.save_doc();
+        },
       update_doc_type(){
           const allowed = [
             "id", "name", "status", "created", "updated",
@@ -613,6 +687,9 @@ document.addEventListener("alpine:init", () => {
           }
 
           const { dir, json, id } = microDoc;
+          if (json.status == "deleted"){
+            this.history = this.history.filter(x => x != id);
+          }
           json.tags = [...new Set(json.tags)];
           try {
             // 1. Bestaat index.json? Anders aanmaken
@@ -702,10 +779,17 @@ document.addEventListener("alpine:init", () => {
         const perm = await handle.queryPermission(opts);
         if (perm === "granted") return true;
 
-        const status = await handle.requestPermission(opts);
-        if (status !== "granted") {
-          throw new Error("Permission not granted");
+        try{
+            const status = await handle.requestPermission(opts);
+            if (status !== "granted") {
+              this.permissionIssue = true;
+              throw new Error("Permission not granted");
+            }
+            this.permissionIssue = false;
+        } catch{
+            this.permissionIssue = true;
         }
+
 
         return true;
       },
@@ -724,6 +808,53 @@ function removeById(array, id) {
   const index = array.findIndex(x => x.id === id);
   if (index === -1) return null;
   return array.splice(index, 1)[0];
+}
+
+function sectionReorder(microDoc) {
+    return {
+        sections: microDoc.json.sections,
+
+        moveUp(i) {
+            if (i === 0) return;
+            const arr = this.sections;
+            [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+        },
+
+        moveDown(i) {
+            if (i === this.sections.length - 1) return;
+            const arr = this.sections;
+            [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+        }
+    };
+}
+
+function sortByPreferredOrder(results, preferredOrder) {
+  if (!Array.isArray(results)) {
+    results = Object.values(results);
+  }
+  const orderMap = new Map();
+
+  // Map id → index in preferred order
+  preferredOrder.forEach((id, i) => orderMap.set(id, i));
+
+  return results.slice().sort((a, b) => {
+    const aHas = orderMap.has(a.id);
+    const bHas = orderMap.has(b.id);
+
+    // 1. Als beide een voorkeurspositie hebben → sorteer daarnaar
+    if (aHas && bHas) {
+      return orderMap.get(a.id) - orderMap.get(b.id);
+    }
+
+    // 2. Als alleen A voorkeurspositie heeft → A eerst
+    if (aHas && !bHas) return -1;
+
+    // 3. Als alleen B voorkeurspositie heeft → B eerst
+    if (!aHas && bHas) return 1;
+
+    // 4. Als geen van beide in preferredOrder staat → fallback sortering
+    return a.id.localeCompare(b.id);
+  });
 }
 
 const PRINCIPLE = `### Statement

@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <th>Status</th>
-            <td>
+            <td class="flex items-center justify-between gap-2">
                 <select class="select select-ghost select-sm" x-model="microDoc.json.status">
                     <option>draft</option>
                     <option x-show="['note','principle','persona'].includes(microDoc.json.type)" x-cloak x-transition>
@@ -37,6 +37,11 @@
                         deleted
                     </option>
                 </select>
+                <button class="btn btn-error btn-outline btn-sm"
+                        @click="delete_doc(microDoc.id)"
+                        x-show="microDoc.json.status == 'deleted'" x-cloak x-transition>
+                    <i class="fa-solid fa-trash"></i>
+                </button>
             </td>
         </tr>
         <tr>
@@ -75,7 +80,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <template x-for="doc in items" :key="doc.id">
+                            <template x-for="doc in sortByPreferredOrder(items,history)" :key="doc.id">
                                 <tr x-show="!microDoc.lineage.includes(doc.id)" x-cloak x-transition>
                                     <th x-text="doc.name"></th>
                                     <td>
@@ -165,7 +170,7 @@
                             </template>
 
 
-                            <template x-for="item in get_referable_decisions(index.documents)" :key="item.id">
+                            <template x-for="item in sortByPreferredOrder(get_referable_decisions(index.documents),history)" :key="item.id">
                                 <div x-show="search == '' || `${item.title} ${item.principle}`.toLowerCase().includes(search.toLowerCase())"
                                      x-cloak x-transition
                                      class="card w-[90%] bg-base-100 border card-sm m-5">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>The Architect’s Notebook</title>
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="icon" href="/favicon.png" type="image/png"/>
 
     <!-- AlpineJS & Vimesh -->
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
@@ -14,12 +14,12 @@
     <script src="/js/config/setup.js"></script>
 
     <!-- DaisyUI -->
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
     <script src="/js/tp/tailwind.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
     <!-- markdown -->
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
@@ -43,61 +43,64 @@
     <style>[x-cloak] { display: none !important; }</style>
 
     <!-- sortable -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 
     <script src="/js/utils/dbutil.js"></script>
     <script src="/js/utils/menu-generator.js"></script>
     <script src="/js/utils/time-utils.js"></script>
 </head>
 <body x-data="main">
-    <div class="grid grid-cols-12">
-        <div class="col-span-2 h-screen bg-neutral" x-import="navigation/notebook-selector;navigation/menu-actions">
-            <ui-notebook-selector></ui-notebook-selector>
+<div class="grid grid-cols-12">
+    <div class="col-span-2 h-screen bg-neutral" x-import="navigation/notebook-selector;navigation/menu-actions;navigation/history">
+        <ui-notebook-selector></ui-notebook-selector>
+        <div x-show="!permissionIssue" x-cloak x-transition>
             <ui-actions></ui-actions>
+            <ui-history></ui-history>
             <div>
                 <div x-html="menuHTML"></div>
             </div>
-
-
-            <button class="btn btn-outline btn-success m-5 w-[85%]" @click="create_doc">
-                <i class="fa-solid fa-plus"></i> add document
-            </button><br>
-            <button class="btn btn-outline btn-error m-5 w-[85%]" @click="remove(notebook)">
-                <i class="fa-solid fa-trash"></i> remove notebook
-            </button>
-        </div>
-        <div class="col-span-10" x-data="{level: $persist('landscape'), active_tab: $persist('C4'), selected: ''}">
-            <div class="h-[5vh] w-full bg-neutral-content" x-import="navigation/architecture-header">
-                <ui-architecture-header></ui-architecture-header>
-            </div>
-            <div class="p-5 max-h-[95vh] overflow-y-auto" x-import="micro-doc;architecture;all-documents">
-                <template x-if="navigation == 'architecture'">
-                    <ui-architecture></ui-architecture>
-                </template>
-                <template x-if="navigation == 'doc' && microDoc.id">
-                    <ui-micro-doc></ui-micro-doc>
-                </template>
-                <template x-if="navigation == 'dashboard'">
-                    <span>Dashboard (TODO)</span>
-                </template>
-                <template x-if="navigation == 'infodecks'">
-                    <span>Curated narratives / infodecks (TODO)</span>
-                </template>
-                <template x-if="navigation == 'search'">
-                    <ui-all-documents></ui-all-documents>
-                </template>
-            </div>
         </div>
     </div>
+    <div class="col-span-10" x-data="{level: $persist('landscape'), active_tab: $persist('C4'), selected: ''}">
+        <div class="h-[5vh] w-full bg-neutral-content flex items-center justify-between gap-2" x-import="navigation/architecture-header">
+            <ui-architecture-header></ui-architecture-header>
+            <button class="btn btn-outline btn-success btn-sm btn-circle m-2 mr-5" @click="create_doc">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+        <div class="p-5 max-h-[95vh] overflow-y-auto" x-import="micro-doc;architecture;all-documents">
+            <template x-if="navigation == 'architecture'">
+                <ui-architecture></ui-architecture>
+            </template>
+            <template x-if="navigation == 'doc' && microDoc.id">
+                <ui-micro-doc></ui-micro-doc>
+            </template>
+            <template x-if="navigation == 'doc' && Object.keys(microDoc).length == 0">
+                <div>
+                    TODO: Home page
+                </div>
+            </template>
+            <template x-if="navigation == 'dashboard'">
+                <span>Dashboard (TODO)</span>
+            </template>
+            <template x-if="navigation == 'infodecks'">
+                <span>Curated narratives / infodecks (TODO)</span>
+            </template>
+            <template x-if="navigation == 'search'">
+                <ui-all-documents></ui-all-documents>
+            </template>
+        </div>
+    </div>
+</div>
 
-    <script src="/js/modules/DocumentEngine.js"></script>
-    <script src="/js/modules/MicroDocUtils.js"></script>
-    <script src="/js/modules/MarkdownEditor.js"></script>
-    <script src="/js/modules/DrawioEditor.js"></script>
-    <script src="/js/modules/MermaidEditor.js"></script>
-    <script src="/js/modules/ChartEditor.js"></script>
-    <script src="/js/modules/NodeDiagram.js"></script>
-    <script src="/js/modules/ArchitectureDiagram.js"></script>
-    <script src="/js/modules/SearchEngine.js"></script>
+<script src="/js/modules/DocumentEngine.js"></script>
+<script src="/js/modules/MicroDocUtils.js"></script>
+<script src="/js/modules/MarkdownEditor.js"></script>
+<script src="/js/modules/DrawioEditor.js"></script>
+<script src="/js/modules/MermaidEditor.js"></script>
+<script src="/js/modules/ChartEditor.js"></script>
+<script src="/js/modules/NodeDiagram.js"></script>
+<script src="/js/modules/ArchitectureDiagram.js"></script>
+<script src="/js/modules/SearchEngine.js"></script>
 </body>
 </html>

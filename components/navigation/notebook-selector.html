@@ -8,6 +8,11 @@
                 <option :value="book.id" :selected="book.id == notebook" x-text="book.name"></option>
             </template>
             <option>new/import</option>
+            <option>soft delete</option>
         </select>
+        <button class="btn m-5 w-[85%] btn-error btn-outline" @click="restoreNotebooks"
+                x-show="permissionIssue" x-cloak x-transition>
+            Missing folder permission
+        </button>
     </div>
 </template>

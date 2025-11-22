@@ -14,9 +14,9 @@
                 />
 
                 <datalist id="auto-suggest">
-                  <template x-for="suggestion in suggestions">
-                      <option :value="suggestion"></option>
-                  </template>
+                    <template x-for="suggestion in suggestions">
+                        <option :value="suggestion"></option>
+                    </template>
                 </datalist>
 
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -48,6 +48,11 @@
                 <span class="ml-1"> documents</span>
             </div>
 
+            <label class="label">
+                <input type="checkbox" checked="checked" class="toggle toggle-sm" x-model="showDeleted"/>
+                &nbsp;Search archive
+            </label>
+
             <!-- Clear filters button -->
             <button
                     class="btn btn-error btn-outline btn-sm"
@@ -62,62 +67,64 @@
         <div class="grid grid-cols-12 gap-3">
             <div class="col-span-8">
                 <div x-data="{ expanded: false }" class="mt-2">
-            <div
-                    class="relative transition-all duration-300 ease-in-out overflow-hidden"
-                    :class="expanded ? 'max-h-[600px]' : 'max-h-[200px]'">
-                <!-- jouw tagsectie komt hier -->
-                <div x-effect="prepare(tags)" class="grid grid-cols-6 gap-x-6 text-sm leading-relaxed">
-                    <template x-for="[letter, tags] of Object.entries(groupedTags)" :key="letter">
-                        <div>
-                            <h3 class="font-semibold text-neutral-content underline underline-offset-2 mb-1"
-                                x-text="letter"></h3>
-                            <ul class="space-y-0.5">
-                                <template x-for="tag in tags" :key="tag">
-                                    <li>
-                                        <label class="cursor-pointer">
-                                            <input type="checkbox" x-model="selectedTags" :value="tag" class="hidden"/>
-                                            <span
-                                                    class="transition-colors border-b border-transparent hover:border-primary/60"
-                                                    :class="selectedTags.includes(tag)
+                    <div
+                            class="relative transition-all duration-300 ease-in-out overflow-hidden"
+                            :class="expanded ? 'max-h-[600px]' : 'max-h-[200px]'">
+                        <!-- jouw tagsectie komt hier -->
+                        <div x-effect="prepare(tags)" class="grid grid-cols-6 gap-x-6 text-sm leading-relaxed">
+                            <template x-for="[letter, tags] of Object.entries(groupedTags)" :key="letter">
+                                <div>
+                                    <h3 class="font-semibold text-neutral-content underline underline-offset-2 mb-1"
+                                        x-text="letter"></h3>
+                                    <ul class="space-y-0.5">
+                                        <template x-for="tag in tags" :key="tag">
+                                            <li>
+                                                <label class="cursor-pointer">
+                                                    <input type="checkbox" x-model="selectedTags" :value="tag"
+                                                           class="hidden"/>
+                                                    <span
+                                                            class="transition-colors border-b border-transparent hover:border-primary/60"
+                                                            :class="selectedTags.includes(tag)
                             ? 'text-primary underline underline-offset-2'
                             : 'text-base-content/70 hover:text-primary'"
-                                                    x-text="tag"
-                                            ></span>
-                                        </label>
-                                    </li>
-                                </template>
-                            </ul>
+                                                            x-text="tag"
+                                                    ></span>
+                                                </label>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </template>
                         </div>
-                    </template>
+
+                        <!-- fade overlay -->
+                        <div
+                                class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-base-100 to-transparent pointer-events-none"
+                                x-show="!expanded"
+                        ></div>
+                    </div>
+
+                    <!-- toggle knop -->
+                    <div class="flex justify-center mt-2">
+                        <button
+                                class="btn btn-xs btn-ghost text-primary"
+                                @click="expanded = !expanded"
+                                x-text="expanded ? 'Show less' : 'Show more'"
+                        ></button>
+                    </div>
                 </div>
-
-                <!-- fade overlay -->
-                <div
-                        class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-base-100 to-transparent pointer-events-none"
-                        x-show="!expanded"
-                ></div>
-            </div>
-
-            <!-- toggle knop -->
-            <div class="flex justify-center mt-2">
-                <button
-                        class="btn btn-xs btn-ghost text-primary"
-                        @click="expanded = !expanded"
-                        x-text="expanded ? 'Show less' : 'Show more'"
-                ></button>
-            </div>
-        </div>
             </div>
             <div class="col-span-4" x-import="doc-components/node-diagram">
                 <ui-large-node-diagram></ui-large-node-diagram>
             </div>
         </div>
 
-       <!-- results -->
+        <!-- results -->
         <table class="table" x-effect="filter(index.documents,selectedTags,prefilter);$dispatch('reload')">
             <template x-for="doc in results" :key="doc.id">
                 <tr>
                     <th x-text="doc.type"></th>
+                    <td x-text="doc.status"></td>
                     <td x-text="doc.name"></td>
                     <td>
                         <a class="btn btn-ghost btn-sm" @click="open_doc(doc.id)">open</a>

@@ -38,8 +38,15 @@ document.addEventListener('alpine:init', () => {
 
         initEditor() {
             const container = this.$refs.editor_container;
-            container.innerHTML = `<iframe frameborder="0" style="width:100%;height:600px;" src="${this.getEditorUrl()}"></iframe>`;
+            container.innerHTML = `<iframe frameborder="0" style="width:100%;height:600px;" src="${this.getEditorUrl()}" allowfullscreen></iframe>`;
             this.editorFrame = container.querySelector('iframe');
+            if (this.editorFrame.requestFullscreen) {
+                this.editorFrame.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) { // Safari
+                this.editorFrame.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) { // IE11
+                this.editorFrame.msRequestFullscreen();
+            }
         },
 
         startEditing() {
@@ -50,6 +57,7 @@ document.addEventListener('alpine:init', () => {
         switchToViewMode() {
             this.isEditing = false;
             this.displayDiagram();
+            document.exitFullscreen();
         },
 
         setupMessageHandling() {
