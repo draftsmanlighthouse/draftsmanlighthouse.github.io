@@ -159,7 +159,8 @@ document.addEventListener("alpine:init", () => {
                   principle: json.principle || "",
                   ystatement: json.ystatement || {},
                   status: json.status || "draft",
-                  scope: json.scope || ""
+                  scope: json.scope || "",
+                  updated: json.updated || 0
                 };
                 if ("effect" in json){
                     index.documents[name].effect = json.effect;
@@ -405,6 +406,40 @@ document.addEventListener("alpine:init", () => {
             created: Date.now(),
             updated: Date.now(),
             type: "note",
+            parent: "",
+            sections: [],
+            archive: []
+          };
+
+          const writable = await indexHandle.createWritable();
+          await writable.write(JSON.stringify(defaultContent, null, 2));
+          await writable.close();
+          await this.open_doc(id);
+          // 3. Reload document list
+          await this.indexFiles(dir);
+        },
+
+      async create_deck() {
+          const entry = this.notebooks[this.notebook];
+          if (!entry) return;
+
+          const dir = entry.handle;
+          await this.verifyPermissions(dir);
+
+          // 1. Maak directory voor document
+          const id = crypto.randomUUID();
+          const docDir = await dir.getDirectoryHandle(id, { create: true });
+
+          // 2. Maak index.json in die map
+          const indexHandle = await docDir.getFileHandle("index.json", { create: true });
+
+          const defaultContent = {
+            id,
+            name: "New narrative",
+            status: "draft",
+            created: Date.now(),
+            updated: Date.now(),
+            type: "infodeck",
             parent: "",
             sections: [],
             archive: []

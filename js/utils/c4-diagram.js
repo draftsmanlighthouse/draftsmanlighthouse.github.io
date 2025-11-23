@@ -73,6 +73,7 @@ class C4Diagram {
     }
 
   async render() {
+    cytoscape.use(cytoscapeDagre);
     if (this.elements.length == 0){
         document.getElementById(this.containerId).innerHTML = `<h1 class="text-2xl">No visual elements on this level.</h1><h2 class="text-xl">But there may be principles and decisions</h2>`;
         return;
@@ -158,9 +159,11 @@ class C4Diagram {
         }
       ],
       layout: {
-        name: 'breadthfirst',
-        directed: true,
-        padding: 50 }
+        name: 'dagre',
+  rankDir: 'LR',
+  nodeSep: 200,
+  edgeSep: 50,
+  rankSep: 100 }
     });
     this.cy.on('tap', 'node', (evt) => {
       const node = evt.target;

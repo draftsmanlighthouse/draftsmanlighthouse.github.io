@@ -35,15 +35,14 @@
     <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 
     <!-- cytoscape -->
+    <script src="https://unpkg.com/dagre/dist/dagre.min.js"></script>
+    <script src="https://unpkg.com/cytoscape-dagre/cytoscape-dagre.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.24.0/cytoscape.min.js"></script>
     <script src="/js/utils/c4-diagram.js"></script>
 
     <!-- minisearch -->
     <script src="/js/tp/minisearch.js"></script>
     <style>[x-cloak] { display: none !important; }</style>
-
-    <!-- sortable -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 
     <script src="/js/utils/dbutil.js"></script>
     <script src="/js/utils/menu-generator.js"></script>
@@ -68,7 +67,7 @@
                 <i class="fa-solid fa-plus"></i>
             </button>
         </div>
-        <div class="p-5 max-h-[95vh] overflow-y-auto" x-import="micro-doc;architecture;all-documents">
+        <div class="p-5 max-h-[95vh] overflow-y-auto" x-import="micro-doc;architecture;all-documents;dashboard;infodeck">
             <template x-if="navigation == 'architecture'">
                 <ui-architecture></ui-architecture>
             </template>
@@ -81,10 +80,10 @@
                 </div>
             </template>
             <template x-if="navigation == 'dashboard'">
-                <span>Dashboard (TODO)</span>
+                <ui-dashboard></ui-dashboard>
             </template>
             <template x-if="navigation == 'infodecks'">
-                <span>Curated narratives / infodecks (TODO)</span>
+                <ui-infodecks></ui-infodecks>
             </template>
             <template x-if="navigation == 'search'">
                 <ui-all-documents></ui-all-documents>

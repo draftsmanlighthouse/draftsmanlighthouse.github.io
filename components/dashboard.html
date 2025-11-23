@@ -1,0 +1,89 @@
+<template x-component="dashboard">
+    <div x-data="{results: []}" x-effect="
+    results = Object.values(index.documents)
+        .sort((a, b) => (b.updated || 0) - (a.updated || 0))
+">
+
+        <div class="grid grid-cols-12 gap-3">
+            <div class="col-span-6">
+                <table class="table table-sm">
+                    <tr x-data="{count: 0}" x-effect="count = results.filter(x => x.type == 'note').length">
+                        <th>Notes</th>
+                        <td x-text="count"></td>
+                    </tr>
+                    <tr x-data="{count: 0}" x-effect="count = results.filter(x => x.type == 'design decision').length">
+                        <th>Design Decision</th>
+                        <td x-text="count"></td>
+                    </tr>
+                    <tr x-data="{count: 0}" x-effect="count = results.filter(x => x.type == 'ADR').length">
+                        <th>Architecture Decision Records</th>
+                        <td x-text="count"></td>
+                    </tr>
+                    <tr x-data="{count: 0}" x-effect="count = results.filter(x => x.type == 'principle').length">
+                        <th>Principles</th>
+                        <td x-text="count"></td>
+                    </tr>
+                    <tr x-data="{count: 0}" x-effect="count = results.filter(x => x.type == 'persona').length">
+                        <th>Personas</th>
+                        <td x-text="count"></td>
+                    </tr>
+                    <tr x-data="{count: 0}" x-effect="count = results.filter(x => x.type == 'infodeck').length">
+                        <th>Curated Narratives</th>
+                        <td x-text="count"></td>
+                    </tr>
+                    <tr x-data="{count: 0}" x-effect="count = results.length">
+                        <th>Total</th>
+                        <td x-text="count"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-span-2"></div>
+            <div class="col-span-4" x-import="doc-components/node-diagram">
+                <template x-if="results.length != 0">
+                    <ui-large-node-diagram></ui-large-node-diagram>
+                </template>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-12 gap-3 mt-5">
+
+            <div class="col-span-6">
+                <table class="table" x-data="{items: []}" x-effect="items = results.filter(x => x.status == 'draft')">
+                    <tr class="bg-base-300">
+                        <th colspan="2">Drafts</th>
+                        <td x-text="items.length"></td>
+                    </tr>
+                    <template x-for="doc in items" :key="doc.id">
+                        <tr>
+                            <th x-text="doc.type"></th>
+                            <td x-text="doc.name"></td>
+                            <td>
+                                <a class="btn btn-ghost btn-sm" @click="open_doc(doc.id)">open</a>
+                            </td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+
+            <div class="col-span-6">
+                <table class="table" x-data="{items: []}" x-effect="items = results.filter(x => x.status == 'review')">
+                    <tr class="bg-base-300">
+                        <th colspan="2">Review</th>
+                        <td x-text="items.length"></td>
+                    </tr>
+                    <template x-for="doc in items" :key="doc.id">
+                        <tr>
+                            <th x-text="doc.type"></th>
+                            <td x-text="doc.name"></td>
+                            <td>
+                                <a class="btn btn-ghost btn-sm" @click="open_doc(doc.id)">open</a>
+                            </td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</template>
