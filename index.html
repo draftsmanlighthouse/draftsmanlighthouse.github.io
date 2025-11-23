@@ -50,7 +50,8 @@
 </head>
 <body x-data="main">
 <div class="grid grid-cols-12">
-    <div class="col-span-2 h-screen bg-neutral" x-import="navigation/notebook-selector;navigation/menu-actions;navigation/history">
+    <div class="col-span-2 h-screen bg-neutral"
+         x-import="navigation/notebook-selector;navigation/menu-actions;navigation/history">
         <ui-notebook-selector></ui-notebook-selector>
         <div x-show="!permissionIssue" x-cloak x-transition>
             <ui-actions></ui-actions>
@@ -61,13 +62,22 @@
         </div>
     </div>
     <div class="col-span-10" x-data="{level: $persist('landscape'), active_tab: $persist('C4'), selected: ''}">
-        <div class="h-[5vh] w-full bg-neutral-content flex items-center justify-between gap-2" x-import="navigation/architecture-header">
+        <div class="h-[5vh] w-full bg-neutral-content flex items-center justify-between gap-2"
+             x-import="navigation/architecture-header">
             <ui-architecture-header></ui-architecture-header>
-            <button class="btn btn-outline btn-success btn-sm btn-circle m-2 mr-5" @click="create_doc">
-                <i class="fa-solid fa-plus"></i>
-            </button>
+            <div>
+                <button class="btn btn-outline btn-info btn-sm btn-circle m-2 mr-5"
+                        x-show="Object.keys(microDoc).length != 0 && microDoc.json.type != 'infodeck'" x-cloak x-transition
+                        @click="const w = window.open('/export', '_blank');">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                </button>
+                <button class="btn btn-outline btn-success btn-sm btn-circle m-2 mr-5" @click="create_doc">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
         </div>
-        <div class="p-5 max-h-[95vh] overflow-y-auto" x-import="micro-doc;architecture;all-documents;dashboard;infodeck">
+        <div class="p-5 max-h-[95vh] overflow-y-auto"
+             x-import="micro-doc;architecture;all-documents;dashboard;infodeck">
             <template x-if="navigation == 'architecture'">
                 <ui-architecture></ui-architecture>
             </template>

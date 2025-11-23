@@ -2,7 +2,7 @@
     <table class="table table-sm">
         <tr>
             <th>Type</th>
-            <td>
+            <td x-show="microDoc.json.type != 'infodeck'" x-cloak x-transition>
                 <select class="select select-ghost select-sm"
                         @change="update_doc_type"
                         x-model="microDoc.json.type">
@@ -13,17 +13,20 @@
                     <option>persona</option>
                 </select>
             </td>
+            <td class="pl-6" x-show="microDoc.json.type == 'infodeck'" x-cloak x-transition>
+                narrative <div class="badge badge-outline badge-warning">Under construction</div>
+            </td>
         </tr>
         <tr>
             <th>Status</th>
             <td class="flex items-center justify-between gap-2">
                 <select class="select select-ghost select-sm" x-model="microDoc.json.status">
                     <option>draft</option>
-                    <option x-show="['note','principle','persona'].includes(microDoc.json.type)" x-cloak x-transition>
+                    <option x-show="['note','principle','persona','infodeck'].includes(microDoc.json.type)" x-cloak x-transition>
                         published
                     </option>
 
-                    <option x-show="['ADR','design decision','principle','persona'].includes(microDoc.json.type)"
+                    <option x-show="['ADR','design decision','principle','persona','infodeck'].includes(microDoc.json.type)"
                             x-cloak x-transition>review
                     </option>
                     <option x-show="['ADR','design decision'].includes(microDoc.json.type)" x-cloak x-transition>
@@ -33,7 +36,7 @@
                         rejected
                     </option>
 
-                    <option x-show="['note','principle','persona'].includes(microDoc.json.type)" x-cloak x-transition>
+                    <option x-show="['note','principle','persona','infodeck'].includes(microDoc.json.type)" x-cloak x-transition>
                         deleted
                     </option>
                 </select>

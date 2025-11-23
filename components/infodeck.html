@@ -1,6 +1,20 @@
 <template x-component="infodecks">
-    <div>
-        infodecks
+    <div x-data="{results: []}" x-effect="
+    results = Object.values(index.documents)
+        .sort((a, b) => (b.updated || 0) - (a.updated || 0)).filter(x => x.type == 'infodeck')">
+        infodecks <i>Under construction</i>
         <button class="btn btn-primary btn-outline" @click="create_deck">create</button>
+        <hr class="my-5">
+        <table class="table" x-data="{items: []}" x-effect="items = results">
+            <template x-for="doc in items" :key="doc.id">
+                <tr>
+                    <th x-text="doc.type"></th>
+                    <td x-text="doc.name"></td>
+                    <td>
+                        <a class="btn btn-ghost btn-sm" @click="open_doc(doc.id)">open</a>
+                    </td>
+                </tr>
+            </template>
+        </table>
     </div>
 </template>

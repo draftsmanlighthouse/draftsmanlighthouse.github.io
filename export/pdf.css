@@ -1,0 +1,236 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f0f0f0;
+}
+
+/* ====== PAGE SETTINGS ====== */
+@page {
+  size: A4;
+  margin: 2cm;
+
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    font-size: 10pt;
+    color: #777;
+  }
+}
+
+/* Final pages rendered by paged.js */
+.pagedjs_page {
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  margin: 1rem auto;
+}
+
+/* Your content */
+.content {
+  padding: 0 0 2rem 0;
+}
+
+/* ====== CRITICAL FIXES ====== */
+
+/* Voorkom fragmentatie van belangrijke elementen */
+h1, h2, h3 {
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-top: 1.8rem;
+  margin-bottom: 0.5rem; /* Voeg dit toe */
+}
+
+p {
+  line-height: 1.45;
+  text-align: justify;
+  orphans: 2; /* Voorkom losse regels */
+  widows: 2;
+}
+
+.button-bar {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+}
+
+button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: black;
+  color: white;
+  border: none;
+}
+
+/* =======================
+   TABLE FIXES
+   ======================= */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+
+  /* CRITICAL: voorkom table splitting */
+  page-break-inside: auto;
+  break-inside: auto;
+}
+
+/* Houd table header bij table body */
+thead {
+  background: #f3f4f6;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Voorkom row splitting waar mogelijk */
+tbody tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+tbody tr:nth-child(odd) {
+  background: #fafafa;
+}
+
+@media screen {
+  tbody tr:hover {
+    background: #f0f7ff;
+  }
+}
+
+@media print {
+  table {
+    font-size: 0.85rem;
+  }
+  th,
+  td {
+    padding: 4px 6px;
+  }
+}
+
+/* =======================
+   CHART FIXES - KRITIEK!
+   ======================= */
+
+canvas.chart-export {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+
+  /* Gebruik vaste hoogte in plaats van aspect-ratio */
+  height: 300px !important; /* Of een andere vaste waarde */
+
+  margin: 1rem 0;
+
+  /* CRITICAL: voorkom chart splitting */
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+/* Wrapper voor charts (als je die hebt) */
+.chart-container,
+.chart-wrapper {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+  margin: 1rem 0;
+}
+
+/* =======================
+   ALGEMENE FRAGMENTATIE REGELS
+   ======================= */
+
+/* Voorkom weeskinderen en weduwen */
+* {
+  orphans: 2;
+  widows: 2;
+}
+
+/* Specifieke elementen die niet gesplitst mogen worden */
+figure,
+.chart-export,
+.chart-container,
+blockquote,
+pre {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+/* Verwijder excessive spacing die lege pagina's kan veroorzaken */
+* {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+h1 { margin: 1.8rem 0 0.8rem 0; }
+h2 { margin: 1.5rem 0 0.6rem 0; }
+h3 { margin: 1.2rem 0 0.5rem 0; }
+p { margin: 0 0 0.8rem 0; }
+
+/* Mooie preview (heb je al) */
+.pagedjs_page {
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  margin: 1rem auto;
+}
+
+/* === Export-mode: zelfde effect als je print-regels, maar voor screen === */
+body.export-mode {
+  background: white !important;
+}
+
+body.export-mode .pagedjs_pages {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.export-mode .pagedjs_page {
+  box-shadow: none !important;
+  margin: 0 !important;
+  border: none !important;
+  background: white !important;
+}
+
+body.export-mode .pagedjs_sheet {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.export-mode .pagedjs_margin {
+  display: none !important;
+}
+
+body.export-mode .button-bar {
+  display: none !important;
+}
+
+/* Je mag daarnaast je @media print laten staan zodat echte print/PDF
+   sowieso schoon is, onafhankelijk van export-mode: */
+@media print {
+  .pagedjs_page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    border: none !important;
+    background: white !important;
+  }
+  .pagedjs_pages {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .pagedjs_margin {
+    display: none !important;
+  }
+
+}

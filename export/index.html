@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <link href="/export/pdf.css" rel="stylesheet"/>
+    <script src="/export/export-helper.js"></script>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js" defer></script>
+</head>
+
+<body x-data="{doc: {}, buttons: true}"
+      :class="!buttons ? 'export-mode' : ''"
+      x-init="doc = await prepare();">
+
+<!-- UI bar -->
+<div class="button-bar" x-show="buttons">
+    <button @click="buttons = false;setTimeout(function(){window.print();window.close();},100)">Save PDF</button>
+</div>
+
+
+<!-- Content to be paginated -->
+<div id="source" class="content">
+
+    <!-- title -->
+    <h1 x-text="doc.name"></h1>
+
+    <!-- Decision -->
+    <template x-if="doc.type == 'design decision'">
+        <div x-html="marked.parse(doc.decision)"></div>
+    </template>
+
+    <!-- Y-Statement -->
+    <template x-if="doc.type == 'ADR'">
+        <table class="table">
+            <tr>
+                <th>In the context of</th>
+                <td x-text="doc.ystatement.context"></td>
+                <th>Facing</th>
+                <td x-text="doc.ystatement.concern"></td>
+            </tr>
+            <tr>
+                <th>We decided for</th>
+                <td x-text="doc.ystatement.decision"></td>
+                <th>And discarded</th>
+                <td x-text="doc.ystatement.alternatives"></td>
+            </tr>
+            <tr>
+                <th>To achieve</th>
+                <td x-text="doc.ystatement.quality"></td>
+                <th>Accepting the consequence of</th>
+                <td x-text="doc.ystatement.consequence"></td>
+            </tr>
+        </table>
+    </template>
+
+    <!-- Principle -->
+    <template x-if="doc.type == 'principle'">
+        <div x-html="marked.parse(doc.principle)"></div>
+    </template>
+
+</div>
+
+</body>
+</html>

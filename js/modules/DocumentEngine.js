@@ -547,7 +547,29 @@ document.addEventListener("alpine:init", () => {
             json.parent = "";
             setTimeout(this.save_doc.bind(this),1600);
           }
+          await this.prepare_export();
         },
+
+      async prepare_export(){
+        try{
+            let data = JSON.parse(JSON.stringify(this.microDoc.json));
+            let sections = [];
+            for (const section of data.sections){
+                if (section.type == "reference"){
+                    const {json, docDir} = await this.fetch_doc(section.document);
+                    section.sections.forEach(s => {
+                        sections.push(json.sections.filter(x => x.id == s).at(0));
+                    });
+                } else {
+                    sections.push(section);
+                }
+            }
+            data.sections = sections;
+            localStorage.export = JSON.stringify(data,null,2);
+        } catch(err){
+            console.log(err);
+        }
+      },
 
       async delete_doc(id) {
           const notebookEntry = this.notebooks[this.notebook];
@@ -769,6 +791,7 @@ document.addEventListener("alpine:init", () => {
             const root_dir = entry.handle;
             await this.verifyPermissions(root_dir);
             await this.indexFiles(root_dir);
+            await this.prepare_export();
           } catch (err) {
             console.error("Kon document niet opslaan:", err);
           }

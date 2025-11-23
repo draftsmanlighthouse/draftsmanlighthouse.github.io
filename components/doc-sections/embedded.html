@@ -52,7 +52,7 @@
                             </td>
                         </tr>
 
-                        <template x-for="doc_section in document.sections"
+                        <template x-for="doc_section in document.sections.filter(s => s.type != 'reference')"
                                   :key="doc_section.id">
                             <tr>
                                 <td>
