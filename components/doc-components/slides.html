@@ -1,0 +1,38 @@
+<template x-component="slides">
+    <div x-data="SectionHelper">
+        <div class="grid grid-cols-10 gap-3" x-data="{selected: ''}">
+            <template x-for="slide in microDoc.json.sections">
+                <div class="col-span-3 card bg-base-100 image-full shadow-sm">
+                    <figure>
+                        <img
+                                :src="'https://picsum.photos/seed/' + slide.id + '/400/300'"/>
+                    </figure>
+                    <div class="card-body">
+                        <h2 class="card-title">Info</h2>
+                        <p>More info</p>
+                        <div class="card-actions justify-end">
+                            <button class="btn btn-primary" @click="selected = slide.id;slide_modal.showModal()">Open</button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <div class="col-span-1 flex flex-col">
+                <button @click="add_slide_section" class="btn btn-primary btn-outline btn-circle mt-auto">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+
+            <dialog id="slide_modal" class="modal">
+                <div class="modal-box w-[98vw] max-w-[100vw] h-[98vh] max-h-[100vh]">
+                    <form method="dialog">
+                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                    <h3 class="text-lg font-bold">Hello!</h3>
+                    <p class="py-4">Press ESC key or click on ✕ button to close</p>
+                </div>
+            </dialog>
+            
+        </div>
+    </div>
+</template>

@@ -23,28 +23,8 @@
                 </div>
             </template>
             <template x-if="microDoc.json.type == 'infodeck'">
-                <div class="col-span-9">
-                    <div class="grid grid-cols-10 gap-3" x-data="{slides: []}">
-                        <template x-for="slide in slides">
-                            <div class="col-span-3 card bg-base-100 shadow-sm">
-                                <div class="card-body">
-                                    <h2 class="card-title">Card title!</h2>
-                                    <p>A card component has a figure, a body part, and inside body there are title and
-                                        actions parts</p>
-                                    <div class="card-actions justify-end">
-                                        <button class="btn btn-primary">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-
-                        <div class="col-span-1 flex flex-col">
-                            <button @click="slides.push(0)" class="btn btn-primary btn-outline btn-circle mt-auto">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </div>
-
-                    </div>
+                <div class="col-span-9" x-import="doc-components/slides">
+                    <ui-slides></ui-slides>
                 </div>
             </template>
             <div class="col-span-3">

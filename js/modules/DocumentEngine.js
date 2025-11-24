@@ -495,7 +495,9 @@ document.addEventListener("alpine:init", () => {
             try{
                 const sectionHandle = await docDir.getFileHandle(section.id + "." + section.extension);
                 const sectionFile = await sectionHandle.getFile();
-                if (section.extension == 'json'){
+                if (section.type == "image"){
+                    section.data = URL.createObjectURL(sectionFile);
+                } else if (section.extension == 'json'){
                     let text = await sectionFile.text();
                     section.data = JSON.parse(text);
                 } else {
@@ -758,7 +760,7 @@ document.addEventListener("alpine:init", () => {
             let data = JSON.parse(JSON.stringify(json));
 
             async function save_section(section){
-                if ("data" in section && section.data){
+                if ("data" in section && section.data && section.type != "image"){
                     const sectionHandle = await dir.getFileHandle(section.id + "." + section.extension, { create: true });
                     const sectionWritable = await sectionHandle.createWritable();
                     if (section.extension == 'json'){

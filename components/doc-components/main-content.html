@@ -58,6 +58,13 @@
                     </div>
                 </template>
 
+                <!-- image -->
+                <template x-if="section.type == 'image'">
+                    <img
+                            :src="section.data"
+                            class="max-w-full rounded shadow">
+                </template>
+
                 <!-- embed -->
                 <template x-if="section.type == 'reference'">
                     <div x-import="doc-sections/embedded">
@@ -137,6 +144,13 @@
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
+                <a @click="image_modal.showModal()"
+                   class="tooltip tooltip-bottom"
+                   data-tip="Add image section">
+                    <i class="fa-regular fa-image"></i>
+                </a>
+            </li>
+            <li x-show="active" x-cloak x-transition>
                 <a @click="add_reference_section"
                    class="tooltip tooltip-bottom"
                    data-tip="Add embed section">
@@ -144,5 +158,21 @@
                 </a>
             </li>
         </ul>
+
+        <!-- Open the modal using ID.showModal() method -->
+        <dialog id="image_modal" class="modal">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold">Select image</h3>
+                <p class="py-4">
+                    <input type="file"
+                           class="file-input"
+                           accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
+                           @change="addImage($event); $el.value = null; image_modal.close()">
+                </p>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+            </form>
+        </dialog>
     </div>
 </template>

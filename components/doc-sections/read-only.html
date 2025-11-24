@@ -49,5 +49,13 @@
                 <ui-charts></ui-charts>
             </div>
         </template>
+
+        <!-- image -->
+        <template x-if="doc_section.type == 'image'">
+            <img
+                    :src="doc_section.data"
+                    class="max-w-full rounded shadow">
+        </template>
+
     </div>
 </template>

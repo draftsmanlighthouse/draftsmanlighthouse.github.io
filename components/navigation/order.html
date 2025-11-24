@@ -47,9 +47,17 @@
                                         <ui-read-only></ui-read-only>
                                     </div>
                                 </template>
-                                <template x-if="doc_section.type != 'markdown'">
-                                    <div class="max-h-[20vh] max-w-[20vw]">
+                                <template x-if="doc_section.type != 'markdown' && doc_section.type != 'reference'">
+                                    <div class="max-h-[20vh]">
                                         <ui-read-only></ui-read-only>
+                                    </div>
+                                </template>
+
+                                <template x-if="doc_section.type == 'reference'">
+                                    <div class="max-h-[20vh]">
+                                        <div x-import="doc-sections/embedded" x-data="{section: doc_section}">
+                                            <ui-embedded></ui-embedded>
+                                        </div>
                                     </div>
                                 </template>
 
