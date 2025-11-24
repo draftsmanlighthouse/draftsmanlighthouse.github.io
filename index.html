@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/favicon.png">
     <title>The Architect’s Notebook</title>
-    <link rel="icon" href="/favicon.png" type="image/png"/>
+    <link rel="icon" href="/assets/icon.png" type="image/png"/>
 
     <!-- AlpineJS & Vimesh -->
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
@@ -66,7 +71,15 @@
              x-import="navigation/architecture-header">
             <ui-architecture-header></ui-architecture-header>
             <div>
-                <button class="btn btn-outline btn-info btn-sm btn-circle m-2 mr-5"
+                <button
+                    x-data="pwaInstall()"
+                    x-show="canInstall"
+                    x-cloak
+                    @click="install"
+                    class="btn btn-primary btn-outline btn-circle btn-sm m-2">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+                <button class="btn btn-outline btn-info btn-sm btn-circle m-2"
                         x-show="Object.keys(microDoc).length != 0 && microDoc.json.type != 'infodeck'" x-cloak x-transition
                         @click="const w = window.open('/export', '_blank');">
                     <i class="fa-solid fa-file-arrow-down"></i>
@@ -111,5 +124,52 @@
 <script src="/js/modules/NodeDiagram.js"></script>
 <script src="/js/modules/ArchitectureDiagram.js"></script>
 <script src="/js/modules/SearchEngine.js"></script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Service Worker registered"))
+      .catch(err => console.error("SW registration failed:", err));
+  }
+</script>
+<script>
+function pwaInstall() {
+    return {
+        canInstall: false,
+        deferredPrompt: null,
+
+        init() {
+            window.addEventListener("beforeinstallprompt", (e) => {
+                e.preventDefault();
+                this.deferredPrompt = e;
+                this.canInstall = true;   // Toon de knop
+            });
+
+            // Verbergen als gebruiker via browser-menu installeert
+            window.addEventListener("appinstalled", () => {
+                this.canInstall = false;
+                this.deferredPrompt = null;
+                console.log("PWA installed");
+            });
+        },
+
+        async install() {
+            if (!this.deferredPrompt) return;
+
+            this.deferredPrompt.prompt();
+            const result = await this.deferredPrompt.userChoice;
+
+            if (result.outcome === "accepted") {
+                console.log("User accepted the install");
+            } else {
+                console.log("User dismissed the install");
+            }
+
+            this.canInstall = false;
+            this.deferredPrompt = null;
+        }
+    }
+}
+</script>
 </body>
 </html>
