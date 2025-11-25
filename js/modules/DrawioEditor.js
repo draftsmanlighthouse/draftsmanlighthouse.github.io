@@ -17,8 +17,8 @@ document.addEventListener('alpine:init', () => {
         displayDiagram() {
             const viewer = 'https://diagram.bohanssen.com/viewer?embed=1&ui=min&spin=1&proto=json';
             const container = this.$refs.diagram_container;
-
-            container.innerHTML = `<iframe frameborder="0" style="width:100%;height:600px;" src="${viewer}"></iframe>`;
+            
+            container.innerHTML = `<iframe frameborder="0" style="width:100%;aspect-ratio: 16 / 9;" src="${viewer}"></iframe>`;
 
             const iframe = container.querySelector('iframe');
             iframe.addEventListener('load', () => {
