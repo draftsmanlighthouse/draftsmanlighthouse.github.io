@@ -11,7 +11,7 @@
                         <h2 class="card-title">Info</h2>
                         <p>More info</p>
                         <div class="card-actions justify-end">
-                            <button class="btn btn-primary" @click="selected = slide.id;slide_modal.showModal()">Open</button>
+                            <button class="btn btn-primary" @click="selected = slide;slide_modal.showModal()">Open</button>
                         </div>
                     </div>
                 </div>
@@ -23,15 +23,23 @@
                 </button>
             </div>
 
-            <dialog id="slide_modal" class="modal">
-                <div class="modal-box w-[98vw] max-w-[100vw] h-[98vh] max-h-[100vh]">
-                    <form method="dialog">
-                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    </form>
-                    <h3 class="text-lg font-bold">Hello!</h3>
-                    <p class="py-4">Press ESC key or click on ✕ button to close</p>
-                </div>
-            </dialog>
+            <dialog id="slide_modal" class="modal" x-data>
+    <div class="modal-box w-[98vw] max-w-[100vw] h-[98vh] max-h-[100vh]
+                bg-cover bg-center bg-no-repeat"
+         :style="`background-image: url('https://picsum.photos/seed/${selected.id}/400/300')`">
+
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+
+        <!-- Voorgrondcontent als je die nog wilt -->
+        <div class="backdrop-brightness-75 h-[90vh] w-[90vw] rounded">
+            <h3 class="text-lg font-bold text-white">Titel</h3>
+            <p class="text-white/80">Eventuele tekst</p>
+        </div>
+
+    </div>
+</dialog>
             
         </div>
     </div>

@@ -17,8 +17,25 @@ document.addEventListener('alpine:init', () => {
                 initialEditType: 'markdown',
                 previewStyle: 'vertical',
                 initialValue: this.content,
-                usageStatistics: false
+                usageStatistics: false,
+                customHTMLRenderer: {
+                    htmlBlock: {
+                        iframe(node) {
+                            return [
+                                { type: 'openTag', tagName: 'iframe', outerNewLine: true },
+                                { type: 'html', content: node.literal },
+                                { type: 'closeTag', tagName: 'iframe', outerNewLine: true }
+                            ];
+                        }
+                    }
+                }
             });
+
+            // Voeg spellcheck toe aan de textarea
+            const textarea = this.$refs.editor.querySelector('textarea');
+            if (textarea) {
+                textarea.setAttribute('spellcheck', 'true');
+            }
 
             // Realtime update
             this.editor.on('change', () => {
