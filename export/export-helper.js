@@ -16,7 +16,7 @@ async function prepare(){
 
         if (['drawio','sketch'].includes(section.type)){
             const viewer = 'https://diagram.bohanssen.com/viewer?embed=1&ui=min&spin=1&proto=json';
-            wrapper.innerHTML = `<iframe id="${section.id}" frameborder="0" style="width:100%;height:600px;" src="${viewer}"></iframe>`;
+            wrapper.innerHTML = `<iframe id="${section.id}" frameborder="0" style="width:100%;aspect-ratio: 16 / 9;" src="${viewer}"></iframe>`;
             container.appendChild(wrapper);
             setTimeout(function(){
                 document.getElementById(section.id).contentWindow.postMessage(JSON.stringify({
