@@ -1,5 +1,5 @@
 <template x-component="header">
-    <table class="table table-sm">
+    <table class="table table-sm mb-5">
         <tr>
             <th>Type</th>
             <td x-show="microDoc.json.type != 'infodeck'" x-cloak x-transition>
@@ -223,5 +223,15 @@
                 <span class="ml-4" x-text="formatCreated(microDoc.json.updated)"></span>
             </td>
         </tr>
+        <template x-if="microDoc.json.type == 'infodeck'">
+            <tr>
+                <th>Export</th>
+                <td>
+                    <button @click="prepare_deck" class="btn btn-sm btn-ghost btn-circle">
+                        <i class="fa-regular fa-file-pdf"></i>
+                    </button>
+                </td>
+            </tr>
+        </template>
     </table>
 </template>

@@ -1,0 +1,84 @@
+<template x-component="section-selector">
+    <dialog id="section_selector" class="modal">
+        <div class="modal-box max-w-[80vw] w-[80vw]"
+             x-data="{search: $persist('').as('slideSection'), items: [], suggestions: [],selected_section: {}}">
+            <h3 class="text-lg font-bold">Hello!</h3>
+            <p class="py-4"
+               x-effect="suggestions = sectionIndex.autoSuggest(search);items = sectionIndex.search(search);">
+
+            <table class="table table-sm mb-5">
+                <tr>
+                    <td>
+                        <input
+                                type="search"
+                                x-model="search"
+                                list="auto-suggest"
+                                placeholder="Search..."
+                                class="input input-primary input-sm w-full pr-10"/>
+                        <datalist id="auto-suggest">
+                            <template x-for="suggestion in suggestions.map(x => x.suggestion)">
+                                <option :value="suggestion"></option>
+                            </template>
+                        </datalist>
+                    </td>
+                    <td x-show="Object.keys(selected_section).length != 0 && (!images || selected_section.type == 'image')" x-cloak x-transition>
+                        <button @click="
+                                    if(!(section in selected.sections))
+                                        {selected.sections[section] = {}};
+                                    selected.sections[section] = {parent: selected_section.parent_id,id: selected_section.section_id};
+                                    $dispatch('change');
+                                    section_selector.close();selected_section = {};"
+                                class="btn btn-success btn-outline btn-sm">
+                            <i class="fa-regular fa-circle-check"></i> select
+                        </button>
+                    </td>
+                </tr>
+                <tr x-show="section in selected.sections" x-cloak x-transition>
+                    <td>
+                        Selected: <span x-text="index.documents[selected.sections[section].parent].name"></span>&nbsp;
+                        <span x-text="index.documents[selected.sections[section].parent].sections.find(s => s.id == selected.sections[section].id).type"></span>&nbsp;
+                        <span class="text-gray-400" x-text="shortId(selected.sections[section].id)"></span>
+                    </td>
+                    <td>
+                        <button @click="delete selected.sections[section];
+                                    $dispatch('change');
+                                    section_selector.close();"
+                                class="btn btn-error btn-outline btn-sm">
+                            <i class="fa-solid fa-xmark"></i> remove
+                        </button>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="grid grid-cols-12 gap-3">
+                <div class="col-span-4">
+                    <ul class="menu">
+                        <template x-for="item in items" :key="item.id">
+                            <template x-if="!images || item.type == 'image'">
+                                <li>
+                                    <a @click="selected_section = item">
+                                        <span x-text="item.parent_name"></span>&nbsp;
+                                        <span x-text="item.type"></span>&nbsp;
+                                        <span class="text-gray-400" x-text="item.short_id"></span>
+                                    </a>
+                                </li>
+                            </template>
+                        </template>
+                    </ul>
+                </div>
+                <div class="col-span-8"
+                     x-effect="visible=false;doc_section = await fetch_section(selected_section.parent_id,selected_section.section_id);visible=true;"
+                     x-import="doc-sections/read-only"
+                     x-data="{doc_section: '',visible: false}">
+                    <template x-if="visible">
+                        <ui-read-only></ui-read-only>
+                    </template>
+                </div>
+            </div>
+            </p>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+</template>

@@ -29,6 +29,24 @@ document.addEventListener("alpine:init", () => {
       saving: false,
       pendingSave: false,
 
+      layout_names: {
+            A: "Two Equal Columns",
+            B: "Left Emphasis",
+            C: "Right Emphasis",
+            D: "Left + Two Stack",
+            E: "Two Stack + Right",
+            F: "Quarter Grid",
+            G: "Hero Slide",
+            H: "Hero + Two",
+            I: "Two + Hero",
+            J: "Hero + Three",
+            K: "Three Columns",
+            L: "Six Grid",
+            M: "Nine Grid",
+            N: "Asymmetric Quad",
+            O: "Three + Hero"
+        },
+
       async init() {
         await idb.init();
         await this.restoreNotebooks();
@@ -121,6 +139,7 @@ document.addEventListener("alpine:init", () => {
       async indexFiles(dir) {
           const start = performance.now();     // <- START TIMER
           const searchIndex = [];
+          const sectionIndex = [];
           const index = {
             documents: {},
             navigation: [],
@@ -180,7 +199,30 @@ document.addEventListener("alpine:init", () => {
                     if (section.type == "markdown"){
                         const markdownHandle = await handle.getFileHandle(section.id + ".md");
                         const markdownFile = await markdownHandle.getFile();
-                        searchText += " " + await markdownFile.text();
+                        const data = await markdownFile.text();
+                        searchText += " " + data;
+                        sectionIndex.push({
+                            id: json.id+section.id,
+                            short_id: shortId(section.id),
+                            section_id: section.id,
+                            parent_id: json.id,
+                            parent_name: json.name,
+                            type: "markdown",
+                            tags: json.tags.join(" ") || "",
+                            data
+                        });
+                    } else if (section.type != "reference" && section.type != "slide") {
+                        // TODO: add captions to visual sections
+                        sectionIndex.push({
+                            id: json.id+section.id,
+                            section_id: section.id,
+                            short_id: shortId(section.id),
+                            parent_id: json.id,
+                            parent_name: json.name,
+                            type: section.type,
+                            tags: json.tags.join(" ") || "",
+                            data: section.caption || ""
+                        });
                     }
                 }
 
@@ -188,16 +230,25 @@ document.addEventListener("alpine:init", () => {
                 let id = json.id
                 make_sure_node_exists(id);
                 node_index[id].title = json.name;
-                if ("parent" in json && json.parent){
-                    node_index[id].inbound[json.parent] = "child of";
-                    make_sure_node_exists(json.parent);
-                    node_index[json.parent].outbound[json.id] = "parent of";
-                }
+                json.sections.filter(x => x.type == "slide").forEach(section => {
+                      Object.values(section.sections).forEach(sec => {
+                        if (sec.parent != id){
+                            node_index[id].outbound[sec.parent] = "references";
+                            make_sure_node_exists(sec.parent);
+                            node_index[sec.parent].inbound[id] = "referenced by";
+                        }
+                      });
+                });
                 json.sections.filter(x => x.type == "reference" && "document" in x && x.document).forEach(section => {
                     node_index[id].outbound[section.document] = "references";
                     make_sure_node_exists(section.document);
                     node_index[section.document].inbound[id] = "referenced by";
                 });
+                if ("parent" in json && json.parent){
+                    node_index[id].inbound[json.parent] = "child of";
+                    make_sure_node_exists(json.parent);
+                    node_index[json.parent].outbound[json.id] = "parent of";
+                }
                 if ("precedent" in json && json.precedent){
                     node_index[id].inbound[json.precedent] = "guided by";
                     make_sure_node_exists(json.precedent);
@@ -344,15 +395,25 @@ document.addEventListener("alpine:init", () => {
             this.tags = tags;
 
           this.miniSearch = new MiniSearch({
-          fields: ['title', 'text'],
-          storeFields: ['title', 'type'],
-          searchOptions: {
-            prefix: true,
-            boost: { title: 10 },
-            fuzzy: 0.2
-          }
-        });
+              fields: ['title', 'text'],
+              storeFields: ['title', 'type'],
+              searchOptions: {
+                prefix: true,
+                boost: { title: 10 },
+                fuzzy: 0.2
+              }
+            });
           this.miniSearch.addAll(searchIndex);
+          this.sectionIndex = new MiniSearch({
+              fields: ['parent_name', 'type', 'data', 'tags','short_id'],
+              storeFields: ['id', 'section_id', 'parent_id', 'parent_name', 'type','short_id'],
+              searchOptions: {
+                prefix: true,
+                boost: { title: 10 },
+                fuzzy: 0.2
+              }
+            });
+          this.sectionIndex.addAll(sectionIndex);
           const contentIndexEnd = performance.now();    // timing tot en met boom-opbouw
 
           this.index = index;
@@ -452,7 +513,58 @@ document.addEventListener("alpine:init", () => {
           // 3. Reload document list
           await this.indexFiles(dir);
         },
+      async prepare_deck(){
+          let deck = [];
+          for (const s of this.microDoc.json.sections.filter(x => x.type == 'slide')) {
+            let slide = {};
+            slide.title = s.title;
+            slide.layout = s.layout;
+            slide.sections = {};
+            for (const key in s.sections) {
+              let data = await this.fetch_section(s.sections[key].parent,s.sections[key].id);
+              slide.sections[key] = data;
+            }
+            deck.push(slide);
+          }
+          localStorage.deck = JSON.stringify(deck);
+          const w = window.open('/export-deck', '_blank');
+      },
 
+      async fetch_section(parent,id,data_only=false){
+          const notebookEntry = this.notebooks[this.notebook];
+          if (!notebookEntry) return;
+
+          const notebookDir = notebookEntry.handle;
+          await this.verifyPermissions(notebookDir);
+
+          let docDir;
+          try {
+            docDir = await notebookDir.getDirectoryHandle(parent);
+          } catch (err) {
+            console.log(err);
+            console.error("Documentmap niet gevonden:", parent);
+            return;
+          }
+          const section = this.index.documents[parent].sections.find(s => s.id === id);
+            try{
+                const sectionHandle = await docDir.getFileHandle(section.id + "." + section.extension);
+                const sectionFile = await sectionHandle.getFile();
+                if (section.type == "image"){
+                    section.data = URL.createObjectURL(sectionFile);
+                } else if (section.extension == 'json'){
+                    let text = await sectionFile.text();
+                    section.data = JSON.parse(text);
+                } else {
+                    section.data = await sectionFile.text();
+                }
+            }catch{
+                section.data = "";
+            }
+          if (data_only){
+            return section.data;
+          }
+          return section;
+      },
       async fetch_doc(id){
       // Haal notebook entry op
           const notebookEntry = this.notebooks[this.notebook];
@@ -886,6 +998,29 @@ function sectionReorder(microDoc) {
             [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
         }
     };
+}
+
+function shortId(uuid) {
+  if (uuid.startsWith("img-")){
+    uuid = uuid.replace("img-","");
+  }
+  const hex = uuid.replace(/-/g, "").slice(0, 8);
+  try{
+    return parseInt(hex, 16).toString(36).toUpperCase();
+  } catch {
+    return hex;
+  }
+}
+
+function copyShortId(text, event) {
+    navigator.clipboard.writeText(text);
+
+    const tooltip = event.currentTarget.querySelector('[x-ref="tooltip"]');
+    tooltip.classList.add("opacity-100");
+
+    setTimeout(() => {
+        tooltip.classList.remove("opacity-100");
+    }, 900);
 }
 
 function sortByPreferredOrder(results, preferredOrder) {

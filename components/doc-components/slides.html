@@ -1,46 +1,591 @@
 <template x-component="slides">
     <div x-data="SectionHelper">
         <div class="grid grid-cols-10 gap-3" x-data="{selected: ''}">
-            <template x-for="slide in microDoc.json.sections">
-                <div class="col-span-3 card bg-base-100 image-full shadow-sm">
-                    <figure>
-                        <img
-                                :src="'https://picsum.photos/seed/' + slide.id + '/400/300'"/>
+            <template x-for="slide in microDoc.json.sections.filter(x => x.type === 'slide')">
+                <div class="col-span-3 card bg-base-100 image-full shadow-sm relative cursor-pointer"
+                     @click="selected = slide; slide_modal.showModal()">
+
+                    <!-- Background Image -->
+                    <figure class="h-40 overflow-hidden">
+                        <template x-if="'background' in slide.sections">
+                            <img :src="await fetch_section(slide.sections.background.parent, slide.sections.background.id, true)"
+                                 class="object-cover w-full h-full"/>
+                        </template>
+                        <template x-if="!('background' in slide.sections)">
+                            <img :src="'https://picsum.photos/seed/' + slide.id + '/400/300'"
+                                 class="object-cover w-full h-full"/>
+                        </template>
                     </figure>
+
+                    <!-- Text -->
                     <div class="card-body">
-                        <h2 class="card-title">Info</h2>
-                        <p>More info</p>
-                        <div class="card-actions justify-end">
-                            <button class="btn btn-primary" @click="selected = slide;slide_modal.showModal()">Open</button>
-                        </div>
+                        <h2 class="card-title text-sm" x-text="slide.title"></h2>
+                        <p class="opacity-70 text-xs" x-text="layout_names[slide.layout]"></p>
                     </div>
                 </div>
             </template>
 
             <div class="col-span-1 flex flex-col">
-                <button @click="add_slide_section" class="btn btn-primary btn-outline btn-circle mt-auto">
+                <button @click="layout_modal.showModal()" class="btn btn-primary btn-outline btn-circle mt-auto">
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
 
+
+            <dialog id="layout_modal" class="modal">
+                <div class="modal-box">
+                    <h3 class="text-lg font-bold">Select lay-out for new page</h3>
+                    <p class="py-4">
+
+                    <div class="grid grid-cols-12 gap-4">
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('A');layout_modal.close();">
+                            <div class="w-full h-20 bg-base-200 border border-base-300 grid grid-cols-2 gap-0.5 p-0.5 rounded">
+                                <div class="bg-base-300"></div>
+                                <div class="bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['A']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('B');layout_modal.close();">
+                            <div class="w-full h-20 bg-base-200 border border-base-300 grid grid-cols-12 gap-0.5 p-0.5 rounded">
+                                <div class="col-span-7 bg-base-300"></div>
+                                <div class="col-span-5 bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['B']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('C');layout_modal.close();">
+                            <div class="w-full h-20 bg-base-200 border border-base-300 grid grid-cols-12 gap-0.5 p-0.5 rounded">
+                                <div class="col-span-5 bg-base-300"></div>
+                                <div class="col-span-7 bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['C']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('D');layout_modal.close();">
+                            <div class="w-full h-20 bg-base-200 border border-base-300 grid grid-cols-2 gap-0.5 p-0.5 rounded">
+                                <div class="bg-base-300"></div>
+                                <div class="grid grid-rows-2 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['D']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('E');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-cols-2 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="grid grid-rows-2 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                                <div class="bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['E']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('F');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-cols-2 grid-rows-2 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="bg-base-300"></div>
+                                <div class="bg-base-300"></div>
+                                <div class="bg-base-300"></div>
+                                <div class="bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['F']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('G');layout_modal.close();">
+                            <div class="w-full h-20 bg-base-200 border p-0.5 rounded">
+                                <div class="w-full h-full bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['G']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('H');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-rows-2 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="bg-base-300"></div>
+                                <div class="grid grid-cols-2 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['H']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('I');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-rows-2 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="grid grid-cols-2 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                                <div class="bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['I']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('J');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-rows-2 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="bg-base-300"></div>
+                                <div class="grid grid-cols-3 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['J']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('K');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-cols-3 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="bg-base-300"></div>
+                                <div class="bg-base-300"></div>
+                                <div class="bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['K']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('L');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-rows-2 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="grid grid-cols-3 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['L']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('M');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-rows-3 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="grid grid-cols-3 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['M']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('N');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-rows-2 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="grid grid-cols-12 gap-0.5">
+                                    <div class="col-span-8 bg-base-300"></div>
+                                    <div class="col-span-4 bg-base-300"></div>
+                                </div>
+                                <div class="grid grid-cols-12 gap-0.5">
+                                    <div class="col-span-4 bg-base-300"></div>
+                                    <div class="col-span-8 bg-base-300"></div>
+                                </div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['N']"></span>
+                        </div>
+
+                        <div class="col-span-4 mb-4 cursor-pointer"
+                             @click="add_slide_section('O');layout_modal.close();">
+                            <div class="w-full h-20 grid grid-rows-2 gap-0.5 bg-base-200 border p-0.5 rounded">
+                                <div class="grid grid-cols-3 gap-0.5">
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                    <div class="bg-base-300"></div>
+                                </div>
+                                <div class="bg-base-300"></div>
+                            </div>
+                            <span class="text-gray-400" x-text="layout_names['O']"></span>
+                        </div>
+                    </div>
+
+                    </p>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+
             <dialog id="slide_modal" class="modal" x-data>
-    <div class="modal-box w-[98vw] max-w-[100vw] h-[98vh] max-h-[100vh]
+                <div class="modal-box w-[98vw] max-w-[100vw] h-[98vh] max-h-[100vh]
                 bg-cover bg-center bg-no-repeat"
-         :style="`background-image: url('https://picsum.photos/seed/${selected.id}/400/300')`">
+                     x-import="doc-components/section-selector"
+                     id="slide-canvas"
+                     x-data="{images: false, section: ''}"
+                     :style="'background' in selected.sections ? `background-image: url('${await fetch_section(selected.sections.background.parent,selected.sections.background.id,true)}')` : ''">
 
-        <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-        </form>
+                    <div class="absolute right-2 top-2"
+                         x-data="{slides: []}"
+                         x-effect="slides = microDoc.json.sections.filter(x => x.type == 'slide').map(x => x.id)">
 
-        <!-- Voorgrondcontent als je die nog wilt -->
-        <div class="backdrop-brightness-75 h-[90vh] w-[90vw] rounded">
-            <h3 class="text-lg font-bold text-white">Titel</h3>
-            <p class="text-white/80">Eventuele tekst</p>
-        </div>
+                        <button x-show="selected.id != slides.at(0)" x-cloak x-transition
+                                @click="selected = microDoc.json.sections.find(x => x.id === slides[slides.indexOf(selected.id) - 1])"
+                                class="btn btn-sm btn-circle btn-ghost">
+                            <i class="fa-solid fa-angles-left"></i>
+                        </button>
+                        <button x-show="selected.id != slides.at(-1)" x-cloak x-transition
+                                @click="selected = microDoc.json.sections.find(x => x.id === slides[slides.indexOf(selected.id) + 1])"
+                                class="btn btn-sm btn-circle btn-ghost">
+                            <i class="fa-solid fa-angles-right"></i>
+                        </button>
 
-    </div>
-</dialog>
-            
+                        <button @click="slide_modal.close()"
+                                class="btn btn-sm btn-circle btn-ghost">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+
+                    <input type="text" class="input input-sm bg-[rgba(255,255,255,0.5)]" x-model="selected.title"/>
+                    <button class="btn btn-sm ml-2"
+                            @click="images = true;section = 'background';section_selector.showModal()">background
+                    </button>
+
+                    <select class="select select-sm bg-[rgba(255,255,255,0.5)] ml-2" x-model="selected.layout">
+                        <template x-for="(name,id) in layout_names">
+                            <option :value="id" :selected="id == selected.layout" x-text="name"></option>
+                        </template>
+
+                    </select>
+
+                    <button @click="removeSection(selected);slide_modal.close()"
+                            class="btn btn-sm btn-circle btn-ghost hover:text-error ml-10">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                    <template x-component="slide-component">
+                        <div>
+
+                            <template x-if="!($prop('section') in selected.sections)">
+                                <div>
+                                    <button class="btn btn-circle btn-outline"
+                                            @click="images = false;section = $prop('section');section_selector.showModal()">
+                                        <i class="fa-solid fa-gear"></i>
+                                    </button>
+                                </div>
+                            </template>
+
+                            <template x-if="$prop('section') in selected.sections">
+                                <div class="cursor-pointer p-5"
+                                     @click="images = false;section = $prop('section');section_selector.showModal()"
+                                     x-effect="visible=false;doc_section = await fetch_section(selected.sections[$prop('section')].parent,selected.sections[$prop('section')].id);visible=true;"
+                                     x-import="doc-sections/read-only"
+                                     x-data="{doc_section: '',visible: false}">
+                                    <div x-effect="if('type' in doc_section && ['drawio','sketch'].includes(doc_section.type)){
+                                        $el.closest('.content-container').classList.remove('flex');
+                                    }else{
+                                        $el.closest('.content-container').classList.add('flex');
+                                    }"></div>
+                                    <template x-if="visible">
+                                        <ui-read-only></ui-read-only>
+                                    </template>
+                                </div>
+                            </template>
+
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'A'">
+                        <div class="grid grid-cols-12 gap-3 h-[88vh]">
+                            <div class="col-span-6 flex items-center justify-center content-container">
+                                <ui-slide-component section="A"></ui-slide-component>
+                            </div>
+                            <div class="col-span-6 flex items-center justify-center content-container">
+                                <ui-slide-component section="B"></ui-slide-component>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'B'">
+                        <div class="grid grid-cols-12 gap-3 h-[88vh]">
+                            <div class="col-span-7 flex items-center justify-center content-container">
+                                <ui-slide-component section="A"></ui-slide-component>
+                            </div>
+                            <div class="col-span-5 flex items-center justify-center content-container">
+                                <ui-slide-component section="B"></ui-slide-component>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'C'">
+                        <div class="grid grid-cols-12 gap-3 h-[88vh]">
+                            <div class="col-span-5 flex items-center justify-center content-container">
+                                <ui-slide-component section="A"></ui-slide-component>
+                            </div>
+                            <div class="col-span-7 flex items-center justify-center content-container">
+                                <ui-slide-component section="B"></ui-slide-component>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'D'">
+                        <div class="grid grid-cols-12 gap-3 h-[88vh]">
+                            <div class="col-span-6 flex items-center justify-center content-container">
+                                <ui-slide-component section="A"></ui-slide-component>
+                            </div>
+                            <div class="col-span-6">
+                                <div class="h-[44vh] flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                                <div class="h-[44vh] flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'E'">
+                        <div class="grid grid-cols-12 gap-3 h-[88vh]">
+                            <div class="col-span-6">
+                                <div class="h-[44vh] flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                                <div class="h-[44vh] flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="col-span-6 flex items-center justify-center content-container">
+                                <ui-slide-component section="C"></ui-slide-component>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'F'">
+                        <div class="grid grid-cols-12 gap-3 h-[88vh]">
+                            <div class="col-span-6">
+                                <div class="h-[44vh] flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                                <div class="h-[44vh] flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="col-span-6">
+                                <div class="h-[44vh] flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                                <div class="h-[44vh] flex items-center justify-center content-container">
+                                    <ui-slide-component section="D"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'G'">
+                        <div class="grid grid-cols-12 gap-3 h-[88vh]">
+                            <div class="col-span-12 flex items-center justify-center content-container">
+                                <ui-slide-component section="A"></ui-slide-component>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'H'">
+                        <div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-12 flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-6 flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                                <div class="col-span-6 flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'I'">
+                        <div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-6 flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                                <div class="col-span-6 flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-12 flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'J'">
+                        <div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-12 flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="D"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'K'">
+                        <div class="grid grid-cols-12 gap-3 h-[88vh]">
+                            <div class="col-span-4 flex items-center justify-center content-container">
+                                <ui-slide-component section="A"></ui-slide-component>
+                            </div>
+                            <div class="col-span-4 flex items-center justify-center content-container">
+                                <ui-slide-component section="B"></ui-slide-component>
+                            </div>
+                            <div class="col-span-4 flex items-center justify-center content-container">
+                                <ui-slide-component section="C"></ui-slide-component>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'L'">
+                        <div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="D"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="E"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="F"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'M'">
+                        <div>
+                            <div class="grid grid-cols-12 gap-3 h-[30vh]">
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-3 h-[30vh]">
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="D"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="E"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="F"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-3 h-[30vh]">
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="G"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="H"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="I"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'N'">
+                        <div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-8 flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                                <div class="col-span-8 flex items-center justify-center content-container">
+                                    <ui-slide-component section="D"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="selected.layout == 'O'">
+                        <div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="B"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="C"></ui-slide-component>
+                                </div>
+                                <div class="col-span-4 flex items-center justify-center content-container">
+                                    <ui-slide-component section="D"></ui-slide-component>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-3 h-[44vh]">
+                                <div class="col-span-12 flex items-center justify-center content-container">
+                                    <ui-slide-component section="A"></ui-slide-component>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <ui-section-selector></ui-section-selector>
+                </div>
+            </dialog>
+
         </div>
     </div>
 </template>

@@ -6,7 +6,14 @@
       <div
         @click="toggleMode"
         x-show="!isEditing"
-        class="markdown-body prose max-w-none"
+        class="markdown-body prose max-w-none bg-transparent"
+        x-html="renderedMarkdown"></div>
+    </div>
+</template>
+<template x-component="markdown-readonly">
+    <div x-data="markdown">
+      <div
+        class="markdown-body prose max-w-none bg-transparent"
         x-html="renderedMarkdown"></div>
     </div>
 </template>

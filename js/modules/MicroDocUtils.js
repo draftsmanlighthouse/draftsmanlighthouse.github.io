@@ -88,12 +88,13 @@ document.addEventListener('alpine:init', () => {
 
             this.save_doc();
         },
-        add_slide_section(){
+        add_slide_section(layout="A"){
             const id = crypto.randomUUID();
             this.microDoc.json.sections.push({
                 id: id,
                 type: "slide",
-                layout: "A",
+                title: "Slide: " + (this.microDoc.json.sections.filter(x => x.type == 'slide').length + 1),
+                layout: layout,
                 sections: {}
             });
         },
@@ -110,3 +111,5 @@ document.addEventListener('alpine:init', () => {
     }
   });
 });
+
+

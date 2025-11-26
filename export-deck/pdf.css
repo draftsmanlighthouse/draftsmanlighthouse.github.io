@@ -1,0 +1,24 @@
+body.export-landscape {
+  size: landscape;
+}
+
+@media print {
+  @page {
+    size: landscape;
+    margin: 0;
+  }
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+@page {
+  margin: 0 !important;
+  size: A4 landscape;
+}

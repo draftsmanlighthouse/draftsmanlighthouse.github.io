@@ -16,7 +16,7 @@ async function prepare(){
 
         if (['drawio','sketch'].includes(section.type)){
             const viewer = 'https://diagram.bohanssen.com/viewer?embed=1&ui=min&spin=1&proto=json';
-            wrapper.innerHTML = `<iframe id="${section.id}" frameborder="0" style="width:100%;aspect-ratio: 16 / 9;" src="${viewer}"></iframe>`;
+            wrapper.innerHTML = `<iframe id="${section.id}" frameborder="0" style="width:100%;aspect-ratio: ${section.width} / ${section.height};" src="${viewer}"></iframe>`;
             container.appendChild(wrapper);
             setTimeout(function(){
                 document.getElementById(section.id).contentWindow.postMessage(JSON.stringify({
@@ -33,6 +33,11 @@ async function prepare(){
             });
             const { svg } = await mermaid.render('diagram-svg', section.data);
             wrapper.innerHTML = svg;
+            container.appendChild(wrapper);
+        }
+
+        if (section.type == "image"){
+            wrapper.innerHTML = `<img src="${section.data}" id="${section.id}" style="width: 100%">`;
             container.appendChild(wrapper);
         }
 
@@ -94,6 +99,10 @@ async function prepare(){
         }
     }
     setTimeout(function(){
+//        document.querySelectorAll(".pagedjs_page img").forEach(img => {
+//            const section = window.sections.find(s => s.id === img.id);
+//            img.src = section.data;
+//        });
         document.querySelectorAll(".pagedjs_page canvas").forEach(canvas => {
         const id = canvas.dataset.sourceId;
         const section = window.sections.find(s => s.id === id);

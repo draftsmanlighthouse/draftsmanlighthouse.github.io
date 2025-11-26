@@ -1,30 +1,45 @@
 <template x-component="drawio">
     <div x-data="drawioEditor">
         <div>
-          <!-- Diagram -->
-          <div
-            x-ref="diagram_container"
-            x-show="!isEditing"
-            x-cloak
-            x-transition
-            class="iframe-container border"></div>
+            <!-- Diagram -->
+            <div
+                    x-ref="diagram_container"
+                    x-show="!isEditing"
+                    x-cloak
+                    x-transition
+                    class="iframe-container border"></div>
 
-          <!-- Button onderaan rechts -->
-          <div class="flex justify-end mt-1" x-show="!readonly">
-            <button
-              x-show="!isEditing"
-              x-cloak
-              x-transition
-              @click="startEditing"
-              class="btn btn-sm">
-              Edit diagram
-            </button>
-          </div>
+            <!-- Button onderaan rechts -->
+            <div class="flex justify-end mt-1" x-show="!readonly" x-cloak x-transition x-data="{aspect: false}">
+                <button x-show="!aspect" class="btn btn-sm btn-outline" @click="aspect = true">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+
+                <input type="number" class="input input-xs mt-1 mr-2 w-[50px]" x-model="section.width"
+                            x-init="if(!('width' in section)){section.width = 16}"
+                            x-show="aspect" x-cloak x-transition/>
+                <span x-show="aspect" x-cloak x-transition>:</span>
+                <input type="number" class="input input-xs mt-1 mx-2 w-[50px]" x-model="section.height"
+                            x-init="if(!('height' in section)){section.height = 9}"
+                            x-show="aspect" x-cloak x-transition/>
+
+                <button x-show="aspect" x-cloak x-transition class="btn btn-sm btn-outline" @click="aspect = false">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <button
+                        x-show="!isEditing"
+                        x-cloak
+                        x-transition
+                        @click="startEditing"
+                        class="btn btn-sm btn-outline btn-warning ml-2">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+            </div>
         </div>
 
         <div
-            x-ref="editor_container"
-            x-show="isEditing" x-cloak x-transition
-            class="iframe-container"></div>
+                x-ref="editor_container"
+                x-show="isEditing" x-cloak x-transition
+                class="iframe-container"></div>
     </div>
 </template>

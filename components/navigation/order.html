@@ -47,7 +47,7 @@
                                         <ui-read-only></ui-read-only>
                                     </div>
                                 </template>
-                                <template x-if="doc_section.type != 'markdown' && doc_section.type != 'reference'">
+                                <template x-if="doc_section.type != 'markdown' && doc_section.type != 'reference' && doc_section.type != 'slide'">
                                     <div class="max-h-[20vh]">
                                         <ui-read-only></ui-read-only>
                                     </div>
@@ -58,6 +58,13 @@
                                         <div x-import="doc-sections/embedded" x-data="{section: doc_section}">
                                             <ui-embedded></ui-embedded>
                                         </div>
+                                    </div>
+                                </template>
+
+                                <template x-if="doc_section.type == 'slide'">
+                                    <div class="max-h-[20vh]">
+                                        <h2 class="text-xl" x-text="doc_section.title"></h2>
+                                        <h3 class="text-lg text-gray-400" x-text="layout_names[doc_section.layout]"></h3>
                                     </div>
                                 </template>
 

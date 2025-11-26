@@ -62,7 +62,7 @@
                 <template x-if="section.type == 'image'">
                     <img
                             :src="section.data"
-                            class="max-w-full rounded shadow">
+                            class="h-[25vh] group-hover:h-auto max-w-full mx-auto rounded shadow">
                 </template>
 
                 <!-- embed -->
@@ -90,6 +90,22 @@
                         <i class="mr-3 cursor-pointer fa-regular fa-pen-to-square text-gray-400 hover:text-warning"
                            @click="$dispatch('edit-embed')"></i>
                     </template>
+
+                    <button
+                    @click="copyShortId(shortId(section.id), $event)"
+                    class="text-gray-400 hover:text-info transition mr-3 relative"
+                >
+                    <i class="fa-solid fa-fingerprint"></i>
+
+                    <!-- tooltip -->
+                    <span class="absolute -top-6 left-1/2 -translate-x-1/2
+                                 bg-base-200 text-xs px-2 py-1 rounded shadow opacity-0
+                                 transition pointer-events-none"
+                          x-ref="tooltip">
+                        copied!
+                    </span>
+                </button>
+
                     <button
                             @click="removeSection(section)"
                             class="text-gray-400 hover:text-error transition">
