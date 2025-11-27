@@ -28,6 +28,28 @@
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+    <style>
+    .markdown-body ul {
+      list-style-type: disc !important;
+      margin-left: 1.5rem !important;
+      padding-left: 0 !important;
+    }
+
+    .markdown-body ol {
+      list-style-type: decimal !important;
+      margin-left: 1.5rem !important;
+      padding-left: 0 !important;
+    }
+
+    /* Nested lists */
+    .markdown-body ul ul,
+    .markdown-body ol ol,
+    .markdown-body ul ol,
+    .markdown-body ol ul {
+      margin-left: 1.25rem !important;
+      list-style-type: circle !important;
+    }
+    </style>
     <style>[x-cloak] { display: none !important; }</style>
 
     <!-- mermaid -->
@@ -78,11 +100,6 @@
                     @click="install"
                     class="btn btn-primary btn-outline btn-circle btn-sm m-2">
                     <i class="fa-solid fa-download"></i>
-                </button>
-                <button class="btn btn-outline btn-info btn-sm btn-circle m-2"
-                        x-show="Object.keys(microDoc).length != 0 && microDoc.json.type != 'infodeck'" x-cloak x-transition
-                        @click="const w = window.open('/export', '_blank');">
-                    <i class="fa-solid fa-file-arrow-down"></i>
                 </button>
                 <button class="btn btn-outline btn-success btn-sm btn-circle m-2 mr-5" @click="create_doc">
                     <i class="fa-solid fa-plus"></i>

@@ -14,6 +14,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
     <!-- Render libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+    <style>
+        .markdown-body ul {
+          list-style-type: disc !important;
+          margin-left: 1.5rem !important;
+          padding-left: 0 !important;
+        }
+
+        .markdown-body ol {
+          list-style-type: decimal !important;
+          margin-left: 1.5rem !important;
+          padding-left: 0 !important;
+        }
+
+        /* Nested lists */
+        .markdown-body ul ul,
+        .markdown-body ol ol,
+        .markdown-body ul ol,
+        .markdown-body ol ul {
+          margin-left: 1.25rem !important;
+          list-style-type: circle !important;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
@@ -30,21 +53,52 @@
 </head>
 
 <body x-data="{buttons: true,deck: JSON.parse(localStorage.deck)}"
-      class="export-landscape"
-      x-init="await prepare()">
+      class="export-landscape">
 
 <template x-component="slide-component">
-    <div class="max-h-[500px] max-w-[500px] overflow-auto">
-        <pre x-text="JSON.stringify(slide.sections[$prop('section')],null,2)"></pre>
-    </div>
+    <div x-data="{section: {}}" x-init="section = slide.sections[$prop('section')]">
 
+        <template x-if="section.type == 'markdown'">
+            <div class="markdown-body prose max-w-none bg-transparent" x-html="marked.parse(section.data)"></div>
+        </template>
+
+        <template x-if="['drawio','sketch'].includes(section.type)">
+            <div x-init="$el.closest('.content-container').classList.remove('flex')">
+                <iframe @load="load_diagram($el,section.data)"
+                        frameborder="0" class="w-full"
+                        :style="`background: transparent;aspect-ratio: ${section.width} / ${section.height}`"
+                        src="https://diagram.bohanssen.com/viewer?embed=1&ui=min&spin=1&proto=json"></iframe>
+            </div>
+        </template>
+
+        <template x-if="section.type == 'image'">
+            <img :class="$prop('height') ? $prop('height') : 'h-[44vh]'" class="rounded" :src="section.data"></img>
+        </template>
+
+        <template x-if="section.type == 'chart'">
+            <div>
+                <template x-if="['chart','both'].includes(section.view_mode)">
+                    <div class="w-full h-full max-w-3xl">
+                        <canvas class="w-[90%] h-[90%]" :id="section.id" x-init="load_chart($el,section)"></canvas>
+                    </div>
+                </template>
+                <template x-if="['table','both'].includes(section.view_mode)">
+                    <div x-init="load_table($el,section)"></div>
+                </template>
+            </div>
+        </template>
+
+        <template x-if="section.type == 'mermaid'">
+            <div x-init="load_mermaid($el,section)"></div>
+        </template>
+
+    </div>
 </template>
 
 <!-- Slides rendered here -->
 <template x-for="slide in deck">
-    <div class="h-[100vh] max-h-[100vh] w-[100vw] max-w-[100vw] overflow-none m-0"
+    <div class="slide p-5"
          :style="'background' in slide.sections ? `background-image: url('${slide.sections.background.data}')` : ''">
-        <h1 class="mt-0 mb-5 mx-5 text-3xl" x-text="slide.title"></h1>
 
         <div x-show="buttons" class="absolute top-5 right-5">
             <button class="btn btn-neutral" @click="buttons=false;
@@ -296,7 +350,8 @@
                         <ui-slide-component section="B"></ui-slide-component>
                     </div>
                 </div>
-                <div class="grid grid-cols-12 gap-3 h-[44vh]">
+
+                <div class="grid grid-cols-12 gap-3 h-[44vh] mt-5">
                     <div class="col-span-4 flex items-center justify-center content-container">
                         <ui-slide-component section="C"></ui-slide-component>
                     </div>

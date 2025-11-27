@@ -22,3 +22,13 @@ html, body {
   margin: 0 !important;
   size: A4 landscape;
 }
+
+.slide {
+  width: 1122px;
+  height: 794px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto; /* preview center */
+  background-size: cover;
+  background-position: center;
+}

@@ -223,15 +223,18 @@
                 <span class="ml-4" x-text="formatCreated(microDoc.json.updated)"></span>
             </td>
         </tr>
-        <template x-if="microDoc.json.type == 'infodeck'">
-            <tr>
-                <th>Export</th>
-                <td>
-                    <button @click="prepare_deck" class="btn btn-sm btn-ghost btn-circle">
-                        <i class="fa-regular fa-file-pdf"></i>
-                    </button>
-                </td>
-            </tr>
-        </template>
+        <tr>
+            <th>Export</th>
+            <td x-show="microDoc.json.type == 'infodeck'" x-cloak x-transition>
+                <button @click="prepare_deck" class="btn btn-sm btn-ghost btn-circle">
+                    <i class="fa-regular fa-file-pdf"></i>
+                </button>
+            </td>
+            <td x-show="microDoc.json.type != 'infodeck'" x-cloak x-transition>
+                <button @click="const w = window.open('/export', '_blank');" class="btn btn-sm btn-ghost btn-circle">
+                    <i class="fa-regular fa-file-pdf"></i>
+                </button>
+            </td>
+        </tr>
     </table>
 </template>

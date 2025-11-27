@@ -60,9 +60,11 @@
 
                 <!-- image -->
                 <template x-if="section.type == 'image'">
-                    <img
+                    <img    x-data="{expanded: false}"
+                            @click="expanded = !expanded"
                             :src="section.data"
-                            class="h-[25vh] group-hover:h-auto max-w-full mx-auto rounded shadow">
+                            :class="expanded ? 'h-auto' : 'h-[25vh]'"
+                            class="max-w-full mx-auto rounded shadow cursor-pointer">
                 </template>
 
                 <!-- embed -->

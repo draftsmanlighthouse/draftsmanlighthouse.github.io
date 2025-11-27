@@ -296,7 +296,7 @@
                                      x-effect="visible=false;doc_section = await fetch_section(selected.sections[$prop('section')].parent,selected.sections[$prop('section')].id);visible=true;"
                                      x-import="doc-sections/read-only"
                                      x-data="{doc_section: '',visible: false}">
-                                    <div x-effect="if('type' in doc_section && ['drawio','sketch'].includes(doc_section.type)){
+                                    <div x-effect="if('type' in doc_section && ['drawio','sketch','chart','mermaid'].includes(doc_section.type)){
                                         $el.closest('.content-container').classList.remove('flex');
                                     }else{
                                         $el.closest('.content-container').classList.add('flex');

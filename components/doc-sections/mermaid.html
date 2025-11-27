@@ -1,6 +1,6 @@
 <template x-component="mermaid">
     <div x-data="mermaidEditor">
-        <div class="border" @click="displayDiagram">
+        <div @click="displayDiagram">
             <div class="flex justify-center" x-ref="diagram_viewer"></div>
             <textarea x-show="isEditing" x-cloak x-transition
                       x-model="currentDiagram"
