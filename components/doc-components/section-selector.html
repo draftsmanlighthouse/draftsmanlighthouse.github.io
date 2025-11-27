@@ -2,9 +2,73 @@
     <dialog id="section_selector" class="modal">
         <div class="modal-box max-w-[80vw] w-[80vw]"
              x-data="{search: $persist('').as('slideSection'), items: [], suggestions: [],selected_section: {}}">
-            <h3 class="text-lg font-bold">Hello!</h3>
+            <h3 class="text-lg font-bold">Configure section</h3>
             <p class="py-4"
                x-effect="suggestions = sectionIndex.autoSuggest(search);items = sectionIndex.search(search);">
+
+            <ul class="menu menu-horizontal bg-base-200 rounded-box my-5">
+                <li class="menu-disabled p-2">
+                    Add inline section:
+                </li>
+                <li>
+                    <a @click="let id = add_markdown_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                       class="tooltip tooltip-bottom"
+                       data-tip="Add Markdown section">
+                        <i class="fa-brands fa-markdown"></i>
+                    </a>
+                </li>
+                <li>
+                    <a @click="let id = add_drawio_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                       class="tooltip tooltip-bottom"
+                       data-tip="Add DrawIO section">
+                        <i class="fa-solid fa-draw-polygon"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a @click="let id = add_sketch_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                       class="tooltip tooltip-bottom"
+                       data-tip="Add sketch section">
+                        <i class="fa-solid fa-pencil"></i>
+                    </a>
+                </li>
+                <li>
+                    <a @click="let id = add_mermaid_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                       class="tooltip tooltip-bottom"
+                       data-tip="Add Mermaid section">
+                        <i class="fa-solid fa-diagram-project"></i>
+                    </a>
+                </li>
+                <li>
+                    <a @click="let id = add_chart_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                       class="tooltip tooltip-bottom"
+                       data-tip="Add data section">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </a>
+                </li>
+                <li>
+                    <a @click="image_modal.showModal()"
+                       class="tooltip tooltip-bottom"
+                       data-tip="Add image section">
+                        <i class="fa-regular fa-image"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <dialog id="image_modal" class="modal">
+                <div class="modal-box">
+                    <h3 class="text-lg font-bold">Select image</h3>
+                    <p class="py-4">
+                        <input type="file"
+                               class="file-input"
+                               accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
+                               @change="let id = await addImage($event);selected.sections[section] = {parent: microDoc.id ,id};$el.value = null; image_modal.close()">
+                    </p>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
 
             <table class="table table-sm mb-5">
                 <tr>
@@ -13,7 +77,7 @@
                                 type="search"
                                 x-model="search"
                                 list="auto-suggest"
-                                placeholder="Search..."
+                                placeholder="Search for section knowledge base..."
                                 class="input input-primary input-sm w-full pr-10"/>
                         <datalist id="auto-suggest">
                             <template x-for="suggestion in suggestions.map(x => x.suggestion)">
@@ -21,7 +85,8 @@
                             </template>
                         </datalist>
                     </td>
-                    <td x-show="Object.keys(selected_section).length != 0 && (!images || selected_section.type == 'image')" x-cloak x-transition>
+                    <td x-show="Object.keys(selected_section).length != 0 && (!images || selected_section.type == 'image')"
+                        x-cloak x-transition>
                         <button @click="
                                     if(!(section in selected.sections))
                                         {selected.sections[section] = {}};

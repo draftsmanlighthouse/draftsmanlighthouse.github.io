@@ -1,5 +1,5 @@
 <template x-component="slides">
-    <div x-data="SectionHelper">
+    <div x-data="SectionHelper" x-import="doc-components/main-content">
         <div class="grid grid-cols-10 gap-3" x-data="{selected: ''}">
             <template x-for="slide in microDoc.json.sections.filter(x => x.type === 'slide')">
                 <div class="col-span-3 card bg-base-100 image-full shadow-sm relative cursor-pointer"
@@ -290,7 +290,7 @@
                                 </div>
                             </template>
 
-                            <template x-if="$prop('section') in selected.sections">
+                            <template x-if="$prop('section') in selected.sections && selected.sections[$prop('section')].parent != microDoc.id">
                                 <div class="cursor-pointer p-5"
                                      @click="images = false;section = $prop('section');section_selector.showModal()"
                                      x-effect="visible=false;doc_section = await fetch_section(selected.sections[$prop('section')].parent,selected.sections[$prop('section')].id);visible=true;"
@@ -307,6 +307,13 @@
                                 </div>
                             </template>
 
+                            <template x-if="$prop('section') in selected.sections && selected.sections[$prop('section')].parent == microDoc.id">
+                                <div x-data="{section: {}}"
+                                     @removed="console.log($prop('section'),selected.sections);delete selected.sections[$prop('section')];console.log(selected.sections);"
+                                     x-effect="section = microDoc.json.sections.find(s => s.id === selected.sections[$prop('section')].id)">
+                                    <ui-section deck="true"></ui-section>
+                                </div>
+                            </template>
                         </div>
                     </template>
 

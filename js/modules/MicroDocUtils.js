@@ -10,6 +10,7 @@ document.addEventListener('alpine:init', () => {
                 data: "# New markdown section\n\n lorem ipsum..."
             });
             this.$dispatch("change");
+            return id;
         },
         add_drawio_section(){
             const id = crypto.randomUUID();
@@ -20,6 +21,7 @@ document.addEventListener('alpine:init', () => {
                 data: ""
             });
             this.$dispatch("change");
+            return id;
         },
         add_sketch_section(){
             const id = crypto.randomUUID();
@@ -30,6 +32,7 @@ document.addEventListener('alpine:init', () => {
                 data: ""
             });
             this.$dispatch("change");
+            return id;
         },
         add_mermaid_section(){
             const id = crypto.randomUUID();
@@ -39,6 +42,7 @@ document.addEventListener('alpine:init', () => {
                 extension: "mmd",
                 data: ""
             });
+            return id;
         },
         add_chart_section(){
             const id = crypto.randomUUID();
@@ -48,6 +52,7 @@ document.addEventListener('alpine:init', () => {
                 extension: "json",
                 data: ""
             });
+            return id;
         },
         add_reference_section(){
             const id = crypto.randomUUID();
@@ -58,6 +63,7 @@ document.addEventListener('alpine:init', () => {
                 sections: [],
                 version: "latest"
             });
+            return id;
         },
         async addImage(event) {
             const file = event.target.files[0];
@@ -87,6 +93,7 @@ document.addEventListener('alpine:init', () => {
             this.microDoc.json.sections.push(section);
 
             this.save_doc();
+            return id;
         },
         add_slide_section(layout="A"){
             const id = crypto.randomUUID();
@@ -97,6 +104,7 @@ document.addEventListener('alpine:init', () => {
                 layout: layout,
                 sections: {}
             });
+            return id;
         },
         removeSection(section){
             this.microDoc.json.sections = this.microDoc.json.sections.filter(x => x.id != section.id);

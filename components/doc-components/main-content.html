@@ -1,7 +1,5 @@
-<template x-component="main">
-    <div x-data="SectionHelper">
-        <template x-for="section in microDoc.json.sections" :key="section.id">
-            <div class="relative my-10 group">
+<template x-component="section">
+    <div class="relative my-10 group">
 
                 <!-- Markdown -->
                 <template x-if="section.type == 'markdown'">
@@ -75,7 +73,19 @@
                 </template>
 
                 <!-- Floating delete icon -->
-                <div class="absolute top-2 right-2">
+                <div x-show="$prop('deck')"class="absolute top-0 right-[-20px]">
+                    <button
+                            @click="removeSection(section);delete_section(section.id);$dispatch('removed');"
+                            class="text-gray-400 hover:text-error transition">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <div x-effect="if($prop('deck') && 'type' in section && ['drawio','sketch','chart','mermaid'].includes(section.type)){
+                        $el.closest('.content-container').classList.remove('flex');
+                    }else{
+                        $el.closest('.content-container').classList.add('flex');
+                    }"></div>
+                </div>
+                <div x-show="!$prop('deck')"class="absolute top-2 right-2">
                     <template x-if="section.type == 'reference' && section.document">
 
                         <div class="badge badge-outline badge-info cursor-pointer mr-3 hover:text-warning transition"
@@ -116,6 +126,11 @@
                 </div>
 
             </div>
+</template>
+<template x-component="main">
+    <div x-data="SectionHelper">
+        <template x-for="section in microDoc.json.sections" :key="section.id">
+            <ui-section></ui-section>
         </template>
         <ul x-data="{active: false}"
             @mouseenter.debounce.300ms="active = true"
