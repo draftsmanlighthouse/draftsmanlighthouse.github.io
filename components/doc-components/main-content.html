@@ -75,7 +75,7 @@
                 <!-- Floating delete icon -->
                 <div x-show="$prop('deck')"class="absolute top-0 right-[-20px]">
                     <button
-                            @click="removeSection(section);delete_section(section.id);$dispatch('removed');"
+                            @click="removeSection(section);$dispatch('removed');"
                             class="text-gray-400 hover:text-error transition">
                         <i class="fa-solid fa-trash"></i>
                     </button>

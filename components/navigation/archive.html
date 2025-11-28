@@ -1,7 +1,7 @@
 <template x-component="archive">
-    <div>
+    <div x-data="{items: []}" x-effect="if(microDoc.json.type == 'infodeck'){items = microDoc.json.archive.filter(x => x.type == 'slide')}else{items = microDoc.json.archive}">
         <button class="btn btn-accent btn-sm btn-outline mt-4 w-full"
-                x-show="microDoc.json.archive.length != 0" x-cloak x-transition
+                x-show="items.length != 0" x-cloak x-transition
                 onclick="section_archive_modal.showModal()">
             Section Archive
         </button>
@@ -11,7 +11,7 @@
                 <h3 class="text-lg font-bold">Archived sections</h3>
                 <p class="py-4">
                 <table class="table">
-                    <template x-for="doc_section in microDoc.json.archive"
+                    <template x-for="doc_section in items"
                               :key="doc_section.id">
                         <tr>
                             <td>
