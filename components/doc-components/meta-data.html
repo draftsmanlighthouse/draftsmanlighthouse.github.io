@@ -35,6 +35,9 @@
                     <option x-show="['ADR','design decision'].includes(microDoc.json.type)" x-cloak x-transition>
                         rejected
                     </option>
+                    <option x-show="['ADR','design decision'].includes(microDoc.json.type)" x-cloak x-transition>
+                        deprecated
+                    </option>
 
                     <option x-show="['note','principle','persona','infodeck'].includes(microDoc.json.type)" x-cloak x-transition>
                         deleted
@@ -108,6 +111,23 @@
                     <select x-model="microDoc.json.scope"
                             class="select select-xs">
                         <option value="landscape">landscape</option>
+                        <template x-for="container in Object.keys(c4_data.components)">
+                            <template x-if="container.split(':').length != 3">
+                                <option x-text="container" :value="component_index[container]"
+                                        :selected="component_index[container] == microDoc.json.scope"></option>
+                            </template>
+                        </template>
+                    </select>
+                </td>
+            </tr>
+        </template>
+        <template x-if="microDoc.json.type == 'note'">
+            <tr>
+                <th>Scope</th>
+                <td>
+                    <select x-model="microDoc.json.scope"
+                            class="select select-xs">
+                        <option value="">n.a.</option>
                         <template x-for="container in Object.keys(c4_data.components)">
                             <template x-if="container.split(':').length != 3">
                                 <option x-text="container" :value="component_index[container]"

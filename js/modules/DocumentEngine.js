@@ -179,7 +179,8 @@ document.addEventListener("alpine:init", () => {
                   ystatement: json.ystatement || {},
                   status: json.status || "draft",
                   scope: json.scope || "",
-                  updated: json.updated || 0
+                  updated: json.updated || 0,
+                  debt: json.debt || false
                 };
                 if ("effect" in json){
                     index.documents[name].effect = json.effect;
@@ -650,6 +651,20 @@ document.addEventListener("alpine:init", () => {
             });
             json.sections = [...slides, ...sections];
           }
+          if (!('created' in json) || json.created === null || json.created === undefined) {
+                json.created = Date.now();
+
+            } else if (typeof json.created === "string") {
+                const parsed = Date.parse(json.created);
+                if (!isNaN(parsed)) {
+                    json.created = parsed;
+                } else {
+                    json.created = Date.now();
+                }
+            } else if (typeof json.created !== "number") {
+                json.created = Date.now();
+            }
+
           // 4. Documentstate zetten
           let lineage = [];
           function add_children_to_lineage(node,index){

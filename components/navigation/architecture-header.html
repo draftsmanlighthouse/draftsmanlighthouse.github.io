@@ -6,6 +6,7 @@
                 </button>
             </div>
 
+
             <button @click="level = level.split(':').slice(0,-1).join(':');location.reload()"
                     x-show="level.includes(':')" x-cloak x-transition
                     class="btn btn-sm m-2 btn-primary btn-outline"><span x-text="level.split(':').slice(0,-1).join(':')"></span> <i class="fa-solid fa-angles-up"></i>
@@ -14,6 +15,8 @@
                     x-show="selected && selected.selected && level.split(':').length != 3" x-cloak x-transition
                     class="btn btn-sm m-2 btn-primary"><span x-text="selected && selected.label ? selected.label : ''"></span> <i class="fa-solid fa-angles-down"></i>
             </button>
+
+
             <button @click="active_tab = 'C4';sessionStorage.setItem(navigation,active_tab)"
                     :class="active_tab == 'C4' ? 'btn-neutral' : 'btn-neutral btn-outline'"
                     class="btn btn-sm m-2">Diagram
@@ -25,6 +28,17 @@
             <button @click="active_tab = 'decisions';sessionStorage.setItem(navigation,active_tab)"
                     :class="active_tab == 'decisions' ? 'btn-neutral' : 'btn-neutral btn-outline'"
                     class="btn btn-sm ml-0 m-2">Decision log
+            </button>
+            <button @click="active_tab = 'TD';sessionStorage.setItem(navigation,active_tab)"
+                    :class="active_tab == 'TD' ? 'btn-neutral' : 'btn-neutral btn-outline'"
+                    class="btn btn-sm ml-0 m-2">Technical Debt Registry
+            </button>
+
+            <button @click="active_tab = 'notes';sessionStorage.setItem(navigation,active_tab)"
+                    x-show="level.includes(':')" x-cloak x-transition
+                    x-effect="if(!level.includes(':') && active_tab == 'notes'){active_tab = 'C4';sessionStorage.setItem(navigation,active_tab)}"
+                    :class="active_tab == 'notes' ? 'btn-neutral' : 'btn-neutral btn-outline'"
+                    class="btn btn-sm ml-0 m-2">Notes
             </button>
         </div>
 </template>

@@ -1,0 +1,19 @@
+<template x-component="debt">
+    <template x-if="microDoc.json.type == 'ADR'">
+        <div class="rounded-box border mb-4"
+             :class="microDoc.json.debt ? 'border-error' : ''"
+             x-show="microDoc.json.type == 'ADR'" x-cloak x-transition>
+            <table class="table table-sm">
+                <tr>
+                    <td>
+                        <input type="checkbox" x-model="microDoc.json.debt"
+                               :class="microDoc.json.debt ? 'checkbox-error' : ''"
+                               class="checkbox checkbox-sm m-1" />
+                    </td>
+                    <th>Causes technical debt</th>
+                </tr>
+
+            </table>
+        </div>
+    </template>
+</template>
