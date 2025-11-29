@@ -1,132 +1,142 @@
 <template x-component="section">
     <div class="relative my-10 group">
 
-                <!-- Markdown -->
-                <template x-if="section.type == 'markdown'">
-                    <div
-                            x-data="{content: ''}"
-                            x-init="content = section.data"
-                            x-effect="section.data = content;$dispatch('change')"
-                            x-import="doc-sections/markdown">
-                        <ui-markdown></ui-markdown>
-                    </div>
-                </template>
+        <!-- Markdown -->
+        <template x-if="section.type == 'markdown'">
+            <div
+                    x-data="{content: ''}"
+                    x-init="content = section.data"
+                    x-effect="section.data = content;$dispatch('change')"
+                    x-import="doc-sections/markdown">
+                <ui-markdown></ui-markdown>
+            </div>
+        </template>
 
-                <!-- Draw.io -->
-                <template x-if="section.type == 'drawio'">
-                    <div
-                            x-data="{currentDiagram: '', selectedMode: 'minimal'}"
-                            x-init="currentDiagram = section.data"
-                            x-effect="section.data = currentDiagram;$dispatch('change')"
-                            x-import="doc-sections/drawio">
-                        <ui-drawio></ui-drawio>
-                    </div>
-                </template>
+        <!-- Draw.io -->
+        <template x-if="section.type == 'drawio'">
+            <div
+                    x-data="{currentDiagram: '', selectedMode: 'minimal'}"
+                    x-init="currentDiagram = section.data"
+                    x-effect="section.data = currentDiagram;$dispatch('change')"
+                    x-import="doc-sections/drawio">
+                <ui-drawio></ui-drawio>
+            </div>
+        </template>
 
-                <!-- Sketch -->
-                <template x-if="section.type == 'sketch'">
-                    <div
-                            x-data="{currentDiagram: '', selectedMode: 'sketch'}"
-                            x-init="currentDiagram = section.data"
-                            x-effect="section.data = currentDiagram;$dispatch('change')"
-                            x-import="doc-sections/drawio">
-                        <ui-drawio></ui-drawio>
-                    </div>
-                </template>
+        <!-- Sketch -->
+        <template x-if="section.type == 'sketch'">
+            <div
+                    x-data="{currentDiagram: '', selectedMode: 'sketch'}"
+                    x-init="currentDiagram = section.data"
+                    x-effect="section.data = currentDiagram;$dispatch('change')"
+                    x-import="doc-sections/drawio">
+                <ui-drawio></ui-drawio>
+            </div>
+        </template>
 
-                <!-- Mermaid -->
-                <template x-if="section.type == 'mermaid'">
-                    <div
-                            x-data="{currentDiagram: ''}"
-                            x-init="currentDiagram = section.data"
-                            x-effect="section.data = currentDiagram;$dispatch('change')"
-                            x-import="doc-sections/mermaid">
-                        <ui-mermaid></ui-mermaid>
-                    </div>
-                </template>
+        <!-- Mermaid -->
+        <template x-if="section.type == 'mermaid'">
+            <div
+                    x-data="{currentDiagram: ''}"
+                    x-init="currentDiagram = section.data"
+                    x-effect="section.data = currentDiagram;$dispatch('change')"
+                    x-import="doc-sections/mermaid">
+                <ui-mermaid></ui-mermaid>
+            </div>
+        </template>
 
-                <!-- Chart -->
-                <template x-if="section.type == 'chart'">
-                    <div
-                            x-data="{currentData: ''}"
-                            x-init="currentData = section.data"
-                            x-effect="section.data = currentData;$dispatch('change')"
-                            x-import="doc-sections/charts">
-                        <ui-charts></ui-charts>
-                    </div>
-                </template>
+        <!-- Chart -->
+        <template x-if="section.type == 'chart'">
+            <div
+                    x-data="{currentData: ''}"
+                    x-init="currentData = section.data"
+                    x-effect="section.data = currentData;$dispatch('change')"
+                    x-import="doc-sections/charts">
+                <ui-charts></ui-charts>
+            </div>
+        </template>
 
-                <!-- image -->
-                <template x-if="section.type == 'image'">
-                    <img    x-data="{expanded: microDoc.json.type == 'infodeck'}"
-                            @click="expanded = !expanded"
-                            :src="section.data"
-                            :class="expanded ? 'h-auto' : 'h-[25vh]'"
-                            class="max-w-full mx-auto rounded shadow cursor-pointer">
+        <!-- image -->
+        <template x-if="section.type == 'image'">
+            <div>
+                <template x-if="!$prop('deck')">
+                    <img x-data="{expanded: microDoc.json.type == 'infodeck'}"
+                         @click="expanded = !expanded"
+                         :src="section.data"
+                         :class="expanded ? 'h-auto' : 'h-[25vh]'"
+                         class="max-w-full mx-auto rounded shadow cursor-pointer">
                 </template>
-
-                <!-- embed -->
-                <template x-if="section.type == 'reference'">
-                    <div x-import="doc-sections/embedded">
-                        <ui-embedded></ui-embedded>
-                    </div>
+                <template x-if="$prop('deck')">
+                    <img
+                         :src="section.data"
+                         :class="$el.closest('.grid').classList[3]"
+                         class="max-w-full mx-auto rounded shadow cursor-pointer">
                 </template>
+            </div>
+        </template>
 
-                <!-- Floating delete icon -->
-                <div x-show="$prop('deck')"class="absolute top-0 right-[-20px]">
-                    <button
-                            @click="removeSection(section);$dispatch('removed');"
-                            class="text-gray-400 hover:text-error transition">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                    <div x-effect="if($prop('deck') && 'type' in section && ['drawio','sketch','chart','mermaid'].includes(section.type)){
+        <!-- embed -->
+        <template x-if="section.type == 'reference'">
+            <div x-import="doc-sections/embedded">
+                <ui-embedded></ui-embedded>
+            </div>
+        </template>
+
+        <!-- Floating delete icon -->
+        <div x-show="$prop('deck')" class="absolute top-0 right-[-20px]">
+            <button
+                    @click="removeSection(section);$dispatch('removed');"
+                    class="text-gray-400 hover:text-error transition">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+            <div x-effect="if($prop('deck') && 'type' in section && ['drawio','sketch','chart','mermaid'].includes(section.type)){
                         try{
                         $el.closest('.content-container').classList.remove('flex');}catch{}
                     }else{
                         try{$el.closest('.content-container').classList.add('flex');}catch{}
                     }"></div>
-                </div>
-                <div x-show="!$prop('deck')"class="absolute top-2 right-2">
-                    <template x-if="section.type == 'reference' && section.document">
+        </div>
+        <div x-show="!$prop('deck')" class="absolute top-2 right-2">
+            <template x-if="section.type == 'reference' && section.document">
 
-                        <div class="badge badge-outline badge-info cursor-pointer mr-3 hover:text-warning transition"
-                             x-text="index.documents[section.document].name"
-                             @click="open_doc(section.document)"></div>
+                <div class="badge badge-outline badge-info cursor-pointer mr-3 hover:text-warning transition"
+                     x-text="index.documents[section.document].name"
+                     @click="open_doc(section.document)"></div>
 
-                    </template>
-                    <template x-if="section.type == 'reference' && !section.document">
+            </template>
+            <template x-if="section.type == 'reference' && !section.document">
 
-                        <div class="badge badge-outline badge-error mr-3">reference not configured</div>
+                <div class="badge badge-outline badge-error mr-3">reference not configured</div>
 
-                    </template>
-                    <template x-if="section.type == 'reference'">
-                        <i class="mr-3 cursor-pointer fa-regular fa-pen-to-square text-gray-400 hover:text-warning"
-                           @click="$dispatch('edit-embed')"></i>
-                    </template>
+            </template>
+            <template x-if="section.type == 'reference'">
+                <i class="mr-3 cursor-pointer fa-regular fa-pen-to-square text-gray-400 hover:text-warning"
+                   @click="$dispatch('edit-embed')"></i>
+            </template>
 
-                    <button
+            <button
                     @click="copyShortId(shortId(section.id), $event)"
                     class="text-gray-400 hover:text-info transition mr-3 relative"
-                >
-                    <i class="fa-solid fa-fingerprint"></i>
+            >
+                <i class="fa-solid fa-fingerprint"></i>
 
-                    <!-- tooltip -->
-                    <span class="absolute -top-6 left-1/2 -translate-x-1/2
+                <!-- tooltip -->
+                <span class="absolute -top-6 left-1/2 -translate-x-1/2
                                  bg-base-200 text-xs px-2 py-1 rounded shadow opacity-0
                                  transition pointer-events-none"
-                          x-ref="tooltip">
+                      x-ref="tooltip">
                         copied!
                     </span>
-                </button>
+            </button>
 
-                    <button
-                            @click="removeSection(section)"
-                            class="text-gray-400 hover:text-error transition">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
+            <button
+                    @click="removeSection(section)"
+                    class="text-gray-400 hover:text-error transition">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
 
-            </div>
+    </div>
 </template>
 <template x-component="main">
     <div x-data="SectionHelper">
