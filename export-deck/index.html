@@ -78,8 +78,9 @@
         <template x-if="section.type == 'chart'">
             <div>
                 <template x-if="['chart','both'].includes(section.view_mode)">
-                    <div class="w-full h-full max-w-3xl">
-                        <canvas class="w-[90%] h-[90%]" :id="section.id" x-init="load_chart($el,section)"></canvas>
+                    <div class="w-full h-full" :class="`max-w-[${$el.closest('.content-container').clientWidth/2}px]`">
+                        <canvas class="w-[90%] h-[90%]" :id="section.id"
+                                x-init="load_chart($el,section);"></canvas>
                     </div>
                 </template>
                 <template x-if="['table','both'].includes(section.view_mode)">
@@ -89,7 +90,7 @@
         </template>
 
         <template x-if="section.type == 'mermaid'">
-            <div x-init="load_mermaid($el,section)"></div>
+            <pre class="mermaid" x-text="section.data"></pre>
         </template>
 
     </div>

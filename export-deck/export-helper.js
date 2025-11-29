@@ -56,11 +56,13 @@ function load_table(table,section){
     table.innerHTML = html;
 }
 
-async function load_mermaid(element,section){
-    mermaid.initialize({
-        startOnLoad: false,
+mermaid.initialize({
+        startOnLoad: true,
         theme: "default"
     });
+
+async function load_mermaid(element,section){
     const { svg } = await mermaid.render('diagram-svg', section.data);
+    console.log(element)
     element.innerHTML = svg;
 }
