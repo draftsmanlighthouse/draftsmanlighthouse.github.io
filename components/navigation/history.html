@@ -28,11 +28,13 @@
             }
         </style>
         <template x-for="id in history.slice(0,5)" :key="id">
-            <li class="truncate-fade">
-                <a @click="open_doc(id)">
-                    <span x-text="index.documents[id].name"></span>
-                </a>
-            </li>
+            <template x-if="id in index.documents && 'name' in index.documents[id]">
+                <li class="truncate-fade">
+                    <a @click="open_doc(id)">
+                        <span x-text="index.documents[id].name"></span>
+                    </a>
+                </li>
+            </template>
         </template>
     </ul>
 </template>

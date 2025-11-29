@@ -638,6 +638,18 @@ document.addEventListener("alpine:init", () => {
 
           const {json, docDir} = await this.fetch_doc(id);
 
+          if (json.type == "infodeck"){
+            let slides = [];
+            let sections = [];
+            json.sections.forEach(s => {
+                if (s.type == 'slide'){
+                    slides.push(s);
+                } else {
+                    sections.push(s);
+                }
+            });
+            json.sections = [...slides, ...sections];
+          }
           // 4. Documentstate zetten
           let lineage = [];
           function add_children_to_lineage(node,index){

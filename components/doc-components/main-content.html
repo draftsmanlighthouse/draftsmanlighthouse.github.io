@@ -58,7 +58,7 @@
 
                 <!-- image -->
                 <template x-if="section.type == 'image'">
-                    <img    x-data="{expanded: false}"
+                    <img    x-data="{expanded: microDoc.json.type == 'infodeck'}"
                             @click="expanded = !expanded"
                             :src="section.data"
                             :class="expanded ? 'h-auto' : 'h-[25vh]'"
@@ -80,9 +80,10 @@
                         <i class="fa-solid fa-trash"></i>
                     </button>
                     <div x-effect="if($prop('deck') && 'type' in section && ['drawio','sketch','chart','mermaid'].includes(section.type)){
-                        $el.closest('.content-container').classList.remove('flex');
+                        try{
+                        $el.closest('.content-container').classList.remove('flex');}catch{}
                     }else{
-                        $el.closest('.content-container').classList.add('flex');
+                        try{$el.closest('.content-container').classList.add('flex');}catch{}
                     }"></div>
                 </div>
                 <div x-show="!$prop('deck')"class="absolute top-2 right-2">

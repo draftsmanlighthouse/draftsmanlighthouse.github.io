@@ -13,8 +13,8 @@
         <!-- Draw.io -->
         <template x-if="doc_section.type == 'drawio'">
             <div
-                    x-data="{currentDiagram: '', selectedMode: 'minimal', readonly: true}"
-                    x-init="currentDiagram = doc_section.data"
+                    x-data="{currentDiagram: '', selectedMode: 'minimal', readonly: true, section: {}}"
+                    x-init="currentDiagram = doc_section.data;section = doc_section"
                     x-import="doc-sections/drawio">
                 <ui-drawio></ui-drawio>
             </div>
@@ -23,8 +23,8 @@
         <!-- Sketch -->
         <template x-if="doc_section.type == 'sketch'">
             <div
-                    x-data="{currentDiagram: '', selectedMode: 'sketch', readonly: true}"
-                    x-init="currentDiagram = doc_section.data"
+                    x-data="{currentDiagram: '', selectedMode: 'sketch', readonly: true, section: {}}"
+                    x-init="currentDiagram = doc_section.data;section = doc_section"
                     x-import="doc-sections/drawio">
                 <ui-drawio></ui-drawio>
             </div>
@@ -43,8 +43,8 @@
         <!-- Chart -->
         <template x-if="doc_section.type == 'chart'">
             <div
-                    x-data="{currentData: '', readonly: true, currentChartType: doc_section.chart_type, currentViewMode: doc_section.view_mode}"
-                    x-init="currentData = doc_section.data"
+                    x-data="{currentData: '', readonly: true, currentChartType: doc_section.chart_type, currentViewMode: doc_section.view_mode,section: {}}"
+                    x-init="currentData = doc_section.data;section = doc_section"
                     x-import="doc-sections/charts">
                 <ui-charts></ui-charts>
             </div>

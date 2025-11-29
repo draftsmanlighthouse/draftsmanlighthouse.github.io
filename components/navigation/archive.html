@@ -30,6 +30,8 @@
                                     <div>
                                         <h2 class="text-xl" x-text="doc_section.title"></h2>
                                         <h3 class="text-lg text-gray-400" x-text="layout_names[doc_section.layout]"></h3>
+                                        <img :src="`/assets/slides/${doc_section.layout}.png`"
+                                            class="object-cover mt-4 h-[10vh]"/>
                                     </div>
                                 </template>
                             </td>
