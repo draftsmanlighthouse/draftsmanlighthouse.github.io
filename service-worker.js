@@ -1,6 +1,7 @@
 // --- CONFIG --------------------------------------------------
 
 const CACHE_NAME = "notebook-cache-v1";
+// TODO: drawio wordt niet gecached... uitzoeken waarom.
 
 // --- INSTALL -------------------------------------------------
 

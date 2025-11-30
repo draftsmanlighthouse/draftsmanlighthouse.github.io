@@ -107,7 +107,7 @@
             </div>
         </div>
         <div class="p-5 max-h-[95vh] overflow-y-auto"
-             x-import="micro-doc;architecture;all-documents;dashboard;infodeck">
+             x-import="micro-doc;architecture;all-documents;dashboard;infodeck;home">
             <template x-if="navigation == 'architecture'">
                 <ui-architecture></ui-architecture>
             </template>
@@ -115,9 +115,7 @@
                 <ui-micro-doc></ui-micro-doc>
             </template>
             <template x-if="navigation == 'doc' && Object.keys(microDoc).length == 0">
-                <div>
-                    TODO: Home page
-                </div>
+                <ui-home></ui-home>
             </template>
             <template x-if="navigation == 'dashboard'">
                 <ui-dashboard></ui-dashboard>

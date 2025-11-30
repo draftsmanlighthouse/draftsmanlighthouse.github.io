@@ -1,0 +1,259 @@
+<template x-component="home">
+    <div class="grid grid-cols-12">
+        <div class="col-span-6">
+            <section class="space-y-3 text-sm">
+                <h1 class="text-xl font-semibold">
+                    The Architect’s Notebook
+                </h1>
+
+                <p>
+                    I keep running into the same problem: the notes and sketches I keep about the architecture end up
+                    scattered across too many tools. For pet projects I sketch in Draw.io, write Markdown in a Git repo,
+                    and some of my reasoning drifts into Basecamp. At my day job it fragments even further—across Teams
+                    channels, wikis, PM tools, emails, chats, loose Markdown files, Draw.io diagrams, and an endless
+                    supply of slide decks.
+                </p>
+
+                <p>
+                    OneNote never clicked for me. It tries to emulate paper, while I interact with a mouse and keyboard.
+                    It’s too free. I prefer constraints—just enough structure that I can focus on the thinking rather
+                    than the formatting. That’s why I like Markdown: limited, but in the liberating way.
+                </p>
+
+                <p>
+                    So I wanted something quieter. Something of my own. A personal knowledge space where the
+                    pre-docs—the
+                    rough notes, sketches, arguments-in-progress—can actually stay in one place before they graduate to
+                    official documentation. My own take on OneNote, but opinionated in the ways that help me think.
+                </p>
+            </section>
+        </div>
+        <div class="col-span-6">
+            <img class="w-full" src="/assets/idea.png"/>
+        </div>
+        <div class="col-span-8">
+            <div class="prose prose-neutral max-w-none text-base leading-relaxed space-y-4">
+
+                <h2 class="text-xl font-bold mb-2">The initial idea</h2>
+
+                <p>
+                    It didn’t start as a PKM project.<br/>
+                    The idea was much bigger.
+                </p>
+
+                <p>
+                    At some point I realized: knowledge flows from work.<br/>
+                    So instead of stitching tools together, maybe I should build something where
+                    <strong>project management and knowledge management share the same foundation</strong>
+                    — not bolted on afterwards, but part of the workflow itself.
+                </p>
+
+                <p>
+                    The project-management part felt straightforward.<br/>
+                    My own process doesn’t require much more than tasks and notes.
+                </p>
+
+                <p>
+                    But the knowledge-management part… that’s where the uncertainty sits.
+                </p>
+
+                <p>
+                    Enterprise knowledge management is complicated for reasons I’m not trying to solve here:
+                    permissions, comments, conflicts, shared taxonomies, workflows, change tracking.
+                    All important for a collaborative tool — and I’m confident those aspects are solvable.
+                </p>
+
+                <p>
+                    But the real risk in the larger idea is not collaboration.<br/>
+                    It’s <strong>knowledge</strong> itself: how it’s captured, structured, found, and shaped.
+                </p>
+
+                <p>
+                    So I reframed the question:
+                </p>
+
+                <blockquote class="border-l-4 pl-4 italic">
+                    “What do I actually need for personal knowledge management?”
+                </blockquote>
+
+                <p>
+                    A smaller question.<br/>
+                    Sharply scoped.<br/>
+                    And something I can test myself — to see whether the UX actually supports the way I think.
+                </p>
+
+                <p>
+                    This notebook is that proof-of-value experiment.<br/>
+                    A way to validate the knowledge-management foundations before I attempt anything larger.
+                </p>
+
+            </div>
+
+            <hr class="my-5">
+
+            <div class="prose prose-sm max-w-none">
+                <h2 class="text-xl font-bold">Constraints</h2>
+
+                <p>Before thinking about features, I had to be clear about boundaries.</p>
+
+                <ul class="list-disc list-inside space-y-1">
+                    <li>This is a <strong>personal</strong> tool. No collaboration, no comments, no change tracking.
+                    </li>
+                    <li>Built <strong>for myself first</strong>. If others benefit — great.</li>
+                    <li>Browser-based, because that’s the GUI stack I understand best.</li>
+                    <li><strong>Privacy-first</strong>, everything stored locally through the File System Access API.
+                    </li>
+                    <li>Backups and syncing are external concerns (OneDrive, Dropbox, Git — whatever fits).</li>
+                </ul>
+
+                <p>
+                    I work in a regulated environment, so “just put it in the cloud” is not an option.<br>
+                    Local-first isn’t a preference — it’s a requirement.
+                </p>
+            </div>
+
+            <hr class="my-5">
+
+            <div class="w-full space-y-4">
+
+                <h2 class="text-xl font-bold">The tool</h2>
+
+                <p>
+                    Obsidian introduced a beautiful idea: notes forming a knowledge graph.
+                    That became a key inspiration.
+                </p>
+
+                <p>Because I chose web technologies, I can rely on existing libraries:</p>
+
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>Markdown</strong> via Toast UI Editor and Marked</li>
+                    <li><strong>Diagrams</strong> via the Draw.io embed — fully client-side</li>
+                    <li><strong>Mermaid</strong> for lightweight sketches</li>
+                    <li><strong>Chart.js</strong> for structured visuals</li>
+                </ul>
+
+                <p>
+                    From Confluence I borrowed the idea of <strong>tags</strong> — enabling
+                    hierarchical navigation and powerful filtering across the knowledge graph.
+                    Full-text search fills the remaining gaps via MiniSearch.
+                </p>
+
+                <h3 class="text-lg font-semibold">Narratives: a missing feature in most tools</h3>
+
+                <p>
+                    One feature I always wanted is the ability to create a story — a curated path
+                    through existing notes, independent of chronology. A way to assemble context
+                    around a decision, not just the decision itself.
+                </p>
+
+                <p>
+                    That idea aligns closely with Martin Fowler’s <strong>Infodeck</strong>, and
+                    that’s exactly how I treat narratives: landscape, slide-like sequences built
+                    from fragments already stored in the system. These can be exported cleanly to
+                    PDF.
+                </p>
+
+                <h3 class="text-lg font-semibold">Architectural views</h3>
+
+                <p>
+                    As an architect I also need structural views of the knowledge graph — not
+                    just freeform diagrams. With consistent metadata, I can generate C4 views
+                    directly from my notes. So I chose the <strong>C4 model</strong> as the
+                    unifying vocabulary.
+                </p>
+
+                <p>
+                    This means the C4 diagrams aren’t something I draw — they’re something I
+                    <em>derive</em> from decisions and notes.
+                </p>
+
+                <h3 class="text-lg font-semibold">Working On (attention & flow)</h3>
+
+                <p>
+                    “Working on” is the small dashboard answering a simple question:
+                    <em>What am I doing right now?</em> It shows which documents are in draft or
+                    review, and the sidebar keeps the last opened notes close at hand.
+                </p>
+
+                <p>
+                    It’s not a workflow engine or kanban board; it’s a gentle prompt that
+                    surfaces whatever is currently alive in my head — the anchor I return to when
+                    meetings, chats, and context-switches scatter my attention.
+                </p>
+
+            </div>
+
+            <hr class="my-5">
+
+            <section class="prose prose-neutral max-w-none">
+                <h2 class="text-xl font-bold">The document model</h2>
+
+                <p>
+                    Every note you write is essentially a “document,” similar to Confluence.
+                    The document acts as the <strong>aggregate root</strong> and contains metadata plus a set of
+                    sections.
+                </p>
+
+                <p>
+                    Each section is stored as its own file — Markdown, JSON, XML (for Draw.io), etc.
+                    This avoids conflicts and keeps references predictable.
+                </p>
+
+                <p>
+                    Any section can be addressed with a simple <code>(document_id, section_id)</code> pair.
+                    Infodeck slides never need to start from scratch: they can reuse existing text,
+                    diagrams, or embed sections inline — and anything embedded remains first-class and referenceable.
+                </p>
+
+                <h3 class="text-lg font-semibold mt-6">Metadata as a domain language</h3>
+
+                <ul class="list-disc ml-6">
+                    <li>
+                        <code>type: note | ADR | principle | persona | …</code>
+                        Determines UI behaviour — for example, ADRs expose a Y-Statement area.
+                    </li>
+                    <li>
+                        ADRs and decisions may declare <strong>effects</strong>
+                        (e.g., introducing a C4 component, creating a relationship, or adding technical debt).
+                        This allows the C4 model to be reconstructed directly from decisions.
+                    </li>
+                    <li>
+                        Notes may define a <strong>scope</strong>, linking them to C4 elements.
+                        The C4 model is not drawn — it is used as a navigational structure.
+                    </li>
+                </ul>
+
+                <p class="mt-4">
+                    Metadata is what turns a pile of documents into a connected knowledge system.
+                </p>
+            </section>
+
+            <hr class="my-5">
+
+            <div class="prose prose-neutral max-w-none">
+                <h2 class="text-xl font-bold">What this tool really gives me</h2>
+
+                <p>
+                    It integrates the tools I already use — Markdown, diagrams, sketches — and ties
+                    them together with a consistent data model. It helps me add meaningful metadata
+                    and turns everything into a navigable knowledge graph.
+                </p>
+
+                <p>
+                    It’s an external brain. An opinionated Obsidian. A local, single-user Confluence.
+                    A place for architectural thinking without distraction.
+                </p>
+
+                <p>
+                    I still have ideas for future visualizations, but those can wait. For now, I want
+                    to see whether this tool supports me the way I hope it will.
+                </p>
+
+                <p>
+                    Because sometimes the best way to think about architecture is to build a small
+                    piece of it for yourself.
+                </p>
+            </div>
+        </div>
+    </div>
+</template>

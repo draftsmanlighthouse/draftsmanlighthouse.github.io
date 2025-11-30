@@ -1,6 +1,6 @@
 <template x-component="actions">
-    <ul class="menu bg-base-200 rounded-box m-5 w-[85%]">
-        <li><a @click="microDoc = {};navigation='dashboard'"><i class="fa-solid fa-table-columns"></i> Dashboard</a></li>
+    <ul class="menu bg-base-200 rounded-box m-5 w-[85%]" x-show="notebook" x-cloak x-transition>
+        <li><a @click="microDoc = {};navigation='dashboard'"><i class="fa-solid fa-table-columns"></i> Working on</a></li>
         <li><a @click="microDoc = {};navigation='architecture'"><i class="fa-solid fa-sitemap"></i> Architecture</a></li>
         <li><a @click="microDoc = {};navigation='search'"><i class="fa-solid fa-magnifying-glass"></i> Search</a></li>
         <li><a @click="microDoc = {};navigation='infodecks'"><i class="fa-brands fa-slideshare"></i> Narratives</a></li>
