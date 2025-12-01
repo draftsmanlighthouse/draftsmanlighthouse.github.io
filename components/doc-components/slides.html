@@ -3,7 +3,7 @@
         <div class="grid grid-cols-10 gap-3"
              x-effect="if(selected){pointer = selected}"
              x-data="{selected: '', pointer: $persist({}).as('slide-' + microDoc.id)}">
-            <template x-if="pointer">
+            <template x-if="Object.keys(pointer).length">
                 <div class="col-span-9 flex justify-end">
                     <div class="tooltip tooltip-left" data-tip="Where I left off">
                         <button class="btn btn-sm btn-ghost"
