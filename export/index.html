@@ -2,69 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title></title>
 
+    <link href="/export/pdf.css" rel="stylesheet"/>
+
+    <!-- Alpine for toggling export-mode -->
+    <script src="/js/tp/vimeshui.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/tp/tailwind.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+    <!-- Render libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-    <link href="/export/pdf.css" rel="stylesheet"/>
-    <script src="/export/export-helper.js"></script>
-    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js" defer></script>
+
+    <!-- Export helper -->
+    <script src="/export-deck/export-helper.js"></script>
+
+    <script>
+        $vui.config = {
+          namespace: "ui",
+        };
+    </script>
+
 </head>
 
-<body x-data="{doc: {}, buttons: true}"
-      :class="!buttons ? 'export-mode' : ''"
-      x-init="doc = await prepare();">
+<body class="a4-portrait"
+      x-data="{buttons: true,doc: JSON.parse(localStorage.export)}">
 
-<!-- UI bar -->
-<div class="button-bar" x-show="buttons">
-    <button @click="buttons = false;setTimeout(function(){window.print();window.close();},100)">Save PDF</button>
+<div x-init="document.title = doc.name"></div>
+<div x-show="buttons" class="absolute top-5 right-5">
+    <button class="btn btn-neutral" @click="buttons=false;
+                    setTimeout(async () => {
+                      window.print();
+                      window.close();
+                    }, 200)">
+        Save PDF
+    </button>
 </div>
 
+<!-- title -->
+<h1 class="text-3xl" x-text="doc.name"></h1>
 
-<!-- Content to be paginated -->
-<div id="source" class="content">
+<!-- Decision -->
+<template x-if="doc.type == 'design decision'">
+    <div x-html="marked.parse(doc.decision)"></div>
+</template>
 
-    <!-- title -->
-    <h1 x-text="doc.name"></h1>
+<!-- Y-Statement -->
+<template x-if="doc.type == 'ADR'">
+    <table class="table">
+        <tr>
+            <th>In the context of</th>
+            <td x-text="doc.ystatement.context"></td>
+            <th>Facing</th>
+            <td x-text="doc.ystatement.concern"></td>
+        </tr>
+        <tr>
+            <th>We decided for</th>
+            <td x-text="doc.ystatement.decision"></td>
+            <th>And discarded</th>
+            <td x-text="doc.ystatement.alternatives"></td>
+        </tr>
+        <tr>
+            <th>To achieve</th>
+            <td x-text="doc.ystatement.quality"></td>
+            <th>Accepting the consequence of</th>
+            <td x-text="doc.ystatement.consequence"></td>
+        </tr>
+    </table>
+</template>
 
-    <!-- Decision -->
-    <template x-if="doc.type == 'design decision'">
-        <div x-html="marked.parse(doc.decision)"></div>
-    </template>
+<!-- Principle -->
+<template x-if="doc.type == 'principle'">
+    <div x-html="marked.parse(doc.principle)"></div>
+</template>
 
-    <!-- Y-Statement -->
-    <template x-if="doc.type == 'ADR'">
-        <table class="table">
-            <tr>
-                <th>In the context of</th>
-                <td x-text="doc.ystatement.context"></td>
-                <th>Facing</th>
-                <td x-text="doc.ystatement.concern"></td>
-            </tr>
-            <tr>
-                <th>We decided for</th>
-                <td x-text="doc.ystatement.decision"></td>
-                <th>And discarded</th>
-                <td x-text="doc.ystatement.alternatives"></td>
-            </tr>
-            <tr>
-                <th>To achieve</th>
-                <td x-text="doc.ystatement.quality"></td>
-                <th>Accepting the consequence of</th>
-                <td x-text="doc.ystatement.consequence"></td>
-            </tr>
-        </table>
-    </template>
+<template x-for="section in doc.sections">
+    <div class="section">
 
-    <!-- Principle -->
-    <template x-if="doc.type == 'principle'">
-        <div x-html="marked.parse(doc.principle)"></div>
-    </template>
+        <template x-if="section.type == 'markdown'">
+            <div class="markdown-body max-w-none bg-transparent" x-html="marked.parse(section.data)"></div>
+        </template>
 
-</div>
+        <template x-if="['drawio','sketch'].includes(section.type)">
+            <div>
+                <iframe @load="load_diagram($el,section.data)"
+                        frameborder="0" class="max-w-full h-auto mx-auto block"
+                        :style="`background: transparent;aspect-ratio: ${section.width} / ${section.height}`"
+                        src="https://diagram.bohanssen.com/viewer?embed=1&ui=min&spin=1&proto=json"></iframe>
+            </div>
+        </template>
+
+        <template x-if="section.type == 'image'">
+            <img
+                    :src="section.data"
+                    class="max-w-full h-auto mx-auto rounded block"
+            />
+        </template>
+
+        <template x-if="section.type == 'mermaid'">
+            <pre
+                    class="mermaid mx-auto"
+                    style="display: block; width: fit-content; max-width: 100%;"
+                    x-text="section.data">
+            </pre>
+        </template>
+
+        <template x-if="section.type == 'chart'">
+            <div>
+                <template x-if="['chart','both'].includes(section.view_mode)">
+                    <div class="w-full">
+                        <canvas class="w-full h-full" :id="section.id"
+                                x-init="load_chart($el,section);"></canvas>
+                    </div>
+                </template>
+                <template x-if="['table','both'].includes(section.view_mode)">
+                    <div x-init="load_table($el,section)"></div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>
 
 </body>
 </html>
