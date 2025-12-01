@@ -1,5 +1,5 @@
 <template x-component="home">
-    <div class="grid grid-cols-12">
+    <div class="grid grid-cols-12" x-data="{dv: false}"x-show="dv" x-init="setTimeout(function(){dv = true},500)" x-cloak x-transition>
         <div class="col-span-6">
             <section class="space-y-3 text-sm">
                 <h1 class="text-xl font-semibold">

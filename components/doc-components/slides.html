@@ -1,6 +1,18 @@
 <template x-component="slides">
     <div x-data="SectionHelper" x-import="doc-components/main-content">
-        <div class="grid grid-cols-10 gap-3" x-data="{selected: ''}">
+        <div class="grid grid-cols-10 gap-3"
+             x-effect="if(selected){pointer = selected}"
+             x-data="{selected: '', pointer: $persist({}).as('slide-' + microDoc.id)}">
+            <template x-if="pointer">
+                <div class="col-span-9 flex justify-end">
+                    <div class="tooltip tooltip-left" data-tip="Where I left off">
+                        <button class="btn btn-sm btn-ghost"
+                                @click="selected = pointer; slide_modal.showModal()">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+            </template>
             <template x-for="slide in microDoc.json.sections.filter(x => x.type === 'slide')">
                 <div class="col-span-3 card bg-base-100 image-full shadow-sm relative cursor-pointer"
                      @click="selected = slide; slide_modal.showModal()">
@@ -237,7 +249,8 @@
                              x-data="{slides: []}"
                              x-effect="slides = microDoc.json.sections.filter(x => x.type == 'slide').map(x => x.id)">
                             <div class="badge badge-outline badge-info">
-                                slide&nbsp;<span x-text="slides.indexOf(selected.id) + 1"></span>&nbsp;of&nbsp;<span x-text="slides.length"></span>
+                                slide&nbsp;<span x-text="slides.indexOf(selected.id) + 1"></span>&nbsp;of&nbsp;<span
+                                    x-text="slides.length"></span>
                             </div>
                             <button x-show="selected.id != slides.at(0)" x-cloak x-transition
                                     @click="selected = microDoc.json.sections.find(x => x.id === slides[slides.indexOf(selected.id) - 1])"
@@ -299,7 +312,15 @@
                                         $el.closest('.content-container').classList.add('flex');
                                     }"></div>
                                         <template x-if="visible">
-                                            <ui-read-only></ui-read-only>
+                                            <div>
+                                                <ui-read-only></ui-read-only>
+                                                <button
+                                                        @click.stop="open_doc(selected.sections[$prop('section')].parent)"
+                                                        class="btn btn-xs btn-ghost btn-circle text-gray-400 hover:text-info transition"
+                                                        title="view in context">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                </button>
+                                            </div>
                                         </template>
                                     </div>
                                 </template>
