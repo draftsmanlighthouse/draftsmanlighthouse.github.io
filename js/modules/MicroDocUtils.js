@@ -95,6 +95,50 @@ document.addEventListener('alpine:init', () => {
             this.save_doc();
             return id;
         },
+        add_table_section(){
+            const id = crypto.randomUUID();
+            this.microDoc.json.sections.push({
+                id: id,
+                type: "table",
+                extension: "json",
+                rows: 3,
+                cols: 2,
+                header: {
+                    col: true,
+                    row: true
+                },
+                data: [
+                    {
+                        col: 0,
+                        row: 0,
+                        value: "Col 1"
+                    },
+                    {
+                        col: 0,
+                        row: 1,
+                        value: "Row 1"
+                    },
+                    {
+                        col: 0,
+                        row: 2,
+                        value: "Row 2"
+                    },
+                    {  col: 1,
+                       row: 0,
+                       value: "Col 2"
+                    },
+                    {  col: 1,
+                       row: 1,
+                       value: "A"
+                    },
+                    {  col: 1,
+                       row: 2,
+                       value: "B"
+                    }
+                ]
+            });
+            return id;
+        },
         add_slide_section(layout="A"){
             const id = crypto.randomUUID();
             this.microDoc.json.sections.push({
