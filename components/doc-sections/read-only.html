@@ -50,6 +50,15 @@
             </div>
         </template>
 
+        <!-- table -->
+        <template x-if="doc_section.type == 'table'">
+            <div x-import="doc-sections/table"
+                 x-init="section = doc_section"
+                 x-data="{section: {},readonly: true}">
+                <ui-table></ui-table>
+            </div>
+        </template>
+
         <!-- image -->
         <template x-if="doc_section.type == 'image'">
             <img

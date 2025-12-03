@@ -19,7 +19,7 @@
                     </a>
                 </li>
                 <li>
-                    <a @click="let id = add_drawio_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                    <a @click="let id = add_drawio_section();selected.sections[section] = {parent: microDoc.id ,id};section_selector.close();selected_section = {};"
                        class="tooltip tooltip-bottom"
                        data-tip="Add DrawIO section">
                         <i class="fa-solid fa-draw-polygon"></i>
@@ -27,24 +27,31 @@
                 </li>
 
                 <li>
-                    <a @click="let id = add_sketch_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                    <a @click="let id = add_sketch_section();selected.sections[section] = {parent: microDoc.id ,id};section_selector.close();selected_section = {};"
                        class="tooltip tooltip-bottom"
                        data-tip="Add sketch section">
                         <i class="fa-solid fa-pencil"></i>
                     </a>
                 </li>
                 <li>
-                    <a @click="let id = add_mermaid_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                    <a @click="let id = add_mermaid_section();selected.sections[section] = {parent: microDoc.id ,id};section_selector.close();selected_section = {};"
                        class="tooltip tooltip-bottom"
                        data-tip="Add Mermaid section">
                         <i class="fa-solid fa-diagram-project"></i>
                     </a>
                 </li>
                 <li>
-                    <a @click="let id = add_chart_section();selected.sections[section] = {parent: microDoc.id ,id};"
+                    <a @click="let id = add_chart_section();selected.sections[section] = {parent: microDoc.id ,id};section_selector.close();selected_section = {};"
                        class="tooltip tooltip-bottom"
                        data-tip="Add data section">
                         <i class="fa-solid fa-chart-line"></i>
+                    </a>
+                </li>
+                <li>
+                    <a @click="let id = add_table_section();selected.sections[section] = {parent: microDoc.id ,id};section_selector.close();selected_section = {};"
+                       class="tooltip tooltip-bottom"
+                       data-tip="Add table section">
+                        <i class="fa-solid fa-table-cells-large"></i>
                     </a>
                 </li>
                 <li>
@@ -83,7 +90,7 @@
                         <input type="file"
                                class="file-input"
                                accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
-                               @change="let id = await addImage($event);selected.sections[section] = {parent: microDoc.id ,id};$el.value = null; image_modal.close()">
+                               @change="let id = await addImage($event);selected.sections[section] = {parent: microDoc.id ,id};$el.value = null; image_modal.close();section_selector.close();selected_section = {};">
                     </p>
                 </div>
                 <form method="dialog" class="modal-backdrop">

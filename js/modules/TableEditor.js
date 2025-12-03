@@ -10,7 +10,7 @@ document.addEventListener('alpine:init', () => {
             // Bestaat niet? Maak lege default cel
             if (!cell) {
                 cell = { row, col, value: '', bold: false, italic:false,bg: null, color: null};
-                section.data.push(cell);
+                this.section.data.push(cell);
             }
             return cell;
         },

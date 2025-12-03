@@ -1,0 +1,58 @@
+<template x-component="table">
+    <div x-data="tableEditor">
+                <hr class="mb-[30px]">
+                <table class="table">
+            <template x-for="row in [...Array(section.rows).keys()]" :key="row">
+                <tr>
+                    <template x-for="col in [...Array(section.cols).keys()]" :key="row + '-' + col">
+
+                        <td
+                            :style="{
+                                backgroundColor: get_cell(row,col).bg ?? '',
+                                color: get_cell(row,col).color ?? ''
+                            }"
+
+                            :class="[
+                                'border border-base-200',
+                                ((col === 0 && section.header?.row) || (row === 0 && section.header?.col))
+                                    ? 'bg-base-200 font-semibold text-base-content/80 border-base-300 text-lg'
+                                    : '',
+                                get_cell(row,col).bold ? 'font-bold' : '',
+                                get_cell(row,col).italic ? 'italic' : '',
+                            ]"
+
+                            :contenteditable="!readonly"
+                            @contextmenu.prevent.stop="openCellMenu(row,col,$event)"
+                            @focusout="if(!readonly){ updateCell(row,col,$el.innerText) }"
+                            x-text="get_cell(row,col).value"
+                        ></td>
+
+                    </template>
+                </tr>
+            </template>
+        </table>
+                <div x-show="contextMenu.visible"
+                     class="fixed z-50 bg-base-100 rounded shadow p-2 w-40"
+                     :style="`top:${contextMenu.y}px;left:${contextMenu.x}px`">
+
+                    <button class="btn btn-xs w-full"
+                            @click="toggleBold()">Bold</button>
+
+                    <button class="btn btn-xs w-full mt-1"
+                            @click="toggleItalic()">Italic</button>
+
+                    <div class="mt-2 text-sm opacity-70">Background</div>
+                    <input type="color" class="w-full h-6 p-0"
+                           @input="setBg($event.target.value)">
+
+                    <div class="mt-2 text-sm opacity-70">Text</div>
+                    <input type="color" class="w-full h-6 p-0"
+                           @input="setColor($event.target.value)">
+
+                    <button class="btn btn-xs w-full mt-2 btn-error"
+                            @click="resetCell()">Reset</button>
+                    <button class="btn btn-xs w-full mt-2 btn-neutral btn-outline"
+                            @click="hideContextMenu()">Close</button>
+                </div>
+            </div>
+</template>

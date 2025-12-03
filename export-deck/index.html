@@ -71,6 +71,37 @@
             <pre class="mermaid" x-text="section.data"></pre>
         </template>
 
+        <template x-if="section.type == 'table'">
+            <div x-data="tableEditor">
+                <table class="table">
+                    <template x-for="row in [...Array(section.rows).keys()]" :key="row">
+                        <tr>
+                            <template x-for="col in [...Array(section.cols).keys()]" :key="row + '-' + col">
+
+                                <td
+                                        :style="{
+                                backgroundColor: get_cell(row,col).bg ?? '',
+                                color: get_cell(row,col).color ?? ''
+                            }"
+
+                                        :class="[
+                                'border border-base-200',
+                                ((col === 0 && section.header?.row) || (row === 0 && section.header?.col))
+                                    ? 'bg-base-200 font-semibold text-base-content/80 border-base-300 text-lg'
+                                    : '',
+                                get_cell(row,col).bold ? 'font-bold' : '',
+                                get_cell(row,col).italic ? 'italic' : '',
+                            ]"
+                                        x-text="get_cell(row,col).value"
+                                ></td>
+
+                            </template>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+        </template>
+
     </div>
 </template>
 
@@ -365,5 +396,6 @@
     </div>
 </template>
 
+<script src="/js/modules/TableEditor.js"></script>
 </body>
 </html>
