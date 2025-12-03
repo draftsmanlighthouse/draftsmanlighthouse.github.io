@@ -98,11 +98,16 @@
                     x-data="pwaInstall()"
                     x-show="canInstall"
                     x-cloak
+                    x-transition
                     @click="install"
                     class="btn btn-primary btn-outline btn-circle btn-sm m-2">
                     <i class="fa-solid fa-download"></i>
                 </button>
-                <button class="btn btn-outline btn-success btn-sm btn-circle m-2 mr-5" @click="create_doc">
+                <button class="btn btn-outline btn-success btn-sm btn-circle m-2 mr-5"
+                        x-show="notebook"
+                        x-cloak
+                        x-transition
+                        @click="create_doc">
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>

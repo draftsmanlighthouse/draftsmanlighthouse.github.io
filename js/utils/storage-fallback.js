@@ -301,20 +301,20 @@
   }
 
   async function polyfillShowDirectoryPicker() {
-    const defaultName = "Notebook";
-    const name = prompt("Notebook name", defaultName) || defaultName;
-
-    const rootId = "nb-" + (crypto.randomUUID?.() ?? Date.now().toString(36));
+    const rootId = prompt("The filesystem API is blocked, browser storage (indexedDB) is used as an alternative.\nProvide a name for your notebook");
+    if (!rootId){
+        return;
+    }
 
     await putEntry({
       key: makeKey(rootId, ""),
       rootId,
       path: "",
       kind: "directory",
-      name,
+      rootId,
     });
 
-    return new PolyfillDirectoryHandle(rootId, "", name);
+    return new PolyfillDirectoryHandle(rootId, "", rootId);
   }
 
   function repairDirectoryHandle(handle) {
