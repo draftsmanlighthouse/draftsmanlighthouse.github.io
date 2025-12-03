@@ -22,5 +22,14 @@
                 <option :value="tag"></option>
             </template>
         </datalist>
+        <div x-data="{suggestions: []}"
+             x-show="suggestions.length != 0" x-cloak x-transition
+             x-effect="suggestions = microDoc.json.suggested_tags.filter(x => !microDoc.json.tags.includes(x))">
+            <p class="text-sm text-gray-400">Suggestions</p>
+            <template x-for="tag in suggestions" :key="tag">
+                <div class="badge badge-outline badge-accent gap-2 mr-2 cursor-pointer" x-text="tag" @click="microDoc.json.tags.push(tag)"></div>
+            </template>
+        </div>
+        <pre x-text="JSON.stringify(,null,2)"></pre>
     </div>
 </template>

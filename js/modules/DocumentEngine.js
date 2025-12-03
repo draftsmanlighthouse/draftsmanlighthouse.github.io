@@ -626,13 +626,18 @@ document.addEventListener("alpine:init", () => {
                 section.data = "";
             }
           }
+          let raw = "";
           for (const section of json.sections){
             await read_section(section)
+            if (section.type == "markdown"){
+                raw += " " + section.data;
+            }
           }
 
           for (const section of json.archive){
             await read_section(section)
           }
+        json.suggested_tags = suggestTagsFromText(raw, this.tags);
         return {json, docDir};
       },
       async open_doc(id) {
@@ -918,10 +923,14 @@ document.addEventListener("alpine:init", () => {
                 }
             }
 
+            let raw = "";
             for (const section of data.sections){
+                if (section.type == "markdown"){
+                    raw += " " + section.data;
+                }
                 await save_section(section);
             }
-
+            this.microDoc.json.suggested_tags = suggestTagsFromText(raw, this.tags);
             if (!("archive" in data)){
                 data.archive = [];
             }
@@ -1054,6 +1063,16 @@ function copyShortId(text, event) {
     setTimeout(() => {
         tooltip.classList.remove("opacity-100");
     }, 900);
+}
+
+function suggestTagsFromText(text, allTags) {
+  if (!text) return [];
+
+  const lower = text.toLowerCase();
+
+  return allTags.filter(tag =>
+    lower.includes(tag.toLowerCase())
+  );
 }
 
 function sortByPreferredOrder(results, preferredOrder) {
