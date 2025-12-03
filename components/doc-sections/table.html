@@ -33,7 +33,7 @@
         </table>
                 <div x-show="contextMenu.visible"
                      class="fixed z-50 bg-base-100 rounded shadow p-2 w-40"
-                     :style="`top:${contextMenu.y}px;left:${contextMenu.x}px`">
+                     :style="`top:${contextMenu.y - 50}px;left:${contextMenu.x}px`">
 
                     <button class="btn btn-xs w-full"
                             @click="toggleBold()">Bold</button>
