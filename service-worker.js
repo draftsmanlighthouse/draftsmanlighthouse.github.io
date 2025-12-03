@@ -2,6 +2,7 @@
 
 const CACHE_NAME = "notebook-cache-v1";
 // TODO: drawio wordt niet gecached... uitzoeken waarom.
+// Op MAC lijkt het prima te werken, op windows niet?
 
 // --- INSTALL -------------------------------------------------
 
