@@ -139,6 +139,17 @@ document.addEventListener('alpine:init', () => {
             });
             return id;
         },
+        add_html_section(){
+            const id = crypto.randomUUID();
+            this.microDoc.json.sections.push({
+                id: id,
+                type: "html",
+                extension: "html",
+                data: '<p class="p-3"> \n\t<h3 class="text-xl">\n\t\tHello World!\n\t</h3>\n</p>'
+            });
+            this.$dispatch("change");
+            return id;
+        },
         add_slide_section(layout="A"){
             const id = crypto.randomUUID();
             this.microDoc.json.sections.push({

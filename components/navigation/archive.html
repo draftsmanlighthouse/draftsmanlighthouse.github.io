@@ -15,7 +15,7 @@
                               :key="doc_section.id">
                         <tr>
                             <td>
-                                <button @click="microDoc.json.sections.push(doc_section);microDoc.json.archive = microDoc.json.archive.filter(x => x.id != doc_section.id)"
+                                <button @click="microDoc.json.sections.push(doc_section);microDoc.json.archive = microDoc.json.archive.filter(x => x.id != doc_section.id);$dispatch('change')"
                                         class="btn btn-success btn-sm btn-outline btn-circle mb-2">
                                     <i class="fa-solid fa-trash-arrow-up"></i>
                                 </button>

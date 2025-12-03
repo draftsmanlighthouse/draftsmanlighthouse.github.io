@@ -523,8 +523,12 @@ document.addEventListener("alpine:init", () => {
             slide.layout = s.layout;
             slide.sections = {};
             for (const key in s.sections) {
-              let data = await this.fetch_section(s.sections[key].parent,s.sections[key].id);
-              slide.sections[key] = data;
+              try{
+                  let data = await this.fetch_section(s.sections[key].parent,s.sections[key].id);
+                  slide.sections[key] = data;
+              } catch(err){
+                console.error(err);
+              }
             }
             deck.push(slide);
           }

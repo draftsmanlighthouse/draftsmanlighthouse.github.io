@@ -63,6 +63,13 @@
             </div>
         </template>
 
+        <template x-if="section.type == 'html'">
+            <div x-data>
+                <div x-html="section.data"></div>
+            </div>
+        </template>
+
+
         <!-- image -->
         <template x-if="section.type == 'image'">
             <div>
@@ -93,7 +100,11 @@
         <div x-show="$prop('deck')" class="absolute top-0 right-[-20px]">
             <template x-if="section.type == 'table'">
                 <i class="mr-3 cursor-pointer fa-solid fa-gear text-gray-400 hover:text-info"
-                   @click="table_settings.showModal()"></i>
+                   @click="$refs.table_settings.showModal()"></i>
+            </template>
+            <template x-if="section.type == 'html'">
+                <i class="mr-3 cursor-pointer fa-solid fa-gear text-gray-400 hover:text-info"
+                   @click="$refs.html_settings.showModal()"></i>
             </template>
             <button
                     @click="removeSection(section);$dispatch('removed');"
@@ -110,7 +121,11 @@
         <div x-show="!$prop('deck')" class="absolute top-2 right-2">
             <template x-if="section.type == 'table'">
                 <i class="mr-3 cursor-pointer fa-solid fa-gear text-gray-400 hover:text-info"
-                   @click="table_settings.showModal()"></i>
+                   @click="$refs.table_settings.showModal()"></i>
+            </template>
+            <template x-if="section.type == 'html'">
+                <i class="mr-3 cursor-pointer fa-solid fa-gear text-gray-400 hover:text-info"
+                   @click="$refs.html_settings.showModal()"></i>
             </template>
             <template x-if="section.type == 'reference' && section.document">
 
@@ -151,7 +166,7 @@
             </button>
         </div>
 
-        <dialog id="table_settings" class="modal">
+        <dialog x-ref="table_settings" class="modal">
             <div class="modal-box">
                 <h3 class="text-lg font-bold">Configure table</h3>
                 <p class="py-4">
@@ -181,6 +196,18 @@
                         </td>
                     </tr>
                 </table>
+                </p>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+            </form>
+        </dialog>
+
+        <dialog x-ref="html_settings" class="modal">
+            <div class="modal-box w-[80vw] max-w-[80vw]">
+                <h3 class="text-lg font-bold">Configure html section</h3>
+                <p class="py-4">
+                    <textarea class="textarea w-full h-[50vh]" x-model="section.data"></textarea>
                 </p>
             </div>
             <form method="dialog" class="modal-backdrop">
@@ -244,6 +271,13 @@
                    class="tooltip tooltip-bottom"
                    data-tip="Add table section">
                     <i class="fa-solid fa-table-cells-large"></i>
+                </a>
+            </li>
+            <li x-show="active" x-cloak x-transition>
+                <a @click="add_html_section"
+                   class="tooltip tooltip-bottom"
+                   data-tip="Add html section">
+                    <i class="fa-solid fa-code"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>

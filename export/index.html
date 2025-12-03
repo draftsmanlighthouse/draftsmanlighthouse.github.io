@@ -126,6 +126,11 @@
             </div>
         </template>
 
+        <!-- html -->
+        <template x-if="section.type == 'html'">
+            <div x-html="section.data"></div>
+        </template>
+
         <template x-if="section.type == 'table'">
             <div x-data="tableEditor">
                 <table class="table">

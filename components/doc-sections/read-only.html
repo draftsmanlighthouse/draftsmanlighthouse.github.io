@@ -59,6 +59,11 @@
             </div>
         </template>
 
+        <!-- html -->
+        <template x-if="doc_section.type == 'html'">
+            <div x-html="doc_section.data"></div>
+        </template>
+
         <!-- image -->
         <template x-if="doc_section.type == 'image'">
             <img
