@@ -3,7 +3,6 @@ document.addEventListener("alpine:init", () => {
     return {
       notebooks: {},
       notebook: "",
-      permissionIssue: false,
       navigation: this.$persist("doc"),
       index: {
         documents: {},
@@ -50,6 +49,9 @@ document.addEventListener("alpine:init", () => {
       async init() {
         await idb.init();
         await this.restoreNotebooks();
+        if (!sessionStorage.getItem("permissionIssue")) {
+            sessionStorage.setItem("permissionIssue", "false");
+        }
       },
 
       //---------------------------------------------------------------------
@@ -80,23 +82,10 @@ document.addEventListener("alpine:init", () => {
       //---------------------------------------------------------------------
       async importNotebook() {
         try {
-          const handle = await window.showDirectoryPicker({
-            mode: "readwrite"
-          });
-
-          await this.verifyPermissions(handle);
-
-          const id = "notebook-" + crypto.randomUUID();
-          const entry = { id, name: handle.name, handle };
-
-          this.notebooks[id] = entry;
-          await idb.save(id, entry);
-
-          localStorage.lastNotebook = id;
-          this.notebook = id;
-
-          await this.openNotebook(id);
-
+          let entry = await storage.import();
+          this.notebooks[entry.id] = entry;
+          this.notebook = entry.id;
+          await this.openNotebook(entry.id);
         } catch (err) {
           console.error("importNotebook error:", err);
         }
@@ -124,11 +113,7 @@ document.addEventListener("alpine:init", () => {
         const entry = this.notebooks[id];
         if (!entry) return;
 
-        const dir = entry.handle;
-
-        await this.verifyPermissions(dir);
-
-        await this.indexFiles(dir);
+        await this.indexFiles(entry);
 
         console.log("Loaded notebook", id, this.files);
       },
@@ -136,7 +121,7 @@ document.addEventListener("alpine:init", () => {
       //---------------------------------------------------------------------
       // LOAD ALL SMALL FILES
       //---------------------------------------------------------------------
-      async indexFiles(dir) {
+      async indexFiles(entry) {
           const start = performance.now();     // <- START TIMER
           const searchIndex = [];
           const sectionIndex = [];
@@ -152,7 +137,7 @@ document.addEventListener("alpine:init", () => {
                     node_index[id] = {inbound: {}, outbound: {}};
                 }
             }
-          for await (const [name, handle] of dir.entries()) {
+          for await (const [name, handle] of storage.get_all(entry)) {
 
             if (handle.kind === "directory") {
               try {
@@ -968,6 +953,7 @@ document.addEventListener("alpine:init", () => {
       //---------------------------------------------------------------------
       // PERMISSION CHECK
       //---------------------------------------------------------------------
+      // TODO: kan hier weg
       async verifyPermissions(handle) {
         const opts = { mode: "readwrite" };
 

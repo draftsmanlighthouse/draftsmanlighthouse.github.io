@@ -11,7 +11,7 @@
             <option>soft delete</option>
         </select>
         <button class="btn m-5 w-[85%] btn-error btn-outline" @click="restoreNotebooks"
-                x-show="permissionIssue" x-cloak x-transition>
+                x-show="sessionStorage.permissionIssue" x-cloak x-transition>
             Missing folder permission
         </button>
     </div>

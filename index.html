@@ -74,13 +74,14 @@
     <script src="/js/utils/dbutil.js"></script>
     <script src="/js/utils/menu-generator.js"></script>
     <script src="/js/utils/time-utils.js"></script>
+    <script src="/js/utils/StorageHelper.js"></script>
 </head>
 <body x-data="main">
 <div class="grid grid-cols-12">
     <div class="col-span-2 h-screen bg-neutral"
          x-import="navigation/notebook-selector;navigation/menu-actions;navigation/history">
         <ui-notebook-selector></ui-notebook-selector>
-        <div x-show="!permissionIssue" x-cloak x-transition>
+        <div x-show="!sessionStorage.permissionIssue" x-cloak x-transition>
             <ui-actions></ui-actions>
             <ui-history></ui-history>
             <div>
