@@ -80,9 +80,10 @@ document.addEventListener("alpine:init", () => {
       //---------------------------------------------------------------------
       async importNotebook() {
         try {
-          const handle = await window.showDirectoryPicker({
-            mode: "readwrite"
-          });
+//          const handle = await window.showDirectoryPicker({
+//            mode: "readwrite"
+//          });
+          const handle = await window.pickDirectory();
 
           await this.verifyPermissions(handle);
 
@@ -125,9 +126,7 @@ document.addEventListener("alpine:init", () => {
         if (!entry) return;
 
         const dir = entry.handle;
-
         await this.verifyPermissions(dir);
-
         await this.indexFiles(dir);
 
         console.log("Loaded notebook", id, this.files);
@@ -152,6 +151,8 @@ document.addEventListener("alpine:init", () => {
                     node_index[id] = {inbound: {}, outbound: {}};
                 }
             }
+
+          dir = window.repairDirectoryHandle(dir);
           for await (const [name, handle] of dir.entries()) {
 
             if (handle.kind === "directory") {
@@ -552,6 +553,7 @@ document.addEventListener("alpine:init", () => {
                 const sectionFile = await sectionHandle.getFile();
                 if (section.type == "image"){
                     section.data = URL.createObjectURL(sectionFile);
+                    console.log(section.data)
                 } else if (section.extension == 'json'){
                     let text = await sectionFile.text();
                     section.data = JSON.parse(text);
@@ -571,7 +573,7 @@ document.addEventListener("alpine:init", () => {
           const notebookEntry = this.notebooks[this.notebook];
           if (!notebookEntry) return;
 
-          const notebookDir = notebookEntry.handle;
+          const notebookDir = window.repairDirectoryHandle(notebookEntry.handle);
           await this.verifyPermissions(notebookDir);
 
           // 1. Documentmap ophalen
