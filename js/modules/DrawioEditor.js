@@ -15,7 +15,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         displayDiagram() {
-            const viewer = 'https://diagram.bohanssen.com/viewer?embed=1&ui=min&spin=1&proto=json';
+            const viewer = 'https://notebook.bohanssen.com/diagram/viewer?embed=1&ui=min&spin=1&proto=json';
             const container = this.$refs.diagram_container;
             const width = 'doc_section' in this ? this.doc_section.width : this.section.width;
             const height = 'doc_section' in this ? this.doc_section.height : this.section.height;
@@ -31,7 +31,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         getEditorUrl() {
-            const baseUrl = 'https://diagram.bohanssen.com/embed?embed=1&spin=1&modified=unsavedChanges&proto=json';
+            const baseUrl = 'https://notebook.bohanssen.com/diagram/embed?embed=1&spin=1&modified=unsavedChanges&proto=json';
             return this.selectedMode === 'default'
                 ? baseUrl
                 : `${baseUrl}&ui=${this.selectedMode}`;
