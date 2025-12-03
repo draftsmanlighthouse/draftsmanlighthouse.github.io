@@ -1,29 +1,48 @@
 export default {
   async fetch(request) {
-    const url = new URL(request.url);
-    const path = url.pathname;
 
-    // ---------- Embedded editor ----------
+    const originalUrl = new URL(request.url);
+    let path = originalUrl.pathname;
+
+    // ---------------------------------------------------------
+    // Detecteer of de Worker draait onder /diagram/*
+    // ---------------------------------------------------------
+    // Scenario 1: diagram.bohanssen.com   → path is /embed, /viewer, ...
+    // Scenario 2: notebook.bohanssen.com  → path is /diagram/embed, /diagram/viewer, ...
+    let isNested = false;
+
+    if (path.startsWith("/diagram/")) {
+      isNested = true;
+      path = path.replace(/^\/diagram/, "");   // /diagram/embed → /embed
+    }
+
+    // ---------------------------------------------------------
+    // Bepaal target URL
+    // ---------------------------------------------------------
+    // embed  → embed.diagrams.net
+    // viewer → viewer.diagrams.net
+    // alles → app.diagrams.net
+    const target = new URL("https://app.diagrams.net"); // default fallthrough
+
     if (path.startsWith("/embed")) {
-      url.hostname = "embed.diagrams.net";
-      url.protocol = "https:";
-      url.pathname = path.replace(/^\/embed/, "");
-      return fetch(new Request(url.toString(), request));
+      target.hostname = "embed.diagrams.net";
+      target.pathname = path.replace(/^\/embed/, "");   // strip "/embed"
+    }
+    else if (path.startsWith("/viewer")) {
+      target.hostname = "viewer.diagrams.net";
+      target.pathname = path.replace(/^\/viewer/, "");
+    }
+    else {
+      // app.diagrams.net gebruikt dezelfde paden
+      target.pathname = path;
     }
 
-    // ---------- Viewer ----------
-    if (path.startsWith("/viewer")) {
-      url.hostname = "viewer.diagrams.net";
-      url.protocol = "https:";
-      url.pathname = path.replace(/^\/viewer/, "");
-      return fetch(new Request(url.toString(), request));
-    }
+    // Query params kopiëren
+    target.search = originalUrl.search;
 
-    // ---------- Root editor (/ = app.diagrams.net) ----------
-    // Alles dat NIET /embed of /viewer is komt hier
-    url.hostname = "app.diagrams.net";
-    url.protocol = "https:";
-    // Let op: path niet strippen! app.diagrams.net verwacht dezelfde paden
-    return fetch(new Request(url.toString(), request));
+    // ---------------------------------------------------------
+    // Proxy de request
+    // ---------------------------------------------------------
+    return fetch(new Request(target.toString(), request));
   }
 };

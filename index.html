@@ -75,6 +75,12 @@
     <script src="/js/utils/menu-generator.js"></script>
     <script src="/js/utils/time-utils.js"></script>
     <script src="/js/utils/storage-fallback.js"></script>
+
+    <script>
+        if (matchMedia("(pointer: coarse)").matches) {
+          window.location = "/mobile.html";
+        }
+    </script>
 </head>
 <body x-data="main">
 <div class="grid grid-cols-12">
