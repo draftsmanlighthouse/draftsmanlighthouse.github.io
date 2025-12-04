@@ -1,11 +1,11 @@
 <template x-component="notebook-selector">
     <div>
         <i class="fa-solid fa-book text-xl ml-5 text-white cursor-pointer" @click="microDoc = {};navigation = 'doc'"></i>
-        <select @change="openNotebook($el.value)"
+        <select @change="openNotebook($el.value);navigation = 'dashboard'"
                 class="select select-ghost text-white text-xl m-5 w-[70%]">
             <option disabled selected>Select notebook</option>
             <template x-for="book in notebooks" :key="book.id">
-                <option :value="book.id" :selected="book.id == notebook" x-text="book.name"></option>
+                <option :value="book.id" :selected="book.id == notebook;" x-text="book.name"></option>
             </template>
             <option>new/import</option>
             <option>soft delete</option>
