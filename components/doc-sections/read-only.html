@@ -73,3 +73,27 @@
 
     </div>
 </template>
+<template x-component="read-effect">
+    <table class="table table-sm">
+        <tr>
+            <th colspan="2">Effect</th>
+        </tr>
+        <template x-for="(value,key) in document.effect" :key="key">
+            <tr>
+                <th x-text="key"></th>
+                <td x-text="value"></td>
+            </tr>
+        </template>
+    </table>
+</template>
+<template x-component="decision-summary">
+    <template x-if="document.decision">
+        <div
+                x-data="{content: ''}"
+                class="mt-6"
+                x-init="content = document.decision"
+                x-import="doc-sections/markdown">
+            <ui-markdown-readonly></ui-markdown-readonly>
+        </div>
+    </template>
+</template>

@@ -10,6 +10,12 @@
         <table class="table border border-1 border-base-200" x-show="sections.length != 0" x-cloak x-transition>
             <tr>
                 <td class="p-2">
+                    <template x-if="section.sections.includes('decision summary')">
+                        <ui-decision-summary></ui-decision-summary>
+                    </template>
+                    <template x-if="section.sections.includes('effect')">
+                        <ui-read-effect></ui-read-effect>
+                    </template>
                     <template x-for="doc_section in sections" :key="doc_section.id">
                         <ui-read-only></ui-read-only>
                     </template>
@@ -51,6 +57,37 @@
                                 </button>
                             </td>
                         </tr>
+
+                        <template x-if="document.type == 'design decision'">
+                            <tr>
+                                <td>
+                                    <ui-decision-summary></ui-decision-summary>
+                                </td>
+                                <td>
+                                    <input
+                                            type="checkbox"
+                                            class="checkbox checkbox-primary"
+                                            value="decision summary"
+                                            x-model="section.sections"/>
+                                </td>
+                            </tr>
+                        </template>
+
+                        <template
+                                x-if="['design decision','ADR'].includes(document.type) && document.effect.length != 0">
+                            <tr>
+                                <td>
+                                    <ui-read-effect></ui-read-effect>
+                                </td>
+                                <td>
+                                    <input
+                                            type="checkbox"
+                                            class="checkbox checkbox-primary"
+                                            value="effect"
+                                            x-model="section.sections"/>
+                                </td>
+                            </tr>
+                        </template>
 
                         <template x-for="doc_section in document.sections.filter(s => s.type != 'reference')"
                                   :key="doc_section.id">
