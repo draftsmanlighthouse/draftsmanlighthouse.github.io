@@ -1,6 +1,50 @@
 <template x-component="home">
-    <div class="grid grid-cols-12" x-data="{dv: false}"x-show="dv" x-init="setTimeout(function(){dv = true},500)" x-cloak x-transition>
+    <div class="grid grid-cols-12" x-data="{dv: false}" x-show="dv" x-init="setTimeout(function(){dv = true},500)"
+         x-cloak x-transition>
         <div class="col-span-6">
+            <table class="table">
+                <tr>
+                    <th colspan="2">Getting started</th>
+                </tr>
+                <tr>
+                    <td>
+                        Start by initializing a new notebook, using the notebook selector ion the top left of the page.
+                        The notebook icon will lead you back to this page.
+                    </td>
+                </tr>
+                <tr>
+                    <th>Load example</th>
+                    <td>
+                        <button x-show="notebook" x-cloak x-transition
+                                class="btn btn-success btn-outline w-50" @click="load_example">load
+                        </button>
+                        <div class="tooltip tooltip-left" data-tip="initialize a notebook first">
+                            <button x-show="!notebook" x-cloak x-transition
+                                    class="btn btn-success btn-outline" disabled="disabled">load
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Remove example</th>
+                    <td>
+                        <button x-show="notebook" x-cloak x-transition
+                                class="btn btn-error btn-outline" @click="remove_example">remove
+                        </button>
+                        <div class="tooltip tooltip-left" data-tip="initialize a notebook first">
+                            <button x-show="!notebook" x-cloak x-transition
+                                    class="btn btn-error btn-outline" disabled="disabled">remove
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-span-6">
+            <img class="w-full" src="/assets/idea.png"/>
+        </div>
+        <div class="col-span-8">
+
             <section class="space-y-3 text-sm">
                 <h1 class="text-xl font-semibold">
                     The Architect’s Notebook
@@ -27,11 +71,7 @@
                     official documentation. My own take on OneNote, but opinionated in the ways that help me think.
                 </p>
             </section>
-        </div>
-        <div class="col-span-6">
-            <img class="w-full" src="/assets/idea.png"/>
-        </div>
-        <div class="col-span-8">
+
             <div class="prose prose-neutral max-w-none text-base leading-relaxed space-y-4">
 
                 <h2 class="text-xl font-bold mb-2">The initial idea</h2>

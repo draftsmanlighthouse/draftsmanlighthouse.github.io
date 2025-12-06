@@ -1,6 +1,7 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("main", function () {
     return {
+      loading_overlay: false,
       notebooks: {},
       notebook: "",
       permissionIssue: false,
@@ -1012,7 +1013,114 @@ document.addEventListener("alpine:init", () => {
         let types = ["ADR","principle"];
         let status = ["decided","published"];
         return Object.values(documents).filter(x => types.includes(x.type)).filter(x => status.includes(x.status));
-    }
+    },
+
+      async load_example() {
+          this.loading_overlay = true;
+          try {
+              const res = await fetch("/assets/export.json");
+              const items = await res.json();
+
+              const notebookEntry = this.notebooks[this.notebook];
+              if (!notebookEntry) {
+                alert("Open a notebook first.");
+                return;
+              }
+
+              const root = window.repairDirectoryHandle(notebookEntry.handle);
+              await this.verifyPermissions(root);
+
+              for (const doc of items) {
+                // Maak document directory
+                const docDir = await root.getDirectoryHandle(doc.id, { create: true });
+
+                // ------------------------------------------------------------------
+                // SECTIONS: markdown, json, images (base64 → Blob)
+                // ------------------------------------------------------------------
+                for (const sec of doc.sections) {
+                  if (!sec.data) continue;
+
+                  const filename = sec.id + "." + sec.extension;
+                  const fileHandle = await docDir.getFileHandle(filename, { create: true });
+                  const writable = await fileHandle.createWritable();
+
+                  // 🔸 IMAGE: base64 → Blob
+                  if (sec.type === "image" && typeof sec.data === "string") {
+                      // Base64 → binary Uint8Array
+                      const binary = atob(sec.data);
+                      const len = binary.length;
+                      const bytes = new Uint8Array(len);
+                      for (let i = 0; i < len; i++) {
+                        bytes[i] = binary.charCodeAt(i);
+                      }
+
+                      // Detecteer mimetype via extensie
+                      let mime = "application/octet-stream";
+                      if (sec.extension === "png") mime = "image/png";
+                      if (sec.extension === "jpg" || sec.extension === "jpeg") mime = "image/jpeg";
+                      if (sec.extension === "webp") mime = "image/webp";
+                      if (sec.extension === "gif") mime = "image/gif";
+                      if (sec.extension === "svg") mime = "image/svg+xml";
+
+                      const blob = new Blob([bytes], { type: mime });
+
+                      await writable.write(blob);
+                      await writable.close();
+                      delete sec.data;
+                      continue;
+                    }
+
+                  // 🔸 JSON
+                  if (sec.extension === "json") {
+                    await writable.write(JSON.stringify(sec.data, null, 2));
+                    await writable.close();
+                    delete sec.data;
+                    continue;
+                  }
+
+                  // 🔸 TEXT/MD
+                  await writable.write(sec.data);
+                  await writable.close();
+
+                  delete sec.data; // index.json moet geen inline data bevatten
+                }
+
+                // ------------------------------------------------------------------
+                // INDEX.JSON
+                // ------------------------------------------------------------------
+                const indexHandle = await docDir.getFileHandle("index.json", { create: true });
+                const w = await indexHandle.createWritable();
+                await w.write(JSON.stringify(doc, null, 2));
+                await w.close();
+              }
+
+              // Refresh index + UI
+              await this.indexFiles(root);
+          } finally {
+            this.loading_overlay = false;
+          }
+        },
+
+      async remove_example(){
+          const res = await fetch("/assets/export.json");
+          const items = await res.json();
+
+          const notebookEntry = this.notebooks[this.notebook];
+          const root = window.repairDirectoryHandle(notebookEntry.handle);
+
+          await this.verifyPermissions(root);
+
+          for (const doc of items) {
+            try {
+              await root.removeEntry(doc.id, { recursive: true });
+            } catch (err) {
+              console.warn("Could not delete example doc:", doc.id, err);
+            }
+          }
+
+          await this.indexFiles(root);
+      }
+
     };
   });
 
@@ -1070,9 +1178,13 @@ function suggestTagsFromText(text, allTags) {
 
   const lower = text.toLowerCase();
 
-  return allTags.filter(tag =>
-    lower.includes(tag.toLowerCase())
-  );
+  try{
+    return allTags.filter(tag =>
+        lower.includes(tag.toLowerCase())
+      );
+  }catch{
+    return [];
+  }
 }
 
 function sortByPreferredOrder(results, preferredOrder) {

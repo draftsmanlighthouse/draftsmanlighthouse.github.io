@@ -1,7 +1,7 @@
 <template x-component="embedded">
     <div x-data="{sections: [], document: {}}"
          @change="if(document){sections = document.sections.filter(x => section.sections.includes(x.id))}"
-         @edit-embed.window="$refs.setup.showModal()"
+         @edit-embed.window="if($event.detail.id == section.id){$refs.setup.showModal()}"
          x-effect="if(section.document){
             let {json, dir} = await fetch_doc(section.document);
             document = json;

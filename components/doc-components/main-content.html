@@ -141,7 +141,7 @@
             </template>
             <template x-if="section.type == 'reference'">
                 <i class="mr-3 cursor-pointer fa-regular fa-pen-to-square text-gray-400 hover:text-warning"
-                   @click="$dispatch('edit-embed')"></i>
+                   @click="$dispatch('edit-embed',{id: section.id})"></i>
             </template>
 
             <button

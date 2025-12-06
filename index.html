@@ -142,6 +142,25 @@
     </div>
 </div>
 
+<div
+  x-show="loading_overlay"
+  x-transition.opacity
+  class="fixed inset-0 bg-gray-900 bg-opacity-70 backdrop-blur-sm
+         flex items-center justify-center z-50 select-none">
+
+  <div class="text-center p-6 rounded-xl bg-base-100 shadow-xl">
+    <span class="loading loading-spinner loading-lg text-primary mb-4"></span>
+
+    <p class="text-lg font-semibold">
+      Loading example data…
+    </p>
+    <p class="opacity-70 mt-2">
+      This may take a few seconds.
+      Please do not navigate away.
+    </p>
+  </div>
+</div>
+
 <script src="/js/modules/DocumentEngine.js"></script>
 <script src="/js/modules/MicroDocUtils.js"></script>
 <script src="/js/modules/MarkdownEditor.js"></script>
