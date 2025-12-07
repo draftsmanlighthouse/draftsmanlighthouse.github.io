@@ -7,6 +7,7 @@
                 <div class="col-span-9 flex justify-end">
                     <div class="tooltip tooltip-left" data-tip="Where I left off">
                         <button class="btn btn-sm btn-ghost"
+                                @load-slide.window="selected = pointer; slide_modal.showModal()"
                                 @click="selected = pointer; slide_modal.showModal()">
                             <i class="fa-solid fa-play"></i>
                         </button>
@@ -262,6 +263,12 @@
                                     class="btn btn-sm btn-circle btn-ghost">
                                 <i class="fa-solid fa-angles-right"></i>
                             </button>
+                            <button x-show="selected.id == slides.at(-1)" x-cloak x-transition
+                                    @click="layout_modal.showModal()"
+                                    class="btn btn-sm btn-circle btn-ghost">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                </button>
 
                             <button @click="slide_modal.close()"
                                     class="btn btn-sm btn-circle btn-ghost">
@@ -315,7 +322,7 @@
                                             <div>
                                                 <ui-read-only></ui-read-only>
                                                 <button
-                                                        @click.stop="open_doc(selected.sections[$prop('section')].parent)"
+                                                        @click.stop="active_deck = microDoc.id;open_doc(selected.sections[$prop('section')].parent);"
                                                         class="btn btn-xs btn-ghost btn-circle text-gray-400 hover:text-info transition"
                                                         title="view in context">
                                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>

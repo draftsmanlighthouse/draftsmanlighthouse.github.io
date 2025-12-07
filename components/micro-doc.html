@@ -1,5 +1,5 @@
 <template x-component="micro-doc">
-    <div @change.debounce="debouncedSave">
+    <div @change="debouncedSave">
         <input class="text-5xl w-[95%]" x-model="microDoc.json.name"/>
         <hr class="mb-5"/>
 

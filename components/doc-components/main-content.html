@@ -232,63 +232,63 @@
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="add_markdown_section"
+                <a @click="add_markdown_section();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add Markdown section">
                     <i class="fa-brands fa-markdown"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="add_drawio_section"
+                <a @click="add_drawio_section();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add DrawIO section">
                     <i class="fa-solid fa-draw-polygon"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="add_sketch_section"
+                <a @click="add_sketch_section();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add sketch section">
                     <i class="fa-solid fa-pencil"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="add_mermaid_section"
+                <a @click="add_mermaid_section();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add Mermaid section">
                     <i class="fa-solid fa-diagram-project"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="add_chart_section"
+                <a @click="add_chart_section();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add data section">
                     <i class="fa-solid fa-chart-line"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="add_table_section"
+                <a @click="add_table_section();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add table section">
                     <i class="fa-solid fa-table-cells-large"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="add_html_section"
+                <a @click="add_html_section();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add html section">
                     <i class="fa-solid fa-code"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="image_modal.showModal()"
+                <a @click="image_modal.showModal();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add image section">
                     <i class="fa-regular fa-image"></i>
                 </a>
             </li>
             <li x-show="active" x-cloak x-transition>
-                <a @click="add_reference_section"
+                <a @click="add_reference_section();active = false;"
                    class="tooltip tooltip-bottom"
                    data-tip="Add embed section">
                     <i class="fa-solid fa-file-import"></i>

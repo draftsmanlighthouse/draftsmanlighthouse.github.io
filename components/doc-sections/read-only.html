@@ -97,3 +97,27 @@
         </div>
     </template>
 </template>
+<template x-component="ystatement">
+    <table class="table table-sm">
+        <tr>
+            <th colspan="2">Y-Statement</th>
+        </tr>
+        <template x-for="(value,key) in document.ystatement" :key="key">
+            <tr>
+                <th x-text="key"></th>
+                <td x-text="value"></td>
+            </tr>
+        </template>
+    </table>
+</template>
+<template x-component="principle-summary">
+    <template x-if="document.principle">
+        <div
+                x-data="{content: ''}"
+                class="mt-6"
+                x-init="content = document.principle"
+                x-import="doc-sections/markdown">
+            <ui-markdown-readonly></ui-markdown-readonly>
+        </div>
+    </template>
+</template>

@@ -83,11 +83,6 @@ document.addEventListener('alpine:init', () => {
                         } else {
                             let grandparent = edge.source.split(":")[0]
                             let parent = edge.source.split(":").slice(0,2).join(":");
-                            if (edge.source == 'Tracepaper:Build Agent:ZIP-based API'){
-                                console.log(grandparent)
-                                console.log(parent);
-                                console.log()
-                            }
                             if (parent in components){
                                 diagram.add_relation(components[parent], components[edge.target], edge.label, "LR");
                             } else if (grandparent in components || grandparent in parents){
@@ -128,6 +123,35 @@ document.addEventListener('alpine:init', () => {
                     components[edge.source] = await diagram.add_element(visual,el.name,el.description);
                     diagram.add_relation(components[edge.source], components[target], edge.label, "LR");
                   }
+
+                  edges = data.edges.filter(x =>
+                    (x?.source && !x.source.includes(':') && history[x.source].scope == 'external') ||
+                    (x?.target && !x.target.includes(':') && history[x.target].scope == 'external')
+                  );
+                  for (const edge of edges){
+                    let external = history[edge.target].scope == 'external' ? edge.target : edge.source;
+                    let internal = history[edge.target].scope != 'external' ? edge.target : edge.source;
+                    internal = resolve_to_component(internal, components);
+                    if (internal && !(external in components)){
+                        let el = history[external];
+                        components[external] = await diagram.add_element("external_service",external, el.description);
+                        if (edge.target == external){
+                            diagram.add_relation(components[internal], components[external], edge.label);
+                        } else {
+                            diagram.add_relation(components[external], components[internal], edge.label);
+                        }
+                    }
+                  }
+
+                  for (const edge of data.edges) {
+                      let source = resolve_to_component(edge.source, components);
+                      let target = resolve_to_component(edge.target, components);
+
+                      // Als één van de twee niet gemapt kan worden, sla de edge over
+                      if (!source || !target) continue;
+
+                      diagram.add_relation_if_not_exists(components[source], components[target], edge.label);
+                    }
                   await diagram.render();
                 })();
               } catch (error) {
@@ -146,13 +170,19 @@ document.addEventListener('alpine:init', () => {
             let retval = [];
             let pre = level.replace("landscape:","");
             decisions.forEach(decision => {
-                if ("source" in decision.effect && decision.effect.source.startsWith(pre)){
+                if (decision.effect?.system_name == "Website"){
+                    console.log(pre,'\n',decision.effect?.scope,'\n\n');
+                }
+                if ("source" in decision.effect && this.component_reverse_index[decision.effect.source].startsWith(pre)){
                     retval.push(decision);
-                } else if ("target" in decision.effect && decision.effect.target.startsWith(pre)){
+                } else if ("target" in decision.effect && this.component_reverse_index[decision.effect.target].startsWith(pre)){
                     retval.push(decision);
-                } else if ("system_name" in decision.effect && level.endsWith(decision.effect.system_name)){
+                } else if ("system_name" in decision.effect && pre.split(":").length != 2 &&
+                    (level.endsWith(decision.effect.system_name) || ('scope' in decision.effect && (level.includes(decision.effect.scope) ||
+                    decision.effect.scope.startsWith(pre) )))){
                     retval.push(decision);
-                } else if ("system_name" in decision.effect && level.split(":").length == 2 && level.includes(decision.effect.scope)){
+                } else if ("system_name" in decision.effect && pre.split(":").length == 2 && 'scope' in decision.effect && decision.effect.scope.startsWith(pre)){
+                    console.log();
                     retval.push(decision);
                 }
             })
@@ -161,3 +191,21 @@ document.addEventListener('alpine:init', () => {
     }
   });
 });
+
+function resolve_to_component(id, components) {
+  if (!id){return id}
+  if (id in components) return id;
+
+  let parts = id.split(":");
+
+  while (parts.length > 1) {
+    parts.pop(); // strip laatste segment
+    const candidate = parts.join(":");
+
+    if (candidate in components) {
+      return candidate;
+    }
+  }
+
+  return null; // niets gevonden
+}

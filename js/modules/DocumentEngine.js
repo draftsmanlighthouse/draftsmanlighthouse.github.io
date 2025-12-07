@@ -17,6 +17,7 @@ document.addEventListener("alpine:init", () => {
       c4_data: this.$persist({}),
       component_index: this.$persist({}),
       component_reverse_index: this.$persist({}),
+      active_deck: this.$persist('').using(sessionStorage),
 
       openState: this.$persist({}).as("nav-open-state"),
 
@@ -26,7 +27,7 @@ document.addEventListener("alpine:init", () => {
       miniSearch: null,
 
       saveTimeout: null,
-      debounceDelay: 1000,
+      debounceDelay: 100,
       saving: false,
       pendingSave: false,
 
@@ -320,7 +321,7 @@ document.addEventListener("alpine:init", () => {
                 components: {},
                 edges: [],
             };
-            Object.values(index.documents).filter(doc => "effect" in doc).filter(doc => doc.effect).forEach(doc => {
+            Object.values(index.documents).filter(doc => "effect" in doc).filter(doc => ["draft","decided","review","published"].includes(doc.status)).filter(doc => doc.effect).forEach(doc => {
                 let effect = doc.effect;
                 if (effect.action == "introduces new"){
                     if (effect.level == "system"){
@@ -702,6 +703,11 @@ document.addEventListener("alpine:init", () => {
           }
           await this.prepare_export();
         },
+      async open_deck(id) {
+        this.active_deck = '';
+        await this.open_doc(id);
+        this.$dispatch("load-slide");
+      },
 
       async prepare_export(){
         try{
@@ -1015,7 +1021,9 @@ document.addEventListener("alpine:init", () => {
         return Object.values(documents).filter(x => types.includes(x.type)).filter(x => status.includes(x.status));
     },
 
+      import_notebook_progress: 0,
       async load_example() {
+          this.import_notebook_progress = 1;
           this.loading_overlay = true;
           try {
               const res = await fetch("/assets/export.json");
@@ -1029,7 +1037,8 @@ document.addEventListener("alpine:init", () => {
 
               const root = window.repairDirectoryHandle(notebookEntry.handle);
               await this.verifyPermissions(root);
-
+              let total = items.length;
+              let counter = 0;
               for (const doc of items) {
                 // Maak document directory
                 const docDir = await root.getDirectoryHandle(doc.id, { create: true });
@@ -1092,6 +1101,8 @@ document.addEventListener("alpine:init", () => {
                 const w = await indexHandle.createWritable();
                 await w.write(JSON.stringify(doc, null, 2));
                 await w.close();
+                counter++;
+                this.import_notebook_progress = (counter/total) * 100;
               }
 
               // Refresh index + UI

@@ -100,6 +100,13 @@
              x-import="navigation/architecture-header">
             <ui-architecture-header></ui-architecture-header>
             <div>
+                <button class="btn btn-outline btn-accent btn-sm btn-rounded m-2 mr-5"
+                        x-show="active_deck"
+                        x-cloak
+                        x-transition
+                        @click="open_deck(active_deck)">
+                    Navigate to deck: <span x-text="index.documents[active_deck].name"></span>
+                </button>
                 <button
                     x-data="pwaInstall()"
                     x-show="canInstall"
@@ -154,6 +161,7 @@
     <p class="text-lg font-semibold">
       Loading example data…
     </p>
+      <progress class="progress progress-primary w-56" :value="import_notebook_progress" max="100"></progress>
     <p class="opacity-70 mt-2">
       This may take a few seconds.
       Please do not navigate away.

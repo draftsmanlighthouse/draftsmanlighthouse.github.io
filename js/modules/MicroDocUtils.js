@@ -159,6 +159,8 @@ document.addEventListener('alpine:init', () => {
                 layout: layout,
                 sections: {}
             });
+            this.pointer = this.microDoc.json.sections.at(-1);
+            this.$dispatch("load-slide");
             return id;
         },
         removeSection(section){

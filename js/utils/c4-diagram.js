@@ -72,13 +72,33 @@ class C4Diagram {
       });
     }
 
+  add_relation_if_not_exists(source, target, label, direction = null) {
+      const src = source instanceof C4Element ? source.id : source;
+      const tgt = target instanceof C4Element ? target.id : target;
+
+      // Check if relation already exists
+      const exists = this.elements.some(el =>
+        el.group === "edges" &&
+        el.data.source === src &&
+        el.data.target === tgt
+      );
+      if (exists) {
+        return; // Do nothing
+      }
+
+      // Otherwise add the relation
+      this.elements.push({
+        group: 'edges',
+        data: { id: `edge_${src}_${tgt}`, source: src, target: tgt, label, direction }
+      });
+    }
+
   async render() {
     cytoscape.use(cytoscapeDagre);
     if (this.elements.length == 0){
         document.getElementById(this.containerId).innerHTML = `<h1 class="text-2xl">No visual elements on this level.</h1><h2 class="text-xl">But there may be principles and decisions</h2>`;
         return;
     }
-    console.log(this.elements)
     this.cy = cytoscape({
       container: document.getElementById(this.containerId),
       elements: this.elements.filter(x =>
