@@ -1,13 +1,14 @@
 <template x-component="slides">
     <div x-data="SectionHelper" x-import="doc-components/main-content">
         <div class="grid grid-cols-10 gap-3"
+             x-init="if(Object.keys(pointer).length != 0){selected = pointer;} else if (microDoc.json.sections.filter(x => x.type === 'slide').length != 0 ) {selected = microDoc.json.sections.filter(x => x.type === 'slide').at(0)}; slide_modal.showModal()"
              x-effect="if(selected){pointer = selected}"
              x-data="{selected: '', pointer: $persist({}).as('slide-' + microDoc.id)}">
             <template x-if="Object.keys(pointer).length">
                 <div class="col-span-9 flex justify-end">
                     <div class="tooltip tooltip-left" data-tip="Where I left off">
                         <button class="btn btn-sm btn-ghost"
-                                @load-slide.window="selected = pointer; slide_modal.showModal()"
+                                @load-slide.window="console.log(pointer,$event);selected = pointer; slide_modal.showModal()"
                                 @click="selected = pointer; slide_modal.showModal()">
                             <i class="fa-solid fa-play"></i>
                         </button>
@@ -268,7 +269,7 @@
                                     class="btn btn-sm btn-circle btn-ghost">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
-                </button>
+                            </button>
 
                             <button @click="slide_modal.close()"
                                     class="btn btn-sm btn-circle btn-ghost">
@@ -321,12 +322,14 @@
                                         <template x-if="visible">
                                             <div>
                                                 <ui-read-only></ui-read-only>
-                                                <button
-                                                        @click.stop="active_deck = microDoc.id;open_doc(selected.sections[$prop('section')].parent);"
-                                                        class="btn btn-xs btn-ghost btn-circle text-gray-400 hover:text-info transition"
-                                                        title="view in context">
-                                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                                </button>
+                                                <div class="tooltip tooltip-right"
+                                                     :data-tip="index.documents[selected.sections[$prop('section')].parent].name">
+                                                    <button
+                                                            @click.stop="active_deck = microDoc.id; open_doc(selected.sections[$prop('section')].parent);"
+                                                            class="btn btn-xs btn-ghost btn-circle text-gray-400 hover:text-info transition">
+                                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </template>
                                     </div>
@@ -336,10 +339,12 @@
                                         x-if="$prop('section') in selected.sections && selected.sections[$prop('section')].parent == microDoc.id">
                                     <div x-data="{section: {}}"
                                          @removed="console.log($prop('section'),selected.sections);delete selected.sections[$prop('section')];console.log(selected.sections);"
+                                         class="w-max-full"
                                          x-effect="section = microDoc.json.sections.find(s => s.id === selected.sections[$prop('section')].id)">
                                         <ui-section deck="true"></ui-section>
                                     </div>
                                 </template>
+
                             </div>
                         </template>
 

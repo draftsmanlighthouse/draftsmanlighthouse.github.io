@@ -4,11 +4,11 @@
         <!-- Markdown -->
         <template x-if="section.type == 'markdown'">
             <div
-                    x-data="{content: ''}"
-                    x-init="content = section.data"
+                    x-data="{content: '', deck: false}"
+                    x-init="content = section.data;deck = $prop('deck')"
                     x-effect="section.data = content;$dispatch('change')"
                     x-import="doc-sections/markdown">
-                <ui-markdown></ui-markdown>
+                <ui-markdown :deck="deck"></ui-markdown>
             </div>
         </template>
 

@@ -55,6 +55,11 @@ document.addEventListener('alpine:init', () => {
           } else {
 
           }
+        },
+        sync(){
+            if (this.readonly){return}
+            this.content = this.editor.getMarkdown();
+            this.renderedMarkdown = marked.parse(this.content);
         }
     }
   });

@@ -152,12 +152,20 @@ document.addEventListener('alpine:init', () => {
         },
         add_slide_section(layout="A"){
             const id = crypto.randomUUID();
+            let sections = {};
+            let slides = this.microDoc.json.sections.filter(x => x.type == 'slide');
+            if (slides.length != 0){
+                let slide = slides.at(-1);
+                if ("background" in slide.sections){
+                    sections["background"] = slide.sections.background;
+                }
+            }
             this.microDoc.json.sections.push({
-                id: id,
+                id,
                 type: "slide",
                 title: "Slide: " + (this.microDoc.json.sections.filter(x => x.type == 'slide').length + 1),
-                layout: layout,
-                sections: {}
+                layout,
+                sections
             });
             this.pointer = this.microDoc.json.sections.at(-1);
             this.$dispatch("load-slide");

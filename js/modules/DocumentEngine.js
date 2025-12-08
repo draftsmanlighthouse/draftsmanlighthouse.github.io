@@ -706,6 +706,7 @@ document.addEventListener("alpine:init", () => {
       async open_deck(id) {
         this.active_deck = '';
         await this.open_doc(id);
+        await this.$nextTick();
         this.$dispatch("load-slide");
       },
 
@@ -1109,6 +1110,10 @@ document.addEventListener("alpine:init", () => {
               await this.indexFiles(root);
           } finally {
             this.loading_overlay = false;
+            setTimeout(async function(){
+                console.log("reindex")
+                await this.indexFiles(root);
+              },3000);
           }
         },
 
