@@ -1,5 +1,5 @@
 <template x-component="inbound">
-    <div x-show="node_index[microDoc.id].inbound.length != 0" x-cloak x-transition class="border p-2 rounded-box mb-4">
+    <div x-show="Object.keys(node_index[microDoc.id].inbound).filter(id => id in index.documents && 'name' in index.documents[id]).length != 0" x-cloak x-transition class="border p-2 rounded-box mb-4">
         <p class="text-sm text-gray-400">Incoming Relationships</p>
         <ul class="menu menu-xs rounded-box w-full">
             <template x-for="(relation,id) in node_index[microDoc.id].inbound">
@@ -14,7 +14,7 @@
     </div>
 </template>
 <template x-component="outbound">
-    <div x-show="node_index[microDoc.id].outbound.length != 0" x-cloak x-transition class="border p-2 rounded-box mb-4">
+    <div x-show="Object.keys(node_index[microDoc.id].outbound).filter(id => id in index.documents && 'name' in index.documents[id]).length != 0" x-cloak x-transition class="border p-2 rounded-box mb-4">
         <p class="text-sm text-gray-400">Outgoing Relationships</p>
         <ul class="menu menu-xs rounded-box w-full">
             <template x-for="(relation,id) in node_index[microDoc.id].outbound">
