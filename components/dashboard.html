@@ -41,6 +41,14 @@
                             <button class="btn btn-success btn-outline btn-sm" @click="load_example">load</button>
                         </td>
                     </tr>
+                    <tr x-show="results.length != 0" x-cloak x-transition>
+                        <th>Export notebook</th>
+                        <td>
+                            <button class="btn btn-success btn-outline btn-sm" @click="exportNotebookAsJSON">
+                                <i class="fa-solid fa-download"></i>
+                            </button>
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div class="col-span-2"></div>

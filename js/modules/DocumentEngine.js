@@ -1023,6 +1023,71 @@ document.addEventListener("alpine:init", () => {
     },
 
       import_notebook_progress: 0,
+
+      async import_doc(root, doc){
+        // Maak document directory
+        const docDir = await root.getDirectoryHandle(doc.id, { create: true });
+
+        // ------------------------------------------------------------------
+        // SECTIONS: markdown, json, images (base64 → Blob)
+        // ------------------------------------------------------------------
+        for (const sec of doc.sections) {
+          if (!sec.data) continue;
+
+          const filename = sec.id + "." + sec.extension;
+          const fileHandle = await docDir.getFileHandle(filename, { create: true });
+          const writable = await fileHandle.createWritable();
+
+          // 🔸 IMAGE: base64 → Blob
+          if (sec.type === "image" && typeof sec.data === "string") {
+              // Base64 → binary Uint8Array
+              const binary = atob(sec.data);
+              const len = binary.length;
+              const bytes = new Uint8Array(len);
+              for (let i = 0; i < len; i++) {
+                bytes[i] = binary.charCodeAt(i);
+              }
+
+              // Detecteer mimetype via extensie
+              let mime = "application/octet-stream";
+              if (sec.extension === "png") mime = "image/png";
+              if (sec.extension === "jpg" || sec.extension === "jpeg") mime = "image/jpeg";
+              if (sec.extension === "webp") mime = "image/webp";
+              if (sec.extension === "gif") mime = "image/gif";
+              if (sec.extension === "svg") mime = "image/svg+xml";
+
+              const blob = new Blob([bytes], { type: mime });
+
+              await writable.write(blob);
+              await writable.close();
+              delete sec.data;
+              continue;
+            }
+
+          // 🔸 JSON
+          if (sec.extension === "json") {
+            await writable.write(JSON.stringify(sec.data, null, 2));
+            await writable.close();
+            delete sec.data;
+            continue;
+          }
+
+          // 🔸 TEXT/MD
+          await writable.write(sec.data);
+          await writable.close();
+
+          delete sec.data; // index.json moet geen inline data bevatten
+        }
+
+        // ------------------------------------------------------------------
+        // INDEX.JSON
+        // ------------------------------------------------------------------
+        const indexHandle = await docDir.getFileHandle("index.json", { create: true });
+        const w = await indexHandle.createWritable();
+        await w.write(JSON.stringify(doc, null, 2));
+        await w.close();
+      },
+
       async load_example() {
           this.import_notebook_progress = 1;
           this.loading_overlay = true;
@@ -1041,67 +1106,7 @@ document.addEventListener("alpine:init", () => {
               let total = items.length;
               let counter = 0;
               for (const doc of items) {
-                // Maak document directory
-                const docDir = await root.getDirectoryHandle(doc.id, { create: true });
-
-                // ------------------------------------------------------------------
-                // SECTIONS: markdown, json, images (base64 → Blob)
-                // ------------------------------------------------------------------
-                for (const sec of doc.sections) {
-                  if (!sec.data) continue;
-
-                  const filename = sec.id + "." + sec.extension;
-                  const fileHandle = await docDir.getFileHandle(filename, { create: true });
-                  const writable = await fileHandle.createWritable();
-
-                  // 🔸 IMAGE: base64 → Blob
-                  if (sec.type === "image" && typeof sec.data === "string") {
-                      // Base64 → binary Uint8Array
-                      const binary = atob(sec.data);
-                      const len = binary.length;
-                      const bytes = new Uint8Array(len);
-                      for (let i = 0; i < len; i++) {
-                        bytes[i] = binary.charCodeAt(i);
-                      }
-
-                      // Detecteer mimetype via extensie
-                      let mime = "application/octet-stream";
-                      if (sec.extension === "png") mime = "image/png";
-                      if (sec.extension === "jpg" || sec.extension === "jpeg") mime = "image/jpeg";
-                      if (sec.extension === "webp") mime = "image/webp";
-                      if (sec.extension === "gif") mime = "image/gif";
-                      if (sec.extension === "svg") mime = "image/svg+xml";
-
-                      const blob = new Blob([bytes], { type: mime });
-
-                      await writable.write(blob);
-                      await writable.close();
-                      delete sec.data;
-                      continue;
-                    }
-
-                  // 🔸 JSON
-                  if (sec.extension === "json") {
-                    await writable.write(JSON.stringify(sec.data, null, 2));
-                    await writable.close();
-                    delete sec.data;
-                    continue;
-                  }
-
-                  // 🔸 TEXT/MD
-                  await writable.write(sec.data);
-                  await writable.close();
-
-                  delete sec.data; // index.json moet geen inline data bevatten
-                }
-
-                // ------------------------------------------------------------------
-                // INDEX.JSON
-                // ------------------------------------------------------------------
-                const indexHandle = await docDir.getFileHandle("index.json", { create: true });
-                const w = await indexHandle.createWritable();
-                await w.write(JSON.stringify(doc, null, 2));
-                await w.close();
+                await this.import_doc(root,doc);
                 counter++;
                 this.import_notebook_progress = (counter/total) * 100;
               }
@@ -1135,12 +1140,205 @@ document.addEventListener("alpine:init", () => {
           }
 
           await this.indexFiles(root);
-      }
+      },
 
+      async exportNotesAsJSON(noteIds) {
+          if (typeof noteIds === "string") {
+            noteIds = [noteIds];
+          }
+
+          if (!Array.isArray(noteIds)) {
+            throw new Error("exportNotesAsJSON expects a string or an array of strings");
+          }
+          // 1. Verzamel volledige documenten
+          const exported = [];
+
+          for (const id of noteIds) {
+            // fetch_doc(id) geeft { json, docDir }
+            const { json } = await this.fetch_doc(id);
+
+            // json bevat sections met .data reeds geladen
+            // We maken een diepe copy zodat we geen Alpine-reactieve objecten exporteren
+            const docCopy = JSON.parse(JSON.stringify(json));
+            for (const section of docCopy.sections.filter(x => x.type == 'image')){
+                section.data = await blobToBase64(section.data);
+            }
+            exported.push(docCopy);
+          }
+
+          // 2. JSON serialiseren
+          const jsonString = JSON.stringify(exported, null, 2);
+
+          // 3. Download triggeren
+          const blob = new Blob([jsonString], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+
+          const a = document.createElement("a");
+          a.href = url;
+
+          // Goede naam: timestamp + count
+          const date = new Date().toISOString().replace(/[:.]/g, "-");
+          a.download = `notebook-export-${date}.nbdoc.json`;
+
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          URL.revokeObjectURL(url);
+        },
+      async exportDeckAsJSON(doc){
+        let noteIds = [];
+        doc.sections.filter(s => s.type == 'slide').forEach(s => {
+            Object.values(s.sections).forEach(ref => {
+                if (!noteIds.includes(ref.parent) && ref.parent != doc.id){
+                    noteIds.push(ref.parent);
+                }
+            });
+        });
+        noteIds.push(doc.id);
+        await this.exportNotesAsJSON(noteIds);
+      },
+      async exportNotebookAsJSON(){
+        await this.exportNotesAsJSON(Object.keys(this.index.documents));
+      },
+      async importNotesFromJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        try {
+            // Controleer of het wel een JSON-bestand is
+            this.import_notebook_progress = 1;
+            this.loading_overlay = true;
+            if (file.type !== "application/json" && !file.name.endsWith(".json")) {
+                throw new Error("Invalid file type. Please select a JSON export file.");
+            }
+
+            // File → text
+            const text = await file.text();
+
+            // Parse JSON
+            const data = JSON.parse(text);
+
+            // Validatie (optioneel maar nuttig)
+            if (!Array.isArray(data)) {
+                throw new Error("Invalid JSON format. Expected an array of documents.");
+            }
+
+            const notebookEntry = this.notebooks[this.notebook];
+            if (!notebookEntry) {
+                alert("Open a notebook first.");
+                return;
+              }
+
+            const root = window.repairDirectoryHandle(notebookEntry.handle);
+            await this.verifyPermissions(root);
+            // Do something useful with it (vervang dit door jouw import logic)
+            let documents = Object.keys(this.index.documents);
+            documents = [...documents, ...data.map(x => x.id)];
+            let total = data.length;
+            let counter = 0;
+            for (const doc of data) {
+              if (doc.parent && !documents.includes(doc.parent)){
+                doc.parent = "";
+              }
+              await this.import_doc(root,doc);
+              counter++;
+              this.import_notebook_progress = (counter/total) * 100;
+            }
+            await this.indexFiles(root);
+            await this.open_doc(data.at(-1).id);
+        } catch (err) {
+            console.error("Failed to import JSON:", err);
+            alert(err.message || "Failed to import JSON file.");
+        } finally {
+            this.loading_overlay = false;
+            setTimeout(async function(){
+                console.log("reindex")
+                await this.indexFiles(root);
+              },3000);
+          }
+    },
+      async removeNotesFromJSON(event){
+        const file = event.target.files[0];
+        if (!file) return;
+
+        try {
+            // Controleer of het wel een JSON-bestand is
+            if (file.type !== "application/json" && !file.name.endsWith(".json")) {
+                throw new Error("Invalid file type. Please select a JSON export file.");
+            }
+
+            // File → text
+            const text = await file.text();
+
+            // Parse JSON
+            const data = JSON.parse(text);
+
+            // Validatie (optioneel maar nuttig)
+            if (!Array.isArray(data)) {
+                throw new Error("Invalid JSON format. Expected an array of documents.");
+            }
+
+            const notebookEntry = this.notebooks[this.notebook];
+            if (!notebookEntry) {
+                alert("Open a notebook first.");
+                return;
+              }
+
+            const root = window.repairDirectoryHandle(notebookEntry.handle);
+            await this.verifyPermissions(root);
+
+            for (const doc of data){
+                try {
+                  await root.removeEntry(doc.id, { recursive: true });
+                } catch (err) {
+                  console.warn("Could not delete example doc:", doc.id, err);
+                }
+            }
+            await this.indexFiles(root);
+        } catch (err) {
+            console.error("Failed to remove JSON:", err);
+            alert(err.message || "Failed to remove based on JSON file.");
+        }
+      }
     };
   });
 
 });
+
+
+async function resolveToBlob(value) {
+    // Al een Blob → meteen teruggeven
+    if (value instanceof Blob) return value;
+
+    // Object URL (blob:...)
+    if (typeof value === "string" && value.startsWith("blob:")) {
+        const res = await fetch(value);
+        return await res.blob();
+    }
+
+    // Base64 embedded data-URL → return als string
+    if (typeof value === "string" && value.startsWith("data:")) {
+        return value; // is al base64
+    }
+
+    // Andere strings → niets doen
+    return value;
+}
+
+async function blobToBase64(blob) {
+  blob = await resolveToBlob(blob)
+  const buffer = await blob.arrayBuffer();
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+
+  return btoa(binary);
+}
+
 
 function removeById(array, id) {
   const index = array.findIndex(x => x.id === id);

@@ -2,25 +2,27 @@
     <div class="grid grid-cols-12" x-data="{dv: false}" x-show="dv" x-init="setTimeout(function(){dv = true},500)"
          x-cloak x-transition>
         <div class="col-span-6">
-            <table class="table">
+            <table class="table table-sm">
                 <tr>
                     <th colspan="2">Getting started</th>
                 </tr>
                 <tr>
                     <td>
-                        Start by initializing a new notebook, using the notebook selector ion the top left of the page.
-                        The notebook icon will lead you back to this page.
+                        Start by initializing a new notebook using the notebook selector in the top-left corner.
+                        Choose an empty folder or one that already contains a notebook.
+                        (If the File System Access API is unavailable, the tool will fall back to IndexedDB.)
+                        The notebook icon will always bring you back to this page.
                     </td>
                 </tr>
                 <tr>
                     <th>Load example</th>
                     <td>
                         <button x-show="notebook" x-cloak x-transition
-                                class="btn btn-success btn-outline w-50" @click="load_example">load
+                                class="btn btn-success btn-outline btn-sm w-50" @click="load_example">load
                         </button>
                         <div class="tooltip tooltip-left" data-tip="initialize a notebook first">
                             <button x-show="!notebook" x-cloak x-transition
-                                    class="btn btn-success btn-outline" disabled="disabled">load
+                                    class="btn btn-success btn-outline btn-sm" disabled="disabled">load
                             </button>
                         </div>
                     </td>
@@ -29,13 +31,31 @@
                     <th>Remove example</th>
                     <td>
                         <button x-show="notebook" x-cloak x-transition
-                                class="btn btn-error btn-outline" @click="remove_example">remove
+                                class="btn btn-error btn-outline btn-sm" @click="remove_example">remove
                         </button>
                         <div class="tooltip tooltip-left" data-tip="initialize a notebook first">
                             <button x-show="!notebook" x-cloak x-transition
-                                    class="btn btn-error btn-outline" disabled="disabled">remove
+                                    class="btn btn-error btn-outline btn-sm" disabled="disabled">remove
                             </button>
                         </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Import</th>
+                    <td>
+                        <input type="file"
+                               class="file-input file-input-xs file-input-success"
+                               accept="application/json,.json" :disabled="!notebook"
+                               @change="importNotesFromJSON($event); $el.value = null;">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Remove import</th>
+                    <td>
+                        <input type="file"
+                               class="file-input file-input-xs file-input-error"
+                               accept="application/json,.json" :disabled="!notebook"
+                               @change="removeNotesFromJSON($event); $el.value = null;">
                     </td>
                 </tr>
             </table>

@@ -29,26 +29,26 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
     <style>
-    .markdown-body ul {
-      list-style-type: disc !important;
-      margin-left: 1.5rem !important;
-      padding-left: 0 !important;
-    }
+        .markdown-body ul {
+          list-style-type: disc !important;
+          margin-left: 1.5rem !important;
+          padding-left: 0 !important;
+        }
 
-    .markdown-body ol {
-      list-style-type: decimal !important;
-      margin-left: 1.5rem !important;
-      padding-left: 0 !important;
-    }
+        .markdown-body ol {
+          list-style-type: decimal !important;
+          margin-left: 1.5rem !important;
+          padding-left: 0 !important;
+        }
 
-    /* Nested lists */
-    .markdown-body ul ul,
-    .markdown-body ol ol,
-    .markdown-body ul ol,
-    .markdown-body ol ul {
-      margin-left: 1.25rem !important;
-      list-style-type: circle !important;
-    }
+        /* Nested lists */
+        .markdown-body ul ul,
+        .markdown-body ol ol,
+        .markdown-body ul ol,
+        .markdown-body ol ul {
+          margin-left: 1.25rem !important;
+          list-style-type: circle !important;
+        }
     </style>
     <style>[x-cloak] { display: none !important; }</style>
 
@@ -108,14 +108,35 @@
                     Navigate to deck: <span x-text="index.documents[active_deck].name"></span>
                 </button>
                 <button
-                    x-data="pwaInstall()"
-                    x-show="canInstall"
-                    x-cloak
-                    x-transition
-                    @click="install"
-                    class="btn btn-primary btn-outline btn-circle btn-sm m-2">
+                        x-data="pwaInstall()"
+                        x-show="canInstall"
+                        x-cloak
+                        x-transition
+                        @click="install"
+                        class="btn btn-primary btn-outline btn-circle btn-sm m-2">
                     <i class="fa-solid fa-download"></i>
                 </button>
+                <button class="btn btn-outline btn-accent btn-sm btn-circle m-2 mr-2"
+                        x-show="notebook"
+                        x-cloak
+                        x-transition
+                        @click="import_modal.showModal()">
+                    <i class="fa-solid fa-upload"></i>
+                </button>
+                <dialog id="import_modal" class="modal">
+                    <div class="modal-box">
+                        <h3 class="text-lg font-bold">Import notes</h3>
+                        <p class="py-4">
+                            <input type="file"
+                                   class="file-input"
+                                   accept="application/json,.json"
+                                   @change="importNotesFromJSON($event); $el.value = null; import_modal.close()">
+                        </p>
+                    </div>
+                    <form method="dialog" class="modal-backdrop">
+                        <button>close</button>
+                    </form>
+                </dialog>
                 <button class="btn btn-outline btn-success btn-sm btn-circle m-2 mr-5"
                         x-show="notebook"
                         x-cloak
@@ -150,23 +171,23 @@
 </div>
 
 <div
-  x-show="loading_overlay"
-  x-transition.opacity
-  class="fixed inset-0 bg-gray-900 bg-opacity-70 backdrop-blur-sm
+        x-show="loading_overlay"
+        x-transition.opacity
+        class="fixed inset-0 bg-gray-900 bg-opacity-70 backdrop-blur-sm
          flex items-center justify-center z-50 select-none">
 
-  <div class="text-center p-6 rounded-xl bg-base-100 shadow-xl">
-    <span class="loading loading-spinner loading-lg text-primary mb-4"></span>
+    <div class="text-center p-6 rounded-xl bg-base-100 shadow-xl">
+        <span class="loading loading-spinner loading-lg text-primary mb-4"></span>
 
-    <p class="text-lg font-semibold">
-      Loading example data…
-    </p>
-      <progress class="progress progress-primary w-56" :value="import_notebook_progress" max="100"></progress>
-    <p class="opacity-70 mt-2">
-      This may take a few seconds.
-      Please do not navigate away.
-    </p>
-  </div>
+        <p class="text-lg font-semibold">
+            Loading example data…
+        </p>
+        <progress class="progress progress-primary w-56" :value="import_notebook_progress" max="100"></progress>
+        <p class="opacity-70 mt-2">
+            This may take a few seconds.
+            Please do not navigate away.
+        </p>
+    </div>
 </div>
 
 <script src="/js/modules/DocumentEngine.js"></script>
@@ -181,50 +202,50 @@
 <script src="/js/modules/TableEditor.js"></script>
 
 <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/service-worker.js")
-      .then(() => console.log("Service Worker registered"))
-      .catch(err => console.error("SW registration failed:", err));
-  }
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch(err => console.error("SW registration failed:", err));
+    }
 </script>
 <script>
-function pwaInstall() {
-    return {
-        canInstall: false,
-        deferredPrompt: null,
+    function pwaInstall() {
+        return {
+            canInstall: false,
+            deferredPrompt: null,
 
-        init() {
-            window.addEventListener("beforeinstallprompt", (e) => {
-                e.preventDefault();
-                this.deferredPrompt = e;
-                this.canInstall = true;   // Toon de knop
-            });
+            init() {
+                window.addEventListener("beforeinstallprompt", (e) => {
+                    e.preventDefault();
+                    this.deferredPrompt = e;
+                    this.canInstall = true;   // Toon de knop
+                });
 
-            // Verbergen als gebruiker via browser-menu installeert
-            window.addEventListener("appinstalled", () => {
+                // Verbergen als gebruiker via browser-menu installeert
+                window.addEventListener("appinstalled", () => {
+                    this.canInstall = false;
+                    this.deferredPrompt = null;
+                    console.log("PWA installed");
+                });
+            },
+
+            async install() {
+                if (!this.deferredPrompt) return;
+
+                this.deferredPrompt.prompt();
+                const result = await this.deferredPrompt.userChoice;
+
+                if (result.outcome === "accepted") {
+                    console.log("User accepted the install");
+                } else {
+                    console.log("User dismissed the install");
+                }
+
                 this.canInstall = false;
                 this.deferredPrompt = null;
-                console.log("PWA installed");
-            });
-        },
-
-        async install() {
-            if (!this.deferredPrompt) return;
-
-            this.deferredPrompt.prompt();
-            const result = await this.deferredPrompt.userChoice;
-
-            if (result.outcome === "accepted") {
-                console.log("User accepted the install");
-            } else {
-                console.log("User dismissed the install");
             }
-
-            this.canInstall = false;
-            this.deferredPrompt = null;
         }
     }
-}
 </script>
 </body>
 </html>
