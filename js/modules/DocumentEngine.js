@@ -542,7 +542,7 @@ document.addEventListener("alpine:init", () => {
           const notebookEntry = this.notebooks[this.notebook];
           if (!notebookEntry) return;
 
-          const notebookDir = notebookEntry.handle;
+          const notebookDir = window.repairDirectoryHandle(notebookEntry.handle);
           await this.verifyPermissions(notebookDir);
 
           let docDir;
