@@ -1,7 +1,7 @@
 <template x-component="slides">
     <div x-data="SectionHelper" x-import="doc-components/main-content">
         <div class="grid grid-cols-10 gap-3"
-             x-init="if(Object.keys(pointer).length != 0){selected = pointer;} else if (microDoc.json.sections.filter(x => x.type === 'slide').length != 0 ) {selected = microDoc.json.sections.filter(x => x.type === 'slide').at(0)}; slide_modal.showModal()"
+             x-init="if(Object.keys(pointer).length != 0){selected = pointer;slide_modal.showModal()} else if (microDoc.json.sections.filter(x => x.type === 'slide').length != 0 ) {selected = microDoc.json.sections.filter(x => x.type === 'slide').at(0);slide_modal.showModal()}"
              x-effect="if(selected){pointer = selected}"
              x-data="{selected: '', pointer: $persist({}).as('slide-' + microDoc.id)}">
             <template x-if="Object.keys(pointer).length">
