@@ -542,7 +542,7 @@ document.addEventListener("alpine:init", () => {
           const notebookEntry = this.notebooks[this.notebook];
           if (!notebookEntry) return;
 
-          const notebookDir = window.repairDirectoryHandle(notebookEntry.handle);
+          const notebookDir = resolveNotebookDir(notebookEntry);
           await this.verifyPermissions(notebookDir);
 
           let docDir;
@@ -579,7 +579,7 @@ document.addEventListener("alpine:init", () => {
           const notebookEntry = this.notebooks[this.notebook];
           if (!notebookEntry) return;
 
-          const notebookDir = window.repairDirectoryHandle(notebookEntry.handle);
+          const notebookDir = resolveNotebookDir(notebookEntry);
           await this.verifyPermissions(notebookDir);
 
           // 1. Documentmap ophalen
@@ -736,7 +736,7 @@ document.addEventListener("alpine:init", () => {
           if (!notebookEntry) return;
           if (!confirm("Delete from disk?")){return}
           // TODO: remove references e.g. parent ref
-          const notebookDir = notebookEntry.handle;
+          const notebookDir = resolveNotebookDir(notebookEntry);
           await this.verifyPermissions(notebookDir);
 
           let docDir;
@@ -775,7 +775,7 @@ document.addEventListener("alpine:init", () => {
           if (!notebookEntry) return;
           if (!confirm("Delete section from disk?")){return}
           this.microDoc.json.archive = this.microDoc.json.archive.filter(x => x.id != id);
-          const notebookDir = notebookEntry.handle;
+          const notebookDir = resolveNotebookDir(notebookEntry);
           await this.verifyPermissions(notebookDir);
 
           let docDir = this.microDoc.dir;
@@ -1101,7 +1101,7 @@ document.addEventListener("alpine:init", () => {
                 return;
               }
 
-              const root = window.repairDirectoryHandle(notebookEntry.handle);
+              const root = resolveNotebookDir(notebookEntry);
               await this.verifyPermissions(root);
               let total = items.length;
               let counter = 0;
@@ -1127,7 +1127,7 @@ document.addEventListener("alpine:init", () => {
           const items = await res.json();
 
           const notebookEntry = this.notebooks[this.notebook];
-          const root = window.repairDirectoryHandle(notebookEntry.handle);
+          const root = resolveNotebookDir(notebookEntry);
 
           await this.verifyPermissions(root);
 
@@ -1230,7 +1230,7 @@ document.addEventListener("alpine:init", () => {
                 return;
               }
 
-            const root = window.repairDirectoryHandle(notebookEntry.handle);
+            const root = resolveNotebookDir(notebookEntry);
             await this.verifyPermissions(root);
             // Do something useful with it (vervang dit door jouw import logic)
             let documents = Object.keys(this.index.documents);
@@ -1285,7 +1285,7 @@ document.addEventListener("alpine:init", () => {
                 return;
               }
 
-            const root = window.repairDirectoryHandle(notebookEntry.handle);
+            const root = resolveNotebookDir(notebookEntry);
             await this.verifyPermissions(root);
 
             for (const doc of data){
@@ -1306,6 +1306,10 @@ document.addEventListener("alpine:init", () => {
 
 });
 
+function resolveNotebookDir(notebookEntry) {
+  if (!notebookEntry?.handle) return null;
+  return window.repairDirectoryHandle(notebookEntry.handle);
+}
 
 async function resolveToBlob(value) {
     // Al een Blob → meteen teruggeven
