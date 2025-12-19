@@ -1300,6 +1300,64 @@ document.addEventListener("alpine:init", () => {
             console.error("Failed to remove JSON:", err);
             alert(err.message || "Failed to remove based on JSON file.");
         }
+      },
+
+      async exportDocx(){
+        let children = [];
+
+        children.push(new Paragraph({
+            text: this.microDoc.json.name,
+            heading: HeadingLevel.HEADING_1,
+          }));
+
+        for (const section of this.microDoc.json.sections){
+            if (section.type == "markdown"){
+                children.push(
+                  ...markdownToParagraphs(section.data)
+                );
+            } else if (section.type == "image"){
+                children.push(await imageSectionToParagraph(section));
+            } else if (section.type == "drawio"){
+                const iframe = document.getElementById(section.id);
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+                const svg = doc.querySelector("svg");
+                console.log(svg);
+                //children.push(await drawioSectionToParagraph(section));
+            }
+        }
+
+        const doc = new Document({
+            styles: {
+                paragraphStyles: [
+                  {
+                    id: "Normal",
+                    name: "Normal",
+                    basedOn: "Normal",
+                    next: "Normal",
+                    quickFormat: true,
+                    run: {
+                      font: "Times New Roman",
+                      size: 20,
+                    }
+                  },
+                ],
+              },
+            sections: [
+              {
+                children
+              }
+            ]
+          });
+
+        const blob = await Packer.toBlob(doc);
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = this.microDoc.json.name + ".docx";
+        a.click();
+        URL.revokeObjectURL(url);
       }
     };
   });

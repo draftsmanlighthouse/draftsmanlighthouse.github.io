@@ -19,7 +19,7 @@ document.addEventListener('alpine:init', () => {
             const container = this.$refs.diagram_container;
             const width = 'doc_section' in this ? this.doc_section.width : this.section.width;
             const height = 'doc_section' in this ? this.doc_section.height : this.section.height;
-            container.innerHTML = `<iframe frameborder="0" style="width:100%;aspect-ratio: ${width} / ${height};background: transparent;" src="${viewer}"></iframe>`;
+            container.innerHTML = `<iframe id="${this.section.id}" frameborder="0" style="width:100%;aspect-ratio: ${width} / ${height};background: transparent;" src="${viewer}"></iframe>`;
 
             const iframe = container.querySelector('iframe');
             iframe.addEventListener('load', () => {

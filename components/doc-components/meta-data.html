@@ -246,20 +246,43 @@
         <tr>
             <th>Export</th>
             <td x-show="microDoc.json.type == 'infodeck'" x-cloak x-transition>
-                <button @click="prepare_deck" class="btn btn-sm btn-ghost btn-circle">
-                    <i class="fa-regular fa-file-pdf"></i>
-                </button>
-                <button @click="exportDeckAsJSON(microDoc.json)" class="btn btn-sm btn-ghost btn-circle">
-                    <i class="fa-solid fa-download"></i>
-                </button>
+                <div class="tooltip" data-tip="Export PDF">
+                    <button @click="prepare_deck" class="btn btn-sm btn-ghost btn-circle">
+                        <i class="fa-regular fa-file-pdf"></i>
+                    </button>
+                </div>
+                <div class="tooltip" data-tip="Download JSON">
+                    <button @click="exportDeckAsJSON(microDoc.json)" class="btn btn-sm btn-ghost btn-circle">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
             </td>
             <td x-show="microDoc.json.type != 'infodeck'" x-cloak x-transition>
-                <button @click="const w = window.open('/export', '_blank');" class="btn btn-sm btn-ghost btn-circle">
-                    <i class="fa-regular fa-file-pdf"></i>
-                </button>
-                <button @click="exportNotesAsJSON(microDoc.id)" class="btn btn-sm btn-ghost btn-circle">
-                    <i class="fa-solid fa-download"></i>
-                </button>
+                <div class="flex gap-1">
+                  <div class="tooltip" data-tip="Export PDF">
+                    <button
+                      @click="const w = window.open('/export', '_blank');"
+                      class="btn btn-sm btn-ghost btn-circle">
+                      <i class="fa-regular fa-file-pdf"></i>
+                    </button>
+                  </div>
+
+                  <div class="tooltip" data-tip="Export Word (.docx)">
+                    <button
+                      @click="exportDocx"
+                      class="btn btn-sm btn-ghost btn-circle">
+                      <i class="fa-regular fa-file-word"></i>
+                    </button>
+                  </div>
+
+                  <div class="tooltip" data-tip="Download JSON">
+                    <button
+                      @click="exportNotesAsJSON(microDoc.id)"
+                      class="btn btn-sm btn-ghost btn-circle">
+                      <i class="fa-solid fa-download"></i>
+                    </button>
+                  </div>
+                </div>
             </td>
         </tr>
     </table>

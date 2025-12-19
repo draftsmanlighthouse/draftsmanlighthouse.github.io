@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>DOCX export – Alpine + DaisyUI</title>
+
+  <!-- Tailwind + DaisyUI -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      plugins: [daisyui],
+    }
+  </script>
+  <link
+    href="https://cdn.jsdelivr.net/npm/daisyui@4.4.18/dist/full.min.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- docx -->
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+</head>
+
+<body class="bg-base-200 min-h-screen">
+
+<div
+  x-data="docxExport()"
+  class="max-w-3xl mx-auto p-8"
+>
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body space-y-4">
+      <h1 class="card-title text-2xl">
+        Word export (docx)
+      </h1>
+
+      <label class="form-control">
+        <span class="label-text">Titel</span>
+        <input
+          type="text"
+          x-model="title"
+          class="input input-bordered"
+        />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Inhoud</span>
+        <textarea
+          x-model="content"
+          class="textarea textarea-bordered h-32"
+        ></textarea>
+      </label>
+
+      <div class="card-actions justify-end">
+        <button
+          class="btn btn-primary"
+          @click="exportDocx"
+        >
+          Download Word document
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function docxExport() {
+  const {
+    Document,
+    Packer,
+    Paragraph,
+    HeadingLevel,
+  } = window.docx;
+
+  return {
+    title: "Architect Notebook",
+    content: "Dit document is volledig in de browser gegenereerd.",
+
+    async exportDocx() {
+      const doc = new Document({
+        sections: [
+          {
+            children: [
+              new Paragraph({
+                text: this.title,
+                heading: HeadingLevel.HEADING_1,
+              }),
+              new Paragraph({
+                text: this.content,
+              }),
+            ],
+          },
+        ],
+      });
+
+      const blob = await Packer.toBlob(doc);
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "notebook.docx";
+      a.click();
+      URL.revokeObjectURL(url);
+    },
+  };
+}
+</script>
+
+</body>
+</html>
