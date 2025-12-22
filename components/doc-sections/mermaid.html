@@ -1,7 +1,9 @@
 <template x-component="mermaid">
     <div x-data="mermaidEditor">
         <div @click="displayDiagram">
-            <div class="flex justify-center" x-ref="diagram_viewer"></div>
+            <div class="flex justify-center" x-ref="diagram_viewer">
+            </div>
+
             <textarea x-show="isEditing" x-cloak x-transition
                       x-model="currentDiagram"
                       @keyup.debounce.2000ms="displayDiagram"
@@ -25,6 +27,7 @@
                     class="btn btn-sm">
                 Close editor
             </button>
+            <div x-init="await $nextTick();displayDiagram();"></div>
         </div>
     </div>
 </template>

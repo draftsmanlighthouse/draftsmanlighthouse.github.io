@@ -1317,13 +1317,15 @@ document.addEventListener("alpine:init", () => {
                 );
             } else if (section.type == "image"){
                 children.push(await imageSectionToParagraph(section));
-            } else if (section.type == "drawio"){
-                const iframe = document.getElementById(section.id);
-                const doc = iframe.contentDocument || iframe.contentWindow.document;
-
-                const svg = doc.querySelector("svg");
-                console.log(svg);
-                //children.push(await drawioSectionToParagraph(section));
+            } else if (section.type == "drawio" || section.type == "sketch"){
+                children.push(await drawioSectionToParagraph(section));
+//            } else if (section.type == "mermaid"){
+//                children.push(await mermaidSectionToParagraph(section));
+            } else {
+                children.push(new Paragraph({
+                  text: `${section.type} is not (yet) exportable to docx`,
+                  heading: HeadingLevel[`HEADING_2`],
+                }));
             }
         }
 

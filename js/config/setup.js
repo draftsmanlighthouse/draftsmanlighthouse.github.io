@@ -167,22 +167,130 @@ async function imageSectionToParagraph(section) {
   });
 }
 
-//async function drawioSectionToParagraph(section) {
-//  const dataUrl = await exportDrawioXmlToPng(section.data);
-//
-//  // Laat de browser decoden
-//  const buffer = await (await fetch(dataUrl)).arrayBuffer();
-//
-//  return new Paragraph({
-//    alignment: "center",
-//    children: [
-//      new ImageRun({
-//        data: buffer,
-//        transformation: {
-//          width: 600,
-//          height: 400,
-//        },
-//      }),
-//    ],
-//  });
-//}
+function parseDrawioMessage(data) {
+  if (typeof data === "string") {
+    try {
+      return JSON.parse(data);
+    } catch {
+      return null;
+    }
+  }
+  if (typeof data === "object") return data;
+  return null;
+}
+
+function base64ToUint8Array(b64) {
+  // strip eventuele data-url prefix (veilig)
+  const clean = b64.startsWith("data:")
+    ? b64.split(",")[1]
+    : b64;
+
+  const binary = atob(clean);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+
+function exportDrawioIframeToPng(iframe) {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      window.removeEventListener("message", handler);
+      reject(new Error("draw.io export timeout"));
+    }, 5000);
+
+    function handler(e) {
+      const msg = parseDrawioMessage(e.data);
+      if (!msg) return;
+
+      if (msg.event === "export" && msg.data) {
+        clearTimeout(timeout);
+        window.removeEventListener("message", handler);
+
+        const bytes = base64ToUint8Array(msg.data);
+        resolve(bytes);
+      }
+    }
+
+    window.addEventListener("message", handler);
+
+    iframe.contentWindow.postMessage(
+      JSON.stringify({
+        action: "export",
+        format: "png",
+        scale: 1,
+        border: 10,
+      }),
+      "*"
+    );
+  });
+}
+
+async function drawioSectionToParagraph(section) {
+  const iframe = document.getElementById(section.id);
+
+  if (!iframe?.contentWindow) {
+    throw new Error("draw.io iframe not found");
+  }
+
+  const imageBytes = await exportDrawioIframeToPng(iframe);
+
+  return new Paragraph({
+    alignment: "center",
+    children: [
+      new ImageRun({
+        data: imageBytes,
+        transformation: {
+          width: 600,
+          height: 400,
+        },
+      }),
+    ],
+  });
+}
+
+async function svgToPngBytes(svgString, width = 600, height = 400) {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d");
+
+  const v = await canvg.Canvg.fromString(ctx, svgString, {
+    ignoreMouse: true,
+    ignoreAnimation: true,
+  });
+
+  await v.render();
+
+  const blob = await new Promise(res =>
+    canvas.toBlob(res, "image/png")
+  );
+
+  const ab = await blob.arrayBuffer();
+  return new Uint8Array(ab);
+}
+
+async function mermaidSectionToParagraph(section) {
+  const { svg } = await mermaid.render(
+    `mermaid-svg`,
+    section.data
+  );
+
+  const imageBytes = await svgToPngBytes(svg, 600, 400);
+
+  return new Paragraph({
+    alignment: "center",
+    children: [
+      new ImageRun({
+        data: imageBytes,
+        transformation: {
+          width: 600,
+          height: 400,
+        },
+      }),
+    ],
+  });
+}

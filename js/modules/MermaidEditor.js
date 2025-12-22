@@ -4,7 +4,7 @@ document.addEventListener('alpine:init', () => {
         editorFrame: null,
         initialized: false,
 
-        init() {
+        async init() {
             if (!("readonly" in this)){
                 this.readonly = false;
             }
@@ -18,11 +18,11 @@ document.addEventListener('alpine:init', () => {
             }
 
             mermaid.initialize({
-                startOnLoad: false,
-                theme: "default"
+              startOnLoad: false,
+              theme: "default",
+              fontFamily: "Arial, Helvetica, sans-serif",
             });
-            this.displayDiagram();
-            setTimeout(this.displayDiagram.bind(this),100);
+            await this.displayDiagram();
         },
 
         async displayDiagram() {
