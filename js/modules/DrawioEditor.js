@@ -10,8 +10,8 @@ document.addEventListener('alpine:init', () => {
             if (!("readonly" in this)){
                 this.readonly = false;
             }
-            this.displayDiagram();
             this.setupMessageHandling();
+            this.displayDiagram();
         },
 
         displayDiagram() {
@@ -43,9 +43,9 @@ document.addEventListener('alpine:init', () => {
             this.editorFrame = container.querySelector('iframe');
             if (this.editorFrame.requestFullscreen) {
                 this.editorFrame.requestFullscreen();
-            } else if (iframe.webkitRequestFullscreen) { // Safari
+            } else if (this.editorFrame.webkitRequestFullscreen) { // Safari
                 this.editorFrame.webkitRequestFullscreen();
-            } else if (iframe.msRequestFullscreen) { // IE11
+            } else if (this.editorFrame.msRequestFullscreen) { // IE11
                 this.editorFrame.msRequestFullscreen();
             }
         },
@@ -62,35 +62,36 @@ document.addEventListener('alpine:init', () => {
         },
 
         setupMessageHandling() {
-            window.addEventListener('message', (evt) => {
-                if (![
-                  this.editorFrame?.contentWindow,
-                  this.$refs.diagram_container?.querySelector('iframe')?.contentWindow
-                ].includes(evt.source)) return;
-                if (evt.data.length > 0) {
-                    try {
-                        const msg = JSON.parse(evt.data);
-                        if (msg.event === 'save') {
-                            this.currentDiagram = msg.xml;
-                            this.switchToViewMode();
-                        }
-
-                        if (msg.event === 'init') {
-                            evt.source.postMessage(JSON.stringify({
-                                action: 'load',
-                                xml: this.currentDiagram
-                            }), '*');
-                        }
-
-                        if (msg.event === 'exit') {
-                            this.switchToViewMode();
-                        }
-
-                    } catch (e) {
-                        console.error('Error processing message:', e);
-                    }
-                }
-            });
+          window.addEventListener('message', (evt) => {
+            const allowedSources = [
+              this.editorFrame?.contentWindow,
+              this.$refs.diagram_container?.querySelector('iframe')?.contentWindow
+            ].filter(Boolean);
+        
+            if (!allowedSources.includes(evt.source)) return;
+        
+            let msg = evt.data;
+            if (typeof msg === 'string') {
+              try { msg = JSON.parse(msg); } catch { return; }
+            }
+            if (!msg || typeof msg !== 'object') return;
+        
+            if (msg.event === 'init') {
+              evt.source.postMessage(JSON.stringify({
+                action: 'load',
+                xml: this.currentDiagram
+              }), '*');
+            }
+        
+            if (msg.event === 'save') {
+              this.currentDiagram = msg.xml;
+              this.switchToViewMode();
+            }
+        
+            if (msg.event === 'exit') {
+              this.switchToViewMode();
+            }
+          });
         }
     }));
 });
