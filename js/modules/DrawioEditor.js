@@ -90,7 +90,16 @@ document.addEventListener('alpine:init', () => {
 
             const buildCarousel = (pages) => {
                 if (pages.length === 1) {
-                    container.innerHTML = `<img src="${pages[0]}" style="width:calc(100% - 10px);object-fit:contain;margin:5px;display:block;" />`;
+                    container.innerHTML = `
+                        <img src="${pages[0]}" 
+                             style="
+                                max-width:100%;
+                                max-height:100%;
+                                object-fit:contain;
+                                margin:5px;
+                                display:block;
+                             " />
+                        `;
                     return;
                 }
 
@@ -98,7 +107,14 @@ document.addEventListener('alpine:init', () => {
                 pages.forEach((src, i) => {
                     html += `
                         <div x-show="page === ${i}" style="width:100%;">
-                            <img src="${src}" style="width:calc(100% - 10px);object-fit:contain;margin:5px;display:block;" />
+                            <img src="${src}" 
+                                 style="
+                                    max-width:100%;
+                                    max-height:100%;
+                                    object-fit:contain;
+                                    margin:5px;
+                                    display:block;
+                                 " />
                         </div>`;
                 });
                 html += '<div style="display:flex;justify-content:center;gap:8px;padding:8px;">';
