@@ -118,7 +118,7 @@ document.addEventListener('alpine:init', () => {
                 pages.forEach((_, i) => {
                     html += `
                         <button
-                            class="btn btn-xs"
+                            class="btn btn-xs opacity-10 hover:opacity-100"
                             :class="page===${i} ? 'btn-primary' : ''"
                             @click="page=${i}">
                             ${i + 1}
