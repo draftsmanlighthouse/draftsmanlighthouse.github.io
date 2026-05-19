@@ -82,52 +82,91 @@ document.addEventListener('alpine:init', () => {
         async displayDiagram() {
             if (this._rendering) return;
             this._rendering = true;
-
+        
             const container = this.$refs.diagram_container;
             const width = 'doc_section' in this ? this.doc_section.width : this.section.width;
             const height = 'doc_section' in this ? this.doc_section.height : this.section.height;
+        
+            // Container correct definiëren
             container.style.aspectRatio = `${width} / ${height}`;
-
+            container.style.width = '100%';
+            container.style.display = 'flex';
+            container.style.flexDirection = 'column';
+            container.style.overflow = 'hidden';
+        
             const buildCarousel = (pages) => {
-                if (pages.length === 1) {
-                    container.innerHTML = `
-                        <img src="${pages[0]}" 
-                             style="
-                                max-width:100%;
-                                max-height:100%;
+        
+                // helper voor image block
+                const imageBlock = (src) => `
+                    <div style="
+                        flex:1;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        padding:5px;
+                        box-sizing:border-box;
+                    ">
+                        <img src="${src}" 
+                            style="
+                                width:100%;
+                                height:100%;
                                 object-fit:contain;
-                                margin:5px;
                                 display:block;
-                             " />
-                        `;
+                            " />
+                    </div>
+                `;
+        
+                if (pages.length === 1) {
+                    container.innerHTML = imageBlock(pages[0]);
                     return;
                 }
-
-                let html = '<div x-data="{page:0}" style="width:100%;">';
+        
+                let html = `
+                    <div x-data="{page:0}" style="
+                        width:100%;
+                        height:100%;
+                        display:flex;
+                        flex-direction:column;
+                    ">
+                `;
+        
                 pages.forEach((src, i) => {
                     html += `
-                        <div x-show="page === ${i}" style="width:100%;">
-                            <img src="${src}" 
-                                 style="
-                                    max-width:100%;
-                                    max-height:100%;
-                                    object-fit:contain;
-                                    margin:5px;
-                                    display:block;
-                                 " />
-                        </div>`;
+                        <div x-show="page === ${i}" style="flex:1; display:flex;">
+                            ${imageBlock(src)}
+                        </div>
+                    `;
                 });
-                html += '<div style="display:flex;justify-content:center;gap:8px;padding:8px;">';
+        
+                html += `
+                    <div style="
+                        display:flex;
+                        justify-content:center;
+                        gap:8px;
+                        padding:8px;
+                        flex-shrink:0;
+                    ">
+                `;
+        
                 pages.forEach((_, i) => {
-                    html += `<button class="btn btn-xs" :class="page===${i} ? 'btn-primary' : ''" @click="page=${i}">${i + 1}</button>`;
+                    html += `
+                        <button 
+                            class="btn btn-xs" 
+                            :class="page===${i} ? 'btn-primary' : ''" 
+                            @click="page=${i}">
+                            ${i + 1}
+                        </button>
+                    `;
                 });
+        
                 html += '</div></div>';
-
+        
                 container.innerHTML = html;
                 Alpine.initTree(container);
             };
-
-            // Toon cached renders direct
+        
+            // ---- rest van je functie blijft IDENTIEK ----
+        
             const cachedPages = [];
             let i = 0;
             while (true) {
@@ -139,12 +178,12 @@ document.addEventListener('alpine:init', () => {
             if (cachedPages.length > 0) {
                 buildCarousel(cachedPages);
             }
-
+        
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(this.currentDiagram, 'text/xml');
             const diagrams = xmlDoc.querySelectorAll('diagram');
             const pageCount = diagrams.length || 1;
-
+        
             return new Promise((resolve) => {
                 const iframe = document.createElement('iframe');
                 iframe.style.position = 'fixed';
@@ -155,10 +194,10 @@ document.addEventListener('alpine:init', () => {
                 iframe.style.visibility = 'hidden';
                 iframe.src = this.getEditorUrl();
                 document.body.appendChild(iframe);
-
+        
                 let currentExportPage = 0;
                 const renderedPages = [];
-
+        
                 const loadPage = (pageIndex) => {
                     const singlePage = `<mxfile><diagram>${diagrams[pageIndex].innerHTML}</diagram></mxfile>`;
                     iframe.contentWindow.postMessage(JSON.stringify({
@@ -166,16 +205,16 @@ document.addEventListener('alpine:init', () => {
                         xml: singlePage
                     }), '*');
                 };
-
+        
                 const pageHandler = (evt) => {
                     if (evt.source !== iframe.contentWindow) return;
                     let m;
                     try { m = JSON.parse(evt.data); } catch { return; }
-
+        
                     if (m.event === 'init') {
                         loadPage(currentExportPage);
                     }
-
+        
                     if (m.event === 'load' && m.pageVisible) {
                         const delay = this.selectedMode === 'sketch' ? 1500 : 0;
                         setTimeout(() => {
@@ -185,18 +224,15 @@ document.addEventListener('alpine:init', () => {
                             }), '*');
                         }, delay);
                     }
-
+        
                     if (m.event === 'export') {
-                        console.log('[drawio] export ontvangen, pagina:', currentExportPage, 'van', pageCount);
-
                         const cacheKey = `drawio_render_${this.section.id}_${currentExportPage}`;
                         try { localStorage.setItem(cacheKey, m.data); } catch (e) {}
-
+        
                         renderedPages[currentExportPage] = m.data;
                         currentExportPage++;
-
+        
                         if (currentExportPage >= pageCount) {
-                            console.log('[drawio] alle paginas geëxporteerd, klaar');
                             window.removeEventListener('message', pageHandler);
                             document.body.removeChild(iframe);
                             buildCarousel(renderedPages);
@@ -207,7 +243,7 @@ document.addEventListener('alpine:init', () => {
                         }
                     }
                 };
-
+        
                 window.addEventListener('message', pageHandler);
             });
         },
