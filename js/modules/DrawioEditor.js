@@ -87,7 +87,7 @@ document.addEventListener('alpine:init', () => {
             const width = 'doc_section' in this ? this.doc_section.width : this.section.width;
             const height = 'doc_section' in this ? this.doc_section.height : this.section.height;
         
-            // Container correct definiëren
+            // Container setup
             container.style.aspectRatio = `${width} / ${height}`;
             container.style.width = '100%';
             container.style.display = 'flex';
@@ -96,20 +96,20 @@ document.addEventListener('alpine:init', () => {
         
             const buildCarousel = (pages) => {
         
-                // helper voor image block
                 const imageBlock = (src) => `
                     <div style="
                         flex:1;
+                        min-height:0;
                         display:flex;
                         align-items:center;
                         justify-content:center;
                         padding:5px;
                         box-sizing:border-box;
                     ">
-                        <img src="${src}" 
+                        <img src="${src}"
                             style="
-                                width:100%;
-                                height:100%;
+                                max-width:100%;
+                                max-height:100%;
                                 object-fit:contain;
                                 display:block;
                             " />
@@ -127,12 +127,17 @@ document.addEventListener('alpine:init', () => {
                         height:100%;
                         display:flex;
                         flex-direction:column;
+                        min-height:0;
                     ">
                 `;
         
                 pages.forEach((src, i) => {
                     html += `
-                        <div x-show="page === ${i}" style="flex:1; display:flex;">
+                        <div x-show="page === ${i}" style="
+                            flex:1;
+                            display:flex;
+                            min-height:0;
+                        ">
                             ${imageBlock(src)}
                         </div>
                     `;
@@ -150,23 +155,22 @@ document.addEventListener('alpine:init', () => {
         
                 pages.forEach((_, i) => {
                     html += `
-                        <button 
-                            class="btn btn-xs" 
-                            :class="page===${i} ? 'btn-primary' : ''" 
+                        <button
+                            class="btn btn-xs"
+                            :class="page===${i} ? 'btn-primary' : ''"
                             @click="page=${i}">
                             ${i + 1}
                         </button>
                     `;
                 });
         
-                html += '</div></div>';
+                html += `</div></div>`;
         
                 container.innerHTML = html;
                 Alpine.initTree(container);
             };
         
-            // ---- rest van je functie blijft IDENTIEK ----
-        
+            // Cached renders direct tonen
             const cachedPages = [];
             let i = 0;
             while (true) {
@@ -208,8 +212,13 @@ document.addEventListener('alpine:init', () => {
         
                 const pageHandler = (evt) => {
                     if (evt.source !== iframe.contentWindow) return;
+        
                     let m;
-                    try { m = JSON.parse(evt.data); } catch { return; }
+                    try {
+                        m = JSON.parse(evt.data);
+                    } catch {
+                        return;
+                    }
         
                     if (m.event === 'init') {
                         loadPage(currentExportPage);
@@ -217,6 +226,7 @@ document.addEventListener('alpine:init', () => {
         
                     if (m.event === 'load' && m.pageVisible) {
                         const delay = this.selectedMode === 'sketch' ? 1500 : 0;
+        
                         setTimeout(() => {
                             iframe.contentWindow.postMessage(JSON.stringify({
                                 action: 'export',
@@ -227,7 +237,9 @@ document.addEventListener('alpine:init', () => {
         
                     if (m.event === 'export') {
                         const cacheKey = `drawio_render_${this.section.id}_${currentExportPage}`;
-                        try { localStorage.setItem(cacheKey, m.data); } catch (e) {}
+                        try {
+                            localStorage.setItem(cacheKey, m.data);
+                        } catch (e) {}
         
                         renderedPages[currentExportPage] = m.data;
                         currentExportPage++;
@@ -235,7 +247,9 @@ document.addEventListener('alpine:init', () => {
                         if (currentExportPage >= pageCount) {
                             window.removeEventListener('message', pageHandler);
                             document.body.removeChild(iframe);
+        
                             buildCarousel(renderedPages);
+        
                             this._rendering = false;
                             resolve();
                         } else {
@@ -247,6 +261,7 @@ document.addEventListener('alpine:init', () => {
                 window.addEventListener('message', pageHandler);
             });
         },
+
 
         getEditorUrl() {
             const baseUrl = 'https://notebook.bohanssen.com/diagram/embed?embed=1&spin=1&modified=unsavedChanges&proto=json';
